@@ -3,15 +3,19 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
+/**
+ * @author Ander
+ *         <p>
+ *         The <code>User</code> class is abstract as it is the base class for
+ *         <code>Manager</code> and <code>Member</code> and it is not necessary to
+ *         instantiate it in the program.<br/>
+ *         The <code>User</code> class implements the Serializable interface as SQL
+ *         can not work with objects. This interface helps to convert objects
+ *         into byte streams.
+ *         </p>
+ */
 public abstract class User implements Serializable {
 
-	/**
-	 * The <p>"User"</p> class is abstract as it is the base class for <p>"Manager"</p> and
-	 * <p>"Member"</p> and it is not necessary to instantiate it in the program.<br/>
-	 * The <p>"User"</p> class implements the Serializable interface as SQL can not work
-	 * with objects. This interface helps to convert objects into byte streams.
-	 */
 	private static final long serialVersionUID = 1L;
 
 	// ---Attributes---
