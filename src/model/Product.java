@@ -20,5 +20,4 @@ public abstract class Product implements Serializable {
 	protected boolean saleActive;
 	protected Float salePercentage;
 	
-	
 }

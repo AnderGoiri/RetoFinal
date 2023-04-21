@@ -12,5 +12,4 @@ public class Management {
 	private LocalDate date;
 	private User userM;
 	private Product productM;
-	
 }
