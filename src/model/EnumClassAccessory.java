@@ -1,6 +1,7 @@
 package model;
 /**
- * Enum class for the classes of accessory, using a label to get around the "nonElectric" value and read it as "Non-electric"
+ * @author Jago
+ * Enum class for a subdivision of accessory, using a label to get around the "nonElectric" value and read it as "Non-electric"
  */
 public enum EnumClassAccessory {
 	Electric("Electric"), nonElectric("Non-electric");

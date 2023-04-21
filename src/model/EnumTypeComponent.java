@@ -1,5 +1,9 @@
 package model;
-
+/**
+ * 
+ * @author Ander
+ * Enum class for a subdivision of components
+ */
 public enum EnumTypeComponent {
 	ARCHITECTURE("Architecture"), TUNING("Tuning"), CONNECTION("Connection");
 

@@ -3,6 +3,7 @@ package model;
 import java.util.Set;
 
 /**
+ * @author Jago, Ander
  * Derived class Instrument from Product
  */
 public class Instrument extends Product{

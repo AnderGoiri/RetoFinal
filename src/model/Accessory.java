@@ -1,6 +1,7 @@
 package model;
 
 /**
+ * @author Jago
  * Derived class Accessory from Product
  */
 public class Accessory extends Product {

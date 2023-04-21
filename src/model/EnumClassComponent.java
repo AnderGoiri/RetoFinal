@@ -1,5 +1,10 @@
 package model;
-
+/**
+ * 
+ * @author Ander
+ * Enum class for a subdivision of components
+ *
+ */
 public enum EnumClassComponent {
 	CHASIS("Chasis"), CIRCUIT("Circuit");
 

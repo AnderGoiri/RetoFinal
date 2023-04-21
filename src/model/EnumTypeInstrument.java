@@ -1,5 +1,7 @@
 package model;
-
+/**
+ * 
+ */
 public enum EnumTypeInstrument {
 	ACOUSTIC("Acoustic"),
 	ELECTRONIC("Electronic");

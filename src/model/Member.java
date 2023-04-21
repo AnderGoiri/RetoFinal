@@ -1,10 +1,7 @@
 package model;
 
 import java.util.Set;
-
-public class Member extends User {
-
-	/**
+/**
 	 * @author Ander
 	 *         Represents a member of the system who can request repairs and make
 	 *         purchases. Inherits from the base class {@link User}.
@@ -15,6 +12,7 @@ public class Member extends User {
 	 *         have requested and the purchases they have made.
 	 *         </p>
 	 */
+public class Member extends User {
 
 	private static final long serialVersionUID = 1L;
 

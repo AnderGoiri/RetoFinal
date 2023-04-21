@@ -19,7 +19,7 @@ public abstract class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// ---Attributes---
-	protected int idUSer;
+	protected int idUser;
 	protected String name; // IRL name of the user
 	protected String surname;
 	protected String userName; // name chosen by the user for the app

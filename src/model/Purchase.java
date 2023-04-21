@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * @author Ander
+ * @author Ander, Jago
  * 
  *         The <code>Purchase</code> class represents a purchase made by a
  *         <code>User</code> in the system. It contains information such as the
@@ -22,7 +22,7 @@ public class Purchase {
 	private float purchaseTotalCost;
 	private LocalDate purchaseDate;
 	private EnumStatusPurchase statusPurchase;
-	private String methodPurchase;
+	private EnumMethodPurchase methodPurchase;
 	private Set<Product> setProduct;
 
 }

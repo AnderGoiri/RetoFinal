@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
+ * @author Jago
  * Base abstract class Product, can't instantiate it because it has three derived classes
  */
 public abstract class Product implements Serializable {
@@ -19,5 +20,6 @@ public abstract class Product implements Serializable {
 	protected Set<String> color;
 	protected boolean saleActive;
 	protected Float salePercentage;
+	protected boolean isActive;
 	
 }

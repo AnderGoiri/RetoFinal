@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 
 /**
+ * @author Jago
  * Class that registers a user action on a product
  */
 public class Management {
@@ -10,6 +11,6 @@ public class Management {
 	private EnumAction actionType;
 	private String descriptionM;
 	private LocalDate date;
-	private User userM;
-	private Product productM;
+	private String idUser;
+	private String idProduct;
 }
