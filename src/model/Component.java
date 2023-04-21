@@ -8,6 +8,6 @@ import java.util.Set;
 public class Component extends Product{
 	
 	private static final long serialVersionUID = 1L;
-	private Set<String> classComponent;
-	private Set<String> typeComponent;
+	private EnumClassComponent classComponent;
+	private EnumTypeComponent typeComponent;
 }
