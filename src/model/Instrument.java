@@ -8,8 +8,8 @@ import java.util.Set;
 public class Instrument extends Product{
 	
 	private static final long serialVersionUID = 1L;
-	private Set<String> classInstrument;
-	private Set<String> typeInstrument;
+	private EnumClassInstrument classInstrument;
+	private EnumTypeInstrument typeInstrument;
 	
 	
 }
