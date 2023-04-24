@@ -3,8 +3,6 @@ package login;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JButton;
-import java.awt.Color;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -23,13 +21,13 @@ public class UserRegister extends JPanel implements ActionListener{
 	private JCheckBox chckbxNewCheckBox;
 	private JLabel lblAddress;
 	private JLabel lblCredirCard;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.
 	 */
 	public UserRegister() {
 		setLayout(null);
-		
 		JLabel lblUserName = new JLabel("User Name:");
 		lblUserName.setBounds(58, 289, 244, 41);
 		lblUserName.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
@@ -167,12 +165,3 @@ public class UserRegister extends JPanel implements ActionListener{
 		
 	}
 }
-
-
-
-
-
-
-
-		
-	

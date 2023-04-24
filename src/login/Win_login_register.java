@@ -5,8 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
+
+
 import java.awt.CardLayout;
 
 import javax.swing.JLabel;
@@ -14,6 +14,10 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+
+import java.awt.Component;
+
+
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -28,6 +32,10 @@ public class Win_login_register extends JFrame implements ActionListener{
 	private UserLogIn uL;
 	private JButton btnLogIn;
 	private JButton btnSignUp;
+
+	private JButton btnConfirm;
+	private JLabel lblLogoFill;
+
 
 	/**
 	 * Launch the application.
@@ -56,6 +64,8 @@ public class Win_login_register extends JFrame implements ActionListener{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+
+
 		cardLayout=new CardLayout();
 		switchLilPanel=new JPanel();
 		uL=new UserLogIn();
@@ -65,12 +75,24 @@ public class Win_login_register extends JFrame implements ActionListener{
 		switchLilPanel.setLayout(cardLayout);
 		switchLilPanel.add("LogIn",uL);
 		switchLilPanel.add("SignUp",uR);
+
 		
 		btnLogIn = new JButton("LOG IN");
 		btnLogIn.setBackground(new Color(0, 151, 178));
 		btnLogIn.setForeground(new Color(255, 255, 255));
 		btnLogIn.setFont(new Font("Onyx", Font.BOLD, 45));
 		btnLogIn.setBounds(806, 470, 183, 81);
+
+		cardLayout.show(switchLilPanel, "LogIn");
+		
+		btnLogIn = new JButton("LOG IN");
+		btnLogIn.setEnabled(false);
+		btnLogIn.setVisible(false);
+		btnLogIn.setBackground(new Color(0, 151, 178));
+		btnLogIn.setForeground(new Color(255, 255, 255));
+		btnLogIn.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnLogIn.setBounds(387, 470, 183, 81);
+
 		contentPane.add(btnLogIn);
 		btnLogIn.addActionListener(this);
 		
@@ -82,29 +104,79 @@ public class Win_login_register extends JFrame implements ActionListener{
 		contentPane.add(btnSignUp);
 		btnSignUp.addActionListener(this);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBackground(Color.WHITE);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel.setIcon(new ImageIcon(Win_login_register.class.getResource("/media/SAXO 1.png")));
-		lblNewLabel.setBounds(0, 0, 247, 560);
-		contentPane.add(lblNewLabel);
+
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setBackground(Color.WHITE);
+		lblLogo.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblLogo.setVerticalAlignment(SwingConstants.TOP);
+		lblLogo.setIcon(new ImageIcon(Win_login_register.class.getResource("/media/SAXO 1.png")));
+		lblLogo.setBounds(20, 0, 227, 560);
+		contentPane.add(lblLogo);
+		
+		lblLogoFill = new JLabel("");
+		lblLogoFill.setIcon(new ImageIcon(Win_login_register.class.getResource("/media/blanco.png")));
+		lblLogoFill.setBackground(Color.WHITE);
+		lblLogoFill.setBounds(0, 0, 20, 560);
+		contentPane.add(lblLogoFill);
+		
+		btnConfirm = new JButton("CONFIRM");
+		btnConfirm.setForeground(Color.WHITE);
+		btnConfirm.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnConfirm.setBackground(new Color(0, 151, 178));
+		btnConfirm.setBounds(806, 470, 183, 81);
+		contentPane.add(btnConfirm);
+		btnConfirm.addActionListener(this);
+		
 	}
+
+	/**
+	 * @author Fran
+	 * 
+	 */
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(btnLogIn)) {
-			cardLayout.show(switchLilPanel, "LogIn");
+			btnLogIn.setEnabled(false);
+			btnLogIn.setVisible(false);
+			btnSignUp.setEnabled(true);
+			btnSignUp.setVisible(true);
+			
 		}else if(e.getSource().equals(btnSignUp)){
 			cardLayout.show(switchLilPanel, "SignUp");
+			btnLogIn.setEnabled(true);
+			btnLogIn.setVisible(true);
+			btnSignUp.setEnabled(false);
+			btnSignUp.setVisible(false);
+		}else if(e.getSource().equals(btnConfirm)) {
+			String panelName=getSelectedPanelName(switchLilPanel);
+			
+			for(Component component : switchLilPanel.getComponents()) {
+				if(component.isVisible()) {
+					panelName=component.getName();
+				}
+			}
+			
+			if(panelName.equals("LogIn")) {
+				
+			}else {
+				
+			} 
 		}
 	}
-
+	public String getSelectedPanelName(JPanel jP) {
+		String name="";
+		
+		for(Component component : switchLilPanel.getComponents()) {
+			if(component.isVisible()) {
+				name=component.getName();
+			}
+		}
+		
+		return name;
+		
+	}
+	
 }
 
-		
-	
-		
-		
-		
