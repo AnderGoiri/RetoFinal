@@ -25,12 +25,12 @@ public class UserLogIn extends JPanel {
 		setLayout(null);
 		
 		JLabel lblUsername = new JLabel("Username:");
-		lblUsername.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
+		lblUsername.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblUsername.setBounds(50, 150, 128, 68);
 		add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
+		lblPassword.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblPassword.setBounds(50, 310, 128, 68);
 		add(lblPassword);
 		
@@ -41,12 +41,13 @@ public class UserLogIn extends JPanel {
 		textFieldUsername.setColumns(10);
 		
 		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		passwordField.setBounds(188, 310, 559, 68);
 		add(passwordField);
 		
-		JLabel lblTitle = new JLabel("Welcome");
+		JLabel lblTitle = new JLabel("Welcome!");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setFont(new Font("Old English Text MT", Font.PLAIN, 35));
+		lblTitle.setFont(new Font("Elephant", Font.PLAIN, 45));
 		lblTitle.setBounds(50, 10, 735, 68);
 		add(lblTitle);
 		

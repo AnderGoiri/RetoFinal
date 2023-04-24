@@ -105,8 +105,8 @@ public class UserRegister extends JPanel implements ActionListener{
 		add(chckbxManager);
 		
 		JLabel lblName_1_1 = new JLabel("Registration");
-		lblName_1_1.setFont(new Font("Old English Text MT", Font.PLAIN, 50));
-		lblName_1_1.setBounds(293, 10, 303, 60);
+		lblName_1_1.setFont(new Font("Elephant", Font.PLAIN, 45));
+		lblName_1_1.setBounds(293, 10, 323, 60);
 		add(lblName_1_1);
 		
 		chckbxNewCheckBox = new JCheckBox("Supervisor");
