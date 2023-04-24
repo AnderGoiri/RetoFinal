@@ -21,6 +21,8 @@ public class UserRegister extends JPanel implements ActionListener{
 	private JCheckBox chckbxManager;
 	private JCheckBox chckbxTechnician;
 	private JCheckBox chckbxNewCheckBox;
+	private JLabel lblAddress;
+	private JLabel lblCredirCard;
 
 	/**
 	 * Create the panel.
@@ -28,10 +30,10 @@ public class UserRegister extends JPanel implements ActionListener{
 	public UserRegister() {
 		setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("User Name:");
-		lblNewLabel.setBounds(58, 289, 244, 41);
-		lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
-		add(lblNewLabel);
+		JLabel lblUserName = new JLabel("User Name:");
+		lblUserName.setBounds(58, 289, 244, 41);
+		lblUserName.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		add(lblUserName);
 		
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
@@ -43,25 +45,20 @@ public class UserRegister extends JPanel implements ActionListener{
 		lblEmail.setBounds(449, 120, 182, 51);
 		add(lblEmail);
 		
-		JLabel lblCredirCard = new JLabel("Credit Card:");
+		lblCredirCard = new JLabel("Credit Card:");
 		lblCredirCard.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
 		lblCredirCard.setBounds(449, 284, 201, 51);
 		add(lblCredirCard);
 		
-		JLabel lblAddress = new JLabel("Address:");
-		lblAddress.setFont(new Font("Comic Sans MS", Font.PLAIN, 36));
-		lblAddress.setBounds(78, 518, 182, 51);
-		add(lblAddress);
+		JLabel lblSurname = new JLabel("Surname:");
+		lblSurname.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblSurname.setBounds(58, 210, 244, 41);
+		add(lblSurname);
 		
-		JLabel lblName = new JLabel("Surname:");
+		JLabel lblName = new JLabel("Name:");
 		lblName.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
-		lblName.setBounds(58, 210, 244, 41);
+		lblName.setBounds(58, 131, 244, 41);
 		add(lblName);
-		
-		JLabel lblName_1 = new JLabel("Name:");
-		lblName_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
-		lblName_1.setBounds(58, 131, 244, 41);
-		add(lblName_1);
 		
 		textField = new JTextField();
 		textField.setBounds(58, 169, 311, 41);
@@ -98,10 +95,10 @@ public class UserRegister extends JPanel implements ActionListener{
 		textField_6.setBounds(449, 167, 311, 41);
 		add(textField_6);
 		
-		JLabel lblAddress_1 = new JLabel("Address");
-		lblAddress_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
-		lblAddress_1.setBounds(449, 205, 264, 51);
-		add(lblAddress_1);
+		lblAddress = new JLabel("Address");
+		lblAddress.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblAddress.setBounds(449, 205, 264, 51);
+		add(lblAddress);
 		
 		chckbxManager = new JCheckBox("Manager");
 		chckbxManager.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
@@ -118,7 +115,7 @@ public class UserRegister extends JPanel implements ActionListener{
 		chckbxNewCheckBox.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
 		chckbxNewCheckBox.setEnabled(false);
 		chckbxNewCheckBox.setVisible(false);
-		chckbxNewCheckBox.setBounds(459, 257, 201, 21);
+		chckbxNewCheckBox.setBounds(459, 257, 201, 33);
 		add(chckbxNewCheckBox);
 		
 		chckbxTechnician = new JCheckBox("Technician");
@@ -137,7 +134,35 @@ public class UserRegister extends JPanel implements ActionListener{
 			if (chckbxManager.isSelected()) {
 				chckbxTechnician.setEnabled(true);
 				chckbxTechnician.setVisible(true);
+				chckbxNewCheckBox.setEnabled(true);
+				chckbxNewCheckBox.setVisible(true);
+				
+				lblAddress.setEnabled(false);
+				lblAddress.setVisible(false);
+				lblCredirCard.setEnabled(false);
+				lblCredirCard.setVisible(false);
+				textField_4.setEditable(false);
+				textField_4.setVisible(false);
+				textField_5.setEnabled(false);
+				textField_5.setVisible(false);
+			
 			}
+			else {
+				chckbxTechnician.setEnabled(false);
+				chckbxTechnician.setVisible(false);
+				chckbxNewCheckBox.setEnabled(false);
+				chckbxNewCheckBox.setVisible(false);
+				
+				lblAddress.setEnabled(true);
+				lblAddress.setVisible(true);
+				lblCredirCard.setEnabled(true);
+				lblCredirCard.setVisible(true);
+				textField_4.setEditable(true);
+				textField_4.setVisible(true);
+				textField_5.setEnabled(true);
+				textField_5.setVisible(true);
+			}
+			
 		}
 		
 	}
