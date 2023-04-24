@@ -9,6 +9,10 @@ package logicTier;
  */
 public class LoginFactory {
 
+	/**
+	 * Method to create a LoginControllableImplementation Object
+	 * @return
+	 */
 	public LoginControllableImplementation getLogin() {
 		return null;
 	}
