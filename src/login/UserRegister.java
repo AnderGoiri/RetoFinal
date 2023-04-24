@@ -30,31 +30,31 @@ public class UserRegister extends JPanel implements ActionListener{
 		setLayout(null);
 		JLabel lblUserName = new JLabel("User Name:");
 		lblUserName.setBounds(58, 289, 244, 41);
-		lblUserName.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblUserName.setFont(new Font("Constantia", Font.PLAIN, 25));
 		add(lblUserName);
 		
 		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblPassword.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblPassword.setBounds(58, 369, 182, 41);
 		add(lblPassword);
 		
 		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblEmail.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblEmail.setBounds(449, 120, 182, 51);
 		add(lblEmail);
 		
 		lblCredirCard = new JLabel("Credit Card:");
-		lblCredirCard.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblCredirCard.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblCredirCard.setBounds(449, 284, 201, 51);
 		add(lblCredirCard);
 		
 		JLabel lblSurname = new JLabel("Surname:");
-		lblSurname.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblSurname.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblSurname.setBounds(58, 210, 244, 41);
 		add(lblSurname);
 		
 		JLabel lblName = new JLabel("Name:");
-		lblName.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblName.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblName.setBounds(58, 131, 244, 41);
 		add(lblName);
 		
@@ -94,30 +94,30 @@ public class UserRegister extends JPanel implements ActionListener{
 		add(textField_6);
 		
 		lblAddress = new JLabel("Address");
-		lblAddress.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		lblAddress.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblAddress.setBounds(449, 205, 264, 51);
 		add(lblAddress);
 		
 		chckbxManager = new JCheckBox("Manager");
-		chckbxManager.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
+		chckbxManager.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxManager.setBounds(58, 76, 244, 41);
 		chckbxManager.addActionListener(this);
 		add(chckbxManager);
 		
 		JLabel lblName_1_1 = new JLabel("Registration");
-		lblName_1_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 45));
-		lblName_1_1.setBounds(293, 10, 275, 60);
+		lblName_1_1.setFont(new Font("Old English Text MT", Font.PLAIN, 50));
+		lblName_1_1.setBounds(293, 10, 303, 60);
 		add(lblName_1_1);
 		
 		chckbxNewCheckBox = new JCheckBox("Supervisor");
-		chckbxNewCheckBox.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
+		chckbxNewCheckBox.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxNewCheckBox.setEnabled(false);
 		chckbxNewCheckBox.setVisible(false);
 		chckbxNewCheckBox.setBounds(459, 257, 201, 33);
 		add(chckbxNewCheckBox);
 		
 		chckbxTechnician = new JCheckBox("Technician");
-		chckbxTechnician.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
+		chckbxTechnician.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxTechnician.setEnabled(false);
 		chckbxTechnician.setVisible(false);
 		chckbxTechnician.setBounds(459, 341, 201, 21);
