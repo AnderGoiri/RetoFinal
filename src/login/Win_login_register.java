@@ -138,6 +138,7 @@ public class Win_login_register extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(btnLogIn)) {
+			cardLayout.show(switchLilPanel, "LogIn");
 			btnLogIn.setEnabled(false);
 			btnLogIn.setVisible(false);
 			btnSignUp.setEnabled(true);
@@ -149,6 +150,7 @@ public class Win_login_register extends JFrame implements ActionListener{
 			btnLogIn.setVisible(true);
 			btnSignUp.setEnabled(false);
 			btnSignUp.setVisible(false);
+			
 		}else if(e.getSource().equals(btnConfirm)) {
 			String panelName=getSelectedPanelName(switchLilPanel);
 			
