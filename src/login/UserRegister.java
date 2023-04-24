@@ -120,7 +120,7 @@ public class UserRegister extends JPanel implements ActionListener{
 		chckbxTechnician.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxTechnician.setEnabled(false);
 		chckbxTechnician.setVisible(false);
-		chckbxTechnician.setBounds(459, 341, 201, 21);
+		chckbxTechnician.setBounds(459, 341, 201, 30);
 		add(chckbxTechnician);
 
 	}
