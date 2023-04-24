@@ -6,6 +6,8 @@ import java.awt.Font;
 
 public class UserRegister extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Create the panel.
 	 */

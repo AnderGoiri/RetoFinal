@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
 import javax.swing.JLabel;
@@ -23,7 +21,6 @@ import java.awt.event.ActionEvent;
 public class Win_login_register extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
-	private String frameTitle;
 	private JPanel contentPane;
 	private JPanel switchLilPanel;
 	private CardLayout cardLayout;
