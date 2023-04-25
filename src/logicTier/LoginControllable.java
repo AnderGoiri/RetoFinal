@@ -33,7 +33,7 @@ public interface LoginControllable {
 	 *                                      in the database and it should not be.
 	 * @throws SQLException 
 	 */
-	public Member registerUserMember(String userName, String password)
+	public void registerUserMember(Member me)
 			throws CredentialNotValidException, UserFoundException, SQLException;
 
 	/**

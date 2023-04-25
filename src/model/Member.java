@@ -21,4 +21,44 @@ public class Member extends User {
 	private int creditCard;
 	private Set<Repair> repairSet;
 	private Set<Purchase> purchaseRecord;
+	
+	//--- Getters & Setters ---
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public int getCreditCard() {
+		return creditCard;
+	}
+	public void setCreditCard(int creditCard) {
+		this.creditCard = creditCard;
+	}
+	public Set<Repair> getRepairSet() {
+		return repairSet;
+	}
+	public void setRepairSet(Set<Repair> repairSet) {
+		this.repairSet = repairSet;
+	}
+	public Set<Purchase> getPurchaseRecord() {
+		return purchaseRecord;
+	}
+	public void setPurchaseRecord(Set<Purchase> purchaseRecord) {
+		this.purchaseRecord = purchaseRecord;
+	}
+	
+	// ---Constructors---
+	public Member(String address, int creditCard, Set<Repair> repairSet, Set<Purchase> purchaseRecord) {
+		super();
+		this.address = address;
+		this.creditCard = creditCard;
+		this.repairSet = repairSet;
+		this.purchaseRecord = purchaseRecord;
+	}
+	
+	public Member() {
+		super();
+	}
+	
 }

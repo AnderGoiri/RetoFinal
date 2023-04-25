@@ -10,9 +10,10 @@ import model.Member;
 import model.User;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * 
@@ -24,49 +25,55 @@ import java.sql.SQLException;
 public class LoginControllableImplementation implements LoginControllable {
 
 	private Connection conn; // Establish a Connection attribute
-	private PreparedStatement stmt; // Establish a PreparedStatement attribute
+	private Statement stmt; // Establish a Statement attribute
+	private PreparedStatement ptmt; // Establish a PreparedStatement attribute
+	private ResultSet rset; // Establish a ResultSet attribute
 
 	/**
-	 * Method used to open a connection with the database
+	 * Method used to check if a User Name is already used in the database.
 	 * 
+	 * @author Ander
+	 * @param userName
+	 * @return When false is returned, the User Name does not appear on the
+	 *         database. When true is returned, the User Name has been found on the
+	 *         database.
 	 * @throws SQLException
 	 */
-	private void openConnection() throws SQLException { // método para conexiones solo con la URL
-		conn = DriverManager.getConnection("jdbc:mysql://hostname/database"); // placeholder
-	}
+	public boolean checkUserName(String userName) throws SQLException { // !!!!Query is not placed
 
-	private void openConnection(String userName, String password) throws SQLException { // método con conexiones con
-																						// URL, username y pass
-		conn = DriverManager.getConnection("jdbc:mysql://hostname/database", userName, password); // placeholder
-	}
+		String queryCheck = " ";
 
-	/**
-	 * 
-	 * Method used to close a connection with the database
-	 * 
-	 * @throws SQLException
-	 */
-	private void closeConnection() throws SQLException {
-		if (stmt != null)
-			stmt.close();
-		if (conn != null)
-			conn.close();
+		try {
+			conn = new GateDB().openConnection(); // openConnection method opens the connection with our DB
+			rset = conn.prepareStatement(queryCheck).executeQuery(); // execute the Query
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			new GateDB().closeConnection(ptmt, conn, rset);
+		}
+		return rset.next(); // return a boolean
 	}
 
 	@Override
-	public Member registerUserMember(String userName, String password)
-			throws CredentialNotValidException, UserFoundException, SQLException {
-		// conectarse a la base de datos
-			openConnection(userName, password);
+	public void registerUserMember(Member me) throws CredentialNotValidException, UserFoundException, SQLException {
 
+		try {
+			conn = new GateDB().openConnection();// Open Connection with DB
 			
-			
-			closeConnection();
-		// comprobar que el usuario y contraseña no esten registrados
-
-		// si lo están, mandar mensaje de error, terminar el metodo
-
-		return null;
+			if (!checkUserName(me.getUserName())) { // Check if the User is already registered
+				
+				stmt = conn.prepareStatement(" ");
+				stmt.executeUpdate(null);
+				
+			} else { // If User exists, throw UserFoundException.
+				throw new UserFoundException();
+			}
+			;
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			new GateDB().closeConnection(ptmt, conn, rset);
+		}
 	}
 
 	@Override
