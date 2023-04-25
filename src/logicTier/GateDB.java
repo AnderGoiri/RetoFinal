@@ -17,19 +17,23 @@ import java.util.ResourceBundle;
 public class GateDB {
 
 	private ResourceBundle configFile;
-	private String url;
-	private String user;
-	private String pass;
+	private String url, user, pass;
 
 	public GateDB() {
-		configFile = ResourceBundle.getBundle("modelo.config");
+		configFile = ResourceBundle.getBundle("logicTier.config");
 		url = configFile.getString("URL");
 		user = configFile.getString("USER");
 		pass = configFile.getString("PASSWORD");
 	}
 
 	/**
-	 * Method used to open a connection with the database
+	 * @author Ander
+	 * 
+	 *         Establishes a connection to the database using the URL, user, and
+	 *         password set when creating the GateDB object.
+	 * 
+	 * @return a connection object to the database
+	 * @throws SQLException if the connection could not be established
 	 * 
 	 * @throws SQLException
 	 */
@@ -44,10 +48,17 @@ public class GateDB {
 	}
 
 	/**
-	 * Method used to close a connection with the database. It is important to close
-	 * the <code>Statement</code> and <code>ResulSet</code> to avoid memory leaks.
+	 * @author Ander
 	 * 
-	 * @throws SQLException
+	 *         Method used to close a connection with the database. It is important
+	 *         to close the <code>Statement</code> and <code>ResultSet</code> to
+	 *         avoid memory leaks.
+	 *         
+	 * @param stmt The <code>PreparedStatement</code> to close.
+	 * @param conn The <code>Connection</code> to close.
+	 * @param rset The <code>ResultSet</code> to close.
+	 * @throws SQLException if any error occurs while closing the connection, the
+	 *                      statement, or the result set.
 	 */
 	public void closeConnection(PreparedStatement stmt, Connection conn, ResultSet rset) throws SQLException {
 		if (stmt != null)
