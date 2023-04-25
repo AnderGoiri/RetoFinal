@@ -30,7 +30,7 @@ public class StoreMenu extends JDialog {
 	 * Create the dialog.
 	 */
 	public StoreMenu() {
-		setBounds(100, 100, 1920, 1080);
+		setBounds(100, 100, 1900, 1000);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

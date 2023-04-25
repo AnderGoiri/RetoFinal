@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import storeMenu.StoreMenu;
 
 import java.awt.CardLayout;
 
@@ -152,19 +153,22 @@ public class Win_login_register extends JFrame implements ActionListener{
 			btnSignUp.setVisible(false);
 			
 		}else if(e.getSource().equals(btnConfirm)) {
-			String panelName=getSelectedPanelName(switchLilPanel);
+			//String panelName=getSelectedPanelName(switchLilPanel);
 			
-			for(Component component : switchLilPanel.getComponents()) {
-				if(component.isVisible()) {
-					panelName=component.getName();
-				}
-			}
+			//for(Component component : switchLilPanel.getComponents()) {
+				//if(component.isVisible()) {
+					//panelName=component.getName();
+				//}
+			//}
 			
-			if(panelName.equals("LogIn")) {
+			//if(panelName.equals("LogIn")) {
 				
-			}else {
+			//}else {
 				
-			} 
+			//} 
+			StoreMenu sM = new StoreMenu();
+			sM.setVisible(true);
+			sM.setLocationRelativeTo(null);
 		}
 	}
 	public String getSelectedPanelName(JPanel jP) {
