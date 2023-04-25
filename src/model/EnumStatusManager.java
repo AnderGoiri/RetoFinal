@@ -17,7 +17,7 @@ package model;
  *         </p>
  */
 public enum EnumStatusManager {
-	P("Pending"), Y("Yes"), N("No");
+	P("Pending"), Y("Approved"), N("Rejected");
 
 	private final String label;
 
