@@ -8,6 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 
+import exceptions.CredentialNotValidException;
+import exceptions.UserFoundException;
+import model.Member;
+
 class TestLoginControllableImplementation {
 	private Connection conn;
 	private PreparedStatement stmt;
@@ -46,7 +50,25 @@ class TestLoginControllableImplementation {
 
 	@Test
 	void testRegisterUserMember() {
-		
-	}
+		// Create a new member with valid data
+		Member me = new Member("testuser", "test123", "Test", "User", "testuser@example.com", "123 Main St",
+				"1234567890123456");
 
+		loginControl = new LoginControllableImplementation();
+		try {
+			loginControl.registerUserMember(me); // Call the registerUserMember method
+			assertTrue(loginControl.checkUserName(me.getUserName())); // Check if the member was inserted into the
+																		// database
+		} catch (CredentialNotValidException | UserFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				new GateDB().closeConnection(stmt, conn, rset);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		// Clean up the database after the test
+		// TODO: deleteTestUserFromDB(me.getUserName());
+	}
 }

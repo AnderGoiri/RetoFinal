@@ -83,5 +83,4 @@ public abstract class User implements Serializable {
 	public void setDateRegister(LocalDate dateRegister) {
 		this.dateRegister = dateRegister;
 	}
-
 }

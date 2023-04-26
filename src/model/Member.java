@@ -18,7 +18,7 @@ public class Member extends User {
 
 	// ---Attributes---
 	private String address;
-	private int creditCard;
+	private String creditCard;
 	private Set<Repair> repairSet;
 	private Set<Purchase> purchaseRecord;
 	
@@ -29,10 +29,10 @@ public class Member extends User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public int getCreditCard() {
+	public String getCreditCard() {
 		return creditCard;
 	}
-	public void setCreditCard(int creditCard) {
+	public void setCreditCard(String creditCard) {
 		this.creditCard = creditCard;
 	}
 	public Set<Repair> getRepairSet() {
@@ -49,7 +49,7 @@ public class Member extends User {
 	}
 	
 	// ---Constructors---
-	public Member(String address, int creditCard, Set<Repair> repairSet, Set<Purchase> purchaseRecord) {
+	public Member(String address, String creditCard, Set<Repair> repairSet, Set<Purchase> purchaseRecord) {
 		super();
 		this.address = address;
 		this.creditCard = creditCard;
@@ -59,6 +59,11 @@ public class Member extends User {
 	
 	public Member() {
 		super();
+	}
+	
+	public Member(String string, String string2, String string3, String string4, String string5, String string6,
+			String string7) {
+		// TODO: Change this
 	}
 	
 }

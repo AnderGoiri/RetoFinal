@@ -9,17 +9,21 @@ import model.Manager;
 import model.Member;
 import model.User;
 
+//TODO Change the import to the connector
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
 public class LoginControllableImplementation implements LoginControllable {
 
 	private Connection conn; // Establish a Connection attribute
 	private Statement stmt; // Establish a Statement attribute
 	private PreparedStatement ptmt; // Establish a PreparedStatement attribute
+	private CallableStatement ctmt; // Establish a CallableStatement attribute
 	private ResultSet rset; // Establish a ResultSet attribute
 
 	// --- SQL Sentences ---
@@ -57,18 +61,18 @@ public class LoginControllableImplementation implements LoginControllable {
 
 			if (!checkUserName(me.getUserName())) { // Check if the User is already registered
 
-				ptmt = conn.prepareStatement(INSERTmember);
+				ctmt = conn.prepareCall("CALL insert_new_member(?, ?, ?, ?, ?, ?, ?, ?)");
 				
-				ptmt.setLong(0, me.getIdUser());
-				ptmt.setString(1, me.getUserName());
-				ptmt.setString(2, me.getPassword());
-				ptmt.setString(3, me.getName());
-				ptmt.setString(4, me.getSurname());
-				//ptmt.setDate(5, me.getDateRegister(), null);
-				//TODO Parse the LocalDate variable from User.java
-				ptmt.setString(6, me.getMail());
+				ctmt.setString(1, me.getUserName());
+				ctmt.setString(2, me.getPassword());
+				ctmt.setString(3, me.getName());
+				ctmt.setString(4, me.getSurname());
+				ctmt.setDate(5, java.sql.Date.valueOf(me.getDateRegister()));
+				ctmt.setString(6, me.getMail());
+				ctmt.setString(7, me.getAddress());
+				ctmt.setString(8, me.getCreditCard());
 
-				ptmt.executeUpdate();
+				ctmt.executeUpdate();
 
 			} else { // If User exists, throw UserFoundException.
 				throw new UserFoundException();
@@ -77,7 +81,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
-			new GateDB().closeConnection(ptmt, conn, rset);
+			new GateDB().closeConnection(ctmt, conn, rset);
 		}
 	}
 
