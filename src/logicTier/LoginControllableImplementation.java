@@ -15,13 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * 
- * @author Ander
- * 
- *         This class allows to create Objects for the Log In cases.
- *
- */
 public class LoginControllableImplementation implements LoginControllable {
 
 	private Connection conn; // Establish a Connection attribute
@@ -29,42 +22,54 @@ public class LoginControllableImplementation implements LoginControllable {
 	private PreparedStatement ptmt; // Establish a PreparedStatement attribute
 	private ResultSet rset; // Establish a ResultSet attribute
 
+	// --- SQL Sentences ---
+	final String INSERTmember = "INSERT INTO user(idUser, username, password, name, surname, dateRegister, mail) VALUES( ?, ?, ?,?, ?, ?,?)";
+
 	/**
-	 * Method used to check if a User Name is already used in the database.
+	 * Checks if a given username exists in the USER table of the database.
 	 * 
-	 * @author Ander
-	 * @param userName
-	 * @return When false is returned, the User Name does not appear on the
-	 *         database. When true is returned, the User Name has been found on the
-	 *         database.
-	 * @throws SQLException
+	 * @param userName - the username to be checked
+	 * @return existUserName - true if the username exists in the USER table, false
+	 *         otherwise
+	 * @throws SQLException if there is an error executing the SQL query
+	 * @author Ander Goirigolzarri Iturburu
 	 */
-	public boolean checkUserName(String userName) throws SQLException { // !!!!Query is not placed
-
-		String queryCheck = " ";
-
+	public boolean checkUserName(String userName) throws SQLException {
+		String queryCheck = "SELECT username FROM USER WHERE username LIKE '" + userName + "';";
+		boolean existUserName = false; // We need a variable to store the result as rset will be closed with the
+										// connection
 		try {
 			conn = new GateDB().openConnection(); // openConnection method opens the connection with our DB
-			rset = conn.prepareStatement(queryCheck).executeQuery(); // execute the Query
+			rset = conn.createStatement().executeQuery(queryCheck); // execute the Query
+			existUserName = rset.next(); // return a boolean
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
 			new GateDB().closeConnection(ptmt, conn, rset);
 		}
-		return rset.next(); // return a boolean
+		return existUserName;
 	}
 
 	@Override
 	public void registerUserMember(Member me) throws CredentialNotValidException, UserFoundException, SQLException {
-
 		try {
 			conn = new GateDB().openConnection();// Open Connection with DB
-			
+
 			if (!checkUserName(me.getUserName())) { // Check if the User is already registered
+
+				ptmt = conn.prepareStatement(INSERTmember);
 				
-				stmt = conn.prepareStatement(" ");
-				stmt.executeUpdate(null);
-				
+				ptmt.setLong(0, me.getIdUser());
+				ptmt.setString(1, me.getUserName());
+				ptmt.setString(2, me.getPassword());
+				ptmt.setString(3, me.getName());
+				ptmt.setString(4, me.getSurname());
+				//ptmt.setDate(5, me.getDateRegister(), null);
+				//TODO Parse the LocalDate variable from User.java
+				ptmt.setString(6, me.getMail());
+
+				ptmt.executeUpdate();
+
 			} else { // If User exists, throw UserFoundException.
 				throw new UserFoundException();
 			}
