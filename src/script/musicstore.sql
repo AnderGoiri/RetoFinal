@@ -2,6 +2,7 @@ create database musicstore;
 
 use musicstore;
 
+/*TABLE CREATION*/
 create table if not exists user(
 	idUser integer not null,
     username varchar(25),
@@ -107,5 +108,17 @@ create table if not exists management(
 	primary key (idManagement)
 );
 
+/*USERS*/
+/*CREATE USER 'ander'@'localhost' IDENTIFIED BY 'abcd*1234';
+GRANT ALL PRIVILEGES ON musicstore.* TO 'ander'@'localhost' WITH GRANT OPTION;
+CREATE USER 'ander'@'192.168.20.255' IDENTIFIED BY 'abcd*1234';
+GRANT ALL PRIVILEGES ON musicstore.* TO 'ander'@'192.168.20.255' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+select user from mysql.user;
+*/
 
+
+insert into user values(
+'0', 'Admin', 'abcd*1234',' ',' ','2023-04-26',' '
+);
 
