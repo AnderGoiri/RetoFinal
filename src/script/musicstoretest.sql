@@ -118,6 +118,7 @@ FLUSH PRIVILEGES;
 select user from mysql.user;
 */
 
+
 insert into user values(
 '0', 'Admin', 'abcd*1234',' ',' ','2023-04-26',' '
 );
