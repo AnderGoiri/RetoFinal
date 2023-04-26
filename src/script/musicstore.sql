@@ -120,5 +120,5 @@ insert into manager values(
 ' ', '1', '1', null , 'Approved'
 );
 
-select u.*,  from user u join manager m on u.idUser = m.idUser;
+/*select u.*,  from user u join manager m on u.idUser = m.idUser;
 
