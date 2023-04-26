@@ -3,16 +3,26 @@ package logicTier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Set;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 import model.Product;
 
 public class ProductMemberControllableImplementation implements ProductMemberControllable {
 
+	private Connection con;
+	private PreparedStatement stmt;
+	private GateDB connection = new GateDB();
+	
 	@Override
 	public Set<Product> searchProduct(String search) {
-		// TODO Auto-generated method stub
-		return null;
+		Result rs = null;
+		Set<Product> listaProductos = new HashSet<Product>();
+		
+		
+		return listaProductos;
 	}
 
 	@Override
