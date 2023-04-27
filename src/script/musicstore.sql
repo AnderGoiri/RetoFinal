@@ -4,8 +4,8 @@ use musicstore;
 
 /*TABLE CREATION*/
 create table if not exists user(
-	idUser integer not null unique,
-    username varchar(25),
+	idUser integer not null unique auto_increment,
+    username varchar(25) unique,
     password varchar(25),
     name varchar(25),
     surname varchar(25),
@@ -15,7 +15,7 @@ create table if not exists user(
 );
 
 create table if not exists manager(
-	idUser integer not null unique,
+	idUser integer not null unique auto_increment,
 	isTechnician tinyint,
     isAdmin tinyint not null,
     idSupervisor integer,
@@ -25,7 +25,7 @@ create table if not exists manager(
 );
 
 create table if not exists member(
-	idUser integer not null unique,
+	idUser integer not null unique auto_increment,
 	address varchar(100),
     creditCard varchar(16),
     foreign key (idUser) references user (idUser) on delete cascade,
@@ -33,7 +33,7 @@ create table if not exists member(
 );
 
 create table if not exists repair(
-	idRepair integer not null unique,
+	idRepair integer not null unique auto_increment,
     idUser integer,
     repairCost integer,
     startDate date,
@@ -45,7 +45,7 @@ create table if not exists repair(
 );
 
 create table if not exists product(
-	idProduct integer not null unique,
+	idProduct integer not null unique auto_increment,
     brand varchar(20),
     model varchar(20),
     unitPrice integer,
@@ -59,7 +59,7 @@ create table if not exists product(
 );
 
 create table if not exists instrument(
-	idProduct integer not null unique,
+	idProduct integer not null unique auto_increment,
 	classInstrument enum('Wind', 'String', 'Percussion'),
     typeInstrument enum('Acoustic', 'Electronic'),
 	foreign key (idProduct) references product (idProduct),
@@ -67,7 +67,7 @@ create table if not exists instrument(
 );
 
 create table if not exists component(
-	idProduct integer not null unique,
+	idProduct integer not null unique auto_increment,
 	classComponent enum('Chasis', 'Circuit'),
     typeComponent enum('Architecture', 'Tuning', 'Connection'),
     foreign key (idProduct) references product (idProduct),
@@ -75,7 +75,7 @@ create table if not exists component(
 );
 
 create table if not exists accessory(
-	idProduct integer not null,
+	idProduct integer not null auto_increment,
 	classAccessory enum('Acoustic', 'Electric'),
     typeAccessory enum('Audio', 'Connection', 'Item'),
 	foreign key (idProduct) references product (idProduct),
@@ -83,7 +83,7 @@ create table if not exists accessory(
 );
 
 create table if not exists purchase(
-	idPurchase integer not null unique,
+	idPurchase integer not null unique auto_increment,
     idUser integer,
     idProduct integer,
 	datePurchase date,
@@ -97,7 +97,7 @@ create table if not exists purchase(
 );
 
 create table if not exists management(
-	idManagement integer not null unique,
+	idManagement integer not null unique auto_increment,
     idUser integer,
     idProduct integer,
     dateManagement date,
@@ -112,13 +112,4 @@ create table if not exists management(
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'abcd*1234';
 GRANT ALL PRIVILEGES ON musicstore.* TO 'admin'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
-
-insert into user values(
-'0', 'Admin', 'abcd*1234',' ',' ','2023-04-26',' '
-);
-insert into manager values(
-' ', '1', '1', null , 'Approved'
-);
-
-/*select u.*,  from user u join manager m on u.idUser = m.idUser;
 
