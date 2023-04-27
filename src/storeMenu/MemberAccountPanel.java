@@ -25,6 +25,7 @@ public class MemberAccountPanel extends JPanel {
 	 */
 	public MemberAccountPanel() {
 	setLayout(null);
+	setBounds(0, 0, 1860, 910);
 	
 	JScrollPane scrollPane = new JScrollPane();
 	scrollPane.setBounds(51, 469, 1437, 314);

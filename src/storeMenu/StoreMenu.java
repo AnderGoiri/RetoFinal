@@ -38,16 +38,17 @@ public class StoreMenu extends JDialog {
 	 * Create the dialog.
 	 */
 	public StoreMenu() {
+		setLayout(null);
 		setBounds(100, 100, 1900, 1000);
+		
 		contentPanel = new JPanel();
 		contentPanel.setBounds(0, 0, 1900, 1000);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane (contentPanel);
 		contentPanel.setLayout(null);
 		
 		menuPanel = new JPanel();
-		menuPanel.setBounds(0, 0, 1860, 950);
+		menuPanel.setBounds(10, 0, 1860, 950);
 		cardLayout = new CardLayout();
 		menuPanel.setLayout (cardLayout);
 		contentPanel.add(menuPanel);
@@ -55,23 +56,11 @@ public class StoreMenu extends JDialog {
 		memberPanel = new MemberMenu();
 		menuPanel.add( "Member", memberPanel);
 		
-		showMenu();
 		
-
-		setContentPane(contentPanel);
-		contentPanel.setLayout(null);
-		
-		menuPanel=new JPanel();
-		menuPanel.setBounds(10,0,1860,950);
-		cardLayout = new CardLayout();
-		menuPanel.setLayout(cardLayout);
-		contentPanel.add(menuPanel);
 		
 	//	managerPanel = new ManagerMenu();
 	//	menuPanel.add("Manager", managerPanel);
-		
 		showMenu();
-
 	}
 
 	private void showMenu() {

@@ -17,6 +17,7 @@ public class MemberRepairPanel extends JPanel {
 	 */
 	public MemberRepairPanel() {
 	setLayout(null);
+	setBounds(0, 0, 1860, 910);
 	
 	JComboBox comboBox = new JComboBox();
 	comboBox.setBounds(81, 67, 367, 48);
