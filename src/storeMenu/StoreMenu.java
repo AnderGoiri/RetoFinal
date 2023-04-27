@@ -79,7 +79,7 @@ public class StoreMenu extends JDialog {
 
 		cardLayout.show(menuPanel, "Member");
 
-//		cardLayout.show(menuPanel, "Manager");
+		//		cardLayout.show(menuPanel, "Manager");
 
 	}
 
