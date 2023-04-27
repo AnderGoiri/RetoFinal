@@ -83,4 +83,28 @@ public abstract class User implements Serializable {
 	public void setDateRegister(LocalDate dateRegister) {
 		this.dateRegister = dateRegister;
 	}
+
+	public User() {
+	}
+
+	public User(int idUser, String userName, String name, String surname, String password, String mail,
+			LocalDate dateRegister) {
+		this.idUser = idUser;
+		this.userName = userName;
+		this.name = name;
+		this.surname = surname;
+		this.password = password;
+		this.mail = mail;
+		this.dateRegister = dateRegister;
+	}
+
+	public User(String userName, String name, String surname, String password, String mail, LocalDate dateRegister) {
+		this.userName = userName;
+		this.name = name;
+		this.surname = surname;
+		this.password = password;
+		this.mail = mail;
+		this.dateRegister = dateRegister;
+	}
+
 }

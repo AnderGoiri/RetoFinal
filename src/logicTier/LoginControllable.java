@@ -72,5 +72,7 @@ public interface LoginControllable {
 	 *                                the database and it should be.
 	 */
 	public Manager verificationAdminToManager(Manager ma) throws UserNotFoundException;
+	
+	public void deleteUserMember(Member me) throws UserNotFoundException;
 
 }

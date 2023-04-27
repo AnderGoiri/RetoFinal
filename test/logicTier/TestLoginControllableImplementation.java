@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 import exceptions.CredentialNotValidException;
@@ -50,14 +52,20 @@ class TestLoginControllableImplementation {
 
 	@Test
 	void testRegisterUserMember() {
-		// Create a new member with valid data
-		Member me = new Member("testuser", "test123", "Test", "User", "testuser@example.com", "123 Main St",
+
+		String date = "1990-01-01";
+		LocalDate localdate = LocalDate.parse(date);
+
+		Member me = new Member("testuser", "Test", "User", "test123", "testuser@example.com", localdate, "123 Main St",
 				"1234567890123456");
 
 		loginControl = new LoginControllableImplementation();
+
 		try {
 			loginControl.registerUserMember(me); // Call the registerUserMember method
-			assertTrue(loginControl.checkUserName(me.getUserName())); // Check if the member was inserted into the
+			String userName = me.getUserName();
+			boolean findUser = loginControl.checkUserName(userName);
+			assertTrue(findUser); // Check if the member was inserted into the
 																		// database
 		} catch (CredentialNotValidException | UserFoundException | SQLException e) {
 			e.printStackTrace();

@@ -68,4 +68,9 @@ public class GateDB {
 		if (conn != null)
 			conn.close();
 	}
+	
+	public void closeConnection(Connection conn) throws SQLException {
+		if (conn != null)
+			conn.close();
+	}
 }

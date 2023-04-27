@@ -16,7 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.time.LocalDate;
 
 public class LoginControllableImplementation implements LoginControllable {
 
@@ -28,7 +28,9 @@ public class LoginControllableImplementation implements LoginControllable {
 
 	// --- SQL Sentences ---
 	final String INSERTmember = "INSERT INTO user(idUser, username, password, name, surname, dateRegister, mail) VALUES( ?, ?, ?,?, ?, ?,?)";
+	final String DELETEmember = "";
 
+	
 	/**
 	 * Checks if a given username exists in the USER table of the database.
 	 * 
@@ -39,12 +41,13 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @author Ander Goirigolzarri Iturburu
 	 */
 	public boolean checkUserName(String userName) throws SQLException {
+
 		String queryCheck = "SELECT username FROM USER WHERE username LIKE '" + userName + "';";
 		boolean existUserName = false; // We need a variable to store the result as rset will be closed with the
 										// connection
 		try {
 			conn = new GateDB().openConnection(); // openConnection method opens the connection with our DB
-			rset = conn.createStatement().executeQuery(queryCheck); // execute the Query
+			rset = conn.prepareStatement(queryCheck).executeQuery(); // execute the Query
 			existUserName = rset.next(); // return a boolean
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -56,32 +59,34 @@ public class LoginControllableImplementation implements LoginControllable {
 
 	@Override
 	public void registerUserMember(Member me) throws CredentialNotValidException, UserFoundException, SQLException {
+		GateDB gateDB = new GateDB();
 		try {
-			conn = new GateDB().openConnection();// Open Connection with DB
+			
+			conn = gateDB.openConnection();// Open Connection with DB
 
 			if (!checkUserName(me.getUserName())) { // Check if the User is already registered
 
-				ctmt = conn.prepareCall("CALL insert_new_member(?, ?, ?, ?, ?, ?, ?, ?)");
-				
+				ctmt = conn.prepareCall("{CALL insert_new_member(?, ?, ?, ?, ?, ?, ?, ?)}");
+
 				ctmt.setString(1, me.getUserName());
-				ctmt.setString(2, me.getPassword());
-				ctmt.setString(3, me.getName());
-				ctmt.setString(4, me.getSurname());
-				ctmt.setDate(5, java.sql.Date.valueOf(me.getDateRegister()));
-				ctmt.setString(6, me.getMail());
+				ctmt.setString(2, me.getName());
+				ctmt.setString(3, me.getSurname());
+				ctmt.setString(4, me.getPassword());
+				ctmt.setString(5, me.getMail());
+				ctmt.setDate(6, java.sql.Date.valueOf(me.getDateRegister()));
 				ctmt.setString(7, me.getAddress());
 				ctmt.setString(8, me.getCreditCard());
 
 				ctmt.executeUpdate();
 
-			} else { // If User exists, throw UserFoundException.
-				throw new UserFoundException();
+			} else { 
+				throw new UserFoundException(); // If User exists, throw UserFoundException.
 			}
 			;
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
-			new GateDB().closeConnection(ctmt, conn, rset);
+			gateDB.closeConnection(ctmt, conn, rset);
 		}
 	}
 
@@ -99,6 +104,28 @@ public class LoginControllableImplementation implements LoginControllable {
 	@Override
 	public Manager verificationAdminToManager(Manager ma) throws UserNotFoundException {
 		return null;
+	}
+
+	@Override
+	public void deleteUserMember(Member me) throws UserNotFoundException {
+		try {
+			ptmt = conn.prepareStatement(null);
+
+			ptmt.setLong(1, me.getIdUser());
+
+			stmt.executeUpdate(null);
+
+		} catch (SQLException e1) {
+			System.out.println("Error en la modificaci�n SQL");
+			e1.printStackTrace();
+		} finally {
+			try {
+				new GateDB().closeConnection(ptmt, conn, rset);
+			} catch (SQLException e) {
+				System.out.println("Error en cierre de la BD");
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
