@@ -6,11 +6,11 @@ use musicstoretest;
 create table if not exists user(
 	idUser integer not null unique auto_increment,
     username varchar(25) unique,
-    password varchar(25),
     name varchar(25),
     surname varchar(25),
-    dateRegister date,
+    password varchar(25),
     mail varchar(25),
+    dateRegister date,
 	primary key(idUser)
 );
 
@@ -20,7 +20,7 @@ create table if not exists manager(
     isAdmin tinyint,
     idSupervisor integer,
     statusManager enum('Pending', 'Approved', 'Rejected'),
-    foreign key (idUser) references user (idUser),
+    foreign key (idUser) references user (idUser) on delete cascade,
     primary key (idUser)
 );
 
@@ -28,7 +28,7 @@ create table if not exists member(
 	idUser integer not null unique auto_increment,
 	address varchar(100),
     creditCard varchar(16),
-    foreign key (idUser) references user (idUser),
+    foreign key (idUser) references user (idUser) on delete cascade,
     primary key (idUser)
 );
 
@@ -40,7 +40,7 @@ create table if not exists repair(
     deadline date,
     statusRepair enum('Pending', 'In progress', 'Cancelled', 'Accepted', 'Denied', 'Finished'),
     descriptionRepair varchar(200),
-    foreign key (idUser) references User (idUser),
+    foreign key (idUser) references User (idUser) on delete cascade,
     primary key (idRepair)
 );
 
@@ -62,7 +62,7 @@ create table if not exists instrument(
 	idProduct integer not null unique auto_increment,
 	classInstrument enum('Wind', 'String', 'Percussion'),
     typeInstrument enum('Acoustic', 'Electronic'),
-	foreign key (idProduct) references product (idProduct),
+	foreign key (idProduct) references product (idProduct) on delete cascade,
     primary key (idProduct)
 );
 
@@ -70,7 +70,7 @@ create table if not exists component(
 	idProduct integer not null unique auto_increment,
 	classComponent enum('Chasis', 'Circuit'),
     typeComponent enum('Architecture', 'Tuning', 'Connection'),
-    foreign key (idProduct) references product (idProduct),
+    foreign key (idProduct) references product (idProduct) on delete cascade,
     primary key (idProduct)
 );
 
@@ -78,21 +78,21 @@ create table if not exists accessory(
 	idProduct integer not null unique auto_increment,
 	classAccessory enum('Acoustic', 'Electric'),
     typeAccessory enum('Audio', 'Connection', 'Item'),
-	foreign key (idProduct) references product (idProduct),
+	foreign key (idProduct) references product (idProduct) on delete cascade,
 	primary key (idProduct)
 );
 
 create table if not exists purchase(
 	idPurchase integer not null unique auto_increment,
-    idUser integer not null,
-    idProduct integer not null,
+    idUser integer,
+    idProduct integer,
 	datePurchase date,
     purchaseQuantity integer,
     totalPrice integer,
     paymentStatus enum('New', 'Pending', 'Payment Received', 'Payment Accepted', 'Payment Denied', 'Cancelled', 'Closed'),
 	paymendMethod enum('Tarjeta', 'Efectivo'),
-    foreign key (idUser) references user (idUser),
-    foreign key (idProduct) references product (idProduct),
+    foreign key (idUser) references user (idUser) on delete cascade,
+    foreign key (idProduct) references product (idProduct) on delete cascade,
     primary key (idPurchase)
 );
 
@@ -103,15 +103,16 @@ create table if not exists management(
     dateManagement date,
     actionType enum('Modification', 'Creation', 'Deactivation', 'Other'),
 	descriptionM varchar(200),
-    foreign key (idProduct) references Product (idProduct),
-    foreign key (idUser) references User (idUser),
+    foreign key (idUser) references User (idUser) on delete cascade,
 	primary key (idManagement)
 );
 
-CALL insert_new_member(' ', ' ', ' ', ' ', '2023-04-16', ' ', ' ', ' ');
+CALL insert_new_member('Prueba4', 'Test', 'User', 'test123', 'testuser@example.com', '1990-01-01', '123 Main St', '1234567890123456');
 /*USERS*/
 
 /*
+CREATE USER 'root'@'192.168.20.255' IDENTIFIED BY 'abcd*1234';
+GRANT ALL PRIVILEGES ON musicstoretest.* TO 'root'@'192.168.20.255' WITH GRANT OPTION;
 CREATE USER 'ander'@'192.168.20.255' IDENTIFIED BY 'abcd*1234';
 GRANT ALL PRIVILEGES ON musicstoretest.* TO 'ander'@'192.168.20.255' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
@@ -122,5 +123,6 @@ insert into user values(
 'Admin', 'abcd*1234',' ',' ','2023-04-26',' '
 );
 
+select * from user u join member m on u.idUser = m.idUser;
 select * from user;
-select * from member;
+

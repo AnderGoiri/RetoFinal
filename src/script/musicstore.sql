@@ -6,9 +6,9 @@ use musicstore;
 create table if not exists user(
 	idUser integer not null unique auto_increment,
     username varchar(25) unique,
-    password varchar(25),
     name varchar(25),
     surname varchar(25),
+    password varchar(25),
     dateRegister date,
     mail varchar(25),
 	primary key(idUser)
