@@ -7,13 +7,19 @@ import javax.swing.border.EmptyBorder;
 import java.awt.CardLayout;
 
 public class StoreMenu extends JDialog {
-
-	private static final long serialVersionUID = 1L;
+	
 	private JPanel contentPanel;
 	private JPanel menuPanel;
 	
-	private ManagerMenu managerPanel;
+	private MemberMenu memberPanel;
 	private CardLayout cardLayout;
+
+
+	private static final long serialVersionUID = 1L;
+	
+//	private ManagerMenu managerPanel;
+
+
 
 	/**
 	 * Launch the application.
@@ -36,6 +42,22 @@ public class StoreMenu extends JDialog {
 		contentPanel = new JPanel();
 		contentPanel.setBounds(0, 0, 1900, 1000);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane (contentPanel);
+		contentPanel.setLayout(null);
+		
+		menuPanel = new JPanel();
+		menuPanel.setBounds(0, 0, 1860, 950);
+		cardLayout = new CardLayout();
+		menuPanel.setLayout (cardLayout);
+		contentPanel.add(menuPanel);
+		
+		memberPanel = new MemberMenu();
+		menuPanel.add( "Member", memberPanel);
+		
+		showMenu();
+		
+
 		setContentPane(contentPanel);
 		contentPanel.setLayout(null);
 		
@@ -45,15 +67,20 @@ public class StoreMenu extends JDialog {
 		menuPanel.setLayout(cardLayout);
 		contentPanel.add(menuPanel);
 		
-		managerPanel = new ManagerMenu();
-		menuPanel.add("Manager", managerPanel);
+	//	managerPanel = new ManagerMenu();
+	//	menuPanel.add("Manager", managerPanel);
 		
 		showMenu();
+
 	}
 
 	private void showMenu() {
 		// TODO Auto-generated method stub
-		cardLayout.show(menuPanel, "Manager");
+
+		cardLayout.show(menuPanel, "Member");
+
+		//		cardLayout.show(menuPanel, "Manager");
+
 	}
 
 }
