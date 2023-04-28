@@ -31,6 +31,7 @@ class TestLoginControllableImplementation {
 
 	@BeforeAll
 	static void createMockUser() { //creates a mock user
+		
 		GateDB gate = new GateDB();
 		Connection conn = null;
 		Statement stmt = null;
@@ -39,7 +40,7 @@ class TestLoginControllableImplementation {
 		try {
 			conn = gate.openConnection();
 			stmt = conn.createStatement();
-			rset = stmt.executeQuery(createMock);
+			stmt.executeUpdate(createMock);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -53,6 +54,7 @@ class TestLoginControllableImplementation {
 
 	@AfterAll
 	static void deleteMockUser() { // deletes the mock user from the DB
+		
 		GateDB gate = new GateDB();
 		Connection conn = null;
 		Statement stmt = null;
@@ -60,7 +62,7 @@ class TestLoginControllableImplementation {
 		try {
 			conn = gate.openConnection();
 			stmt = conn.createStatement();
-			rset = stmt.executeQuery(deleteMock);
+			stmt.executeUpdate(deleteMock);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

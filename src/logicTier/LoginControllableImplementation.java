@@ -24,7 +24,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	private PreparedStatement ptmt; // Establish a PreparedStatement attribute
 	private CallableStatement ctmt; // Establish a CallableStatement attribute
 	private ResultSet rset; // Establish a ResultSet attribute
-	private GateDB gate; // Establish a GateDB attribute
+	private GateDB gate = new GateDB(); // Establish a GateDB attribute
 
 	// --- SQL Sentences ---
 	final String INSERTmember = "INSERT INTO user(idUser, username, password, name, surname, dateRegister, mail) VALUES( ?, ?, ?,?, ?, ?,?)";
