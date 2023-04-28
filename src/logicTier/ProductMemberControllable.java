@@ -10,7 +10,11 @@ import exceptions.TypeNotFoundException;
 import model.Product;
 
 public interface ProductMemberControllable {
-	public Set<Product> searchProduct(String search) throws ProductNotFoundException;
+	public Set<Product> searchInstrument(String search) throws ProductNotFoundException;
+	
+	public Set<Product> searchComponent(String search) throws ProductNotFoundException;
+	
+	public Set<Product> searchAccessory(String search) throws ProductNotFoundException;
 	
 	public Set<Product> searchProductByName(String name) throws NameNotFoundException;
 	

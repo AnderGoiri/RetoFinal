@@ -27,4 +27,83 @@ public abstract class User implements Serializable {
 	protected String mail;
 	protected LocalDate dateRegister;
 
+	// --- Getters & Setters ---
+	public int getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public LocalDate getDateRegister() {
+		return dateRegister;
+	}
+
+	public void setDateRegister(LocalDate dateRegister) {
+		this.dateRegister = dateRegister;
+	}
+
+	public User() {
+	}
+
+	public User(int idUser, String userName, String name, String surname, String password, String mail,
+			LocalDate dateRegister) {
+		this.idUser = idUser;
+		this.userName = userName;
+		this.name = name;
+		this.surname = surname;
+		this.password = password;
+		this.mail = mail;
+		this.dateRegister = dateRegister;
+	}
+
+	public User(String userName, String name, String surname, String password, String mail, LocalDate dateRegister) {
+		this.userName = userName;
+		this.name = name;
+		this.surname = surname;
+		this.password = password;
+		this.mail = mail;
+		this.dateRegister = dateRegister;
+	}
 }

@@ -7,6 +7,7 @@ import java.time.LocalDate;
  * Class that registers a user action on a product
  */
 public class Management {
+	// ---Attributes---
 	private int idManagement;
 	private EnumAction actionType;
 	private String descriptionM;

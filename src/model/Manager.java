@@ -45,4 +45,69 @@ public class Manager extends User {
 	private Set<Repair> repairSet;
 	private Set<Management> managementSet;
 
+	// --- Getters & Setters ---
+	public int getIdSupervisor() {
+		return idSupervisor;
+	}
+
+	public void setIdSupervisor(int idSupervisor) {
+		this.idSupervisor = idSupervisor;
+	}
+
+	public boolean isTechnician() {
+		return isTechnician;
+	}
+
+	public void setTechnician(boolean isTechnician) {
+		this.isTechnician = isTechnician;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public EnumStatusManager getStatusManager() {
+		return statusManager;
+	}
+
+	public void setStatusManager(EnumStatusManager statusManager) {
+		this.statusManager = statusManager;
+	}
+
+	public Set<Repair> getRepairSet() {
+		return repairSet;
+	}
+
+	public void setRepairSet(Set<Repair> repairSet) {
+		this.repairSet = repairSet;
+	}
+
+	public Set<Management> getManagementSet() {
+		return managementSet;
+	}
+
+	public void setManagementSet(Set<Management> managementSet) {
+		this.managementSet = managementSet;
+	}
+
+	// --- Constructores ---
+	public Manager(int idSupervisor, boolean isTechnician, boolean isAdmin, EnumStatusManager statusManager,
+			Set<Repair> repairSet, Set<Management> managementSet) {
+		super();
+		this.idSupervisor = idSupervisor;
+		this.isTechnician = isTechnician;
+		this.isAdmin = isAdmin;
+		this.statusManager = statusManager;
+		this.repairSet = repairSet;
+		this.managementSet = managementSet;
+	}
+
+	public Manager() {
+		super();
+	}
+	
 }
