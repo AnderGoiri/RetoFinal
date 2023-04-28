@@ -48,6 +48,7 @@ create table if not exists product(
 	idProduct integer not null unique auto_increment,
     brand varchar(20),
     model varchar(20),
+    description varchar(20),
     unitPrice integer,
     stock integer,
     isActive tinyint,
