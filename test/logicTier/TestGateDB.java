@@ -3,8 +3,6 @@ package logicTier;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.Test;
@@ -19,11 +17,9 @@ import org.junit.jupiter.api.Test;
  */
 class TestGateDB {
 
-	GateDB gate = new GateDB();
-	Connection conn = null;
-	PreparedStatement stmt = null;
-	ResultSet rset = null;
-
+	private GateDB gate = new GateDB();
+	private Connection conn;
+	
 	/**
 	 * Tests the {@link GateDB#openConnection() openConnection} method of the
 	 * {@link GateDB} class to check if a connection to the database is correctly
@@ -68,18 +64,10 @@ class TestGateDB {
 	void testConnectionClosedWithDB() {
 		try {
 			conn = gate.openConnection();
-			stmt = conn.prepareStatement("SELECT * FROM user");
-			rset = stmt.executeQuery();
-			assertTrue(rset.next(), "Query has not returned any result.");
+			gate.closeConnection(conn);
+			assertTrue(conn.isClosed(), "Connection was not closed correctly");
 		} catch (SQLException e) {
-			fail("Query could not be executed: " + e.getMessage());
-		} finally {
-			try {
-				gate.closeConnection(stmt, conn, rset);
-				assertTrue(conn.isClosed(), "Connection was not closed correctly");
-			} catch (SQLException e) {
-				fail("Connection could not be closed with: " + e.getMessage());
-			}
+			fail("Connection could not be closed with: " + e.getMessage());
 		}
 	}
 }

@@ -9,14 +9,13 @@ import model.Manager;
 import model.Member;
 import model.User;
 
-//TODO Change the import to the connector
+//TODO Change the import to the connector(check if neccesary)
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 
 public class LoginControllableImplementation implements LoginControllable {
 
@@ -25,6 +24,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	private PreparedStatement ptmt; // Establish a PreparedStatement attribute
 	private CallableStatement ctmt; // Establish a CallableStatement attribute
 	private ResultSet rset; // Establish a ResultSet attribute
+	private GateDB gate; // Establish a GateDB attribute
 
 	// --- SQL Sentences ---
 	final String INSERTmember = "INSERT INTO user(idUser, username, password, name, surname, dateRegister, mail) VALUES( ?, ?, ?,?, ?, ?,?)";
@@ -46,13 +46,14 @@ public class LoginControllableImplementation implements LoginControllable {
 		boolean existUserName = false; // We need a variable to store the result as rset will be closed with the
 										// connection
 		try {
-			conn = new GateDB().openConnection(); // openConnection method opens the connection with our DB
-			rset = conn.prepareStatement(queryCheck).executeQuery(); // execute the Query
+			conn = gate.openConnection(); // openConnection() opens the connection with our DB
+			stmt = conn.createStatement(); // create the statement
+			rset = stmt.executeQuery(queryCheck); // execute the Query
 			existUserName = rset.next(); // return a boolean
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
-			new GateDB().closeConnection(ptmt, conn, rset);
+			gate.closeConnection(stmt, conn, rset);
 		}
 		return existUserName;
 	}
