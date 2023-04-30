@@ -1,36 +1,37 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
  * 
- * @author Ander
  * 
- *         Represents a user with additional management capabilities, such as
- *         the ability to validate other users' registration requests.
- *         <p>
- *         The <code>Manager</code> class extends the <code>User</code> class,
- *         inheriting all of its attributes and behaviors.
- *         </p>
- *         <p>
- *         In addition to the attributes inherited from the <code>User</code>
- *         class, the <code>Manager</code> class defines the following
- *         attributes:
- *         </p>
- *         <ul>
- *         <li><code>idSupervisor</code>: The ID of the manager's supervisor, if
- *         any.</li>
- *         <li><code>isTechnician</code>: A boolean indicating whether the
- *         manager is also a technician.</li>
- *         <li><code>isAdmin</code>: A boolean indicating whether the manager
- *         has administrative privileges.</li>
- *         <li><code>statusManager</code>: An enumeration representing the
- *         manager's current status.</li>
- *         <li><code>repairSet</code>: A set of all repairs currently assigned
- *         to the manager.</li>
- *         <li><code>managementSet</code>: A set of all management tasks
- *         currently assigned to the manager.</li>
- *         </ul>
+ * Represents a user with additional management capabilities, such as the
+ * ability to validate other users' registration requests.
+ * <p>
+ * The <code>Manager</code> class extends the <code>User</code> class,
+ * inheriting all of its attributes and behaviors.
+ * </p>
+ * <p>
+ * In addition to the attributes inherited from the <code>User</code> class, the
+ * <code>Manager</code> class defines the following attributes:
+ * </p>
+ * <ul>
+ * <li><code>idSupervisor</code>: The ID of the manager's supervisor, if
+ * any.</li>
+ * <li><code>isTechnician</code>: A boolean indicating whether the manager is
+ * also a technician.</li>
+ * <li><code>isAdmin</code>: A boolean indicating whether the manager has
+ * administrative privileges.</li>
+ * <li><code>statusManager</code>: An enumeration representing the manager's
+ * current status.</li>
+ * <li><code>repairSet</code>: A set of all repairs currently assigned to the
+ * manager.</li>
+ * <li><code>managementSet</code>: A set of all management tasks currently
+ * assigned to the manager.</li>
+ * </ul>
+ * 
+ * @author Ander Goirigolzarri Iturburu
  *
  */
 public class Manager extends User {
@@ -100,7 +101,6 @@ public class Manager extends User {
 		super();
 		this.idSupervisor = idSupervisor;
 		this.isTechnician = isTechnician;
-		this.isAdmin = isAdmin;
 		this.statusManager = statusManager;
 		this.repairSet = repairSet;
 		this.managementSet = managementSet;
@@ -109,5 +109,19 @@ public class Manager extends User {
 	public Manager() {
 		super();
 	}
-	
+
+	public Manager(int idUser, String userName, String name, String surname, String password, String mail,
+			LocalDate dateRegister, int idSupervisor, boolean isTechnician, boolean isAdmin
+			) {
+		super(idUser, userName, name, surname, password, mail, dateRegister);
+		this.idSupervisor = idSupervisor;
+		this.isTechnician = isTechnician;
+	}
+
+	public Manager(String userName, String name, String surname, String password, String mail, LocalDate dateRegister,
+			int idSupervisor, boolean isTechnician, boolean isAdmin) {
+		super(userName, name, surname, password, mail, dateRegister);
+		this.idSupervisor = idSupervisor;
+		this.isTechnician = isTechnician;
+	}
 }

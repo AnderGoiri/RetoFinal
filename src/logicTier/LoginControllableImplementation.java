@@ -30,7 +30,6 @@ public class LoginControllableImplementation implements LoginControllable {
 	final String INSERTmember = "INSERT INTO user(idUser, username, password, name, surname, dateRegister, mail) VALUES( ?, ?, ?,?, ?, ?,?)";
 	final String DELETEmember = "";
 
-	
 	/**
 	 * Checks if a given username exists in the USER table of the database.
 	 * 
@@ -60,11 +59,8 @@ public class LoginControllableImplementation implements LoginControllable {
 
 	@Override
 	public void registerUserMember(Member me) throws CredentialNotValidException, UserFoundException, SQLException {
-		GateDB gateDB = new GateDB();
 		try {
-			
-			conn = gateDB.openConnection();// Open Connection with DB
-
+			conn = gate.openConnection();// Open Connection with DB
 			if (!checkUserName(me.getUserName())) { // Check if the User is already registered
 
 				ctmt = conn.prepareCall("{CALL insert_new_member(?, ?, ?, ?, ?, ?, ?, ?)}");
@@ -80,22 +76,50 @@ public class LoginControllableImplementation implements LoginControllable {
 
 				ctmt.executeUpdate();
 
-			} else { 
+			} else {
 				throw new UserFoundException(); // If User exists, throw UserFoundException.
 			}
 			;
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
-			gateDB.closeConnection(ctmt, conn, rset);
+			gate.closeConnection(ctmt, conn, rset);
 		}
 	}
 
 	@Override
-	public Manager registerUserManager(String userName, String password)
-			throws CredentialNotValidException, UserFoundException {
-		return null;
+	public void registerUserManager(Manager ma) throws CredentialNotValidException, UserFoundException, SQLException {
+		try {
+
+			conn = gate.openConnection();// Open Connection with DB
+
+			if (!checkUserName(ma.getUserName())) { // Check if the User is already registered
+
+				ctmt = conn.prepareCall("{CALL insert_new_manager(?, ?, ?, ?, ?, ?, ?, ?,?)}");
+
+				ctmt.setString(1, ma.getUserName());
+				ctmt.setString(2, ma.getName());
+				ctmt.setString(3, ma.getSurname());
+				ctmt.setString(4, ma.getPassword());
+				ctmt.setString(5, ma.getMail());
+				ctmt.setDate(6, java.sql.Date.valueOf(ma.getDateRegister()));
+				ctmt.setLong(7, ma.getIdSupervisor());
+				ctmt.setBoolean(8, ma.isTechnician());
+				ctmt.setBoolean(9, ma.isAdmin());
+
+				ctmt.executeUpdate();
+
+			} else {
+				throw new UserFoundException(); // If User exists, throw UserFoundException.
+			}
+			;
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			gate.closeConnection(ctmt, conn, rset);
+		}
 	}
+
 
 	@Override
 	public User userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException {
