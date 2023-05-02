@@ -2,11 +2,9 @@ package exceptions;
 
 /**
  * 
- * @author Ander
+ * Exception thrown when the User is not found in the database and it should be.
  * 
- *         Exception thrown when the User is not found in the database and it
- *         should be.
- *
+ * @author Ander Goirigolzarri Iturburu
  */
 public class UserNotFoundException extends Exception {
 

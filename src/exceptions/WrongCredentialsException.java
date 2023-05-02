@@ -2,11 +2,10 @@ package exceptions;
 
 /**
  * 
- * @author Ander
- * 
- *         Exception thrown when the credentials added by the user do not match
- *         the ones in the database.
+ * Exception thrown when the credentials added by the user do not match the ones
+ * in the database.
  *
+ * @author Ander Goirigolzarri Iturburu
  */
 public class WrongCredentialsException extends Exception {
 

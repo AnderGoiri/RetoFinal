@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -18,7 +19,7 @@ public class GateDB {
 
 	private ResourceBundle configFile;
 	private String url, user, pass;
-	private Connection conn;
+	private static Connection conn;
 
 	public GateDB() {
 		configFile = ResourceBundle.getBundle("logicTier.config");
@@ -38,15 +39,37 @@ public class GateDB {
 	 * 
 	 * @author Ander Goirigolzarri Iturburu
 	 */
-	public Connection openConnection() throws SQLException {
+	public Connection openConnection() {
+		if (conn != null) {
+			return conn;
+		}
 		try {
 			conn = DriverManager.getConnection(url, user, pass);
 		} catch (SQLException e) {
-			throw new SQLException(e.getMessage());
+			e.printStackTrace();
 		}
 		return conn;
 	}
 
+	/**
+	 * 
+	 * Method used to close a connection with the database.
+	 * 
+	 * @param conn The <code>Connection</code> to close.
+	 * @throws SQLException if any error occurs while closing the connection, the
+	 *                      statement, or the result set.
+	 * 
+	 * @author Ander Goirigolzarri Iturburu
+	 */
+	public void closeConnection(){
+		if (conn != null)
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	
 	/**
 	 * 
 	 * Method used to close a connection with the database. It is important to close
@@ -74,21 +97,6 @@ public class GateDB {
 			stmt.close();
 		if (rset != null)
 			rset.close();
-		if (conn != null)
-			conn.close();
-	}
-
-	/**
-	 * 
-	 * Method used to close a connection with the database.
-	 * 
-	 * @param conn The <code>Connection</code> to close.
-	 * @throws SQLException if any error occurs while closing the connection, the
-	 *                      statement, or the result set.
-	 * 
-	 * @author Ander Goirigolzarri Iturburu
-	 */
-	public void closeConnection(Connection conn) throws SQLException {
 		if (conn != null)
 			conn.close();
 	}

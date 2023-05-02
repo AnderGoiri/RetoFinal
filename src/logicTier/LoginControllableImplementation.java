@@ -25,6 +25,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	private CallableStatement ctmt; // Establish a CallableStatement attribute
 	private ResultSet rset; // Establish a ResultSet attribute
 	private GateDB gate = new GateDB(); // Establish a GateDB attribute
+	
 
 	// --- SQL Sentences ---
 	final String INSERTmember = "INSERT INTO user(idUser, username, password, name, surname, dateRegister, mail) VALUES( ?, ?, ?,?, ?, ?,?)";
@@ -63,18 +64,18 @@ public class LoginControllableImplementation implements LoginControllable {
 			conn = gate.openConnection();// Open Connection with DB
 			if (!checkUserName(me.getUserName())) { // Check if the User is already registered
 
-				ctmt = conn.prepareCall("{CALL insert_new_member(?, ?, ?, ?, ?, ?, ?, ?)}");
+				ptmt = conn.prepareStatement("{CALL insert_new_member(?, ?, ?, ?, ?, ?, ?, ?)}");
 
-				ctmt.setString(1, me.getUserName());
-				ctmt.setString(2, me.getName());
-				ctmt.setString(3, me.getSurname());
-				ctmt.setString(4, me.getPassword());
-				ctmt.setString(5, me.getMail());
-				ctmt.setDate(6, java.sql.Date.valueOf(me.getDateRegister()));
-				ctmt.setString(7, me.getAddress());
-				ctmt.setString(8, me.getCreditCard());
+				ptmt.setString(1, me.getUserName());
+				ptmt.setString(2, me.getName());
+				ptmt.setString(3, me.getSurname());
+				ptmt.setString(4, me.getPassword());
+				ptmt.setString(5, me.getMail());
+				ptmt.setDate(6, java.sql.Date.valueOf(me.getDateRegister()));
+				ptmt.setString(7, me.getAddress());
+				ptmt.setString(8, me.getCreditCard());
 
-				ctmt.executeUpdate();
+				ptmt.executeUpdate();
 
 			} else {
 				throw new UserFoundException(); // If User exists, throw UserFoundException.
