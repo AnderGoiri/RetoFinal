@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Set;
-
 /**
  * @author Jago
  * Derived class Component from Product

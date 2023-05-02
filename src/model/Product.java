@@ -98,30 +98,7 @@ public abstract class Product implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	public Instrument getInstrument() throws InstrumentNotFoundException{
-		if (this instanceof Instrument) {
-			return (Instrument) this;
-		} else {
-			throw new InstrumentNotFoundException();
-		}
-	}
-	
-	public Component getComponent() throws ComponentNotFoundException{
-		if (this instanceof Instrument) {
-			return (Component) this;
-		} else {
-			throw new ComponentNotFoundException();
-		}
-	}
-	
-	public Accessory getAccessory() throws AccessoryNotFoundException{
-		if (this instanceof Instrument) {
-			return (Accessory) this;
-		} else {
-			throw new AccessoryNotFoundException();
-		}
-	}
+
 	// --- Constructors ---
 	public Product(int idProduct, String nameP, Float price, String descriptionP, int stock, String brand, String model,
 			String color, boolean saleActive, Float salePercentage, boolean isActive) {
@@ -142,5 +119,4 @@ public abstract class Product implements Serializable {
 	public Product() {
 		super();
 	}
-	
 }

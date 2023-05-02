@@ -16,13 +16,13 @@ public interface ProductMemberControllable {
 	
 	public Set<Product> searchAccessory(String search) throws ProductNotFoundException;
 	
-	public Set<Product> searchProductByName(String name) throws NameNotFoundException;
+	public Set<Product> searchProductByName(String name, Set<Product> listaProd) throws NameNotFoundException;
 	
-	public Set<Product> searchProductByBrand(String brand) throws BrandNotFoundException;
+	public Set<Product> searchProductByBrand(String brand, Set<Product> listaProd) throws BrandNotFoundException;
 	
-	public Set<Product> searchProductByModel(String model) throws ModelNotFoundException;
+	public Set<Product> searchProductByModel(String model, Set<Product> listaProd) throws ModelNotFoundException;
 	
-	public Set<Product> searchProductByType(String type) throws TypeNotFoundException;
+	public Set<Product> searchProductByType(String type, Set<Product> listaProd) throws TypeNotFoundException;
 	
 	public Product purchaseProduct(Product p) throws ProductNotFoundException;
 	
