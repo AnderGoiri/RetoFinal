@@ -1,5 +1,6 @@
 package logicTier;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,21 +21,20 @@ import model.EnumTypeAccessory;
 import model.EnumTypeComponent;
 import model.EnumTypeInstrument;
 import model.Instrument;
+import model.Member;
 import model.Product;
 
 public class ProductMemberControllableImplementation implements ProductMemberControllable {
 	//DB Connection
 	private Connection con;
 	private PreparedStatement stmt;
+	private CallableStatement ctmt;
 	private GateDB connection = new GateDB();
 	
 	//Attributes
 	private Product prod;
 	
 	//Sentencias SQL
-	final String SELECTinstr = "SELECT * from producto p join instrument i on p.idProducto = i.idProducto"; 
-	final String SELECTcomp = "SELECT * from producto p join component c on p.idProducto = c.idProducto"; 
-	final String SELECTacc = "SELECT * from producto p join accessory a on p.idProducto = a.idProducto"; 
 	
 	/**
 	 * Method for the search of products that are instruments
@@ -51,11 +51,11 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		Set<Product> listaProductos = new HashSet<Product>();
 
 		try {
-			connection.openConnection();
+			con = connection.openConnection();
 			
-			stmt = con.prepareStatement(SELECTinstr);
-			rs = stmt.executeQuery();
-			
+			ctmt = con.prepareCall("{CALL select_instrument()}");
+			rs = ctmt.executeQuery();
+
 			while(rs.next()) {
 				if (rs.getString("name").equals(search) || rs.getString("brand").equals(search) || rs.getString("model").equals(search)) {			
 					prod = new Instrument();
@@ -70,7 +70,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					prod.setActive(rs.getBoolean("isActive"));
 					prod.setSaleActive(rs.getBoolean("saleActive"));
 					prod.setSalePercentage(rs.getFloat("salePercentage"));
-					
+					System.out.println(prod.toString());
 					/**
 					 * Transformation of enum to String as JDBC doesn't support enums
 					 */
@@ -88,7 +88,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			e.printStackTrace();
 		} finally {
 			try {
-				connection.closeConnection(stmt, con, rs);
+				connection.closeConnection(ctmt, con, rs);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -114,7 +114,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		try {
 			connection.openConnection();
 			
-			stmt = con.prepareStatement(SELECTcomp);
+			//ctmt = con.prepareStatement();
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -173,7 +173,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		try {
 			connection.openConnection();
 			
-			stmt = con.prepareStatement(SELECTcomp);
+			//stmt = con.prepareStatement(SELECTcomp);
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -275,36 +275,60 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		Set<Product> listaFiltr = new HashSet<Product>();
 		
 		for (Product prod : listaProd) {
-			try {
-				if (Class.forName("Instrument").isInstance(prod)) {
-					EnumTypeInstrument enumType = EnumTypeInstrument.valueOf(type);
-					if(((Instrument) prod).getTypeInstrument().equals(enumType)) {
-						listaFiltr.add(prod);
-					}
-				} else if (Class.forName("Component").isInstance(prod)) {
-					EnumTypeComponent enumType = EnumTypeComponent.valueOf(type);
-					if (((Component) prod).getTypeComponent().equals(enumType)) {
-						listaFiltr.add(prod);
-					}
-				} else if (Class.forName("Accessory").isInstance(prod)) {
-					EnumTypeAccessory enumType = EnumTypeAccessory.valueOf(type);
-					if (((Accessory) prod).getTypeAccessory().equals(enumType)) {
-						listaFiltr.add(prod);
-					}
+			if (prod instanceof Instrument) {
+				EnumTypeInstrument enumType = EnumTypeInstrument.valueOf(type);
+				if(((Instrument) prod).getTypeInstrument().equals(enumType)) {
+					listaFiltr.add(prod);
 				}
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else if (prod instanceof Component) {
+				EnumTypeComponent enumType = EnumTypeComponent.valueOf(type);
+				if (((Component) prod).getTypeComponent().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			} else if (prod instanceof Accessory) {
+				EnumTypeAccessory enumType = EnumTypeAccessory.valueOf(type);
+				if (((Accessory) prod).getTypeAccessory().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
 			}
 		}
 
 		return listaFiltr;
 	}
-
-	/**
-	 * TODO Same method as above but for the EnumClass
-	 */
 	
+	/**
+	 * The method searches in the list already provided by a previous search to match the Class of Product selected.
+	 * It iterates the list and checks the class of object of the Products. Once it is inside it transforms the String class value to an enum and if its equal
+	 * @param
+	 * type is the filter referring to the type of product (Acoustic or Electric)
+	 * listaProd is the list of products already searched
+	 * @author Jago
+	 */
+	@Override
+	public Set<Product> searchProductByClass(String classP, Set<Product> listaProd) {
+		Set<Product> listaFiltr = new HashSet<Product>();
+		
+		for (Product prod : listaProd) {
+			if (prod instanceof Instrument) {
+				EnumClassInstrument enumType = EnumClassInstrument.valueOf(classP);
+				if(((Instrument) prod).getClassInstrument().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			} else if (prod instanceof Component) {
+				EnumClassComponent enumType = EnumClassComponent.valueOf(classP);
+				if (((Component) prod).getClassComponent().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			} else if (prod instanceof Accessory) {
+				EnumClassAccessory enumType = EnumClassAccessory.valueOf(classP);
+				if (((Accessory) prod).getClassAccessory().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			}
+		}
+
+		return listaFiltr;
+	}
 	@Override
 	public Product purchaseProduct(Product p) {
 		// TODO Auto-generated method stub
@@ -318,7 +342,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	}
 
 	@Override
-	public Set<Product> checkPurchaseRecord(Product p) {
+	public Set<Product> checkPurchaseRecord(Member m) {
 		// TODO Auto-generated method stub
 		return null;
 	}

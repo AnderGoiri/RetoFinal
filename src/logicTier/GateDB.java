@@ -1,5 +1,6 @@
 package logicTier;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ public class GateDB {
 	private String url;
 	private String user;
 	private String pass;
+	private static Connection con;
 	
 	public GateDB(){
 		configFile = ResourceBundle.getBundle("logicTier.config");
@@ -27,11 +29,13 @@ public class GateDB {
 	 * TODO Crear Exception
 	 */
 	public Connection openConnection() throws SQLException {
-		Connection con= null;
+		if (con != null) {
+			return con;
+		}
 		try {
 			con = DriverManager.getConnection(url, user, pass);
 		} catch (SQLException e) {
-			throw new SQLException(e.getMessage());
+			e.printStackTrace();
 		}
 		return con;
 	}
@@ -45,6 +49,18 @@ public class GateDB {
 	public void closeConnection(PreparedStatement stmt, Connection con, ResultSet rset) throws SQLException{
 		if (stmt != null) {
 			stmt.close();
+		}
+		if (con != null) {
+			con.close();
+		}
+		if (rset != null) {
+			rset.close();
+		}
+	}
+	
+	public void closeConnection(CallableStatement ctmt, Connection con, ResultSet rset) throws SQLException{
+		if (ctmt != null) {
+			ctmt.close();
 		}
 		if (con != null) {
 			con.close();

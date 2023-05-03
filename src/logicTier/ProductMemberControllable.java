@@ -7,6 +7,7 @@ import exceptions.ModelNotFoundException;
 import exceptions.NameNotFoundException;
 import exceptions.ProductNotFoundException;
 import exceptions.TypeNotFoundException;
+import model.Member;
 import model.Product;
 
 public interface ProductMemberControllable {
@@ -24,11 +25,13 @@ public interface ProductMemberControllable {
 	
 	public Set<Product> searchProductByType(String type, Set<Product> listaProd) throws TypeNotFoundException;
 	
+	public Set<Product> searchProductByClass(String classP, Set<Product> listaProd) throws TypeNotFoundException;
+	
 	public Product purchaseProduct(Product p) throws ProductNotFoundException;
 	
 	public Product checkProduct(Product p) throws ProductNotFoundException;
 	
-	public Set<Product> checkPurchaseRecord(Product p) throws ProductNotFoundException;
+	public Set<Product> checkPurchaseRecord(Member m) throws ProductNotFoundException;
 	
 	
 }
