@@ -33,7 +33,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	
 	//Attributes
 	private Product prod;
-	
+	private boolean seguir = true;
 	//Sentencias SQL
 	
 	/**
@@ -215,6 +215,24 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		}
 		return listaProductos;
 	}
+	/**
+	 * Method for the search of products filtered by id
+	 * In the parameter list of products, the method searches the one thats equal to the id
+	 * @return a list of products
+	 * @author Jago
+	 */
+	@Override
+	public Product searchProductById(int pId, Set<Product> listaProd) {
+		Product pAux = null;
+		
+		for (Product prod : listaProd) {
+			if (prod.getIdProduct() == pId) {
+				pAux = prod;
+			}
+		}
+		
+		return pAux;	
+	}
 	
 	/**
 	 * Method for the search of products filtered by name
@@ -339,16 +357,40 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 		return listaFiltr;
 	}
+	
 	@Override
-	public Product purchaseProduct(Product p) {
-		// TODO Auto-generated method stub
-		return null;
+	public void purchaseProduct(Product p) {
+		while (seguir) {
+			if (checkProduct(p)){
+				if (p.getStock() > 0) {
+					
+				}
+				
+			}
+			// Comprobar seguir al final de cada bucle
+		}
 	}
 
 	@Override
-	public Product checkProduct(Product p) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean checkProduct(Product p) {
+		ResultSet rs = null;
+		boolean existe = false;
+
+		try {
+			con = connection.openConnection();
+			ctmt = con.prepareCall("{CALL select_instrument()}");
+			rs = ctmt.executeQuery();
+
+			while (rs.next() && !existe) {
+				if (rs.getInt("idProduct") == (p.getIdProduct())) {
+					existe = true;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return existe;
 	}
 
 	@Override

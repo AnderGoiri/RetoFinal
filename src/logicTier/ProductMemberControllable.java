@@ -17,6 +17,8 @@ public interface ProductMemberControllable {
 	
 	public Set<Product> searchAccessory(String search) throws ProductNotFoundException;
 	
+	public Product searchProductById(int pId, Set<Product> listaProd);
+	
 	public Set<Product> searchProductByName(String name, Set<Product> listaProd) throws NameNotFoundException;
 	
 	public Set<Product> searchProductByBrand(String brand, Set<Product> listaProd) throws BrandNotFoundException;
@@ -27,9 +29,9 @@ public interface ProductMemberControllable {
 	
 	public Set<Product> searchProductByClass(String classP, Set<Product> listaProd) throws TypeNotFoundException;
 	
-	public Product purchaseProduct(Product p) throws ProductNotFoundException;
-	
-	public Product checkProduct(Product p) throws ProductNotFoundException;
+	public void purchaseProduct(Product p) throws ProductNotFoundException;
+
+	public boolean checkProduct(Product p) throws ProductNotFoundException;
 	
 	public Set<Product> checkPurchaseRecord(Member m) throws ProductNotFoundException;
 	
