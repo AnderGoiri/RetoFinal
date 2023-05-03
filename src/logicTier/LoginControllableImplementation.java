@@ -4,7 +4,7 @@ import exceptions.CredentialNotValidException;
 import exceptions.UserFoundException;
 import exceptions.UserNotFoundException;
 import exceptions.WrongCredentialsException;
-
+import model.EnumStatusManager;
 import model.Manager;
 import model.Member;
 import model.User;
@@ -67,46 +67,49 @@ public class LoginControllableImplementation implements LoginControllable {
 				ptmt.executeUpdate();
 
 			} else {
-				throw new UserFoundException();
+				throw new UserFoundException("User found");
 			}
 			;
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
-			gate.closeConnection(ptmt, conn);
+			//gate.closeConnection(ptmt, conn);
 		}
 	}
 
 	@Override
-	public void registerUserManager(Manager ma) throws CredentialNotValidException, UserFoundException, SQLException {
+	public void registerUserManager(Manager ma) throws UserFoundException, SQLException {
 		try {
+			// Open Connection with DB
+			conn = gate.openConnection();
 
-			conn = gate.openConnection();// Open Connection with DB
+			// Check if the User is already registered
+			if (!checkUserName(ma.getUserName())) {
 
-			if (!checkUserName(ma.getUserName())) { // Check if the User is already registered
+				ptmt = conn.prepareStatement("{CALL insert_new_manager(?, ?, ?, ?, ?, ?, ?, ?,?,?)}");
 
-				ctmt = conn.prepareCall("{CALL insert_new_manager(?, ?, ?, ?, ?, ?, ?, ?,?)}");
+				ptmt.setString(1, ma.getUserName());
+				ptmt.setString(2, ma.getName());
+				ptmt.setString(3, ma.getSurname());
+				ptmt.setString(4, ma.getPassword());
+				ptmt.setString(5, ma.getMail());
+				ptmt.setDate(6, java.sql.Date.valueOf(ma.getDateRegister()));
+				ptmt.setLong(7, ma.getIdSupervisor());
+				ptmt.setBoolean(8, ma.isTechnician());
+				ptmt.setBoolean(9, ma.isAdmin());
+				ptmt.setObject(10,ma.getStatusManager());
 
-				ctmt.setString(1, ma.getUserName());
-				ctmt.setString(2, ma.getName());
-				ctmt.setString(3, ma.getSurname());
-				ctmt.setString(4, ma.getPassword());
-				ctmt.setString(5, ma.getMail());
-				ctmt.setDate(6, java.sql.Date.valueOf(ma.getDateRegister()));
-				ctmt.setLong(7, ma.getIdSupervisor());
-				ctmt.setBoolean(8, ma.isTechnician());
-				ctmt.setBoolean(9, ma.isAdmin());
-
-				ctmt.executeUpdate();
+				ptmt.executeUpdate();
 
 			} else {
-				throw new UserFoundException(); // If User exists, throw UserFoundException.
+				// If User exists, throw UserFoundException.
+				throw new UserFoundException();
 			}
 			;
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
-			gate.closeConnection(ctmt, conn, rset);
+			//gate.closeConnection(ptmt, conn);
 		}
 	}
 

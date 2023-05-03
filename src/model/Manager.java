@@ -110,16 +110,9 @@ public class Manager extends User {
 		super();
 	}
 
-	public Manager(int idUser, String userName, String name, String surname, String password, String mail,
-			LocalDate dateRegister, int idSupervisor, boolean isTechnician, boolean isAdmin
-			) {
-		super(idUser, userName, name, surname, password, mail, dateRegister);
-		this.idSupervisor = idSupervisor;
-		this.isTechnician = isTechnician;
-	}
 
 	public Manager(String userName, String name, String surname, String password, String mail, LocalDate dateRegister,
-			int idSupervisor, boolean isTechnician, boolean isAdmin) {
+			int idSupervisor, boolean isTechnician, boolean isAdmin, EnumStatusManager p) {
 		super(userName, name, surname, password, mail, dateRegister);
 		this.idSupervisor = idSupervisor;
 		this.isTechnician = isTechnician;

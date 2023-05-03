@@ -1,20 +1,22 @@
 package model;
 
 /**
- * @author Ander
  *
- *         Defines an enumeration for the different states of a <code>Manager</code>
- *         object during the registration process.
- *         <p>
- *         A new <code>User</code> that wants to be registered as a <code>Manager</code>
- *         needs to have their registration request validated by another
- *         <code>Manager</code>.
+ * Defines an enumeration for the different states of a <code>Manager</code>
+ * object during the registration process.
+ * <p>
+ * A new <code>User</code> that wants to be registered as a <code>Manager</code>
+ * needs to have their registration request validated by another
+ * <code>Manager</code>.
  * 
- *         When a new <code>User</code> sends a registration request, the default
- *         status applied will be <code><i>"Pending"</i></code>. The status of the request
- *         needs to be changed to <code><i>"Yes"</i></code> or <code><i>"No"</i></code> by a
- *         <code>Manager</code> with the isAdmin boolean attribute set to true.
- *         </p>
+ * When a new <code>User</code> sends a registration request, the default status
+ * applied will be <code><i>"Pending"</i></code>. The status of the request
+ * needs to be changed to <code><i>"Yes"</i></code> or <code><i>"No"</i></code>
+ * by a <code>Manager</code> with the isAdmin boolean attribute set to true.
+ * </p>
+ * 
+ * @author Ander Goirigolzarri Iturburu
+ *   
  */
 public enum EnumStatusManager {
 	P("Pending"), Y("Yes"), N("No");

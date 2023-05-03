@@ -3,7 +3,6 @@ package logicTier;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,25 +16,21 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import exceptions.CredentialNotValidException;
 import exceptions.UserFoundException;
+import model.EnumStatusManager;
 import model.Manager;
 import model.Member;
 
 class TestLoginControllableImplementation {
 
 	private GateDB gate = new GateDB();
-	private Connection conn;
-	private Statement stmt;
-	private PreparedStatement ptmt;
-	private ResultSet rset;
 	private LoginControllableImplementation loginControl = new LoginControllableImplementation();
 
-	private Member me = new Member("testuser", "Test", "User", "test123", "testuser@example.com",
+	private Member me = new Member("testusermember", "Test", "User", "test123", "testuser@example.com",
 			LocalDate.parse("1990-01-01"), "123 Main St", "1234567890123456");
 
-	private Manager ma = new Manager("testuser", "Test", "User", "test123", "testuser@example.com",
-			LocalDate.parse("1990-01-01"), 0, false, false);
+	private Manager ma = new Manager("testusermanager", "Test", "User", "test123", "testuser@example.com",
+			LocalDate.parse("1990-01-01"), 1, false, false, EnumStatusManager.P);
 
 	final static String createMock = "INSERT INTO user(username,name,surname,password,mail,dateRegister) VALUES ('mockuser','Mock','User','mock123','mockuser@example.com','1990-01-01');";
 	final static String deleteMock = "DELETE FROM user WHERE username='mockuser';";
@@ -142,89 +137,24 @@ class TestLoginControllableImplementation {
 		assertFalse(loginControl.checkUserName(me.getUserName().concat("fail")));
 	}
 
-	/**
-	 * Unit test for the {@link LoginControl#registerUserMember(Member)} method.
-	 * <p>
-	 * The test verifies that the {@code Member} object provided as a parameter is
-	 * properly inserted into the database using the
-	 * {@link GateDB#closeConnection(Statement, Connection, ResultSet)} method to
-	 * close the database connection.
-	 * </p>
-	 * <p>
-	 * If the registration is successful, the test then checks if the newly created
-	 * user exists in the database using the
-	 * {@link LoginControl#checkUserName(String)} method.
-	 * </p>
-	 * <p>
-	 * If the test fails to register the user, throw an exception.
-	 * </p>
-	 * @throws UserFoundException 
-	 */
-	@Ignore // @Expected
-	// @Test
-	void testRegisterUserMember() throws UserFoundException {
-		try {
-			// Call the registerUserMember method
-			loginControl.registerUserMember(me);
-
-			// Check if the member was inserted into the
-			// database
-			assertTrue(loginControl.checkUserName(me.getUserName()));
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				gate.closeConnection(stmt, conn, rset);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	// @Ignore
 	@Test
 	void testRegisterNewUserMemberSuccesful() throws SQLException, UserFoundException {
 		// Call the registerUserMember method
 		loginControl.registerUserMember(me);
-		UserFoundException ufe = Assertions.assertThrows(UserFoundException.class,() -> {
+		UserFoundException ufe = Assertions.assertThrows(UserFoundException.class, () -> {
 			loginControl.registerUserMember(me);
 		});
-		Assertions.assertEquals("User found.", ufe.getMessage());
+		Assertions.assertEquals("User found", ufe.getMessage());
 	}
 
-	/**
-	 * Unit test for the {@link LoginControl#registerUserMember(Manager)} method.
-	 * <p>
-	 * The test verifies that the {@code Manager} object provided as a parameter is
-	 * properly inserted into the database using the
-	 * {@link GateDB#closeConnection(Statement, Connection, ResultSet)} method to
-	 * close the database connection.
-	 * </p>
-	 * <p>
-	 * If the registration is successful, the test then checks if the newly created
-	 * user exists in the database using the
-	 * {@link LoginControl#checkUserName(String)} method.
-	 * </p>
-	 * <p>
-	 * If the test fails to register the user, throw an exception.
-	 * </p>
-	 */
-	@Ignore
-	// @Test
-	void testRegisterUserManager() {
-		try {
-			loginControl.registerUserManager(ma); // Call the registerUserMember method
-			assertTrue(loginControl.checkUserName(ma.getUserName())); // Check if the manager was inserted into the
-			// database
-		} catch (CredentialNotValidException | UserFoundException | SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				gate.closeConnection(stmt, conn, rset);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+	// @Ignore
+	@Test
+	void testRegisterNewUserManagerSuccesful() throws UserFoundException, SQLException {
+		// Call the registerUserMember method
+		loginControl.registerUserManager(ma);
+		UserFoundException ufe = Assertions.assertThrows(UserFoundException.class, () -> {
+			loginControl.registerUserManager(ma);
+		});
+		Assertions.assertEquals("User found", ufe.getMessage());
 	}
 }
