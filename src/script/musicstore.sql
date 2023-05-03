@@ -86,7 +86,6 @@ create table if not exists accessory(
 create table if not exists purchase(
 	idPurchase integer not null unique auto_increment,
     idUser integer,
-    idProduct integer,
 	datePurchase date,
     purchaseQuantity integer,
     totalPrice integer,
