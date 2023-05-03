@@ -20,7 +20,7 @@ public class Main {
 		
 		try {
 			loginControl.registerUserMember(me);
-		} catch (CredentialNotValidException | UserFoundException | SQLException e) {
+		} catch (UserFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}

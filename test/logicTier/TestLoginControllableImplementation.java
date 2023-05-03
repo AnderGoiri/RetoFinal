@@ -11,7 +11,10 @@ import java.time.LocalDate;
 
 import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import exceptions.CredentialNotValidException;
@@ -49,7 +52,7 @@ class TestLoginControllableImplementation {
 	 * 
 	 * @author Ander Goirigolzarri Iturburu
 	 */
-	
+
 	@BeforeAll
 	static void createMockUser() { // creates a mock user
 
@@ -84,8 +87,7 @@ class TestLoginControllableImplementation {
 	 * the connection to the database.
 	 * </p>
 	 */
-	@Ignore
-	//@AfterAll
+	@AfterAll
 	static void deleteMockUser() { // deletes the mock user from the DB
 
 		GateDB gate = new GateDB();
@@ -107,6 +109,16 @@ class TestLoginControllableImplementation {
 		}
 	}
 
+	@BeforeEach
+	void openConnectionWithDBForTesting() {
+		gate.openConnection();
+	}
+
+	@AfterEach
+	void closeConnectionWithDBAfterTesting() {
+		gate.closeConnection();
+	}
+
 	/**
 	 * 
 	 * Tests the {@link LoginControllableImplementation#checkUserName()
@@ -118,17 +130,15 @@ class TestLoginControllableImplementation {
 	 * @author Ander Goirigolzarri Iturburu
 	 */
 
-	@Ignore 
-	//@Test
+	// @Ignore
+	@Test
 	void testCheckUserNameWhenUserNameIsInDB() throws SQLException {
-		// call method CheckUserName
 		assertTrue(loginControl.checkUserName("mockuser"));
 	}
 
-	//@Ignore
+	// @Ignore
 	@Test
 	void testCheckUserNameWhenUserNameIsNotInDB() throws SQLException {
-		// c1all method CheckUserName
 		assertFalse(loginControl.checkUserName(me.getUserName().concat("fail")));
 	}
 
@@ -148,15 +158,20 @@ class TestLoginControllableImplementation {
 	 * <p>
 	 * If the test fails to register the user, throw an exception.
 	 * </p>
+	 * @throws UserFoundException 
 	 */
 	@Ignore // @Expected
 	// @Test
-	void testRegisterUserMember() {
+	void testRegisterUserMember() throws UserFoundException {
 		try {
-			loginControl.registerUserMember(me); // Call the registerUserMember method
-			assertTrue(loginControl.checkUserName(me.getUserName())); // Check if the member was inserted into the
+			// Call the registerUserMember method
+			loginControl.registerUserMember(me);
+
+			// Check if the member was inserted into the
 			// database
-		} catch (CredentialNotValidException | UserFoundException | SQLException e) {
+			assertTrue(loginControl.checkUserName(me.getUserName()));
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -167,10 +182,15 @@ class TestLoginControllableImplementation {
 		}
 	}
 
-	@Ignore
-	//@Test
-	void testRegisterNewUserMemberSuccesful() throws CredentialNotValidException, UserFoundException, SQLException {
-		loginControl.registerUserMember(me); // Call the registerUserMember method
+	// @Ignore
+	@Test
+	void testRegisterNewUserMemberSuccesful() throws SQLException, UserFoundException {
+		// Call the registerUserMember method
+		loginControl.registerUserMember(me);
+		UserFoundException ufe = Assertions.assertThrows(UserFoundException.class,() -> {
+			loginControl.registerUserMember(me);
+		});
+		Assertions.assertEquals("User found.", ufe.getMessage());
 	}
 
 	/**

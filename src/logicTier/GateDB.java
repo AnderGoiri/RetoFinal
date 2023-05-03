@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -19,7 +18,7 @@ public class GateDB {
 
 	private ResourceBundle configFile;
 	private String url, user, pass;
-	private static Connection conn;
+	private Connection conn;
 
 	public GateDB() {
 		configFile = ResourceBundle.getBundle("logicTier.config");
@@ -61,15 +60,16 @@ public class GateDB {
 	 * 
 	 * @author Ander Goirigolzarri Iturburu
 	 */
-	public void closeConnection(){
+	public Connection closeConnection() {
 		if (conn != null)
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				e.printStackTrace();	
 			}
+		return conn;
 	}
-	
+
 	/**
 	 * 
 	 * Method used to close a connection with the database. It is important to close
@@ -97,6 +97,13 @@ public class GateDB {
 			stmt.close();
 		if (rset != null)
 			rset.close();
+		if (conn != null)
+			conn.close();
+	}
+	
+	public void closeConnection(Statement stmt, Connection conn) throws SQLException {
+		if (stmt != null)
+			stmt.close();
 		if (conn != null)
 			conn.close();
 	}

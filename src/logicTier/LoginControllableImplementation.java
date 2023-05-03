@@ -25,7 +25,6 @@ public class LoginControllableImplementation implements LoginControllable {
 	private CallableStatement ctmt; // Establish a CallableStatement attribute
 	private ResultSet rset; // Establish a ResultSet attribute
 	private GateDB gate = new GateDB(); // Establish a GateDB attribute
-	
 
 	// --- SQL Sentences ---
 	final String INSERTmember = "INSERT INTO user(idUser, username, password, name, surname, dateRegister, mail) VALUES( ?, ?, ?,?, ?, ?,?)";
@@ -41,30 +40,20 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @author Ander Goirigolzarri Iturburu
 	 */
 	public boolean checkUserName(String userName) throws SQLException {
-
-		String queryCheck = "SELECT username FROM USER WHERE username LIKE '" + userName + "';";
-		boolean existUserName = false; // We need a variable to store the result as rset will be closed with the
-										// connection
-		try {
-			conn = gate.openConnection(); // openConnection() opens the connection with our DB
-			stmt = conn.createStatement(); // create the statement
-			rset = stmt.executeQuery(queryCheck); // execute the Query
-			existUserName = rset.next(); // return a boolean
-		} catch (SQLException e) {
-			System.out.println(e);
-		} finally {
-			gate.closeConnection(stmt, conn, rset);
-		}
-		return existUserName;
+		return gate.openConnection().createStatement()
+				.executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
 	}
 
 	@Override
-	public void registerUserMember(Member me) throws CredentialNotValidException, UserFoundException, SQLException {
+	public void registerUserMember(Member me) throws SQLException, UserFoundException {
 		try {
-			conn = gate.openConnection();// Open Connection with DB
-			if (!checkUserName(me.getUserName())) { // Check if the User is already registered
+			// Open Connection with DB
+			conn = gate.openConnection();
 
-				ptmt = conn.prepareStatement("{CALL insert_new_member(?, ?, ?, ?, ?, ?, ?, ?)}");
+			// Check if the User is already registered
+			if (!checkUserName(me.getUserName())) {
+
+				ptmt = conn.prepareStatement("CALL insert_new_member(?, ?, ?, ?, ?, ?, ?, ?)");
 
 				ptmt.setString(1, me.getUserName());
 				ptmt.setString(2, me.getName());
@@ -78,13 +67,13 @@ public class LoginControllableImplementation implements LoginControllable {
 				ptmt.executeUpdate();
 
 			} else {
-				throw new UserFoundException(); // If User exists, throw UserFoundException.
+				throw new UserFoundException();
 			}
 			;
 		} catch (SQLException e) {
-			System.out.println(e);
+			System.out.println(e.toString());
 		} finally {
-			gate.closeConnection(ctmt, conn, rset);
+			gate.closeConnection(ptmt, conn);
 		}
 	}
 
@@ -120,7 +109,6 @@ public class LoginControllableImplementation implements LoginControllable {
 			gate.closeConnection(ctmt, conn, rset);
 		}
 	}
-
 
 	@Override
 	public User userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException {
