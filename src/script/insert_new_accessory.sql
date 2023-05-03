@@ -19,6 +19,6 @@ BEGIN
     -- Get the ID of the new product
     SET @new_product_id = LAST_INSERT_ID();
     -- Insert the new accessory into the accessory table
-    INSERT INTO accessory (classAccessory, typeAccessory)
+    INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
     VALUES (@new_product_id, p_classAccessory, p_typeAccessory);
 END

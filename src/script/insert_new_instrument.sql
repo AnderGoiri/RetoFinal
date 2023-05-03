@@ -19,6 +19,6 @@ BEGIN
     -- Get the ID of the new product
     SET @new_product_id = LAST_INSERT_ID();
     -- Insert the new instrument into the instrument table
-    INSERT INTO instrument (classInstrument, typeInstrument)
+    INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
     VALUES (@new_product_id, p_classInstrument, p_typeInstrument);
 END

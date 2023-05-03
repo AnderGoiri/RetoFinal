@@ -19,6 +19,6 @@ BEGIN
     -- Get the ID of the new product
     SET @new_product_id = LAST_INSERT_ID();
     -- Insert the new component into the component table
-    INSERT INTO component (classComponent, typeComponent)
+    INSERT INTO component (idProduct, classComponent, typeComponent)
     VALUES (@new_product_id, p_classComponent, p_typeComponent);
 END
