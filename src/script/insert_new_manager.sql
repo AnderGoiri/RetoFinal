@@ -17,7 +17,7 @@ BEGIN
     VALUES (p_username, p_name, p_surname, p_password, p_mail, p_dateRegister);
     -- Get the ID of the new user
     SET @new_user_id = LAST_INSERT_ID();
-    -- Insert the new member into the member table
+    -- Insert the new manager into the manager table
     INSERT INTO manager (idUser, idSupervisor, isTechnician, isSupervisor, isAdmin, statusManager)
     VALUES (@new_user_id, p_idSupervisor, is_Technician, is_Supervisor, is_Admin, p_statusManager);
 END
