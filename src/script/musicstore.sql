@@ -9,15 +9,16 @@ create table if not exists user(
     name varchar(25),
     surname varchar(25),
     password varchar(25),
-    dateRegister date,
     mail varchar(25),
+    dateRegister date,
 	primary key(idUser)
 );
 
 create table if not exists manager(
 	idUser integer not null unique auto_increment,
-	isTechnician tinyint,
+	isTechnician tinyint not null,
     isAdmin tinyint not null,
+    isSupervisor tinyint not null,
     idSupervisor integer,
     statusManager enum('Pending', 'Approved', 'Rejected') not null,
     foreign key (idUser) references user (idUser) on delete cascade,
@@ -108,8 +109,9 @@ create table if not exists management(
 	primary key (idManagement)
 );
 
-/*ADMIN USER*/
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'abcd*1234';
-GRANT ALL PRIVILEGES ON musicstore.* TO 'admin'@'localhost' WITH GRANT OPTION;
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'abcd*1234';
+GRANT ALL PRIVILEGES ON musicstoretest.* TO 'root'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
+call insert_superadmin;
+call insert_devs;

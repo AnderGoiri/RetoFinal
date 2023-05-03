@@ -16,8 +16,9 @@ create table if not exists user(
 
 create table if not exists manager(
 	idUser integer not null unique auto_increment,
-	isTechnician tinyint,
-    isAdmin tinyint,
+	isTechnician tinyint not null,
+    isAdmin tinyint not null,
+    isSupervisor tinyint not null,
     idSupervisor integer,
     statusManager enum('Pending', 'Approved', 'Rejected'),
     foreign key (idUser) references user (idUser) on delete cascade,
@@ -108,16 +109,9 @@ create table if not exists management(
 	primary key (idManagement)
 );
 
-call insert_new_manager(); 
-/*
-CREATE USER 'root'@'192.168.20.255' IDENTIFIED BY 'abcd*1234';
-GRANT ALL PRIVILEGES ON musicstoretest.* TO 'root'@'192.168.20.255' WITH GRANT OPTION;
-CREATE USER 'ander'@'192.168.20.255' IDENTIFIED BY 'abcd*1234';
-GRANT ALL PRIVILEGES ON musicstoretest.* TO 'ander'@'192.168.20.255' WITH GRANT OPTION;
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'abcd*1234';
+GRANT ALL PRIVILEGES ON musicstoretest.* TO 'root'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
-select user from mysql.user;
-*/
 
-
-select * from user u join member m on u.idUser = m.idUser;
-
+call insert_superadmin;
+call insert_devs;
