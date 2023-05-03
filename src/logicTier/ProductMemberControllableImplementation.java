@@ -232,11 +232,15 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			}
 		}
 		
-		return listaFiltr;
-	
-		
+		return listaFiltr;	
 	}
 
+	/**
+	 * Method for the search of products filtered by brand
+	 * In the parameter list of products, the method searches those that equal to the name
+	 * @return a list of products
+	 * @author Jago
+	 */
 	@Override
 	public Set<Product> searchProductByBrand(String brand, Set<Product> listaProd) {
 		Set<Product> listaFiltr = new HashSet<Product>();
@@ -249,7 +253,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 		return listaFiltr;
 	}
-
+	
+	/**
+	 * Method for the search of products filtered by model
+	 * In the parameter list of products, the method searches those that equal to the name
+	 * @return a list of products
+	 * @author Jago
+	 */
 	@Override
 	public Set<Product> searchProductByModel(String model, Set<Product> listaProd) {
 		Set<Product> listaFiltr = new HashSet<Product>();
