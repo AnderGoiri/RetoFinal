@@ -62,7 +62,7 @@ public interface LoginControllable {
 	 * 
 	 * @author Ander Goirigolzarri Iturburu
 	 */
-	public User userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException;
+	public void userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException;
 
 	/**
 	 * 
