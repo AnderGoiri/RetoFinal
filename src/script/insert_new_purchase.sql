@@ -1,6 +1,5 @@
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_purchase`(
     IN p_idUser integer,
-    IN p_datePurchase date,
 	IN p_purchaseQuantity integer, 
     IN p_totalPrice integer,
     IN p_paymentStatus enum('New', 'Pending', 'Payment Received', 'Payment Accepted', 'Payment Denied', 'Cancelled', 'Closed'),
