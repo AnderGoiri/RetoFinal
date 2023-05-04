@@ -3,8 +3,10 @@ package logicTier;
 import exceptions.UserFoundException;
 import exceptions.UserNotFoundException;
 import exceptions.WrongCredentialsException;
+
 import model.Manager;
 import model.Member;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
