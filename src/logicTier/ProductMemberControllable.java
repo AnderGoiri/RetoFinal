@@ -9,6 +9,7 @@ import exceptions.ProductNotFoundException;
 import exceptions.TypeNotFoundException;
 import model.Member;
 import model.Product;
+import model.Purchase;
 
 public interface ProductMemberControllable {
 	public Set<Product> searchInstrument(String search) throws ProductNotFoundException;
@@ -29,11 +30,19 @@ public interface ProductMemberControllable {
 	
 	public Set<Product> searchProductByClass(String classP, Set<Product> listaProd) throws TypeNotFoundException;
 	
-	public void purchaseProduct(Product p) throws ProductNotFoundException;
+	public boolean checkProduct(Product p) throws Exception;
+	
+	public Purchase addPurchase(Member me);
+	
+	public Purchase addProduct(Purchase pset); 
+	
+	public void listPurchase(Purchase pset);
+	
+	public Purchase removeProduct(Purchase pset);
+	
+	public Purchase removePurchase(Purchase pset);
+	
+	public boolean existsProduct(Product p) throws ProductNotFoundException;
 
-	public boolean checkProduct(Product p) throws ProductNotFoundException;
-	
-	public Set<Product> checkPurchaseRecord(Member m) throws ProductNotFoundException;
-	
-	
+
 }

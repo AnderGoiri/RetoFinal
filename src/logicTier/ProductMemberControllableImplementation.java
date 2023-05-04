@@ -5,13 +5,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import exceptions.AccessoryNotFoundException;
 import exceptions.ComponentNotFoundException;
 import exceptions.InstrumentNotFoundException;
 import exceptions.ProductNotFoundException;
+import exceptions.StockNotFoundException;
 import model.Accessory;
 import model.Component;
 import model.EnumClassAccessory;
@@ -23,6 +27,7 @@ import model.EnumTypeInstrument;
 import model.Instrument;
 import model.Member;
 import model.Product;
+import model.Purchase;
 
 public class ProductMemberControllableImplementation implements ProductMemberControllable {
 	//DB Connection
@@ -33,7 +38,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	
 	//Attributes
 	private Product prod;
-	private boolean seguir = true;
 	//Sentencias SQL
 	
 	/**
@@ -357,22 +361,27 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 		return listaFiltr;
 	}
-	
+	/**
+	 * This method checks if there is stock and returns a boolean
+	 * @param Product p is the product the user selected
+	 * @author Jago
+	 */
 	@Override
-	public void purchaseProduct(Product p) {
-		while (seguir) {
-			if (checkProduct(p)){
-				if (p.getStock() > 0) {
-					
-				}
-				
-			}
-			// Comprobar seguir al final de cada bucle
+	public boolean checkProduct(Product p) throws Exception {
+		boolean stockNotFound = false;
+		if (p.getStock() <= 0) {
+			stockNotFound = true;
 		}
+		return stockNotFound;
 	}
-
+	
+	/**
+	 * This method checks within the database to see if the selected product exists
+	 * TODO Move to ProductManager, its only useful there
+	 * @author Jago
+	 */
 	@Override
-	public boolean checkProduct(Product p) {
+	public boolean existsProduct(Product p) {
 		ResultSet rs = null;
 		boolean existe = false;
 
@@ -394,7 +403,35 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	}
 
 	@Override
-	public Set<Product> checkPurchaseRecord(Member m) {
+	public Purchase addPurchase(Member me) {
+		Purchase p = new Purchase();
+		Set<Product> purchaseSet = new HashSet<Product>();
+		
+		
+		
+		return p;
+	}
+	
+	@Override
+	public Purchase addProduct(Purchase pset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void listPurchase(Purchase pset) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Purchase removeProduct(Purchase pset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Purchase removePurchase(Purchase pset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
