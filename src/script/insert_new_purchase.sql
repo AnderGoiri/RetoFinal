@@ -1,4 +1,4 @@
-CREATE PROCEDURE `insert_new_purchase` (
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_purchase`(
     IN p_idUser integer,
     IN p_datePurchase date,
 	IN p_purchaseQuantity integer, 
@@ -11,5 +11,5 @@ BEGIN
 	SET @new_purchase_id = LAST_INSERT_ID();
     -- Insert the new product into the product table
     INSERT INTO purchase (idPurchase, idUser, datePurchase, totalPrice, paymentStatus, paymentMethod)
-    VALUES (@new_purchase_id, p_idUser, p_datePurchase, p_totalPrice, p_paymentStatus, p_paymentMethod);
+    VALUES (@new_purchase_id, p_idUser, CAST(GETDATE() AS Date) , p_totalPrice, p_paymentStatus, p_paymentMethod);
 END
