@@ -405,8 +405,17 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Purchase addPurchase(Member me) {
 		Purchase p = new Purchase();
-		Set<Product> purchaseSet = new HashSet<Product>();
-		
+		Set<Product> productSet = new HashSet<Product>();
+		try {
+			con = connection.openConnection();
+			CallableStatement ctmt = con.prepareCall("{CALL insert_new_product(?,?,?,?,?,?)");
+			ctmt.setInt(1, me.getIdUser());
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		return p;
