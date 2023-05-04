@@ -16,10 +16,10 @@ create table if not exists user(
 
 create table if not exists manager(
 	idUser integer not null unique auto_increment,
+    idSupervisor integer,  
+    isSupervisor tinyint not null,
 	isTechnician tinyint not null,
     isAdmin tinyint not null,
-    isSupervisor tinyint not null,
-    idSupervisor integer,
     statusManager enum('Pending', 'Approved', 'Rejected'),
     foreign key (idUser) references user (idUser) on delete cascade,
     primary key (idUser)
@@ -93,7 +93,6 @@ create table if not exists purchase(
     paymentStatus enum('New', 'Pending', 'Payment Received', 'Payment Accepted', 'Payment Denied', 'Cancelled', 'Closed'),
 	paymendMethod enum('Tarjeta', 'Efectivo'),
     foreign key (idUser) references user (idUser) on delete cascade,
-    foreign key (idProduct) references product (idProduct) on delete cascade,
     primary key (idPurchase)
 );
 
