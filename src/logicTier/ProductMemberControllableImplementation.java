@@ -29,6 +29,8 @@ import model.Member;
 import model.Product;
 import model.Purchase;
 
+//TODO Acabar Javadoc de todos los metodos
+//TODO Cambiar lo del bool por una excepcion de nuevo??
 public class ProductMemberControllableImplementation implements ProductMemberControllable {
 	//DB Connection
 	private Connection con;
@@ -38,6 +40,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	
 	//Attributes
 	private Product prod;
+	
 	//Sentencias SQL
 	
 	/**
@@ -220,6 +223,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		return listaProductos;
 	}
 	/**
+	 * 	TODO For manager
 	 * Method for the search of products filtered by id
 	 * In the parameter list of products, the method searches the one thats equal to the id
 	 * @return a list of products
@@ -403,8 +407,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	}
 
 	@Override
-	public Purchase addPurchase(Member me) {
-		Purchase p = new Purchase();
+	public Purchase addPurchase(Product p, Member me) {
+		Purchase pu = new Purchase();
 		Set<Product> productSet = new HashSet<Product>();
 		try {
 			con = connection.openConnection();
@@ -418,7 +422,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		}
 		
 		
-		return p;
+		return pu;
 	}
 	
 	@Override
