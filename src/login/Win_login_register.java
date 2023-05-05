@@ -36,6 +36,8 @@ public class Win_login_register extends JFrame implements ActionListener{
 
 	private JButton btnConfirm;
 	private JLabel lblLogoFill;
+	private JLabel label;
+	private JLabel lblFondo;
 
 
 	/**
@@ -69,6 +71,7 @@ public class Win_login_register extends JFrame implements ActionListener{
 
 		cardLayout=new CardLayout();
 		switchLilPanel=new JPanel();
+		switchLilPanel.setOpaque(false);
 		uL=new UserLogIn();
 		uR=new UserRegister();
 		switchLilPanel.setBounds(247, 0, 837, 460);
@@ -76,6 +79,8 @@ public class Win_login_register extends JFrame implements ActionListener{
 		switchLilPanel.setLayout(cardLayout);
 		switchLilPanel.add("LogIn",uL);
 		switchLilPanel.add("SignUp",uR);
+		uL.setOpaque(false);
+		uR.setOpaque(false);
 
 		
 		btnLogIn = new JButton("LOG IN");
@@ -126,6 +131,15 @@ public class Win_login_register extends JFrame implements ActionListener{
 		btnConfirm.setBackground(new Color(0, 151, 178));
 		btnConfirm.setBounds(806, 470, 183, 81);
 		contentPane.add(btnConfirm);
+		
+		label = new JLabel("New label");
+		label.setBounds(20, 10, 45, 13);
+		contentPane.add(label);
+		
+		lblFondo = new JLabel("New label");
+		lblFondo.setIcon(new ImageIcon(Win_login_register.class.getResource("/media/fondo2_.png")));
+		lblFondo.setBounds(0, 0, 1084, 573);
+		contentPane.add(lblFondo);
 		btnConfirm.addActionListener(this);
 		
 	}

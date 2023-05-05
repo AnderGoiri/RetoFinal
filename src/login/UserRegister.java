@@ -103,6 +103,7 @@ public class UserRegister extends JPanel implements ActionListener{
 		chckbxManager.setBounds(58, 76, 244, 41);
 		chckbxManager.addActionListener(this);
 		add(chckbxManager);
+		chckbxManager.setOpaque(false);
 		
 		JLabel lblName_1_1 = new JLabel("Registration");
 		lblName_1_1.setFont(new Font("Elephant", Font.PLAIN, 45));

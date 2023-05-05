@@ -20,9 +20,9 @@ public class UserLogIn extends JPanel {
 	 * Create the panel.
 	 */
 	public UserLogIn() {
-			setLayout(null);
 	
 		setLayout(null);
+		setOpaque(false);
 		
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Constantia", Font.PLAIN, 25));
@@ -52,8 +52,8 @@ public class UserLogIn extends JPanel {
 		add(lblTitle);
 		
 		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.BLACK);
-		separator.setBounds(10, 80, 817, 7);
+		separator.setForeground(new Color(255, 255, 255));
+		separator.setBounds(10, 80, 817, 1);
 		add(separator);
 		
 		JLabel lblAdvice = new JLabel("Please, identify yourself by inserting your username and password");
