@@ -3,7 +3,7 @@ package logicTier;
 import exceptions.UserFoundException;
 import exceptions.UserNotFoundException;
 import exceptions.WrongCredentialsException;
-
+import model.EnumStatusManager;
 import model.Manager;
 import model.Member;
 
@@ -99,6 +99,8 @@ public class LoginControllableImplementation implements LoginControllable {
 
 				ptmt = conn.prepareStatement("{CALL insert_new_manager(?, ?, ?, ?, ?, ?, ?, ?,?,?,?)}");
 
+				System.out.println(ma.getStatusManager());
+
 				ptmt.setString(1, ma.getUserName());
 				ptmt.setString(2, ma.getName());
 				ptmt.setString(3, ma.getSurname());
@@ -109,7 +111,7 @@ public class LoginControllableImplementation implements LoginControllable {
 				ptmt.setBoolean(8, ma.isSupervisor());
 				ptmt.setBoolean(9, ma.isTechnician());
 				ptmt.setBoolean(10, ma.isAdmin());
-				ptmt.setObject(11, ma.getStatusManager());
+				ptmt.setString(11, ma.getStatusManager().getLabel());
 
 				ptmt.executeUpdate();
 
@@ -158,15 +160,26 @@ public class LoginControllableImplementation implements LoginControllable {
 	}
 
 	@Override
-	public Manager verificationAdminToManager(Manager ma) throws UserNotFoundException {
-		boolean changes = false;
-		
-		conn = gate.openConnection();
-		
-		//stmt = conn.prepareStatement("UPDATE manager SET ");
-		
-		
-		return ma;
+	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException {
+
+		try {
+			// open the connection with the database
+			conn = gate.openConnection();
+
+			final String UPDATEstatusManager = "UPDATE propietario SET statusManager=? WHERE id = ?";
+
+			ptmt = conn.prepareStatement(UPDATEstatusManager);
+
+			ptmt.setString(1, ma.getStatusManager().getLabel());
+			ptmt.setInt(2, ma.getIdUser());
+
+			ptmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			gate.closeConnection();
+		}
 	}
 
 	@Override

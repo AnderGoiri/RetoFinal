@@ -123,11 +123,11 @@ public class Manager extends User {
 
 
 	public Manager(String userName, String name, String surname, String password, String mail, LocalDate dateRegister,
-			int idSupervisor,boolean isSupervisor, boolean isTechnician, boolean isAdmin, EnumStatusManager statusManager) {
+			int idSupervisor,boolean isSupervisor, boolean isTechnician, boolean isAdmin, EnumStatusManager enumStatusManager) {
 		super(userName, name, surname, password, mail, dateRegister);
 		this.idSupervisor = idSupervisor;
 		this.isSupervisor = isSupervisor;
 		this.isTechnician = isTechnician;
-		this.statusManager = statusManager;
+		this.statusManager = enumStatusManager;
 	}
 }

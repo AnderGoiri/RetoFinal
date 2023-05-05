@@ -70,10 +70,10 @@ public interface LoginControllable {
 	 * @return
 	 * @throws UserNotFoundException: Exception thrown when the User is not found on
 	 *                                the database and it should be.
-	 * 
+	 * @throws SQLException 
 	 * @author Ander Goirigolzarri Iturburu
 	 */
-	public Manager verificationAdminToManager(Manager ma) throws UserNotFoundException;
+	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException;
 
 	public void deleteUserMember(Member me) throws UserNotFoundException;
 
