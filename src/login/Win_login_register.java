@@ -179,6 +179,7 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 			
 		}
 	}
+	
 	public String getSelectedPanelName(JPanel jP) {
 		String selectedPanel="a";
 		
