@@ -380,7 +380,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	}
 	
 	/**
-	 * This method checks within the database to see if the selected product exists
+	 * This method checks within the database to see if the selected product exists, it checks the 3 procedures for every type of product
 	 * TODO Move to ProductManager, its only useful there
 	 * @author Jago
 	 */
@@ -394,11 +394,32 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			ctmt = con.prepareCall("{CALL select_instrument()}");
 			rs = ctmt.executeQuery();
 
-			while (rs.next() && !existe) {
+			while (rs.next()) {
 				if (rs.getInt("idProduct") == (p.getIdProduct())) {
 					existe = true;
 				}
 			}
+			if (!existe) {
+				ctmt = con.prepareCall("{CALL select_component()}");
+				rs = ctmt.executeQuery();
+
+				while (rs.next()) {
+					if (rs.getInt("idProduct") == (p.getIdProduct())) {
+						existe = true;
+					}
+				}
+				if (!existe) {
+					ctmt = con.prepareCall("{CALL select_accessory()}");
+					rs = ctmt.executeQuery();
+
+					while (rs.next()) {
+						if (rs.getInt("idProduct") == (p.getIdProduct())) {
+							existe = true;
+						}
+					}
+				}
+			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
