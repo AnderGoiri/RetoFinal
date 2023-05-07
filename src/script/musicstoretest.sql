@@ -351,3 +351,39 @@ BEGIN
 	SELECT * from product p join accessory a on p.idProduct = a.idProduct;
 END
 //
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `check_product_exists`(
+    IN p_idProduct integer,
+    OUT p_exists boolean
+)
+BEGIN
+    DECLARE done boolean;
+    DECLARE product_id integer; 
+   
+   -- Declare cursor
+    DECLARE product_cursor CURSOR FOR SELECT idProduct FROM product;
+
+    -- Declare handlers
+    -- When the cursor finishes going through the rows, this handler is used to end the loop
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = true;
+
+    SET p_exists = FALSE;
+    OPEN product_cursor;
+    product_loop: LOOP
+        FETCH product_cursor INTO product_id;
+        
+        IF product_id = p_idProduct THEN
+            SET p_exists = TRUE;
+            LEAVE product_loop;
+        END IF;  
+        
+        IF done THEN
+            LEAVE product_loop;
+        END IF;
+
+    END LOOP;
+
+    -- Close the cursor
+    CLOSE product_cursor;
+END
+//
