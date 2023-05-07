@@ -1,21 +1,17 @@
 package logicTier;
 
 import java.sql.CallableStatement;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import exceptions.AccessoryNotFoundException;
-import exceptions.ComponentNotFoundException;
-import exceptions.InstrumentNotFoundException;
 import exceptions.ProductNotFoundException;
-import exceptions.StockNotFoundException;
+import exceptions.PurchaseNotFoundException;
 import model.Accessory;
 import model.Component;
 import model.EnumClassAccessory;
@@ -29,8 +25,7 @@ import model.Member;
 import model.Product;
 import model.Purchase;
 
-//TODO Acabar Javadoc de todos los metodos
-//TODO Cambiar lo del bool por una excepcion de nuevo??
+
 public class ProductMemberControllableImplementation implements ProductMemberControllable {
 	//DB Connection
 	private Connection con;
@@ -48,8 +43,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * A call for a procedure in the script is made to search products that are instruments.
 	 * When they are found, if the instrument has the same brand, model or name as the search made by the user, they are added to a list.
 	 * @return a list of instruments
-	 * TODO Maybe let the user type something more than one word that equals any of these (name or model or brand),
-	 * a complex search with more than one attribute
 	 * @author Jago
 	 */
 	@Override
@@ -91,13 +84,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}	
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		} finally {
 			try {
 				connection.closeConnection(ctmt, con, rs);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -109,8 +102,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * A call for a procedure in the script is made to search products that are components.
 	 * When they are found, if the component has the same brand, model or name as the search made by the user, they are added to a list.
 	 * @return a list of components
-	 * TODO Maybe let the user type something more than one word that equals any of these (name or model or brand),
-	 * a complex search with more than one attribute
 	 * @author Jago
 	 */
 	@Override
@@ -121,7 +112,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		try {
 			connection.openConnection();
 			
-			//TODO ctmt = con.prepareStatement();
+			ctmt = con.prepareCall("{CALL select_component()}");
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -168,8 +159,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * A call for a procedure in the script is made to search products that are accessories.
 	 * When they are found, if the accessory has the same brand, model or name as the search made by the user, they are added to a list.
 	 * @return a list of accessories
-	 * TODO Maybe let the user type something more than one word that equals any of these (name or model or brand),
-	 * a complex search with more than one attribute
 	 * @author Jago
 	 */
 	@Override
@@ -180,7 +169,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		try {
 			connection.openConnection();
 			
-			//TODO stmt = con.prepareStatement(SELECTcomp);
+			ctmt = con.prepareCall("{CALL select_accessory()}");
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -210,13 +199,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}	
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} finally {
 			try {
 				connection.closeConnection(stmt, con, rs);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -301,7 +290,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	/**
 	 * The method searches in the list already provided by a previous search to match the Type of Product selected.
 	 * It iterates the list and checks the type of object of the Products. Once it is inside it transforms the String type value to an enum and if its equal
-	 * @param
 	 * type is the filter referring to the type of product (Acoustic or Electric)
 	 * listaProd is the list of products already searched
 	 * @author Jago
@@ -335,7 +323,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	/**
 	 * The method searches in the list already provided by a previous search to match the Class of Product selected.
 	 * It iterates the list and checks the class of object of the Products. Once it is inside it transforms the String class value to an enum and if its equal
-	 * @param
 	 * type is the filter referring to the type of product (Acoustic or Electric)
 	 * listaProd is the list of products already searched
 	 * @author Jago
@@ -376,6 +363,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		if (p.getStock() <= 0) {
 			stockNotFound = true;
 		}
+		//TODO StockNotFoundException?
 		return stockNotFound;
 	}
 	
@@ -406,50 +394,56 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 	@Override
 	public Purchase addPurchase(Product p, Member me) {
-		Purchase pu = new Purchase();
-		Set<Product> productSet = new HashSet<Product>();
-		try {
-			con = connection.openConnection();
-			CallableStatement ctmt = con.prepareCall("{CALL insert_new_product(?,?,?,?,?)");
-			ctmt.setInt(1, me.getIdUser());
-			//
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.closeConnection(ctmt, con, null);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
-		
-		return pu;
+		return null;
+	
 	}
 	
 	@Override
-	public Purchase addProduct(Purchase pset) {
-		// TODO Auto-generated method stub
-		return null;
+	public Purchase addProduct(Purchase pTotal, Product p, Member m) {
+		
+		if (pTotal == null) {
+			pTotal = new Purchase();
+			try {
+			con = connection.openConnection();
+			
+			ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
+			
+			ctmt.setInt(1, m.getIdUser());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		}
+		pTotal.getSetProduct().add(p);
+		return pTotal;
 	}
 
 	@Override
-	public void listPurchase(Purchase pset) {
-		// TODO Auto-generated method stub
+	public Purchase listPurchase(Purchase pTotal) {
+		for (Product p : pTotal.getSetProduct()) {
+			
+		}
 		
 	}
 
 	@Override
-	public Purchase removeProduct(Purchase pset) {
-		// TODO Auto-generated method stub
-		return null;
+	public Purchase removeProduct(Purchase pTotal, Product p) throws Exception {
+		ArrayList<Product> pAux = new ArrayList<Product>();
+		if (pTotal == null) {
+			throw new PurchaseNotFoundException();
+		}
+		for (Product prod : pTotal.getSetProduct())
+			if (!prod.equals(p)) {
+				pAux.add(prod);
+			}
+			
+		return pTotal;
 	}
 
 	@Override
-	public Purchase removePurchase(Purchase pset) {
+	public Purchase removePurchase(Purchase pTotal) {
 		// TODO Auto-generated method stub
 		return null;
 	}

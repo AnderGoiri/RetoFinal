@@ -34,11 +34,11 @@ public interface ProductMemberControllable {
 	
 	public Purchase addPurchase(Product p,Member me);
 	
-	public Purchase addProduct(Purchase pset); 
+	public Purchase addProduct(Purchase pset, Product p, Member m); 
 	
-	public void listPurchase(Purchase pset);
+	public Purchase listPurchase(Purchase pset);
 	
-	public Purchase removeProduct(Purchase pset);
+	public Purchase removeProduct(Purchase pset, Product p) throws Exception;
 	
 	public Purchase removePurchase(Purchase pset);
 	
