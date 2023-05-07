@@ -380,19 +380,19 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	}
 	
 	/**
-	 * This method checks within the database to see if the selected product exists, it checks the 3 procedures for every type of product
+	 * This method checks within the database to see if the selected product exists
 	 * TODO Move to ProductManager, its only useful there
 	 * @author Jago
 	 */
 	@Override
-	public boolean existsProduct(Product p) {
+	public boolean existsProduct(int search) {
 		boolean existe = false;
 
 		try {
 			con = connection.openConnection();
 			
 			ctmt = con.prepareCall("{CALL check_product_exists(?, ?)}");
-			ctmt.setInt(1, p.getIdProduct());
+			ctmt.setInt(1, search);
 
 			ctmt.executeQuery();
 			existe = ctmt.getObject(2, boolean.class);
@@ -417,6 +417,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				connection.closeConnection(ctmt, con, null);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		
