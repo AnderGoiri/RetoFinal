@@ -90,8 +90,7 @@ create table if not exists purchase(
 	datePurchase date,
     purchaseQuantity integer,
     totalPrice integer,
-    paymentStatus enum('New', 'Pending', 'Payment Received', 'Payment Accepted', 'Payment Denied', 'Cancelled', 'Closed'),
-	paymendMethod enum('Tarjeta', 'Efectivo'),
+    purchaseStatus enum('In process', 'Finished'),
     foreign key (idUser) references user (idUser) on delete cascade,
     primary key (idPurchase)
 );
@@ -276,20 +275,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_purchase`(
     IN p_idUser integer,
 	IN p_purchaseQuantity integer, 
     IN p_totalPrice integer,
-    IN p_paymentStatus enum('New', 'Pending', 'Payment Received', 'Payment Accepted', 'Payment Denied', 'Cancelled', 'Closed'),
-	IN p_paymendMethod enum('Tarjeta', 'Efectivo')
+	IN p_purchaseStatus enum('In process', 'Finished')
 )
 BEGIN
     -- Get the ID of the new product
 	SET @new_purchase_id = LAST_INSERT_ID();
     -- Insert the new purchase into the purchase table
-    INSERT INTO purchase (idPurchase, idUser, datePurchase, totalPrice, paymentStatus, paymentMethod)
-    VALUES (@new_purchase_id, p_idUser, CAST(GETDATE() AS Date) , p_totalPrice, p_paymentStatus, p_paymentMethod);
+    INSERT INTO purchase (idPurchase, idUser, datePurchase, totalPrice, purchaseStatus)
+    VALUES (@new_purchase_id, p_idUser, CAST(GETDATE() AS Date), p_totalPrice, p_purchaseStatus);
 END
 //
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_repair`(
-    IN p_idRepair integer,
     IN p_idUser integer,
     IN p_repairCost integer,
     IN p_deadline date,
