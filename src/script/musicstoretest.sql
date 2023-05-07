@@ -9,7 +9,7 @@ create table if not exists user(
     name varchar(25),
     surname varchar(25),
     password varchar(25),
-    mail varchar(25) unique constraint valid_email check (mail regexp '^[A-Za-z0-9._]+@[A-Za-z0-9._]+[.]+[A-Za-z]') ,
+    mail varchar(50) unique,
     dateRegister date,
 	primary key(idUser)
 );
@@ -49,7 +49,7 @@ create table if not exists product(
 	idProduct integer not null unique auto_increment,
     brand varchar(20),
     model varchar(20),
-    description varchar(20),
+    description varchar(200),
     unitPrice integer,
     stock integer,
     isActive tinyint,
@@ -152,7 +152,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_manager`(
     IN p_name VARCHAR(25),
     IN p_surname VARCHAR(25),
     IN p_password VARCHAR(25),
-    IN p_mail VARCHAR(25),
+    IN p_mail VARCHAR(50),
     IN p_dateRegister DATE,
     IN p_idSupervisor INTEGER,
     IN is_Supervisor tinyint,
@@ -177,7 +177,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_member`(
     IN p_name VARCHAR(25),
     IN p_surname VARCHAR(25),
     IN p_password VARCHAR(25),
-    IN p_mail VARCHAR(25),
+    IN p_mail VARCHAR(50),
     IN p_dateRegister DATE,
     IN p_address VARCHAR(100),
     IN p_creditCard VARCHAR(16)
@@ -197,7 +197,7 @@ DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_instrument`(
     IN p_brand varchar(20),
     IN p_model varchar(20),
-	IN p_description varchar(20),
+	IN p_description varchar(200),
     IN p_unitPrice integer,
     IN p_stock integer,
     IN is_Active tinyint,
@@ -223,7 +223,7 @@ DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_component`(
     IN p_brand varchar(20),
     IN p_model varchar(20),
-	IN p_description varchar(20),
+	IN p_description varchar(200),
     IN p_unitPrice integer,
     IN p_stock integer,
     IN is_Active tinyint,
@@ -249,7 +249,7 @@ DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_accessory`(
     IN p_brand varchar(20),
     IN p_model varchar(20),
-	IN p_description varchar(20),
+	IN p_description varchar(200),
     IN p_unitPrice integer,
     IN p_stock integer,
     IN is_Active tinyint,
@@ -383,7 +383,15 @@ BEGIN
 
     END LOOP;
 
-    -- Close the cursor
     CLOSE product_cursor;
 END
 //
+
+DELIMITER //
+CREATE TRIGGER email_formattrigger BEFORE INSERT ON user
+FOR EACH ROW
+BEGIN
+    IF NEW.mail NOT REGEXP '^[A-Za-z0-9.]+@[A-Za-z0-9._]+[.]+[A-Za-z]' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid email format';
+    END IF;
+END //
