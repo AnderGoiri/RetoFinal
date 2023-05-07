@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +18,7 @@ import model.Component;
 import model.EnumClassAccessory;
 import model.EnumClassComponent;
 import model.EnumClassInstrument;
+import model.EnumStatusPurchase;
 import model.EnumTypeAccessory;
 import model.EnumTypeComponent;
 import model.EnumTypeInstrument;
@@ -394,28 +396,81 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 	@Override
 	public Purchase addPurchase(Product p, Member me) {
-		
+
 		return null;
-	
+
 	}
-	
+
 	@Override
 	public Purchase addProduct(Purchase pTotal, Product p, Member m) {
-		
-		if (pTotal == null) {
+		String stPurch = "Finished";
+		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
+
+		if ((pTotal == null) || (pTotal.getStatusPurchase().equals(statusPurch))) {
 			pTotal = new Purchase();
 			try {
-			con = connection.openConnection();
-			
-			ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
-			
-			ctmt.setInt(1, m.getIdUser());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				con = connection.openConnection();
+
+				ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
+
+				ctmt.setInt(1, m.getIdUser());
+				ctmt.setInt(2, 1);
+				ctmt.setInt(3, 1);
+				ctmt.setFloat(4, p.getPrice());
+				ctmt.setString(5, "In progress");
+
+				ctmt.executeUpdate();
+
+				// Obtener el idPurchase generado por la base de datos
+				ResultSet rs = ctmt.getGeneratedKeys();
+				if (rs.next()) {
+					int idPurchase = rs.getInt(1);
+					float price = rs.getFloat(2);
+					EnumStatusPurchase enumStPurchase = EnumStatusPurchase.valueOf(rs.getString("statusPurchase"));
+					LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
+					int purchaseQ = 1;
+					pTotal.setIdPurchase(idPurchase);
+					pTotal.setPurchaseTotalCost(price);
+					pTotal.setStatusPurchase(enumStPurchase);
+					pTotal.setPurchaseDate(date);
+					pTotal.setPurchaseQuantity(purchaseQ);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					connection.closeConnection(ctmt, con, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			// Si pTotal no es null, ya existe una compra en progreso
+
+			try {
+				con = connection.openConnection();
+				ctmt = con.prepareCall("UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
+				ctmt.setInt(1, pTotal.getPurchaseQuantity() + 1);
+				ctmt.setFloat(2, pTotal.getPurchaseTotalCost() + p.getPrice());
+				ctmt.setInt(3, pTotal.getIdPurchase());
+
+				ctmt.executeUpdate();
+
+				// Actualizar pTotal con los nuevos datos de la compra
+				pTotal.setPurchaseTotalCost(pTotal.getPurchaseTotalCost() + p.getPrice());
+				pTotal.setPurchaseQuantity(pTotal.getPurchaseQuantity() + 1);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					connection.closeConnection(ctmt, con, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-			
-		}
+
+		// Agregar el producto a la compra
 		pTotal.getSetProduct().add(p);
 		return pTotal;
 	}
@@ -425,6 +480,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		for (Product p : pTotal.getSetProduct()) {
 			
 		}
+		return pTotal;
 		
 	}
 

@@ -22,11 +22,10 @@ public class Purchase {
 	private float purchaseTotalCost;
 	private LocalDate purchaseDate;
 	private EnumStatusPurchase statusPurchase;
-	private EnumMethodPurchase methodPurchase;
 	private Set<Product> setProduct;
 	
 	public Purchase(int idPurchase, int idUser, int purchaseQuantity, float purchaseTotalCost, LocalDate purchaseDate,
-			EnumStatusPurchase statusPurchase, EnumMethodPurchase methodPurchase, Set<Product> setProduct) {
+			EnumStatusPurchase statusPurchase, Set<Product> setProduct) {
 		super();
 		this.idPurchase = idPurchase;
 		this.idUser = idUser;
@@ -34,7 +33,6 @@ public class Purchase {
 		this.purchaseTotalCost = purchaseTotalCost;
 		this.purchaseDate = purchaseDate;
 		this.statusPurchase = statusPurchase;
-		this.methodPurchase = methodPurchase;
 		this.setProduct = setProduct;
 	}
 
@@ -90,14 +88,7 @@ public class Purchase {
 		this.statusPurchase = statusPurchase;
 	}
 
-	public EnumMethodPurchase getMethodPurchase() {
-		return methodPurchase;
-	}
-
-	public void setMethodPurchase(EnumMethodPurchase methodPurchase) {
-		this.methodPurchase = methodPurchase;
-	}
-
+	
 	public Set<Product> getSetProduct() {
 		return setProduct;
 	}
