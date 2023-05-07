@@ -278,11 +278,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_new_purchase`(
 	IN p_purchaseStatus enum('In process', 'Finished')
 )
 BEGIN
-    -- Get the ID of the new product
+    -- Get the ID of the new purchase
 	SET @new_purchase_id = LAST_INSERT_ID();
     -- Insert the new purchase into the purchase table
-    INSERT INTO purchase (idPurchase, idUser, datePurchase, totalPrice, purchaseStatus)
-    VALUES (@new_purchase_id, p_idUser, CAST(GETDATE() AS Date), p_totalPrice, p_purchaseStatus);
+    INSERT INTO purchase (idPurchase, idUser, purchaseQuantity, datePurchase, totalPrice, purchaseStatus)
+    VALUES (@new_purchase_id, p_idUser, p_purchaseQuantity, CAST(GETDATE() AS Date), p_totalPrice, p_purchaseStatus);
 END
 //
 DELIMITER //
