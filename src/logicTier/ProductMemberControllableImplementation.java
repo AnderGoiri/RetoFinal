@@ -496,6 +496,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			}
 			
 		return pTotal;
+		//TODO Modify the purchase in the database too
 	}
 
 	@Override

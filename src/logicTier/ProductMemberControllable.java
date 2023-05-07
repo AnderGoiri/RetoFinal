@@ -32,7 +32,7 @@ public interface ProductMemberControllable {
 	
 	public boolean checkProduct(Product p) throws Exception;
 	
-	public Purchase addPurchase(Product p,Member me);
+	public Purchase addPurchase(Product p, Member me);
 	
 	public Purchase addProduct(Purchase pset, Product p, Member m); 
 	
