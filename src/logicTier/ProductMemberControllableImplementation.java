@@ -121,7 +121,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		try {
 			connection.openConnection();
 			
-			//ctmt = con.prepareStatement();
+			//TODO ctmt = con.prepareStatement();
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -180,7 +180,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		try {
 			connection.openConnection();
 			
-			//stmt = con.prepareStatement(SELECTcomp);
+			//TODO stmt = con.prepareStatement(SELECTcomp);
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -386,40 +386,17 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	@Override
 	public boolean existsProduct(Product p) {
-		ResultSet rs = null;
 		boolean existe = false;
 
 		try {
 			con = connection.openConnection();
-			ctmt = con.prepareCall("{CALL select_instrument()}");
-			rs = ctmt.executeQuery();
-
-			while (rs.next()) {
-				if (rs.getInt("idProduct") == (p.getIdProduct())) {
-					existe = true;
-				}
-			}
-			if (!existe) {
-				ctmt = con.prepareCall("{CALL select_component()}");
-				rs = ctmt.executeQuery();
-
-				while (rs.next()) {
-					if (rs.getInt("idProduct") == (p.getIdProduct())) {
-						existe = true;
-					}
-				}
-				if (!existe) {
-					ctmt = con.prepareCall("{CALL select_accessory()}");
-					rs = ctmt.executeQuery();
-
-					while (rs.next()) {
-						if (rs.getInt("idProduct") == (p.getIdProduct())) {
-							existe = true;
-						}
-					}
-				}
-			}
 			
+			ctmt = con.prepareCall("{CALL check_product_exists(?, ?)}");
+			ctmt.setInt(1, p.getIdProduct());
+
+			ctmt.executeQuery();
+			existe = ctmt.getObject(2, boolean.class);
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
