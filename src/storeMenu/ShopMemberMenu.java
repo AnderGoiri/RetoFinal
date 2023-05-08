@@ -39,7 +39,7 @@ public class ShopMemberMenu extends JPanel {
 	 * Create the panel.
 	 */
 	public ShopMemberMenu() {
-		setBounds(0, 0, 1860, 950);
+		setBounds(0, 0, 1860, 910);
 		setLayout(null);
 
 		/**
@@ -56,9 +56,8 @@ public class ShopMemberMenu extends JPanel {
 		 * Add a combo box to the panel to be able to filter the products by different
 		 * features.
 		 */
-		comboBox = new JComboBox();
-		comboBox.setModel(
-				new DefaultComboBoxModel(new String[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+		comboBox = new JComboBox<>();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
 		comboBox.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		comboBox.setFont(new Font("Constantia", Font.PLAIN, 25));
 		comboBox.setBounds(919, 206, 316, 50);

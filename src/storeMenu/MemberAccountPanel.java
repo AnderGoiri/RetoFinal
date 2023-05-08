@@ -36,7 +36,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener {
 	 */
 	public MemberAccountPanel() {
 		setLayout(null);
-		setBounds(0, 0, 1582, 845);
+		setBounds(0, 0, 1860, 910);
 
 		
 		
