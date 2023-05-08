@@ -4,18 +4,20 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * @author Ander, Jago
  * 
- *         The <code>Purchase</code> class represents a purchase made by a
- *         <code>User</code> in the system. It contains information such as the
- *         ID of the purchase, the ID of the user who made the purchase, the
- *         purchase quantity, the total cost of the purchase, the date of the
- *         purchase, the current status of the purchase, the method of purchase,
- *         and a set of products included in the purchase.
+ * 
+ * The <code>Purchase</code> class represents a purchase made by a
+ * <code>User</code> in the system. It contains information such as the ID of
+ * the purchase, the ID of the user who made the purchase, the purchase
+ * quantity, the total cost of the purchase, the date of the purchase, the
+ * current status of the purchase, the method of purchase, and a set of products
+ * included in the purchase.
+ * 
+ * @author Jago Bartolomé Barroso, Ander Goirigolzarri Iturburu
  */
 public class Purchase {
 
-	// ---Attributes---
+	// --- Attributes ---
 	private int idPurchase;
 	private int idUser;
 	private int purchaseQuantity;
@@ -23,7 +25,7 @@ public class Purchase {
 	private LocalDate purchaseDate;
 	private EnumStatusPurchase statusPurchase;
 	private Set<Product> setProduct;
-	
+
 	public Purchase(int idPurchase, int idUser, int purchaseQuantity, float purchaseTotalCost, LocalDate purchaseDate,
 			EnumStatusPurchase statusPurchase, Set<Product> setProduct) {
 		super();
@@ -36,9 +38,12 @@ public class Purchase {
 		this.setProduct = setProduct;
 	}
 
+
 	public Purchase() {
 		super();
 	}
+
+	// --- Getters & Setters ---
 
 	public int getIdPurchase() {
 		return idPurchase;
@@ -88,7 +93,6 @@ public class Purchase {
 		this.statusPurchase = statusPurchase;
 	}
 
-	
 	public Set<Product> getSetProduct() {
 		return setProduct;
 	}
@@ -97,5 +101,4 @@ public class Purchase {
 		this.setProduct = setProduct;
 	}
 
-	
 }

@@ -1,15 +1,11 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Set;
-
-import exceptions.AccessoryNotFoundException;
-import exceptions.ComponentNotFoundException;
-import exceptions.InstrumentNotFoundException;
 
 /**
- * @author Jago
  * Base abstract class Product, can't instantiate it because it has three derived classes
+ * 
+ * @author Jago Bartolomé Barroso
  */
 public abstract class Product implements Serializable {
 
@@ -26,11 +22,11 @@ public abstract class Product implements Serializable {
 	protected boolean saleActive;
 	protected Float salePercentage;
 	protected boolean isActive;
-	
 	// --- Getters & Setters ---
 	public int getIdProduct() {
 		return idProduct;
 	}
+
 	public void setIdProduct(int idProduct) {
 		this.idProduct = idProduct;
 	}
@@ -115,7 +111,7 @@ public abstract class Product implements Serializable {
 		this.salePercentage = salePercentage;
 		this.isActive = isActive;
 	}
-	
+
 	public Product() {
 		super();
 	}
