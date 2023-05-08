@@ -4,6 +4,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import logicTier.LoginControllable;
+import logicTier.LoginFactory;
+import model.EnumStatusManager;
+import model.Manager;
+import model.Member;
 import storeMenu.StoreMenu;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
@@ -19,6 +25,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 
 public class Win_login_register extends JFrame implements ActionListener, KeyListener, FocusListener{
@@ -27,14 +34,15 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 	private JPanel contentPane;
 	private JPanel switchLilPanel;
 	private CardLayout cardLayout;
-	private UserRegister uR;
-	private UserLogIn uL;
+	private UserRegister userRegisterPanel;
+	private UserLogIn userLoginPanel;
 	private JButton btnLogIn;
 	private JButton btnSignUp;
 	private JButton btnConfirm;
 	private JLabel lblLogoFill;
 	private JLabel label;
 	private JLabel lblFondo;
+	private JLabel lblLogo;
 
 
 	/**
@@ -69,15 +77,15 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		cardLayout=new CardLayout();
 		switchLilPanel=new JPanel();
 		switchLilPanel.setOpaque(false);
-		uL=new UserLogIn();
-		uR=new UserRegister();
+		userLoginPanel=new UserLogIn();
+		userRegisterPanel=new UserRegister();
 		switchLilPanel.setBounds(247, 0, 837, 460);
 		contentPane.add(switchLilPanel);
 		switchLilPanel.setLayout(cardLayout);
-		switchLilPanel.add("LogIn",uL);
-		switchLilPanel.add("SignUp",uR);
-		uL.setOpaque(false);
-		uR.setOpaque(false);
+		switchLilPanel.add("LogIn",userLoginPanel);
+		switchLilPanel.add("SignUp",userRegisterPanel);
+		userLoginPanel.setOpaque(false);
+		userRegisterPanel.setOpaque(false);
 
 		
 		btnLogIn = new JButton("LOG IN");
@@ -109,7 +117,7 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		btnSignUp.addKeyListener(this);
 		
 
-		JLabel lblLogo = new JLabel("");
+		lblLogo = new JLabel("");
 		lblLogo.setBackground(Color.WHITE);
 		lblLogo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblLogo.setVerticalAlignment(SwingConstants.TOP);
@@ -179,14 +187,54 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 					sM.setVisible(true);
 					sM.setLocationRelativeTo(null);
 				}else {
+					try {
+					//obtener obj LoginControllable llamando al metodo de la factoria
+					LoginControllable login = LoginFactory.getLoginControllable();
+					//evaluar si se registra un member o un manager
+					if(!userRegisterPanel.getChckbxManager().isSelected()) {
+						//si es un miembro, 
+						login.registerUserMember(new Member(
+							userRegisterPanel.getTextFieldUsername().getText(),
+							userRegisterPanel.getTextFieldName().getText(),
+							userRegisterPanel.getTextFieldSurname().getText(),
+							userRegisterPanel.getTextFieldPassword().getText(),
+							userRegisterPanel.getTextFieldEmail().getText(),
+							LocalDate.now(),
+							userRegisterPanel.getTextFieldAddress().getText(),
+							userRegisterPanel.getTextFieldCreditCard().getText()
+							));
+							//recogemos todos los datos del miembro de la ventana y llamamos al metodo registerUserMember
+					}else {
+			
+						//si es un manager, 
+					login.registerUserManager(new Manager(
+								userRegisterPanel.getTextFieldUsername().getText(),
+								userRegisterPanel.getTextFieldName().getText(),
+								userRegisterPanel.getTextFieldSurname().getText(),
+								userRegisterPanel.getTextFieldPassword().getText(),
+								userRegisterPanel.getTextFieldEmail().getText(),
+								LocalDate.now(),
+								0, //TODO how to manage id supervisor
+								userRegisterPanel.getChckbxSupervisor().isSelected(),
+								userRegisterPanel.getChckbxTechnician().isSelected(),
+								false, //TODO how to manage isAdmin
+								EnumStatusManager.P
+								)
+							);
+							//recogemos todos los datos del miembro de la ventana y llamamos al metodo registerUserManager
+					}
+					//si el registro es correcto, le mandamos al login
+						cardLayout.show(switchLilPanel, "LogIn");
+						btnLogIn.setEnabled(false);
+						btnLogIn.setVisible(false);
+						btnSignUp.setEnabled(true);
+						btnSignUp.setVisible(true);
+					//Si se produce alguna excepcion, mostramos un mensaje advirtiendo al usuario
+					}catch(Exception e1) {
+						JOptionPane.showMessageDialog(this, e1.getMessage());
+					}
 					
-					//metodo de registro
 					
-					cardLayout.show(switchLilPanel, "LogIn");
-					btnLogIn.setEnabled(false);
-					btnLogIn.setVisible(false);
-					btnSignUp.setEnabled(true);
-					btnSignUp.setVisible(true);
 				} 
 			}
 			

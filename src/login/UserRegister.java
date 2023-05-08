@@ -2,6 +2,8 @@ package login;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -11,6 +13,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
+
+import logicTier.LoginFactory;
 
 import javax.swing.ButtonGroup;
 
@@ -23,12 +27,67 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 	private JTextField textFieldCreditCard;
 	private JTextField textFieldEmail;
 	private JCheckBox chckbxManager;
+	
+	
+	public JTextField getTextFieldName() {
+		return textFieldName;
+	}
+
+	public JTextField getTextFieldSurname() {
+		return textFieldSurname;
+	}
+
+	public JTextField getTextFieldUsername() {
+		return textFieldUsername;
+	}
+
+	public JTextField getTextFieldPassword() {
+		return textFieldPassword;
+	}
+
+	public JTextField getTextFieldAddress() {
+		return textFieldAddress;
+	}
+
+	public JTextField getTextFieldCreditCard() {
+		return textFieldCreditCard;
+	}
+
+	public JTextField getTextFieldEmail() {
+		return textFieldEmail;
+	}
+
+	public JCheckBox getChckbxManager() {
+		return chckbxManager;
+	}
+
+	public JCheckBox getChckbxTechnician() {
+		return chckbxTechnician;
+	}
+
+	public JCheckBox getChckbxSupervisor() {
+		return chckbxSupervisor;
+	}
+
+	public JLabel getLblAddress() {
+		return lblAddress;
+	}
+
+	public JLabel getLblCredirCard() {
+		return lblCredirCard;
+	}
+
+	public ButtonGroup getButtonGroupManagerRole() {
+		return buttonGroupManagerRole;
+	}
+
 	private JCheckBox chckbxTechnician;
 	private JCheckBox chckbxSupervisor;
 	private JLabel lblAddress;
 	private JLabel lblCredirCard;
 	private static final long serialVersionUID = 1L;
 	private final ButtonGroup buttonGroupManagerRole = new ButtonGroup();
+	
 
 	/**
 	 * Create the panel.
@@ -211,4 +270,10 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 	public void keyReleased(KeyEvent e) {}
 	@Override
 	public void focusGained(FocusEvent e) {}
+	
+	public void metodoRegister() {
+		
+		
+		JOptionPane.showMessageDialog(this, "El metodo funiconaeaxavdhajdha", "Suuuh", JOptionPane.PLAIN_MESSAGE);
+	}
 }
