@@ -394,19 +394,44 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		return existe;
 	}
 
+	/**
+	 * First we transform a String value into enum.
+	 * We check if the product has stock and then update the product table.
+	 * Then we check if the current Purchase is new (to add it as a new one into the database) and if the status is NOT "In progress",
+	 * Then we add a new purchase into the database and we retrieve the info we just inserted to use it here.
+	 * In case the Purchase is not null, we update the Purchase with new info of the product.
+	 * We update the purchase record of the member with a new one
+	 * @param Purchase pTotal is the Purchase currently in progress, Product p is the product we want to add to the shopping cart and Member m the member using the application.
+	 * @author Jago Bartolomé Barroso
+	 */
 	@Override
-	public Purchase addPurchase(Product p, Member me) {
-
-		return null;
-
-	}
-
-	@Override
-	public Purchase addProduct(Purchase pTotal, Product p, Member m) {
-		String stPurch = "Finished";
+	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m) {
+		String stPurch = "In progress";
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
 
-		if ((pTotal == null) || (pTotal.getStatusPurchase().equals(statusPurch))) {
+		try {
+			if (checkProduct(p)) {
+				pTotal.getSetProduct().add(p);
+				
+				
+				con = connection.openConnection();
+				ctmt = con.prepareCall("UPDATE product SET stock=? WHERE idProduct=?");
+				ctmt.setInt(1, p.setStock((int) (p.getStock()-1f)));
+				ctmt.setInt(2, p.getIdProduct());
+
+				ctmt.executeUpdate();
+				
+				
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if ((pTotal == null) || (!pTotal.getStatusPurchase().equals(statusPurch))) {
 			pTotal = new Purchase();
 			try {
 				con = connection.openConnection();
@@ -444,6 +469,15 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					e.printStackTrace();
 				}
 			}
+			try {
+				Set <Purchase> listPurchase = m.getPurchaseRecord();
+				listPurchase.add(pTotal);
+				m.setPurchaseRecord(listPurchase);
+				//TODO Check if this is saved correctly (db?)
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
 		} else {
 			// Si pTotal no es null, ya existe una compra en progreso
 
@@ -469,40 +503,95 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 			}
 		}
-
-		// Agregar el producto a la compra
-		pTotal.getSetProduct().add(p);
-		return pTotal;
-	}
-
-	@Override
-	public Purchase listPurchase(Purchase pTotal) {
-		for (Product p : pTotal.getSetProduct()) {
-			
-		}
-		return pTotal;
 		
+		try {
+			connection.closeConnection(ctmt, con);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+	
+		return pTotal;
 	}
 
+	/**
+	 * This method returns the current "In progress" purchase from the member purchase record
+	 * @param Member m
+	 * @author Jago Bartolomé Barroso
+	 */
+	@Override
+	public Purchase listPurchase(Member m) {
+		Set<Purchase> listPurchase = m.getPurchaseRecord();
+		Purchase aux = null;
+		
+		for (Purchase p : listPurchase) {
+			String stPurch = "In progress";
+			EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
+			
+			if (p.getStatusPurchase().equals(statusPurch)) {
+				aux = p;
+			}
+		}
+		return aux;
+	}
+
+	/**
+	 * This method first checks if the Purchase pTotal is null, if not, then there is at least one product inside. If there are products inside, we loop through each one and
+	 * save them in a secondary Set of Products, once this is done, the new Set is saved in the Purchase pTotal, and the Purchase cost and quantity are updated. Finally we update the information in the database.
+	 * @param Purchase pTotal is the current Purchase in progress, Product p is the product that we wish to remove from the purchase
+	 * @author Jago Bartolomé Barroso
+	 */
 	@Override
 	public Purchase removeProduct(Purchase pTotal, Product p) throws Exception {
-		ArrayList<Product> pAux = new ArrayList<Product>();
+		Set<Product> pAux = null;
 		if (pTotal == null) {
 			throw new PurchaseNotFoundException();
-		}
-		for (Product prod : pTotal.getSetProduct())
-			if (!prod.equals(p)) {
-				pAux.add(prod);
+		} else {
+			for (Product prod : pTotal.getSetProduct()) {
+				if (!prod.equals(p)) {
+					pAux.add(prod);
+				}
+			}
+			pTotal.setSetProduct(pAux);
+			pTotal.setPurchaseTotalCost(pTotal.getPurchaseTotalCost() - p.getPrice());
+			pTotal.setPurchaseQuantity(pTotal.getPurchaseQuantity() - 1);
+			try {
+				con = connection.openConnection();
+				ctmt = con.prepareCall("UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
+				ctmt.setInt(1, pTotal.getPurchaseQuantity() - 1);
+				ctmt.setFloat(2, pTotal.getPurchaseTotalCost() - p.getPrice());
+				ctmt.setInt(3, pTotal.getIdPurchase());
+				ctmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					connection.closeConnection(ctmt, con, null);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 			
+		}	
 		return pTotal;
-		//TODO Modify the purchase in the database too
 	}
-
+	/**
+	 * This method checks if the pTotal status is "In progress" and if that's the case, the value is changed to "Finished". This method will be called when finishing shopping.
+	 * @param Purchase pTotal
+	 * @author Jago Bartolomé Barroso
+	 */
 	@Override
 	public Purchase removePurchase(Purchase pTotal) {
-		// TODO Auto-generated method stub
-		return null;
+		String stPurch = "In progress";
+		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
+		
+		if(pTotal.getStatusPurchase().equals(statusPurch)) {
+			stPurch = "Finished";
+			statusPurch = EnumStatusPurchase.valueOf(stPurch);
+			pTotal.setStatusPurchase(statusPurch);
+		}
+		return pTotal;
 	}
 	
 }

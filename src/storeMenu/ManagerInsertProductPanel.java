@@ -222,7 +222,6 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if(e.getSource().equals(chckbxSale)) {
 			if(chckbxSale.getModel().isSelected()) {
 				lblSalePercentage.setVisible(true);
@@ -234,12 +233,14 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 				textFieldSalePercentage.setEnabled(false);
 			}
 			
-			
+			//TODO Modificar lista productos con sale
 		}else if(e.getSource().equals(btnConfirm)){
 			if(blankText()==false) {
+				//TODO Introducir productos en la base de datos
 				JOptionPane.showMessageDialog(this, "Product added succesfully");
 			}
 		}
+		
 	}
 
 	private boolean blankText() {

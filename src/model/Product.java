@@ -51,8 +51,8 @@ public abstract class Product implements Serializable {
 	public int getStock() {
 		return stock;
 	}
-	public void setStock(int stock) {
-		this.stock = stock;
+	public int setStock(int stock) {
+		return this.stock = stock;
 	}
 	public String getBrand() {
 		return brand;
