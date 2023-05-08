@@ -107,8 +107,8 @@ create table if not exists management(
 );
 
 /*USERS*/
-CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY 'abcd*1234';
-GRANT ALL PRIVILEGES ON musicstoretest.* TO 'root'@'localhost' WITH GRANT OPTION;
+CREATE USER IF NOT EXISTS 'superadmin'@'localhost' IDENTIFIED BY 'abcd*1234';
+GRANT ALL PRIVILEGES ON musicstoretest.* TO 'superadmin'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 DELIMITER //
