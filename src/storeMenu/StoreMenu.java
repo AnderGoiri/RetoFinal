@@ -64,7 +64,7 @@ public class StoreMenu extends JDialog {
 	 * This method displays the members menu.
 	 */
 	private void showMenu() {
-		// TODO Auto-generated method stub
+		// metodo que recoge el usuario y segun su tipo muestra el menu de member o de manager
 
 		
 
