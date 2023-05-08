@@ -4,7 +4,11 @@ package storeMenu;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import login.Win_login_register;
+
 import java.awt.CardLayout;
+import java.awt.Color;
 
 public class StoreMenu extends JDialog {
 	
@@ -12,6 +16,7 @@ public class StoreMenu extends JDialog {
 	private JPanel menuPanel;
 	
 	private MemberMenu memberPanel;
+	private ManagerMenu managerPanel;
 	private CardLayout cardLayout;
 
 
@@ -19,34 +24,19 @@ public class StoreMenu extends JDialog {
 	
 //	private ManagerMenu managerPanel;
 
-
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			/**
-			 * A new instance of StoreMenu, which is a JDialog, is created and displayed.
-			 */
-			StoreMenu dialog = new StoreMenu();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
-	public StoreMenu() {
-		setLayout(null);
+	
+	public StoreMenu(Win_login_register win_login_register, boolean b) {
+		super(win_login_register,b);
+		setResizable(false);
+		setTitle("THOMANN STORE MENU");
+		setBackground(new Color(255, 255, 255));
+		getContentPane().setLayout(null);
 		setBounds(100, 100, 1900, 1000);
 		/**
 		 * A panel is created that will contain all the other components.
 		 */
 		contentPanel = new JPanel();
+		contentPanel.setBackground(new Color(0, 150, 178));
 		contentPanel.setBounds(0, 0, 1900, 1000);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane (contentPanel);
@@ -64,14 +54,10 @@ public class StoreMenu extends JDialog {
 		 */
 		memberPanel = new MemberMenu();
 		menuPanel.add( "Member", memberPanel);
-		
-		
-		
-	//	managerPanel = new ManagerMenu();
-	//	menuPanel.add("Manager", managerPanel);
-		/**
-		 * The menu is displayed.
-		 */
+	
+		managerPanel = new ManagerMenu();
+		menuPanel.add("Manager", managerPanel);
+
 		showMenu();
 	}
 	/**
@@ -80,9 +66,9 @@ public class StoreMenu extends JDialog {
 	private void showMenu() {
 		// TODO Auto-generated method stub
 
-		cardLayout.show(menuPanel, "Member");
+		
 
-		//		cardLayout.show(menuPanel, "Manager");
+		cardLayout.show(menuPanel, "Manager");
 
 	}
 
