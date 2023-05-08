@@ -3,11 +3,13 @@ package model;
 import java.util.Set;
 
 /**
- * @author Jago, Ander Derived class Instrument from Product
+ * Derived class Instrument from Product
+ * 
+ * @author Jago Bartolomé Barroso
  */
-public class Instrument extends Product {
 
-	// --- Attributes ---
+public class Instrument extends Product {
+	// ---Attributes---
 	private static final long serialVersionUID = 1L;
 	private EnumClassInstrument classInstrument;
 	private EnumTypeInstrument typeInstrument;
@@ -29,18 +31,20 @@ public class Instrument extends Product {
 		this.typeInstrument = typeInstrument;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	// --- Constructors ---
-	public Instrument(int idProduct, String nameP, Float price, String descriptionP, int stock, Set<String> brand,
-			Set<String> model, Set<String> color, boolean saleActive, Float salePercentage, boolean isActive,
+	public Instrument(int idProduct, String nameP, Float price, String descriptionP, int stock, String brand,
+			String model, String color, boolean saleActive, Float salePercentage, boolean isActive,
 			EnumClassInstrument classInstrument, EnumTypeInstrument typeInstrument) {
 		super(idProduct, nameP, price, descriptionP, stock, brand, model, color, saleActive, salePercentage, isActive);
 		this.classInstrument = classInstrument;
 		this.typeInstrument = typeInstrument;
 	}
 
-	public Instrument(int idProduct, String nameP, Float price, String descriptionP, int stock, Set<String> brand,
-			Set<String> model, Set<String> color, boolean saleActive, Float salePercentage, boolean isActive) {
-		super(idProduct, nameP, price, descriptionP, stock, brand, model, color, saleActive, salePercentage, isActive);
+	public Instrument() {
+		super();
 	}
-
 }

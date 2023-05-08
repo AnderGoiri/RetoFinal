@@ -3,12 +3,13 @@ package model;
 import java.time.LocalDate;
 
 /**
- * @author Jago
  * Class that registers a user action on a product
+ * 
+ * @author Jago Bartolomé Barroso
+ * 
  */
 public class Management {
-	
-	// --- Attributes ---
+	// ---Attributes---
 	private int idManagement;
 	private EnumAction actionType;
 	private String descriptionM;

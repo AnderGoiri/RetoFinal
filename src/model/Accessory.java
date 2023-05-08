@@ -3,11 +3,12 @@ package model;
 import java.util.Set;
 
 /**
- * @author Jago Derived class Accessory from Product
+ * Derived class Accessory from Product
+ * 
+ * @author Jago Bartolomé Barroso
  */
 public class Accessory extends Product {
-
-	// --- Attributes ---
+	// ---Attributes---
 	private static final long serialVersionUID = 1L;
 	private EnumClassAccessory classAccessory;
 	private EnumTypeAccessory typeAccessory;
@@ -29,18 +30,22 @@ public class Accessory extends Product {
 		this.typeAccessory = typeAccessory;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	// --- Constructors ---
-	public Accessory(int idProduct, String nameP, Float price, String descriptionP, int stock, Set<String> brand,
-			Set<String> model, Set<String> color, boolean saleActive, Float salePercentage, boolean isActive,
+	public Accessory(int idProduct, String nameP, Float price, String descriptionP, int stock, String brand,
+			String model, String color, boolean saleActive, Float salePercentage, boolean isActive,
 			EnumClassAccessory classAccessory, EnumTypeAccessory typeAccessory) {
 		super(idProduct, nameP, price, descriptionP, stock, brand, model, color, saleActive, salePercentage, isActive);
 		this.classAccessory = classAccessory;
 		this.typeAccessory = typeAccessory;
-	}
+		}
 
-	public Accessory(int idProduct, String nameP, Float price, String descriptionP, int stock, Set<String> brand,
-			Set<String> model, Set<String> color, boolean saleActive, Float salePercentage, boolean isActive) {
-		super(idProduct, nameP, price, descriptionP, stock, brand, model, color, saleActive, salePercentage, isActive);
+
+	public Accessory() {
+		super();
 	}
 
 }
