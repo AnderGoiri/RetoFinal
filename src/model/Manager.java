@@ -95,7 +95,7 @@ public class Manager extends User {
 	public void setManagementSet(Set<Management> managementSet) {
 		this.managementSet = managementSet;
 	}
-	
+
 	public boolean isSupervisor() {
 		return isSupervisor;
 	}
@@ -105,8 +105,8 @@ public class Manager extends User {
 	}
 
 	// --- Constructores ---
-	public Manager(int idSupervisor, boolean isSupervisor, boolean isTechnician, boolean isAdmin, EnumStatusManager statusManager,
-			Set<Repair> repairSet, Set<Management> managementSet) {
+	public Manager(int idSupervisor, boolean isSupervisor, boolean isTechnician, boolean isAdmin,
+			EnumStatusManager statusManager, Set<Repair> repairSet, Set<Management> managementSet) {
 		super();
 		this.idSupervisor = idSupervisor;
 		this.isSupervisor = isSupervisor;
@@ -121,9 +121,9 @@ public class Manager extends User {
 		super();
 	}
 
-
 	public Manager(String userName, String name, String surname, String password, String mail, LocalDate dateRegister,
-			int idSupervisor,boolean isSupervisor, boolean isTechnician, boolean isAdmin, EnumStatusManager enumStatusManager) {
+			int idSupervisor, boolean isSupervisor, boolean isTechnician, boolean isAdmin,
+			EnumStatusManager enumStatusManager) {
 		super(userName, name, surname, password, mail, dateRegister);
 		this.idSupervisor = idSupervisor;
 		this.isSupervisor = isSupervisor;

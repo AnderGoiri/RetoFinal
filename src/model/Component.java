@@ -1,9 +1,9 @@
 package model;
 
-import java.util.Set;
-
 /**
- * @author Jago Derived class Component from Product
+ * Derived class Component from Product
+ * 
+ * @author Jago Bartolomé Barroso
  */
 public class Component extends Product {
 
@@ -29,18 +29,20 @@ public class Component extends Product {
 		this.typeComponent = typeComponent;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	// --- Constructors ---
-	public Component(int idProduct, String nameP, Float price, String descriptionP, int stock, Set<String> brand,
-			Set<String> model, Set<String> color, boolean saleActive, Float salePercentage, boolean isActive,
+	public Component(int idProduct, String nameP, Float price, String descriptionP, int stock, String brand,
+			String model, String color, boolean saleActive, Float salePercentage, boolean isActive,
 			EnumClassComponent classComponent, EnumTypeComponent typeComponent) {
 		super(idProduct, nameP, price, descriptionP, stock, brand, model, color, saleActive, salePercentage, isActive);
 		this.classComponent = classComponent;
 		this.typeComponent = typeComponent;
 	}
 
-	public Component(int idProduct, String nameP, Float price, String descriptionP, int stock, Set<String> brand,
-			Set<String> model, Set<String> color, boolean saleActive, Float salePercentage, boolean isActive) {
-		super(idProduct, nameP, price, descriptionP, stock, brand, model, color, saleActive, salePercentage, isActive);
+	public Component() {
+		super();
 	}
-
 }

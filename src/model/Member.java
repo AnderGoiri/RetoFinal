@@ -4,14 +4,16 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * @author Ander Represents a member of the system who can request repairs and
- *         make purchases. Inherits from the base class {@link User}.
+ * Represents a member of the system who can request repairs and make purchases.
+ * Inherits from the base class {@link User}.
  * 
- *         <p>
- *         A <code>Member</code> has a mailing address and a credit card number
- *         associated with their account, as well as records of the repairs they
- *         have requested and the purchases they have made.
- *         </p>
+ * <p>
+ * A <code>Member</code> has a mailing address and a credit card number
+ * associated with their account, as well as records of the repairs they have
+ * requested and the purchases they have made.
+ * </p>
+ * 
+ * @author Ander Goirigolzarri Iturburu
  */
 public class Member extends User {
 
@@ -71,7 +73,7 @@ public class Member extends User {
 
 	public Member(int idUser, String userName, String name, String surname, String password, String mail,
 			LocalDate dateRegister, String address, String creditCard) {
-		super(idUser,userName, name, surname, password, mail, dateRegister);
+		super(idUser, userName, name, surname, password, mail, dateRegister);
 		this.address = address;
 		this.creditCard = creditCard;
 	}
@@ -82,5 +84,4 @@ public class Member extends User {
 		this.address = address;
 		this.creditCard = creditCard;
 	}
-
 }

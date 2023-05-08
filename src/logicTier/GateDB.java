@@ -65,7 +65,7 @@ public class GateDB {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				e.printStackTrace();	
+				e.printStackTrace();
 			}
 		return conn;
 	}
@@ -100,7 +100,7 @@ public class GateDB {
 		if (conn != null)
 			conn.close();
 	}
-	
+
 	public void closeConnection(Statement stmt, Connection conn) throws SQLException {
 		if (stmt != null)
 			stmt.close();
