@@ -36,15 +36,17 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	private CallableStatement ctmt;
 	private GateDB connection = new GateDB();
 	
-	//Attributes
+	// Attributes
 	private Product prod;
-	
-	//Sentencias SQL
-	
+
+	// Sentencias SQL
+
 	/**
-	 * Method for the search of products that are instruments
-	 * A call for a procedure in the script is made to search products that are instruments.
-	 * When they are found, if the instrument has the same brand, model or name as the search made by the user, they are added to a list.
+	 * Method for the search of products that are instruments A call for a procedure
+	 * in the script is made to search products that are instruments. When they are
+	 * found, if the instrument has the same brand, model or name as the search made
+	 * by the user, they are added to a list.
+	 * 
 	 * @return a list of instruments
 	 * @author Jago
 	 */
@@ -55,36 +57,40 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 		try {
 			con = connection.openConnection();
-			
+
 			ctmt = con.prepareCall("{CALL select_instrument()}");
 			rs = ctmt.executeQuery();
 
-			while(rs.next()) {
-				if (rs.getString("name").equals(search) || rs.getString("brand").equals(search) || rs.getString("model").equals(search)) {			
-					prod = new Instrument();
-					
-					prod.setNameP(rs.getString("name"));
-					prod.setPrice(rs.getFloat("unitPrice"));
-					prod.setDescriptionP(rs.getString("description"));
-					prod.setStock(rs.getInt("stock"));
-					prod.setBrand(rs.getString("brand"));
-					prod.setModel(rs.getString("model"));
-					prod.setColor(rs.getString("color"));
-					prod.setActive(rs.getBoolean("isActive"));
-					prod.setSaleActive(rs.getBoolean("saleActive"));
-					prod.setSalePercentage(rs.getInt("salePercentage"));
-					System.out.println(prod.toString());
-					/**
-					 * Transformation of enum to String as JDBC doesn't support enums
-					 */
-					EnumClassInstrument enumClassInstr = EnumClassInstrument.valueOf(rs.getString("classInstrument"));
-					((Instrument) prod).setClassInstrument(enumClassInstr);
+			while (rs.next()) {
+				if (rs.getBoolean("isActive") == true) {
+					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
+							|| rs.getString("model").equals(search)) {
+						prod = new Instrument();
 
-					EnumTypeInstrument enumTypeInstr = EnumTypeInstrument.valueOf(rs.getString("typeInstrument"));
-					((Instrument) prod).setTypeInstrument(enumTypeInstr);
-				
-					listaProductos.add(prod);	
-				}	
+						prod.setNameP(rs.getString("name"));
+						prod.setPrice(rs.getFloat("unitPrice"));
+						prod.setDescriptionP(rs.getString("description"));
+						prod.setStock(rs.getInt("stock"));
+						prod.setBrand(rs.getString("brand"));
+						prod.setModel(rs.getString("model"));
+						prod.setColor(rs.getString("color"));
+						prod.setActive(rs.getBoolean("isActive"));
+						prod.setSaleActive(rs.getBoolean("saleActive"));
+						prod.setSalePercentage(rs.getInt("salePercentage"));
+						System.out.println(prod.toString());
+						/**
+						 * Transformation of enum to String as JDBC doesn't support enums
+						 */
+						EnumClassInstrument enumClassInstr = EnumClassInstrument
+								.valueOf(rs.getString("classInstrument"));
+						((Instrument) prod).setClassInstrument(enumClassInstr);
+
+						EnumTypeInstrument enumTypeInstr = EnumTypeInstrument.valueOf(rs.getString("typeInstrument"));
+						((Instrument) prod).setTypeInstrument(enumTypeInstr);
+
+						listaProductos.add(prod);
+					}
+				}
 			}
 		} catch (SQLException e) {
 	
@@ -99,68 +105,76 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		}
 		return listaProductos;
 	}
-	
+
 	/**
-	 * Method for the search of products that are components
-	 * A call for a procedure in the script is made to search products that are components.
-	 * When they are found, if the component has the same brand, model or name as the search made by the user, they are added to a list.
+	 * Method for the search of products that are components A call for a procedure
+	 * in the script is made to search products that are components. When they are
+	 * found, if the component has the same brand, model or name as the search made
+	 * by the user, they are added to a list.
+	 * 
 	 * @return a list of components
 	 * @author Jago
 	 */
 	@Override
-	public Set<Product> searchComponent(String search){
+	public Set<Product> searchComponent(String search) {
 		ResultSet rs = null;
 		Set<Product> listaProductos = new HashSet<Product>();
-		
+
 		try {
 			connection.openConnection();
-			
+
 			ctmt = con.prepareCall("{CALL select_component()}");
 			rs = stmt.executeQuery();
-			
-			while(rs.next()) {
-				if (rs.getString("name").equals(search) || rs.getString("brand").equals(search) || rs.getString("model").equals(search)) {			
-					prod = new Component();
-					prod.setNameP(rs.getString("name"));
-					prod.setPrice(rs.getFloat("unitPrice"));
-					prod.setDescriptionP(rs.getString("description"));
-					prod.setStock(rs.getInt("stock"));
-					prod.setBrand(rs.getString("brand"));
-					prod.setModel(rs.getString("model"));
-					prod.setColor(rs.getString("color"));
-					prod.setActive(rs.getBoolean("isActive"));
-					prod.setSaleActive(rs.getBoolean("saleActive"));
-					prod.setSalePercentage(rs.getInt("salePercentage"));
 
-					/**
-					 * Transformation of enum to String as JDBC doesn't support enums
-					 */
-					EnumClassComponent enumClassComp = EnumClassComponent.valueOf(rs.getString("classComponent"));
-					((Component) prod).setClassComponent(enumClassComp);
+			while (rs.next()) {
+				if (rs.getBoolean("isActive") == true) {
+					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
+							|| rs.getString("model").equals(search)) {
+						prod = new Component();
+						prod.setNameP(rs.getString("name"));
+						prod.setPrice(rs.getFloat("unitPrice"));
+						prod.setDescriptionP(rs.getString("description"));
+						prod.setStock(rs.getInt("stock"));
+						prod.setBrand(rs.getString("brand"));
+						prod.setModel(rs.getString("model"));
+						prod.setColor(rs.getString("color"));
+						prod.setActive(rs.getBoolean("isActive"));
+						prod.setSaleActive(rs.getBoolean("saleActive"));
+						prod.setSalePercentage(rs.getInt("salePercentage"));
 
-					EnumTypeComponent enumTypeComp = EnumTypeComponent.valueOf(rs.getString("typeComponent"));
-					((Component) prod).setTypeComponent(enumTypeComp);
-				
-					listaProductos.add(prod);	
-				}	
+						/**
+						 * Transformation of enum to String as JDBC doesn't support enums
+						 */
+						EnumClassComponent enumClassComp = EnumClassComponent.valueOf(rs.getString("classComponent"));
+						((Component) prod).setClassComponent(enumClassComp);
+
+						EnumTypeComponent enumTypeComp = EnumTypeComponent.valueOf(rs.getString("typeComponent"));
+						((Component) prod).setTypeComponent(enumTypeComp);
+
+						listaProductos.add(prod);
+					}
+				}
 			}
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		} finally {
 			try {
 				connection.closeConnection(stmt, con, rs);
 			} catch (SQLException e) {
-		
+
 				e.printStackTrace();
 			}
 		}
 		return listaProductos;
 	}
+
 	/**
-	 * Method for the search of products that are accessories
-	 * A call for a procedure in the script is made to search products that are accessories.
-	 * When they are found, if the accessory has the same brand, model or name as the search made by the user, they are added to a list.
+	 * Method for the search of products that are accessories A call for a procedure
+	 * in the script is made to search products that are accessories. When they are
+	 * found, if the accessory has the same brand, model or name as the search made
+	 * by the user, they are added to a list.
+	 * 
 	 * @return a list of accessories
 	 * @author Jago
 	 */
@@ -168,38 +182,41 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	public Set<Product> searchAccessory(String search) throws ProductNotFoundException {
 		ResultSet rs = null;
 		Set<Product> listaProductos = new HashSet<Product>();
-		
+
 		try {
 			connection.openConnection();
-			
+
 			ctmt = con.prepareCall("{CALL select_accessory()}");
 			rs = stmt.executeQuery();
-			
-			while(rs.next()) {
-				if (rs.getString("name").equals(search) || rs.getString("brand").equals(search) || rs.getString("model").equals(search)) {			
-					prod = new Accessory();
-					prod.setNameP(rs.getString("name"));
-					prod.setPrice(rs.getFloat("unitPrice"));
-					prod.setDescriptionP(rs.getString("description"));
-					prod.setStock(rs.getInt("stock"));
-					prod.setBrand(rs.getString("brand"));
-					prod.setModel(rs.getString("model"));
-					prod.setColor(rs.getString("color"));
-					prod.setActive(rs.getBoolean("isActive"));
-					prod.setSaleActive(rs.getBoolean("saleActive"));
-					prod.setSalePercentage(rs.getInt("salePercentage"));
 
-					/**
-					 * Transformation of enum to String as JDBC doesn't support enums
-					 */
-					EnumClassAccessory enumClassAcc = EnumClassAccessory.valueOf(rs.getString("classAccessory"));
-					((Accessory) prod).setClassAccessory(enumClassAcc);
+			while (rs.next()) {
+				if (rs.getBoolean("isActive") == true) {
+					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
+							|| rs.getString("model").equals(search)) {
+						prod = new Accessory();
+						prod.setNameP(rs.getString("name"));
+						prod.setPrice(rs.getFloat("unitPrice"));
+						prod.setDescriptionP(rs.getString("description"));
+						prod.setStock(rs.getInt("stock"));
+						prod.setBrand(rs.getString("brand"));
+						prod.setModel(rs.getString("model"));
+						prod.setColor(rs.getString("color"));
+						prod.setActive(rs.getBoolean("isActive"));
+						prod.setSaleActive(rs.getBoolean("saleActive"));
+						prod.setSalePercentage(rs.getInt("salePercentage"));
 
-					EnumTypeAccessory enumTypeAcc = EnumTypeAccessory.valueOf(rs.getString("typeAccessory"));
-					((Accessory) prod).setTypeAccessory(enumTypeAcc);
-				
-					listaProductos.add(prod);	
-				}	
+						/**
+						 * Transformation of enum to String as JDBC doesn't support enums
+						 */
+						EnumClassAccessory enumClassAcc = EnumClassAccessory.valueOf(rs.getString("classAccessory"));
+						((Accessory) prod).setClassAccessory(enumClassAcc);
+
+						EnumTypeAccessory enumTypeAcc = EnumTypeAccessory.valueOf(rs.getString("typeAccessory"));
+						((Accessory) prod).setTypeAccessory(enumTypeAcc);
+
+						listaProductos.add(prod);
+					}
+				}
 			}
 		} catch (SQLException e) {
 			
@@ -336,6 +353,23 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 		return listaFiltr;
 	}
+	
+	/**
+	 * This method searches in a product list for products with any sale
+	 */
+	public Set<Product> searchProductInSale(Set<Product> listaProd){
+		Set<Product> listaFiltr = new HashSet<Product>();
+		
+		for (Product prod : listaProd) {
+			if (prod.isActive() && prod.isSaleActive()) {
+				listaFiltr.add(prod);
+			}
+		}
+		
+		return listaFiltr;
+		
+	}
+	
 	/**
 	 * This method checks if there is stock and returns a boolean
 	 * @param Product p is the product the user selected
@@ -392,12 +426,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @author Jago Bartolomé Barroso
 	 */
 	@Override
-	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m) throws StockNotFoundException, ProductNotFoundException {
+	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m)
+			throws StockNotFoundException, ProductNotFoundException {
 		String stPurch = "In progress";
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
 
 		try {
-			if (existsProduct(p.getIdProduct())) {
+			if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
 				if (checkProduct(p)) {
 					pTotal.getSetProduct().add(p);
 
@@ -407,6 +442,81 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					ctmt.setInt(2, p.getIdProduct());
 
 					ctmt.executeUpdate();
+
+					if ((pTotal == null) || (!pTotal.getStatusPurchase().equals(statusPurch))) {
+						pTotal = new Purchase();
+						try {
+							con = connection.openConnection();
+
+							ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
+
+							ctmt.setInt(1, m.getIdUser());
+							ctmt.setInt(2, 1);
+							ctmt.setInt(3, 1);
+							ctmt.setFloat(4, p.getPrice());
+							ctmt.setString(5, "In progress");
+
+							ctmt.executeUpdate();
+
+							// Obtener el idPurchase generado por la base de datos
+							ResultSet rs = ctmt.getGeneratedKeys();
+							if (rs.next()) {
+								int idPurchase = rs.getInt(1);
+								float price = rs.getFloat(2);
+								EnumStatusPurchase enumStPurchase = EnumStatusPurchase
+										.valueOf(rs.getString("statusPurchase"));
+								LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
+								int purchaseQ = 1;
+								pTotal.setIdPurchase(idPurchase);
+								pTotal.setPurchaseTotalCost(price);
+								pTotal.setStatusPurchase(enumStPurchase);
+								pTotal.setPurchaseDate(date);
+								pTotal.setPurchaseQuantity(purchaseQ);
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+						} finally {
+							try {
+								connection.closeConnection(ctmt, con, null);
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+						try {
+							Set<Purchase> listPurchase = m.getPurchaseRecord();
+							listPurchase.add(pTotal);
+							m.setPurchaseRecord(listPurchase);
+							// TODO Check if this is saved correctly (db?)
+						} catch (Exception e) {
+
+							e.printStackTrace();
+						}
+					} else {
+						// If pTotal is not null, there's already a purchase in progress that we need to
+						// update
+
+						try {
+							con = connection.openConnection();
+							ctmt = con.prepareCall("UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
+							ctmt.setInt(1, pTotal.getPurchaseQuantity() + 1);
+							ctmt.setFloat(2, pTotal.getPurchaseTotalCost() + p.getPrice());
+							ctmt.setInt(3, pTotal.getIdPurchase());
+
+							ctmt.executeUpdate();
+
+							// Actualizar pTotal con los nuevos datos de la compra
+							pTotal.setPurchaseTotalCost(pTotal.getPurchaseTotalCost() + p.getPrice());
+							pTotal.setPurchaseQuantity(pTotal.getPurchaseQuantity() + 1);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						} finally {
+							try {
+								connection.closeConnection(ctmt, con, null);
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+					}
 
 				} else {
 					throw new StockNotFoundException();
@@ -422,80 +532,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		if ((pTotal == null) || (!pTotal.getStatusPurchase().equals(statusPurch))) {
-			pTotal = new Purchase();
-			try {
-				con = connection.openConnection();
 
-				ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
-
-				ctmt.setInt(1, m.getIdUser());
-				ctmt.setInt(2, 1);
-				ctmt.setInt(3, 1);
-				ctmt.setFloat(4, p.getPrice());
-				ctmt.setString(5, "In progress");
-
-				ctmt.executeUpdate();
-
-				// Obtener el idPurchase generado por la base de datos
-				ResultSet rs = ctmt.getGeneratedKeys();
-				if (rs.next()) {
-					int idPurchase = rs.getInt(1);
-					float price = rs.getFloat(2);
-					EnumStatusPurchase enumStPurchase = EnumStatusPurchase.valueOf(rs.getString("statusPurchase"));
-					LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
-					int purchaseQ = 1;
-					pTotal.setIdPurchase(idPurchase);
-					pTotal.setPurchaseTotalCost(price);
-					pTotal.setStatusPurchase(enumStPurchase);
-					pTotal.setPurchaseDate(date);
-					pTotal.setPurchaseQuantity(purchaseQ);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					connection.closeConnection(ctmt, con, null);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			try {
-				Set <Purchase> listPurchase = m.getPurchaseRecord();
-				listPurchase.add(pTotal);
-				m.setPurchaseRecord(listPurchase);
-				//TODO Check if this is saved correctly (db?)
-			} catch (Exception e) {
-
-				e.printStackTrace();
-			}
-		} else {
-			// If pTotal is not null, there's already a purchase in progress that we need to update
-
-			try {
-				con = connection.openConnection();
-				ctmt = con.prepareCall("UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
-				ctmt.setInt(1, pTotal.getPurchaseQuantity() + 1);
-				ctmt.setFloat(2, pTotal.getPurchaseTotalCost() + p.getPrice());
-				ctmt.setInt(3, pTotal.getIdPurchase());
-
-				ctmt.executeUpdate();
-
-				// Actualizar pTotal con los nuevos datos de la compra
-				pTotal.setPurchaseTotalCost(pTotal.getPurchaseTotalCost() + p.getPrice());
-				pTotal.setPurchaseQuantity(pTotal.getPurchaseQuantity() + 1);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					connection.closeConnection(ctmt, con, null);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
 		try {
 			connection.closeConnection(ctmt, con);
 		} catch (SQLException e) {
@@ -512,7 +549,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @author Jago Bartolomé Barroso
 	 */
 	@Override
-	public Purchase listPurchase(Member m) {
+	public Purchase searchPurchase(Member m) {
 		Set<Purchase> listPurchase = m.getPurchaseRecord();
 		Purchase aux = null;
 		
@@ -599,6 +636,35 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		}
 		return pTotal;
 	}
+	/**
+	 * This method changes the member's info in the database
+	 * @param Member m is the current logged-in member with the attributes already changed
+	 * @author Jago
+	 */
+	public void modifyMember(Member m) {
+		con = connection.openConnection();
+		
+		try {
+			ctmt = con.prepareCall("UPDATE user SET username=?, name=?, surname=?, mail=?");
+			ctmt.setString(1, m.getUserName());
+			ctmt.setString(2, m.getName());
+			ctmt.setString(3, m.getSurname());
+			ctmt.setString(4, m.getMail());
+			ctmt.executeQuery();
+			
+			ctmt = con.prepareCall("UPDATE member SET address=?, creditCard=?, ");
+			ctmt.setString(1, m.getAddress());
+			ctmt.setString(2, m.getCreditCard());
+			
+			ctmt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			connection.closeConnection();
+		}
+	}
+
 	
 }
 

@@ -1,8 +1,8 @@
 package logicTier;
 
 import java.sql.CallableStatement;
+
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -10,16 +10,12 @@ import exceptions.ProductFoundException;
 import exceptions.ProductNotFoundException;
 import model.Accessory;
 import model.Component;
-import model.EnumClassAccessory;
-import model.EnumClassComponent;
-import model.EnumClassInstrument;
 import model.Instrument;
 import model.Product;
 
 public class ProductManagerControllableImplementation implements ProductManagerControllable{
 	//DB Connection
 	private Connection con;
-	private PreparedStatement stmt;
 	private CallableStatement ctmt;
 	private GateDB connection = new GateDB();
 	
@@ -44,6 +40,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 	}
 	/**
+	 * Method to add a product, if it doesn't exist, to the database
 	 * @param Product p that the manager wants to add to the db
 	 * @throws ProductFoundException meaning the Product we want to add already exists
 	 * @author Jago
@@ -113,6 +110,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		
 	}
 	/**
+	 * Modifies the located product in the database with the new data
 	 * @param A product with the already modified attributes
 	 * @throws ProductNotFoundException The product we want to modify doesn't exist in the database
 	 * @author Jago
@@ -164,12 +162,11 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			throw new ProductNotFoundException();
 		}
 		
-		
 	}
 	/**
-	 * This method checks within the database to see if the selected product exists
-	 * TODO Move to ProductManager, its only useful there
-	 * TODO Exception
+	 * This method checks within the database (with a cursor) to see if the selected product exists
+	 * @param int search is the id of the product we want to search
+	 * @return returns false if the product doesn't exist in the database
 	 * @author Jago
 	 */
 	@Override
@@ -193,4 +190,83 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return existe;
 	}
+	
+	/**
+	 * This method sets the product to inactive so it won't show to the members
+	 * @param Product p is the one the manager wants to remove
+	 * @author Jago
+	 */
+	@Override
+	public void removeProduct(Product p) throws ProductNotFoundException {
+		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
+			try {
+				con = connection.openConnection();
+				ctmt = con.prepareCall("UPDATE product SET isActive=?");
+
+				ctmt.setBoolean(1, false);
+				ctmt.executeQuery();
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				connection.closeConnection();
+			}
+		} else {
+			throw new ProductNotFoundException();
+		}
+
+	}
+	/**
+	 * This method sets the sale of a product to active, sets how much it discounts and the new price
+	 * @param Product p is the product in which we'll add a sale, int sale is how much it has the price reduced
+	 * @throws ProductNotFoundException
+	 * @author Jago
+	 */
+	public void setSale(Product p, int sale) throws ProductNotFoundException {
+		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
+			try {
+				con = connection.openConnection();
+				ctmt = con.prepareCall("UPDATE product SET saleActive=?, sale=?, unitPrice=?");
+
+				ctmt.setBoolean(1, true);
+				ctmt.setInt(2, sale);
+				ctmt.setFloat(3, p.getPrice()*(sale/100));
+				ctmt.executeQuery();
+			
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				connection.closeConnection();
+			}
+		} else {
+			throw new ProductNotFoundException();
+		}
+		
+	}
+	/**
+	 * This method removes the saleActive flag
+	 * @param Product p is the product we want to 
+	 * @throws ProductNotFoundException
+	 */
+	public void removeSale(Product p) throws ProductNotFoundException {
+		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
+			try {
+				con = connection.openConnection();
+				ctmt = con.prepareCall("UPDATE product SET saleActive=?");
+
+				ctmt.setBoolean(1, false);
+				ctmt.executeQuery();
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				connection.closeConnection();
+			}
+		} else {
+			throw new ProductNotFoundException();
+		}
+	}
+
 }

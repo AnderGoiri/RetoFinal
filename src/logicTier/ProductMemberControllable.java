@@ -29,11 +29,13 @@ public interface ProductMemberControllable {
 	
 	public Set<Product> searchProductByClass(String classP, Set<Product> listaProd) throws TypeNotFoundException;
 	
+	public Set<Product> searchProductInSale(Set<Product> listaProd);
+	
 	public boolean checkProduct(Product p) throws Exception;
 	
 	public Purchase addProductPurchase(Purchase pset, Product p, Member m) throws StockNotFoundException, ProductNotFoundException; 
 	
-	public Purchase listPurchase(Member m);
+	public Purchase searchPurchase(Member m);
 	
 	public Purchase removeProduct(Purchase pset, Product p) throws Exception;
 	
