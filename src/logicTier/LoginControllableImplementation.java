@@ -6,12 +6,14 @@ import exceptions.WrongCredentialsException;
 import model.EnumStatusManager;
 import model.Manager;
 import model.Member;
+import model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 public class LoginControllableImplementation implements LoginControllable {
 
@@ -138,13 +140,15 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @author Ander Goirigolzarri Iturburu
 	 */
 	@Override
-	public void userLogin(String username, String password) throws WrongCredentialsException, UserNotFoundException {
+	public User userLogin(String username, String password) throws WrongCredentialsException, UserNotFoundException {
 		try {
 			// Open connection with DB
 			conn = gate.openConnection();
 
 			// Prepare the statement
-			ptmt = conn.prepareStatement("SELECT username, password FROM user where username=? and password=?");
+			ptmt = conn.prepareStatement("SELECT u.username, u.password, m.idUser, ma.idUser FROM user u "
+					+ "LEFT JOIN member m ON u.idUser = m.idUser " + "LEFT JOIN manager ma ON u.idUser = ma.idUser "
+					+ "WHERE u.username = ? AND u.password = ?");
 
 			ptmt.setString(1, username);
 			ptmt.setString(2, password);
@@ -154,9 +158,26 @@ public class LoginControllableImplementation implements LoginControllable {
 			if (!rset.next()) {
 				throw new WrongCredentialsException("You have entered an invalid username or password");
 			}
+
+			// Check if the result set contains a manager or member ID
+			int memberId = rset.getInt("m.idUser");
+			int managerId = rset.getInt("ma.idUser");
+
+			if (memberId != 0) {
+				// This is a member
+				return createMember(rset, memberId);
+
+			} else if (managerId != 0) {
+				// This is a manager
+				return createManager(rset, managerId);
+
+			} else {
+				throw new UserNotFoundException("Invalid user type");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	@Override
@@ -202,6 +223,38 @@ public class LoginControllableImplementation implements LoginControllable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public Member createMember(ResultSet rset, int idUser) throws SQLException {
+		String username = rset.getString("username");
+		String name = rset.getString("name");
+		String surname = rset.getString("surname");
+		String password = rset.getString("password");
+		String mail = rset.getString("mail");
+		LocalDate dateRegister = rset.getDate("dateRegister").toLocalDate();
+		String address = rset.getString("address");
+		String creditCard = rset.getString("creditCard");
+
+		return new Member(username, name, surname, password, mail, dateRegister, address, creditCard);
+	}
+
+	@Override
+	public Manager createManager(ResultSet rset, int idUser) throws SQLException {
+		String username = rset.getString("username");
+		String name = rset.getString("name");
+		String surname = rset.getString("surname");
+		String password = rset.getString("password");
+		String mail = rset.getString("mail");
+		LocalDate dateRegister = rset.getDate("dateRegister").toLocalDate();
+		int idSupervisor = rset.getInt("idSupervisor");
+		boolean isSupervisor = rset.getBoolean("isSupervisor");
+		boolean isTechnician = rset.getBoolean("isTechnician");
+		boolean isAdmin = rset.getBoolean("isAdmin");
+		EnumStatusManager statusManager = EnumStatusManager.valueOf(rset.getString("statusManager"));
+
+		return new Manager(username, name, surname, password, mail, dateRegister, idSupervisor, isSupervisor,
+				isTechnician, isAdmin, statusManager);
 	}
 
 }

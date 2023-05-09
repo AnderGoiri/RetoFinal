@@ -1,5 +1,6 @@
 package logicTier;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import exceptions.CredentialNotValidException;
@@ -61,8 +62,9 @@ public interface LoginControllable {
 	 *                                    found on the database and it should be.
 	 * 
 	 * @author Ander Goirigolzarri Iturburu
+	 * @return 
 	 */
-	public void userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException;
+	public User userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException;
 
 	/**
 	 * 
@@ -76,5 +78,9 @@ public interface LoginControllable {
 	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException;
 
 	public void deleteUserMember(Member me) throws UserNotFoundException;
+	
+	public Member createMember(ResultSet rset, int idUser) throws SQLException;
+	
+	public Manager createManager(ResultSet rset, int idUser) throws SQLException;
 
 }
