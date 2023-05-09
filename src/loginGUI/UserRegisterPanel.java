@@ -197,6 +197,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		btnSignUp.addActionListener(this);
 	}
 
+	// ActionListener for the manager check box
 	ActionListener managerListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (chckbxManager.isSelected()) {
@@ -232,6 +233,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		}
 	};
 
+	// Actionlistener for the sign up button
 	ActionListener signupListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			try {
@@ -255,7 +257,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 							EnumStatusManager.P));
 
 				}
-
 				/*
 				 * userRegisterPanel.clearRegisterFields(); cardLayout.show(switchLilPanel,
 				 * "LogIn"); btnLogIn.setEnabled(false); btnLogIn.setVisible(false);
@@ -270,9 +271,9 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		}
 	};
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 	}
 
 	@Override
