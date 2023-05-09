@@ -5,12 +5,13 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import loginGUI.UserLogInPanel;
 import loginGUI.Win_login_register;
 
 import java.awt.CardLayout;
 import java.awt.Color;
 
-public class StoreMenu extends JDialog {
+public class StoreMenuWindow extends JDialog {
 	
 	private JPanel contentPanel;
 	private JPanel menuPanel;
@@ -25,8 +26,8 @@ public class StoreMenu extends JDialog {
 //	private ManagerMenu managerPanel;
 
 	
-	public StoreMenu(Win_login_register win_login_register, boolean b) {
-		super(win_login_register,b);
+	public StoreMenuWindow(UserLogInPanel userLogInPanel, boolean b) {
+		super();
 		setResizable(false);
 		setTitle("THOMANN STORE MENU");
 		setBackground(new Color(255, 255, 255));

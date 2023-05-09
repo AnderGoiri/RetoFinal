@@ -12,23 +12,27 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 
+import logicTier.LoginControllable;
 import logicTier.LoginFactory;
+import model.EnumStatusManager;
+import model.Manager;
+import model.Member;
 
-import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 
-public class UserRegisterPanel extends JPanel implements ActionListener, KeyListener, FocusListener{
-	private JTextField textFieldName;
-	private JTextField textFieldSurname;
-	private JTextField textFieldUsername;
-	private JTextField textFieldPassword;
-	private JTextField textFieldAddress;
-	private JTextField textFieldCreditCard;
-	private JTextField textFieldEmail;
-	private JCheckBox chckbxManager;
-	
-	
+public class UserRegisterPanel extends JPanel implements ActionListener, KeyListener, FocusListener {
+	private static final long serialVersionUID = 1L;
+	private JTextField textFieldName, textFieldSurname, textFieldUsername, textFieldPassword, textFieldAddress,
+			textFieldCreditCard, textFieldEmail;
+	private JCheckBox chckbxManager, chckbxTechnician, chckbxSupervisor;
+	private JLabel lblAddress, lblCredirCard, lblRegistrationTitle, lblUserName, lblPassword, lblEmail, lblSurname,
+			lblName;
+	private JButton btnSignUp;
+
+	// --- Getters ---
 	public JTextField getTextFieldName() {
 		return textFieldName;
 	}
@@ -76,107 +80,99 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 	public JLabel getLblCredirCard() {
 		return lblCredirCard;
 	}
-
-	
-
-	private JCheckBox chckbxTechnician;
-	private JCheckBox chckbxSupervisor;
-	private JLabel lblAddress;
-	private JLabel lblCredirCard;
-	private static final long serialVersionUID = 1L;
-	
+	// -----------------------------
 
 	/**
 	 * Create the panel.
 	 */
 	public UserRegisterPanel() {
 		setLayout(null);
-		setBounds(0,0,837,460);
-		
-		JLabel lblUserName = new JLabel("User Name:");
+		setBounds(0, 0, 837, 460);
+
+		lblUserName = new JLabel("User Name:");
 		lblUserName.setBounds(58, 289, 244, 41);
 		lblUserName.setFont(new Font("Constantia", Font.PLAIN, 25));
 		add(lblUserName);
-		
-		JLabel lblPassword = new JLabel("Password:");
+
+		lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblPassword.setBounds(58, 369, 182, 41);
 		add(lblPassword);
-		
-		JLabel lblEmail = new JLabel("Email:");
+
+		lblEmail = new JLabel("Email:");
 		lblEmail.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblEmail.setBounds(449, 120, 182, 51);
 		add(lblEmail);
-		
+
 		lblCredirCard = new JLabel("Credit Card:");
 		lblCredirCard.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblCredirCard.setBounds(449, 284, 201, 51);
 		add(lblCredirCard);
-		
-		JLabel lblSurname = new JLabel("Surname:");
+
+		lblSurname = new JLabel("Surname:");
 		lblSurname.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblSurname.setBounds(58, 210, 244, 41);
 		add(lblSurname);
-		
-		JLabel lblName = new JLabel("Name:");
+
+		lblName = new JLabel("Name:");
 		lblName.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblName.setBounds(58, 131, 244, 41);
 		add(lblName);
-		
+
 		textFieldName = new JTextField();
 		textFieldName.setBounds(58, 169, 311, 41);
 		add(textFieldName);
 		textFieldName.setColumns(10);
-		
+
 		textFieldSurname = new JTextField();
 		textFieldSurname.setColumns(10);
 		textFieldSurname.setBounds(58, 249, 311, 41);
 		add(textFieldSurname);
-		
+
 		textFieldUsername = new JTextField();
 		textFieldUsername.setColumns(10);
 		textFieldUsername.setBounds(58, 330, 311, 41);
 		add(textFieldUsername);
 		textFieldUsername.addFocusListener(this);
-		
+
 		textFieldPassword = new JTextField();
 		textFieldPassword.setColumns(10);
 		textFieldPassword.setBounds(58, 409, 311, 41);
 		add(textFieldPassword);
-		
+
 		textFieldAddress = new JTextField();
 		textFieldAddress.setColumns(10);
 		textFieldAddress.setBounds(449, 248, 311, 41);
 		add(textFieldAddress);
-		
+
 		textFieldCreditCard = new JTextField();
 		textFieldCreditCard.setColumns(10);
 		textFieldCreditCard.setBounds(449, 328, 311, 41);
 		add(textFieldCreditCard);
-		
+
 		textFieldEmail = new JTextField();
 		textFieldEmail.setColumns(10);
 		textFieldEmail.setBounds(449, 167, 311, 41);
 		add(textFieldEmail);
-		
+
 		lblAddress = new JLabel("Address");
 		lblAddress.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblAddress.setBounds(449, 205, 264, 51);
 		add(lblAddress);
-		
+
 		chckbxManager = new JCheckBox("Manager");
 		chckbxManager.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxManager.setBounds(58, 76, 244, 41);
 		chckbxManager.setOpaque(false);
-		chckbxManager.addActionListener(this);
+		chckbxManager.addActionListener(managerListener);
 		add(chckbxManager);
 		chckbxManager.addKeyListener(this);
-		
-		JLabel lblRegistrationTitle = new JLabel("Registration");
+
+		lblRegistrationTitle = new JLabel("Registration");
 		lblRegistrationTitle.setFont(new Font("Elephant", Font.PLAIN, 45));
 		lblRegistrationTitle.setBounds(293, 10, 323, 60);
 		add(lblRegistrationTitle);
-		
+
 		chckbxSupervisor = new JCheckBox("Supervisor");
 		chckbxSupervisor.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxSupervisor.setEnabled(false);
@@ -185,7 +181,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		chckbxSupervisor.setBounds(459, 257, 201, 33);
 		add(chckbxSupervisor);
 		chckbxSupervisor.addKeyListener(this);
-		
+
 		chckbxTechnician = new JCheckBox("Technician");
 		chckbxTechnician.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxTechnician.setEnabled(false);
@@ -195,18 +191,20 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		add(chckbxTechnician);
 		chckbxTechnician.addKeyListener(this);
 
+		btnSignUp = new JButton("Sign Up");
+		btnSignUp.setBounds(449, 409, 311, 41);
+		add(btnSignUp);
+		btnSignUp.addActionListener(this);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getSource().equals(chckbxManager)) {
+	ActionListener managerListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
 			if (chckbxManager.isSelected()) {
 				chckbxTechnician.setEnabled(true);
 				chckbxTechnician.setVisible(true);
 				chckbxSupervisor.setEnabled(true);
 				chckbxSupervisor.setVisible(true);
-				
+
 				lblAddress.setEnabled(false);
 				lblAddress.setVisible(false);
 				lblCredirCard.setEnabled(false);
@@ -215,14 +213,13 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 				textFieldAddress.setVisible(false);
 				textFieldCreditCard.setEnabled(false);
 				textFieldCreditCard.setVisible(false);
-			
-			}
-			else {
+
+			} else {
 				chckbxTechnician.setEnabled(false);
 				chckbxTechnician.setVisible(false);
 				chckbxSupervisor.setEnabled(false);
 				chckbxSupervisor.setVisible(false);
-				
+
 				lblAddress.setEnabled(true);
 				lblAddress.setVisible(true);
 				lblCredirCard.setEnabled(true);
@@ -232,42 +229,78 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 				textFieldCreditCard.setEnabled(true);
 				textFieldCreditCard.setVisible(true);
 			}
-			
 		}
-		
-	}
+	};
 
-	
+	ActionListener signupListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				// Create a LoginControllable Object
+				LoginControllable login = LoginFactory.getLoginControllable();
+
+				// If statement depending on the state of the check box for manager
+				if (!chckbxManager.isSelected()) {
+
+					// registerUserMember
+					login.registerUserMember(new Member(textFieldUsername.getText(), textFieldName.getText(),
+							textFieldSurname.getText(), textFieldPassword.getText(), textFieldEmail.getText(),
+							LocalDate.now(), textFieldAddress.getText(), textFieldCreditCard.getText()));
+
+				} else {
+
+					// registerserManager
+					login.registerUserManager(new Manager(textFieldUsername.getText(), textFieldName.getText(),
+							textFieldSurname.getText(), textFieldPassword.getText(), textFieldEmail.getText(),
+							LocalDate.now(), 0, chckbxSupervisor.isSelected(), chckbxTechnician.isSelected(), false,
+							EnumStatusManager.P));
+
+				}
+
+				/*
+				 * userRegisterPanel.clearRegisterFields(); cardLayout.show(switchLilPanel,
+				 * "LogIn"); btnLogIn.setEnabled(false); btnLogIn.setVisible(false);
+				 * btnSignUp.setEnabled(true); btnSignUp.setVisible(true);
+				 */
+				// si el registro es correcto, le mandamos al login
+
+				// Si se produce alguna excepcion, mostramos un mensaje advirtiendo al usuario
+			} catch (Exception e1) {
+				//JOptionPane.showMessageDialog(this, e1.getMessage());
+			}
+		}
+	};
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+	}
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		// Metodo para comprobar si el username existe
-		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-			if(e.getSource() instanceof JCheckBox) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if (e.getSource() instanceof JCheckBox) {
 				((JCheckBox) e.getSource()).doClick();
 			}
 		}
 	}
-	
-	
-	
-	
-	@Override
-	public void keyTyped(KeyEvent e) {}
-	@Override
-	public void keyReleased(KeyEvent e) {}
-	@Override
-	public void focusGained(FocusEvent e) {}
 
-	
-	
-	
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+	}
+
 	public void clearRegisterFields() {
 		// TODO Auto-generated method stub
 		chckbxManager.setSelected(false);
@@ -279,5 +312,5 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		textFieldSurname.setText("");
 		textFieldUsername.setText("");
 	}
-	
+
 }
