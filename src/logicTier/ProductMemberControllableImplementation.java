@@ -72,7 +72,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					prod.setColor(rs.getString("color"));
 					prod.setActive(rs.getBoolean("isActive"));
 					prod.setSaleActive(rs.getBoolean("saleActive"));
-					prod.setSalePercentage(rs.getFloat("salePercentage"));
+					prod.setSalePercentage(rs.getInt("salePercentage"));
 					System.out.println(prod.toString());
 					/**
 					 * Transformation of enum to String as JDBC doesn't support enums
@@ -130,7 +130,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					prod.setColor(rs.getString("color"));
 					prod.setActive(rs.getBoolean("isActive"));
 					prod.setSaleActive(rs.getBoolean("saleActive"));
-					prod.setSalePercentage(rs.getFloat("salePercentage"));
+					prod.setSalePercentage(rs.getInt("salePercentage"));
 
 					/**
 					 * Transformation of enum to String as JDBC doesn't support enums
@@ -187,7 +187,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					prod.setColor(rs.getString("color"));
 					prod.setActive(rs.getBoolean("isActive"));
 					prod.setSaleActive(rs.getBoolean("saleActive"));
-					prod.setSalePercentage(rs.getFloat("salePercentage"));
+					prod.setSalePercentage(rs.getInt("salePercentage"));
 
 					/**
 					 * Transformation of enum to String as JDBC doesn't support enums
@@ -471,7 +471,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				e.printStackTrace();
 			}
 		} else {
-			// Si pTotal no es null, ya existe una compra en progreso
+			// If pTotal is not null, there's already a purchase in progress that we need to update
 
 			try {
 				con = connection.openConnection();
@@ -582,6 +582,20 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			stPurch = "Finished";
 			statusPurch = EnumStatusPurchase.valueOf(stPurch);
 			pTotal.setStatusPurchase(statusPurch);
+			
+			try {
+				con = connection.openConnection();
+				ctmt = con.prepareCall("UPDATE purchase SET purchaseStatus=?");
+				ctmt.setString(1, stPurch);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				connection.closeConnection();
+			}
+			
+			
+			
 		}
 		return pTotal;
 	}
