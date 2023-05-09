@@ -1,4 +1,4 @@
-package login;
+package loginGUI;
 
 
 import java.awt.Font;
@@ -10,16 +10,25 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 
-public class UserLogIn extends JPanel {
+public class UserLogInPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldUsername;
 	private JPasswordField passwordField;
 
+	//---Getters---
+	public JTextField getTextFieldUsername() {
+		return textFieldUsername;
+	}
+
+	public JPasswordField getPasswordField() {
+		return passwordField;
+	}
+
 	/**
 	 * Create the panel.
 	 */
-	public UserLogIn() {
+	public UserLogInPanel() {
 	
 		setLayout(null);
 		setOpaque(false);

@@ -1,11 +1,11 @@
-package storeMenu;
+package storeMenuGUI;
 
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import login.Win_login_register;
+import loginGUI.Win_login_register;
 
 import java.awt.CardLayout;
 import java.awt.Color;

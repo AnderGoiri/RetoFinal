@@ -1,16 +1,19 @@
-package login;
+package loginGUI;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import exceptions.UserNotFoundException;
+import exceptions.WrongCredentialsException;
 import logicTier.LoginControllable;
 import logicTier.LoginFactory;
 import model.EnumStatusManager;
 import model.Manager;
 import model.Member;
-import storeMenu.StoreMenu;
+import storeMenuGUI.StoreMenu;
+
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,8 +37,8 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 	private JPanel contentPane;
 	private JPanel switchLilPanel;
 	private CardLayout cardLayout;
-	private UserRegister userRegisterPanel;
-	private UserLogIn userLoginPanel;
+	private UserRegisterPanel userRegisterPanel;
+	private UserLogInPanel userLoginPanel;
 	private JButton btnLogIn;
 	private JButton btnSignUp;
 	private JButton btnConfirm;
@@ -46,7 +49,7 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 
 
 	/**
-	 * Launch the application.
+	 * TODO Delete later
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -77,8 +80,8 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		cardLayout=new CardLayout();
 		switchLilPanel=new JPanel();
 		switchLilPanel.setOpaque(false);
-		userLoginPanel=new UserLogIn();
-		userRegisterPanel=new UserRegister();
+		userLoginPanel=new UserLogInPanel();
+		userRegisterPanel=new UserRegisterPanel();
 		switchLilPanel.setBounds(247, 0, 837, 460);
 		contentPane.add(switchLilPanel);
 		switchLilPanel.setLayout(cardLayout);
@@ -158,7 +161,8 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		// TODO ask Maria switch
+				
 		if(e.getSource().equals(btnLogIn)) {
 			cardLayout.show(switchLilPanel, "LogIn");
 			btnLogIn.setEnabled(false);
@@ -182,18 +186,45 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 				if(panelName.equals("LogIn")) {
 					
 					//metodo comprobar identificacion
+					LoginControllable login = LoginFactory.getLoginControllable();
 					
-					StoreMenu sM = new StoreMenu(this, true);
-					sM.setVisible(true);
-					sM.setLocationRelativeTo(null);
+						//recoge los valores de los textfields de Username y Password y comprueba que no esten vacios
+					//TODO fix
+						String password = new String(userLoginPanel.getPasswordField().toString());
+						if(userLoginPanel.getTextFieldUsername().getText().isBlank() || password.isBlank()) {
+							JOptionPane.showMessageDialog(this, "Please, insert your username and password");
+							
+						}else {
+					
+						//Comprobamos de que los valores introducidos corresponda con los datos de algun usuario registrado
+							try {
+								login.userLogin(userLoginPanel.getTextFieldUsername().getText(), userLoginPanel.getPasswordField().toString());
+								
+								//Si los valores son correctos, se mostrara el menu de la tienda
+								StoreMenu storeMenuPanel = new StoreMenu(this, true);
+								storeMenuPanel.setVisible(true);
+								storeMenuPanel.setLocationRelativeTo(null);
+								
+								//De lo contrario, mostrara el usuario un mensaje adviertiendole del error
+							} catch (WrongCredentialsException | UserNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						
+						}
+					
+					
 				}else {
 					try {
+						
 					//obtener obj LoginControllable llamando al metodo de la factoria
 					LoginControllable login = LoginFactory.getLoginControllable();
 					//evaluar si se registra un member o un manager
-					if(!userRegisterPanel.getChckbxManager().isSelected()) {
+					if(userRegisterPanel.getChckbxManager().isSelected()==false) {
 						//si es un miembro, 
-						login.registerUserMember(new Member(
+						
+							//recogemos todos los datos del miembro de la ventana y llamamos al metodo registerUserMember
+							login.registerUserMember(new Member(
 							userRegisterPanel.getTextFieldUsername().getText(),
 							userRegisterPanel.getTextFieldName().getText(),
 							userRegisterPanel.getTextFieldSurname().getText(),
@@ -203,11 +234,13 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 							userRegisterPanel.getTextFieldAddress().getText(),
 							userRegisterPanel.getTextFieldCreditCard().getText()
 							));
-							//recogemos todos los datos del miembro de la ventana y llamamos al metodo registerUserMember
+						
 					}else {
 			
 						//si es un manager, 
-					login.registerUserManager(new Manager(
+					
+							//recogemos todos los datos del miembro de la ventana y llamamos al metodo registerUserManager
+							login.registerUserManager(new Manager(
 								userRegisterPanel.getTextFieldUsername().getText(),
 								userRegisterPanel.getTextFieldName().getText(),
 								userRegisterPanel.getTextFieldSurname().getText(),
@@ -221,9 +254,10 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 								EnumStatusManager.P
 								)
 							);
-							//recogemos todos los datos del miembro de la ventana y llamamos al metodo registerUserManager
+					
 					}
 					//si el registro es correcto, le mandamos al login
+						userRegisterPanel.clearRegisterFields();
 						cardLayout.show(switchLilPanel, "LogIn");
 						btnLogIn.setEnabled(false);
 						btnLogIn.setVisible(false);
@@ -241,13 +275,13 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 			
 		}
 	}
-	
+
 	public String getSelectedPanelName(JPanel jP) {
 		String selectedPanel="a";
 		
 		for(Component c : jP.getComponents()) {
 			if(c.isVisible()==true) {
-				if(c instanceof UserLogIn) {
+				if(c instanceof UserLogInPanel) {
 					selectedPanel="LogIn";
 				}else {
 					selectedPanel="SignUp";

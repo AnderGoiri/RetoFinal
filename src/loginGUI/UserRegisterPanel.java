@@ -1,4 +1,4 @@
-package login;
+package loginGUI;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -18,7 +18,7 @@ import logicTier.LoginFactory;
 
 import javax.swing.ButtonGroup;
 
-public class UserRegister extends JPanel implements ActionListener, KeyListener, FocusListener{
+public class UserRegisterPanel extends JPanel implements ActionListener, KeyListener, FocusListener{
 	private JTextField textFieldName;
 	private JTextField textFieldSurname;
 	private JTextField textFieldUsername;
@@ -77,22 +77,19 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 		return lblCredirCard;
 	}
 
-	public ButtonGroup getButtonGroupManagerRole() {
-		return buttonGroupManagerRole;
-	}
+	
 
 	private JCheckBox chckbxTechnician;
 	private JCheckBox chckbxSupervisor;
 	private JLabel lblAddress;
 	private JLabel lblCredirCard;
 	private static final long serialVersionUID = 1L;
-	private final ButtonGroup buttonGroupManagerRole = new ButtonGroup();
 	
 
 	/**
 	 * Create the panel.
 	 */
-	public UserRegister() {
+	public UserRegisterPanel() {
 		setLayout(null);
 		setBounds(0,0,837,460);
 		
@@ -170,11 +167,9 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 		chckbxManager = new JCheckBox("Manager");
 		chckbxManager.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxManager.setBounds(58, 76, 244, 41);
+		chckbxManager.setOpaque(false);
 		chckbxManager.addActionListener(this);
 		add(chckbxManager);
-
-		chckbxManager.setOpaque(false);
-		
 		chckbxManager.addKeyListener(this);
 		
 		JLabel lblRegistrationTitle = new JLabel("Registration");
@@ -183,19 +178,19 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 		add(lblRegistrationTitle);
 		
 		chckbxSupervisor = new JCheckBox("Supervisor");
-		buttonGroupManagerRole.add(chckbxSupervisor);
 		chckbxSupervisor.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxSupervisor.setEnabled(false);
 		chckbxSupervisor.setVisible(false);
+		chckbxSupervisor.setOpaque(false);
 		chckbxSupervisor.setBounds(459, 257, 201, 33);
 		add(chckbxSupervisor);
 		chckbxSupervisor.addKeyListener(this);
 		
 		chckbxTechnician = new JCheckBox("Technician");
-		buttonGroupManagerRole.add(chckbxTechnician);
 		chckbxTechnician.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxTechnician.setEnabled(false);
 		chckbxTechnician.setVisible(false);
+		chckbxTechnician.setOpaque(false);
 		chckbxTechnician.setBounds(459, 341, 201, 30);
 		add(chckbxTechnician);
 		chckbxTechnician.addKeyListener(this);
@@ -246,7 +241,6 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		
 		// Metodo para comprobar si el username existe
 		
 	}
@@ -270,10 +264,20 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 	public void keyReleased(KeyEvent e) {}
 	@Override
 	public void focusGained(FocusEvent e) {}
+
 	
-	public void metodoRegister() {
-		
-		
-		JOptionPane.showMessageDialog(this, "El metodo funiconaeaxavdhajdha", "Suuuh", JOptionPane.PLAIN_MESSAGE);
+	
+	
+	public void clearRegisterFields() {
+		// TODO Auto-generated method stub
+		chckbxManager.setSelected(false);
+		textFieldAddress.setText("");
+		textFieldCreditCard.setText("");
+		textFieldEmail.setText("");
+		textFieldName.setText("");
+		textFieldPassword.setText("");
+		textFieldSurname.setText("");
+		textFieldUsername.setText("");
 	}
+	
 }

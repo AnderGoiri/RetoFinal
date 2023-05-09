@@ -1,4 +1,4 @@
-package storeMenu;
+package storeMenuGUI;
 
 import java.awt.Color;
 import java.awt.Font;

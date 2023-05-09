@@ -1,4 +1,4 @@
-package storeMenu;
+package storeMenuGUI;
 
 import javax.swing.JPanel;
 import javax.swing.JCheckBox;
