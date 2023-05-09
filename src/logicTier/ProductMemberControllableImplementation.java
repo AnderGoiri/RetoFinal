@@ -2,17 +2,18 @@ package logicTier;
 
 import java.sql.CallableStatement;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import exceptions.ProductNotFoundException;
 import exceptions.PurchaseNotFoundException;
+import exceptions.StockNotFoundException;
 import model.Accessory;
 import model.Component;
 import model.EnumClassAccessory;
@@ -213,25 +214,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		}
 		return listaProductos;
 	}
-	/**
-	 * 	TODO For manager
-	 * Method for the search of products filtered by id
-	 * In the parameter list of products, the method searches the one thats equal to the id
-	 * @return a list of products
-	 * @author Jago
-	 */
-	@Override
-	public Product searchProductById(int pId, Set<Product> listaProd) {
-		Product pAux = null;
-		
-		for (Product prod : listaProd) {
-			if (prod.getIdProduct() == pId) {
-				pAux = prod;
-			}
-		}
-		
-		return pAux;	
-	}
 	
 	/**
 	 * Method for the search of products filtered by name
@@ -358,6 +340,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * This method checks if there is stock and returns a boolean
 	 * @param Product p is the product the user selected
 	 * @author Jago
+	 * TODO Exception
 	 */
 	@Override
 	public boolean checkProduct(Product p) throws Exception {
@@ -365,13 +348,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		if (p.getStock() <= 0) {
 			stockNotFound = true;
 		}
-		//TODO StockNotFoundException?
 		return stockNotFound;
 	}
 	
 	/**
 	 * This method checks within the database to see if the selected product exists
 	 * TODO Move to ProductManager, its only useful there
+	 * TODO Exception
 	 * @author Jago
 	 */
 	@Override
@@ -395,34 +378,43 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	}
 
 	/**
-	 * First we transform a String value into enum.
-	 * We check if the product has stock and then update the product table.
-	 * Then we check if the current Purchase is new (to add it as a new one into the database) and if the status is NOT "In progress",
-	 * Then we add a new purchase into the database and we retrieve the info we just inserted to use it here.
-	 * In case the Purchase is not null, we update the Purchase with new info of the product.
-	 * We update the purchase record of the member with a new one
-	 * @param Purchase pTotal is the Purchase currently in progress, Product p is the product we want to add to the shopping cart and Member m the member using the application.
+	 * First we transform a String value into enum. We check if the product has
+	 * stock and then update the product table. Then we check if the current
+	 * Purchase is new (to add it as a new one into the database) and if the status
+	 * is NOT "In progress", Then we add a new purchase into the database and we
+	 * retrieve the info we just inserted to use it here. In case the Purchase is
+	 * not null, we update the Purchase with new info of the product. We update the
+	 * purchase record of the member with a new one
+	 * 
+	 * @param Purchase pTotal is the Purchase currently in progress, Product p is
+	 *                 the product we want to add to the shopping cart and Member m
+	 *                 the member using the application.
 	 * @author Jago Bartolomé Barroso
 	 */
 	@Override
-	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m) {
+	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m) throws StockNotFoundException, ProductNotFoundException {
 		String stPurch = "In progress";
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
 
 		try {
-			if (checkProduct(p)) {
-				pTotal.getSetProduct().add(p);
-				
-				
-				con = connection.openConnection();
-				ctmt = con.prepareCall("UPDATE product SET stock=? WHERE idProduct=?");
-				ctmt.setInt(1, p.setStock((int) (p.getStock()-1f)));
-				ctmt.setInt(2, p.getIdProduct());
+			if (existsProduct(p.getIdProduct())) {
+				if (checkProduct(p)) {
+					pTotal.getSetProduct().add(p);
 
-				ctmt.executeUpdate();
-				
-				
+					con = connection.openConnection();
+					ctmt = con.prepareCall("UPDATE product SET stock=? WHERE idProduct=?");
+					ctmt.setInt(1, p.setStock((int) (p.getStock() - 1f)));
+					ctmt.setInt(2, p.getIdProduct());
+
+					ctmt.executeUpdate();
+
+				} else {
+					throw new StockNotFoundException();
+				}
+			} else {
+				throw new ProductNotFoundException();
 			}
+
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -543,7 +535,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	@Override
 	public Purchase removeProduct(Purchase pTotal, Product p) throws Exception {
-		Set<Product> pAux = null;
+		Set<Product> pAux = new HashSet<Product>();
 		if (pTotal == null) {
 			throw new PurchaseNotFoundException();
 		} else {

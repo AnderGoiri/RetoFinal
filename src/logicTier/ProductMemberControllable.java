@@ -6,6 +6,7 @@ import exceptions.BrandNotFoundException;
 import exceptions.ModelNotFoundException;
 import exceptions.NameNotFoundException;
 import exceptions.ProductNotFoundException;
+import exceptions.StockNotFoundException;
 import exceptions.TypeNotFoundException;
 import model.Member;
 import model.Product;
@@ -17,8 +18,6 @@ public interface ProductMemberControllable {
 	public Set<Product> searchComponent(String search) throws ProductNotFoundException;
 	
 	public Set<Product> searchAccessory(String search) throws ProductNotFoundException;
-	
-	public Product searchProductById(int pId, Set<Product> listaProd);
 	
 	public Set<Product> searchProductByName(String name, Set<Product> listaProd) throws NameNotFoundException;
 	
@@ -32,7 +31,7 @@ public interface ProductMemberControllable {
 	
 	public boolean checkProduct(Product p) throws Exception;
 	
-	public Purchase addProductPurchase(Purchase pset, Product p, Member m); 
+	public Purchase addProductPurchase(Purchase pset, Product p, Member m) throws StockNotFoundException, ProductNotFoundException; 
 	
 	public Purchase listPurchase(Member m);
 	
