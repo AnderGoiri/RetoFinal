@@ -28,9 +28,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 
+/**
+ * 
+ * @author Fran 
+ *
+ */
 public class Win_login_register extends JFrame implements ActionListener, KeyListener, FocusListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, switchLilPanel;
@@ -144,9 +148,9 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		contentPane.add(lblFondo);
 		btnConfirm.addActionListener(this);
 		btnConfirm.addKeyListener(this);
-
 	}
 
+	// --- Getters for the JPanels ---
 	public UserRegisterPanel getUserRegisterPanel() {
 		return userRegisterPanel;
 	}
@@ -155,44 +159,8 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		return userLoginPanel;
 	}
 
-	/**
-	 * @author Fran
-	 * 
-	 */
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO ask Maria switch
-
-		if (e.getSource().equals(btnLogIn)) {
-			cardLayout.show(switchLilPanel, "LogIn");
-			btnLogIn.setEnabled(false);
-			btnLogIn.setVisible(false);
-			btnSignUp.setEnabled(true);
-			btnSignUp.setVisible(true);
-
-		} else if (e.getSource().equals(btnSignUp)) {
-			cardLayout.show(switchLilPanel, "SignUp");
-			btnLogIn.setEnabled(true);
-			btnLogIn.setVisible(true);
-			btnSignUp.setEnabled(false);
-			btnSignUp.setVisible(false);
-
-		} else if (e.getSource().equals(btnConfirm)) {
-			String panelName = getSelectedPanelName(switchLilPanel);
-
-			if (panelName.equals("a")) {
-				JOptionPane.showMessageDialog(null, "There's a bug on you!", "Hey!", JOptionPane.ERROR_MESSAGE);
-			}
-
-			else {
-				if (panelName.equals("LogIn")) {
-
-				} else {
-
-				}
-			}
-		}
 	}
 
 	public String getSelectedPanelName(JPanel jP) {

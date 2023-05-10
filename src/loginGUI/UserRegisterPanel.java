@@ -31,6 +31,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 	private JLabel lblAddress, lblCredirCard, lblRegistrationTitle, lblUserName, lblPassword, lblEmail, lblSurname,
 			lblName;
 	private JButton btnSignUp;
+	private JButton btnChangeToLogIn;
 
 	// --- Getters ---
 	public JTextField getTextFieldName() {
@@ -198,12 +199,13 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		btnSignUp = new JButton("Sign Up");
 		btnSignUp.setBounds(449, 409, 311, 41);
 		add(btnSignUp);
+		btnSignUp.addActionListener(this);
 
 		btnChangeToLogIn = new JButton("Log In");
 		btnChangeToLogIn.addActionListener(this);
 		btnChangeToLogIn.setBounds(626, 42, 134, 75);
 		add(btnChangeToLogIn);
-		btnSignUp.addActionListener(signupListener);
+		btnChangeToLogIn.addActionListener(this);
 	}
 
 	// ActionListener for the manager check box
@@ -242,9 +244,15 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		}
 	};
 
-	// Actionlistener for the sign up button
-	ActionListener signupListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnChangeToLogIn)) {// receives the event from the change to Log In button
+
+			// To call the UserLogInPanel we need to go back to the JFrame
+			((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
+					.getUserLoginPanel().setVisible(true);
+			this.setVisible(false);
+		} else if (e.getSource().equals(btnSignUp)) {
 			try {
 				// Create a LoginControllable Object
 				LoginControllable login = LoginFactory.getLoginControllable();
@@ -271,21 +279,16 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 				 * "LogIn"); btnLogIn.setEnabled(false); btnLogIn.setVisible(false);
 				 * btnSignUp.setEnabled(true); btnSignUp.setVisible(true);
 				 */
-				// si el registro es correcto, le mandamos al login
-				
+
+				((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
+						.getUserLoginPanel().setVisible(true);
+				this.setVisible(false);
 
 			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage());
+				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}
 		}
-	};
-	private JButton btnChangeToLogIn;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent())).getUserLoginPanel()
-				.setVisible(true);
-		this.setVisible(false);
 	}
 
 	@Override

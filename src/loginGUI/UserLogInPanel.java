@@ -59,13 +59,13 @@ public class UserLogInPanel extends JPanel implements ActionListener {
 		lblPassword.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblPassword.setBounds(50, 258, 128, 68);
 		add(lblPassword);
-		
+
 		lblTitle = new JLabel("Welcome!");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Elephant", Font.PLAIN, 45));
 		lblTitle.setBounds(50, 10, 735, 68);
 		add(lblTitle);
-		
+
 		lblAdvice = new JLabel("Please, identify yourself by inserting your username and password");
 		lblAdvice.setForeground(new Color(0, 151, 178));
 		lblAdvice.setHorizontalAlignment(SwingConstants.CENTER);
@@ -95,18 +95,45 @@ public class UserLogInPanel extends JPanel implements ActionListener {
 		btnLogIn = new JButton("Log In");
 		btnLogIn.setBounds(559, 338, 188, 79);
 		add(btnLogIn);
-		btnLogIn.addActionListener(logInListener);
+		btnLogIn.addActionListener(this);
+
+		/*
+		 * This is the code for the button when it was on the Win_login_Register. It is
+		 * kept to use the same style later
+		 * 
+		 * btnLogIn = new JButton("LOG IN"); btnLogIn.setEnabled(false);
+		 * btnLogIn.setVisible(false); btnLogIn.setBackground(new Color(0, 151, 178));
+		 * btnLogIn.setForeground(new Color(255, 255, 255)); btnLogIn.setFont(new
+		 * Font("Onyx", Font.BOLD, 45)); btnLogIn.setBounds(387, 470, 183, 81);
+		 * contentPane.add(btnLogIn); btnLogIn.addActionListener(this);
+		 * btnLogIn.addKeyListener(this);
+		 */
 
 		btnChangeToSignUp = new JButton("Sign Up");
 		btnChangeToSignUp.setBounds(188, 350, 160, 67);
 		add(btnChangeToSignUp);
 		btnChangeToSignUp.addActionListener(this);
+
+		/*
+		 * btnSignUp = new JButton("SIGN UP"); btnSignUp.setBackground(new Color(0, 151,
+		 * 178)); btnSignUp.setForeground(new Color(255, 255, 255));
+		 * btnSignUp.setFont(new Font("Onyx", Font.BOLD, 45)); btnSignUp.setBounds(387,
+		 * 470, 183, 81); contentPane.add(btnSignUp); btnSignUp.addActionListener(this);
+		 * btnSignUp.addKeyListener(this);
+		 */
 	}
 
-	ActionListener logInListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnChangeToSignUp)) { // receives the event from the change to Sign Up button
+			
+			// To call the UserRegisterPanel we need to go back to the JFrame
+			((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
+					.getUserRegisterPanel().setVisible(true);
+			this.setVisible(false);
+
+		} else if (e.getSource().equals(btnLogIn)) { // actionPerformed receives the event from the login button
 			try {
-				// actionPerformed receives the event from the login button
 
 				// Create a LoginControllable Object
 				LoginControllable login = LoginFactory.getLoginControllable();
@@ -116,7 +143,7 @@ public class UserLogInPanel extends JPanel implements ActionListener {
 				String password = new String(passwordField.getPassword());
 
 				if (username.isBlank() || password.isBlank()) {
-					JOptionPane.showInputDialog(this, "Please, insert your username and password");
+					JOptionPane.showMessageDialog(this, "Please, insert your username and password");
 				} else {
 					// the userLogin method is executed
 					User auxUser = login.userLogin(username, password);
@@ -124,25 +151,13 @@ public class UserLogInPanel extends JPanel implements ActionListener {
 					// if the login is succesful, this window will disclose and the corresponding
 					// member/manager window will open
 					StoreMenuWindow storeMenuPanel = new StoreMenuWindow(this, true, auxUser);
-					// dispose this window
 					storeMenuPanel.setVisible(true);
 					storeMenuPanel.setLocationRelativeTo(null);
 				}
 			} catch (Exception e1) {
-				
-				JOptionPane.showMessageDialog(null, e1.getMessage());
-			
+				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}
-
 		}
-
-	};
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// To call the UserRegisterPanel we need to go back to the JFrame
-		((Win_login_register)(this.getParent().getParent().getParent().getParent().getParent())).getUserRegisterPanel().setVisible(true);
-		this.setVisible(false);
 
 	}
 
