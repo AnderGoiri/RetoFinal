@@ -89,6 +89,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		setLayout(null);
 		setBounds(0, 0, 837, 460);
 
+		// --- JLabel ---
 		lblUserName = new JLabel("User Name:");
 		lblUserName.setBounds(58, 289, 244, 41);
 		lblUserName.setFont(new Font("Constantia", Font.PLAIN, 25));
@@ -119,6 +120,17 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		lblName.setBounds(58, 131, 244, 41);
 		add(lblName);
 
+		lblAddress = new JLabel("Address");
+		lblAddress.setFont(new Font("Constantia", Font.PLAIN, 25));
+		lblAddress.setBounds(449, 205, 264, 51);
+		add(lblAddress);
+
+		lblRegistrationTitle = new JLabel("Registration");
+		lblRegistrationTitle.setFont(new Font("Elephant", Font.PLAIN, 45));
+		lblRegistrationTitle.setBounds(293, 10, 323, 60);
+		add(lblRegistrationTitle);
+
+		// --- TextField ---
 		textFieldName = new JTextField();
 		textFieldName.setBounds(58, 169, 311, 41);
 		add(textFieldName);
@@ -155,11 +167,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		textFieldEmail.setBounds(449, 167, 311, 41);
 		add(textFieldEmail);
 
-		lblAddress = new JLabel("Address");
-		lblAddress.setFont(new Font("Constantia", Font.PLAIN, 25));
-		lblAddress.setBounds(449, 205, 264, 51);
-		add(lblAddress);
-
+		// --- CheckBox ---
 		chckbxManager = new JCheckBox("Manager");
 		chckbxManager.setFont(new Font("Constantia", Font.PLAIN, 25));
 		chckbxManager.setBounds(58, 76, 244, 41);
@@ -167,11 +175,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		chckbxManager.addActionListener(managerListener);
 		add(chckbxManager);
 		chckbxManager.addKeyListener(this);
-
-		lblRegistrationTitle = new JLabel("Registration");
-		lblRegistrationTitle.setFont(new Font("Elephant", Font.PLAIN, 45));
-		lblRegistrationTitle.setBounds(293, 10, 323, 60);
-		add(lblRegistrationTitle);
 
 		chckbxSupervisor = new JCheckBox("Supervisor");
 		chckbxSupervisor.setFont(new Font("Constantia", Font.PLAIN, 25));
@@ -191,9 +194,15 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		add(chckbxTechnician);
 		chckbxTechnician.addKeyListener(this);
 
+		// --- JButton ---
 		btnSignUp = new JButton("Sign Up");
 		btnSignUp.setBounds(449, 409, 311, 41);
 		add(btnSignUp);
+
+		btnChangeToLogIn = new JButton("Log In");
+		btnChangeToLogIn.addActionListener(this);
+		btnChangeToLogIn.setBounds(626, 42, 134, 75);
+		add(btnChangeToLogIn);
 		btnSignUp.addActionListener(signupListener);
 	}
 
@@ -263,17 +272,20 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 				 * btnSignUp.setEnabled(true); btnSignUp.setVisible(true);
 				 */
 				// si el registro es correcto, le mandamos al login
+				
 
-				// Si se produce alguna excepcion, mostramos un mensaje advirtiendo al usuario
 			} catch (Exception e1) {
-				//JOptionPane.showMessageDialog(this, e1.getMessage());
+				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 		}
 	};
+	private JButton btnChangeToLogIn;
 
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent())).getUserLoginPanel()
+				.setVisible(true);
+		this.setVisible(false);
 	}
 
 	@Override

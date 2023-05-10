@@ -13,6 +13,7 @@ import model.User;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.event.ActionListener;
 
 public class StoreMenuWindow extends JDialog {
 	
@@ -29,7 +30,7 @@ public class StoreMenuWindow extends JDialog {
 //	private ManagerMenu managerPanel;
 
 	
-	public StoreMenuWindow(UserLogInPanel userLogInPanel, boolean b, User auxUser) {
+	public StoreMenuWindow(ActionListener actionListener, boolean b, User auxUser) {
 		super();
 		setResizable(false);
 		setTitle("THOMANN STORE MENU");

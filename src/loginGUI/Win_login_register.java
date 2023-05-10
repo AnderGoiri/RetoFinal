@@ -68,11 +68,15 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		cardLayout = new CardLayout();
-		switchLilPanel = new JPanel();
-		switchLilPanel.setOpaque(false);
 		userLoginPanel = new UserLogInPanel();
 		userRegisterPanel = new UserRegisterPanel();
+		
+		
+		cardLayout = new CardLayout();
+		
+		switchLilPanel = new JPanel();
+		switchLilPanel.setOpaque(false);
+
 		switchLilPanel.setBounds(247, 0, 837, 460);
 		contentPane.add(switchLilPanel);
 		switchLilPanel.setLayout(cardLayout);
@@ -141,6 +145,14 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		btnConfirm.addActionListener(this);
 		btnConfirm.addKeyListener(this);
 
+	}
+
+	public UserRegisterPanel getUserRegisterPanel() {
+		return userRegisterPanel;
+	}
+
+	public UserLogInPanel getUserLoginPanel() {
+		return userLoginPanel;
 	}
 
 	/**
