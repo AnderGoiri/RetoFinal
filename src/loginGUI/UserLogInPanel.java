@@ -17,6 +17,7 @@ import exceptions.UserNotFoundException;
 import exceptions.WrongCredentialsException;
 import logicTier.LoginControllable;
 import logicTier.LoginFactory;
+import model.User;
 import storeMenuGUI.StoreMenuWindow;
 
 import javax.swing.JSeparator;
@@ -112,11 +113,12 @@ public class UserLogInPanel extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Please, insert your username and password");
 			} else {
 				// the userLogin method is executed
-				login.userLogin(username, password);
-
+				User auxUser = login.userLogin(username, password);
+				
 				// if the login is succesful, this window will disclose and the corresponding
 				// member/manager window will open
-				StoreMenuWindow storeMenuPanel = new StoreMenuWindow(this, true);
+				StoreMenuWindow storeMenuPanel = new StoreMenuWindow(this, true,auxUser);
+				// dispose this window
 				storeMenuPanel.setVisible(true);
 				storeMenuPanel.setLocationRelativeTo(null);
 			}

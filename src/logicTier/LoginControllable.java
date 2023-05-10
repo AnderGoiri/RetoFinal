@@ -79,8 +79,8 @@ public interface LoginControllable {
 
 	public void deleteUserMember(Member me) throws UserNotFoundException;
 	
-	public Member createMember(ResultSet rset, int idUser) throws SQLException;
+	public Member createMember(int idUser) throws SQLException, WrongCredentialsException;
 	
-	public Manager createManager(ResultSet rset, int idUser) throws SQLException;
+	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException;
 
 }

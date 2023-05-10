@@ -194,7 +194,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		btnSignUp = new JButton("Sign Up");
 		btnSignUp.setBounds(449, 409, 311, 41);
 		add(btnSignUp);
-		btnSignUp.addActionListener(this);
+		btnSignUp.addActionListener(signupListener);
 	}
 
 	// ActionListener for the manager check box

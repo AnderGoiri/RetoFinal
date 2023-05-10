@@ -165,14 +165,14 @@ public class LoginControllableImplementation implements LoginControllable {
 
 			if (memberId != 0) {
 				// This is a member
-				return createMember(rset, memberId);
+				return createMember(memberId);
 
 			} else if (managerId != 0) {
 				// This is a manager
-				return createManager(rset, managerId);
+				return createManager(managerId);
 
 			} else {
-				throw new UserNotFoundException("Invalid user type");
+				throw new UserNotFoundException("Invalid user");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -226,32 +226,53 @@ public class LoginControllableImplementation implements LoginControllable {
 	}
 
 	@Override
-	public Member createMember(ResultSet rset, int idUser) throws SQLException {
-		String username = rset.getString("username");
-		String name = rset.getString("name");
-		String surname = rset.getString("surname");
-		String password = rset.getString("password");
-		String mail = rset.getString("mail");
-		LocalDate dateRegister = rset.getDate("dateRegister").toLocalDate();
-		String address = rset.getString("address");
-		String creditCard = rset.getString("creditCard");
+	public Member createMember(int idUser) throws SQLException, WrongCredentialsException {
+		
+		ptmt = conn.prepareStatement("SELECT * FROM vw_member WHERE idUser ="+idUser+";");
+		
+		rset = ptmt.executeQuery();
+		
+		if (!rset.next()) {
+			throw new WrongCredentialsException("You have entered an invalid username or password");
+		}
+		
+		
+		String username = rset.getString(2);
+		String name = rset.getString(3);
+		String surname = rset.getString(4);
+		String password = rset.getString(5);
+		String mail = rset.getString(6);
+		LocalDate dateRegister = rset.getDate(7).toLocalDate();
+		String address = rset.getString(8);
+		String creditCard = rset.getString(9);
 
 		return new Member(username, name, surname, password, mail, dateRegister, address, creditCard);
 	}
 
 	@Override
-	public Manager createManager(ResultSet rset, int idUser) throws SQLException {
-		String username = rset.getString("username");
-		String name = rset.getString("name");
-		String surname = rset.getString("surname");
-		String password = rset.getString("password");
-		String mail = rset.getString("mail");
-		LocalDate dateRegister = rset.getDate("dateRegister").toLocalDate();
-		int idSupervisor = rset.getInt("idSupervisor");
-		boolean isSupervisor = rset.getBoolean("isSupervisor");
-		boolean isTechnician = rset.getBoolean("isTechnician");
-		boolean isAdmin = rset.getBoolean("isAdmin");
-		EnumStatusManager statusManager = EnumStatusManager.valueOf(rset.getString("statusManager"));
+	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException {
+		
+		ptmt = conn.prepareStatement("SELECT * FROM vw_manager WHERE idUser ="+idUser+";");
+		
+		rset = ptmt.executeQuery();
+		
+		if (!rset.next()) {
+			throw new WrongCredentialsException("You have entered an invalid username or password");
+		}
+		
+		
+		String username = rset.getString(2);
+		String name = rset.getString(3);
+		String surname = rset.getString(4);
+		String password = rset.getString(5);
+		String mail = rset.getString(6);
+		LocalDate dateRegister = rset.getDate(7).toLocalDate();
+		int idSupervisor = rset.getInt(8);
+		boolean isSupervisor = rset.getBoolean(9);
+		boolean isTechnician = rset.getBoolean(10);
+		boolean isAdmin = rset.getBoolean(11);
+		EnumStatusManager statusManager = EnumStatusManager.getValue(rset.getString(12));
+		
 
 		return new Manager(username, name, surname, password, mail, dateRegister, idSupervisor, isSupervisor,
 				isTechnician, isAdmin, statusManager);
