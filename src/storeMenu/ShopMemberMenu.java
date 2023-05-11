@@ -22,18 +22,21 @@ import javax.swing.UIManager;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSeparator;
 import javax.swing.JList;
+import javax.swing.JRadioButton;
 
-public class ShopMemberMenu extends JPanel {
+public class ShopMemberMenu extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JCheckBox chckbxSale;
-	private JTextField textField;
-	private JComboBox comboBox;
+	private JTextField txtSearch;
 	private JButton btnAdd;
 	private JScrollPane scrollPaneProducts;
 	private JButton btnCarrito;
+	private JLabel lblWelcome;
+	private JComboBox<String> cmbFilter;
+	private JList list;
 
 	/**
 	 * Create the panel.
@@ -56,27 +59,27 @@ public class ShopMemberMenu extends JPanel {
 		 * Add a combo box to the panel to be able to filter the products by different
 		 * features.
 		 */
-		comboBox = new JComboBox();
-		comboBox.setModel(
-				new DefaultComboBoxModel(new String[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
-		comboBox.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
-		comboBox.setFont(new Font("Constantia", Font.PLAIN, 25));
-		comboBox.setBounds(919, 206, 316, 50);
-		add(comboBox);
+		String[] arrayFilter = new String[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+		JComboBox cmbFilter = new JComboBox(arrayFilter);
+		cmbFilter.setModel(new DefaultComboBoxModel(arrayFilter));
+		cmbFilter.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
+		cmbFilter.setFont(new Font("Constantia", Font.PLAIN, 25));
+		cmbFilter.setBounds(919, 206, 316, 50);
+		add(cmbFilter);
 
 		/**
 		 * Add a text field to the panel to be able to search a product by the name.
 		 */
-		textField = new JTextField();
-		textField.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
-		textField.setBounds(94, 206, 815, 50);
-		add(textField);
-		textField.setColumns(10);
+		txtSearch = new JTextField();
+		txtSearch.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
+		txtSearch.setBounds(94, 206, 815, 50);
+		add(txtSearch);
+		txtSearch.setColumns(10);
 
 		/**
 		 * Add a label to the panel
 		 */
-		JLabel lblWelcome = new JLabel("Welcome to our shop");
+		lblWelcome = new JLabel("Welcome to our shop");
 		lblWelcome.setFont(new Font("Elephant", Font.PLAIN, 55));
 		lblWelcome.setBounds(509, 10, 598, 154);
 		add(lblWelcome);
@@ -132,7 +135,7 @@ public class ShopMemberMenu extends JPanel {
 		
 		String categories[] = { "a", "b", "c", "d", "e","a", "b", "c", "d", "e","a", "b", "c", "d"};
 		
-		JList list = new JList(categories);
+		list = new JList(categories);
 		list.setFont(new Font("Constantia", Font.PLAIN, 25));
 		//instanciamos la lista
 		scrollPaneProducts = new JScrollPane(list);
@@ -175,15 +178,12 @@ public class ShopMemberMenu extends JPanel {
 		lblFondo.setBounds(0, 0, 1540, 845);
 		add(lblFondo);
 		
-		
-		
-		
-		
-		
+	
 	}
 
 	
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		//TODO if textbox empty && btn
+		//comboProductType.getSelectedItem;
 	}
 }

@@ -19,6 +19,7 @@ public class ManagerMenu extends JPanel {
 	public ManagerMenu() {
 		setBackground(new Color(0, 150, 178));
 		setLayout(null);
+		setBounds(0, 0, 1860, 950);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 1860, 950);

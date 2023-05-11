@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import login.Win_login_register;
+import model.User;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -25,7 +26,8 @@ public class StoreMenu extends JDialog {
 //	private ManagerMenu managerPanel;
 
 	
-	public StoreMenu(Win_login_register win_login_register, boolean b) {
+	public StoreMenu(Win_login_register win_login_register, boolean b, User auxUser) {
+		//TODO super vacio?
 		super(win_login_register,b);
 		setResizable(false);
 		setTitle("THOMANN STORE MENU");
@@ -65,11 +67,8 @@ public class StoreMenu extends JDialog {
 	 */
 	private void showMenu() {
 		// metodo que recoge el usuario y segun su tipo muestra el menu de member o de manager
-
+		cardLayout.show(menuPanel, "Member");
 		
-
-		cardLayout.show(menuPanel, "Manager");
-
 	}
 
 }
