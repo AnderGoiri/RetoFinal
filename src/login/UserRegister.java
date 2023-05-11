@@ -131,6 +131,7 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 		chckbxSupervisor.setBounds(459, 257, 201, 33);
 		add(chckbxSupervisor);
 		chckbxSupervisor.addKeyListener(this);
+		chckbxSupervisor.setOpaque(false);
 		
 		chckbxTechnician = new JCheckBox("Technician");
 		buttonGroupManagerRole.add(chckbxTechnician);
@@ -140,6 +141,7 @@ public class UserRegister extends JPanel implements ActionListener, KeyListener,
 		chckbxTechnician.setBounds(459, 341, 201, 30);
 		add(chckbxTechnician);
 		chckbxTechnician.addKeyListener(this);
+		chckbxTechnician.setOpaque(false);
 
 	}
 

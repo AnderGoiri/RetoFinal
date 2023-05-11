@@ -9,22 +9,28 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
-public class MemberAccountPanel extends JPanel implements ActionListener {
+public class MemberAccountPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textaUsername;
-	private JTextField textSurname;
-	private JTextField textEmail;
-	private JTextField textName;
-	private JTextField textAddress;
+	private JTextField textFieldUsername;
+	private JTextField textFieldSurname;
+	private JTextField textFieldEmail;
+	private JTextField textFieldName;
+	private JTextField textFieldAddress;
 	private JButton btnEditProfile;
 	private JButton btnConfirm;
 	private JButton btnCancel;
@@ -38,15 +44,6 @@ public class MemberAccountPanel extends JPanel implements ActionListener {
 		setLayout(null);
 		setBounds(0, 0, 1582, 845);
 
-		
-		
-		String categories[] = { "a", "b", "c", "d", "e","a", "b", "c", "d", "e", "a"};
-		list = new JList(categories);
-		list.setFont(new Font("Constantia", Font.PLAIN, 25));
-		scrollPane = new JScrollPane(list);
-		scrollPane.setBounds(51, 469, 1437, 314);
-		add(scrollPane);
-		
 		/**
 		 * Creation of a series of in which the user can see their data and can modify
 		 * it if necessary.
@@ -86,41 +83,9 @@ public class MemberAccountPanel extends JPanel implements ActionListener {
 		lblPurchase.setBounds(51, 426, 417, 41);
 		add(lblPurchase);
 
-		textaUsername = new JTextField();
-		textaUsername.setBounds(442, 72, 457, 50);
-		textaUsername.setEditable(false);
-		textaUsername.setEnabled(false);
-		add(textaUsername);
-		textaUsername.setColumns(10);
-
-		textSurname = new JTextField();
-		textSurname.setColumns(10);
-		textSurname.setBounds(442, 157, 457, 50);
-		textSurname.setEditable(false);
-		textSurname.setEnabled(false);
-		add(textSurname);
-
-		textEmail = new JTextField();
-		textEmail.setColumns(10);
-		textEmail.setBounds(442, 243, 457, 50);
-		textEmail.setEditable(false);
-		textEmail.setEnabled(false);
-		add(textEmail);
-
-		textName = new JTextField();
-		textName.setColumns(10);
-		textName.setBounds(1055, 72, 457, 50);
-		textName.setEditable(false);
-		textName.setEnabled(false);
-		add(textName);
-
-		textAddress = new JTextField();
-		textAddress.setColumns(10);
-		textAddress.setBounds(1055, 157, 457, 50);
-		textAddress.setEditable(false);
-		textAddress.setEnabled(false);
-		add(textAddress);
-
+		/**
+		 * Add a button to edit the jTextField so that the user can modify his data.
+		 */
 		btnEditProfile = new JButton("Edit Profile");
 		btnEditProfile.setBackground(new Color(0, 151, 178));
 		btnEditProfile.setForeground(new Color(255, 255, 255));
@@ -128,13 +93,51 @@ public class MemberAccountPanel extends JPanel implements ActionListener {
 		btnEditProfile.addActionListener(this);
 		btnEditProfile.setBounds(33, 232, 205, 65);
 		add(btnEditProfile);
+		btnEditProfile.addKeyListener(this);
 
-		JLabel lblNewFotoPerfil = new JLabel("");
-		lblNewFotoPerfil.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/profile2.png")));
-		lblNewFotoPerfil.setBounds(57, 47, 143, 150);
-		add(lblNewFotoPerfil);
-		lblNewFotoPerfil.setOpaque(false);
+		textFieldUsername = new JTextField();
+		textFieldUsername.setBounds(442, 72, 457, 50);
+		textFieldUsername.setEditable(false);
+		textFieldUsername.setEnabled(false);
+		add(textFieldUsername);
+		textFieldUsername.setColumns(10);
+		textFieldUsername.addKeyListener(this);
 
+		textFieldSurname = new JTextField();
+		textFieldSurname.setColumns(10);
+		textFieldSurname.setBounds(442, 157, 457, 50);
+		textFieldSurname.setEditable(false);
+		textFieldSurname.setEnabled(false);
+		add(textFieldSurname);
+		textFieldSurname.addKeyListener(this);
+
+		textFieldName = new JTextField();
+		textFieldName.setColumns(10);
+		textFieldName.setBounds(1055, 72, 457, 50);
+		textFieldName.setEditable(false);
+		textFieldName.setEnabled(false);
+		add(textFieldName);
+		textFieldName.addKeyListener(this);
+
+		textFieldAddress = new JTextField();
+		textFieldAddress.setColumns(10);
+		textFieldAddress.setBounds(1055, 157, 457, 50);
+		textFieldAddress.setEditable(false);
+		textFieldAddress.setEnabled(false);
+		add(textFieldAddress);
+		textFieldAddress.addKeyListener(this);
+		
+		textFieldEmail = new JTextField();
+		textFieldEmail.setColumns(10);
+		textFieldEmail.setBounds(442, 243, 457, 50);
+		textFieldEmail.setEditable(false);
+		textFieldEmail.setEnabled(false);
+		add(textFieldEmail);
+		textFieldEmail.addKeyListener(this);
+
+		/**
+		 * Add a button to be able to save the changes that have been made in the JTextField.
+		 */
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(this);
 		btnConfirm.setForeground(Color.WHITE);
@@ -144,7 +147,11 @@ public class MemberAccountPanel extends JPanel implements ActionListener {
 		btnConfirm.setBackground(new Color(0, 151, 178));
 		btnConfirm.setBounds(1055, 232, 205, 65);
 		add(btnConfirm);
-
+		btnConfirm.addKeyListener(this);
+		
+		/**
+		 * Add a button to cancel data that has been modified in the JTextField.
+		 */
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(this);
 		btnCancel.setForeground(Color.WHITE);
@@ -154,7 +161,22 @@ public class MemberAccountPanel extends JPanel implements ActionListener {
 		btnCancel.setBackground(new Color(0, 151, 178));
 		btnCancel.setBounds(1310, 232, 205, 65);
 		add(btnCancel);
-		
+		btnCancel.addKeyListener(this);
+
+		//listado de sus compras
+		String categories[] = { "a", "b", "c", "d", "e", "a", "b", "c", "d", "e", "a" };
+		list = new JList(categories);
+		list.setFont(new Font("Constantia", Font.PLAIN, 25));
+		scrollPane = new JScrollPane(list);
+		scrollPane.setBounds(51, 469, 1437, 314);
+		add(scrollPane);
+
+		JLabel lblNewFotoPerfil = new JLabel("");
+		lblNewFotoPerfil.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/profile2.png")));
+		lblNewFotoPerfil.setBounds(57, 47, 143, 150);
+		add(lblNewFotoPerfil);
+		lblNewFotoPerfil.setOpaque(false);
+
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
 		lblFondo.setBounds(0, 0, 1540, 870);
@@ -165,57 +187,103 @@ public class MemberAccountPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(btnEditProfile)) {
-			textaUsername.setEditable(true);
-			textaUsername.setEnabled(true);
-			textSurname.setEditable(true);
-			textSurname.setEnabled(true);
-			textEmail.setEditable(true);
-			textEmail.setEnabled(true);
-			textName.setEditable(true);
-			textName.setEnabled(true);
-			textAddress.setEditable(true);
-			textAddress.setEnabled(true);
+			textFieldUsername.setEditable(true);
+			textFieldUsername.setEnabled(true);
+			textFieldSurname.setEditable(true);
+			textFieldSurname.setEnabled(true);
+			textFieldEmail.setEditable(true);
+			textFieldEmail.setEnabled(true);
+			textFieldName.setEditable(true);
+			textFieldName.setEnabled(true);
+			textFieldAddress.setEditable(true);
+			textFieldAddress.setEnabled(true);
 			btnConfirm.setEnabled(true);
 			btnConfirm.setVisible(true);
 			btnCancel.setEnabled(true);
 			btnCancel.setVisible(true);
 
 		} else if (e.getSource().equals(btnConfirm)) {
-			textaUsername.setEditable(false);
-			textaUsername.setEnabled(false);
-			textSurname.setEditable(false);
-			textSurname.setEnabled(false);
-			textEmail.setEditable(false);
-			textEmail.setEnabled(false);
-			textName.setEditable(false);
-			textName.setEnabled(false);
-			textAddress.setEditable(false);
-			textAddress.setEnabled(false);
+			textFieldUsername.setEditable(false);
+			textFieldUsername.setEnabled(false);
+			textFieldSurname.setEditable(false);
+			textFieldSurname.setEnabled(false);
+			textFieldEmail.setEditable(false);
+			textFieldEmail.setEnabled(false);
+			textFieldName.setEditable(false);
+			textFieldName.setEnabled(false);
+			textFieldAddress.setEditable(false);
+			textFieldAddress.setEnabled(false);
 			btnConfirm.setEnabled(false);
 			btnConfirm.setVisible(false);
 			btnCancel.setEnabled(false);
 			btnCancel.setVisible(false);
 
-			JOptionPane.showMessageDialog(null, "Your profile has been edited successfully");
+			UIManager UI = new UIManager();
+			UIManager.put("OptionPane.background", new ColorUIResource(255, 255, 255));
+			UIManager.put("Panel.background", new ColorUIResource(255, 255, 255));
+			UIManager.put("Button.background", new java.awt.Color(0, 151, 178));
+			
+			JOptionPane.showMessageDialog(null, "Your profile has been edited successfully", "Saved Modification",
+					JOptionPane.INFORMATION_MESSAGE);
+			
+			/*JOptionPane.showMessageDialog(null, "Your profile has been edited successfully");*/
 
 		} else if (e.getSource().equals(btnCancel)) {
-			textaUsername.setEditable(false);
-			textaUsername.setEnabled(false);
-			textSurname.setEditable(false);
-			textSurname.setEnabled(false);
-			textEmail.setEditable(false);
-			textEmail.setEnabled(false);
-			textName.setEditable(false);
-			textName.setEnabled(false);
-			textAddress.setEditable(false);
-			textAddress.setEnabled(false);
+			textFieldUsername.setEditable(false);
+			textFieldUsername.setEnabled(false);
+			textFieldSurname.setEditable(false);
+			textFieldSurname.setEnabled(false);
+			textFieldEmail.setEditable(false);
+			textFieldEmail.setEnabled(false);
+			textFieldName.setEditable(false);
+			textFieldName.setEnabled(false);
+			textFieldAddress.setEditable(false);
+			textFieldAddress.setEnabled(false);
 			btnConfirm.setEnabled(false);
 			btnConfirm.setVisible(false);
 			btnCancel.setEnabled(false);
 			btnCancel.setVisible(false);
 
-			JOptionPane.showMessageDialog(null, "Edition has been canceled","Modification Canceled",JOptionPane.ERROR_MESSAGE);
+			UIManager UI = new UIManager();
+			UIManager.put("OptionPane.background", new ColorUIResource(255, 255, 255));
+			UIManager.put("Panel.background", new ColorUIResource(255, 255, 255));
+			UIManager.put("Button.background", new java.awt.Color(0, 151, 178));
+			
+			JOptionPane.showMessageDialog(null, "Edition has been canceled", "Modification Canceled",
+					JOptionPane.ERROR_MESSAGE);
+			
+			/*JOptionPane.showMessageDialog(null, "Edition has been canceled", "Modification Canceled",
+					JOptionPane.ERROR_MESSAGE);*/
+		}
 
+	}
+
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if (e.getSource() instanceof JButton) {
+				((JButton) e.getSource()).doClick();
+				/*
+				 * if(e.getSource() instanceof JCheckBox) { ((JCheckBox)
+				 * e.getSource()).doClick();
+				 * 
+				 * }
+				 */
+
+			}
 		}
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
