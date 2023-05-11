@@ -5,18 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import exceptions.UserNotFoundException;
-import exceptions.WrongCredentialsException;
-import logicTier.LoginControllable;
-import logicTier.LoginFactory;
-import model.EnumStatusManager;
-import model.Manager;
-import model.Member;
-import storeMenuGUI.StoreMenuWindow;
-
 import java.awt.CardLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -158,7 +148,7 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 	public UserLogInPanel getUserLoginPanel() {
 		return userLoginPanel;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	}

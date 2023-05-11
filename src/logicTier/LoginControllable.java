@@ -1,6 +1,5 @@
 package logicTier;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import exceptions.CredentialNotValidException;
@@ -63,8 +62,9 @@ public interface LoginControllable {
 	 * 
 	 * @author Ander Goirigolzarri Iturburu
 	 * @return 
+	 * @throws SQLException 
 	 */
-	public User userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException;
+	public User userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException, SQLException;
 
 	/**
 	 * 
