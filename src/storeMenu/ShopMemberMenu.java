@@ -5,7 +5,13 @@ import javax.swing.JCheckBox;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
@@ -23,13 +29,14 @@ import javax.swing.UIManager;
 
 import logicTier.ProductMemberControllable;
 import logicTier.ProductMemberFactory;
+import model.Product;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSeparator;
 import javax.swing.JList;
 import javax.swing.JRadioButton;
 
-public class ShopMemberMenu extends JPanel implements ActionListener {
+public class ShopMemberMenu extends JPanel implements ActionListener, KeyListener, FocusListener {
 	/**
 	 * 
 	 */
@@ -44,6 +51,111 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 	private JList list;
 	private JComboBox<String> comboProductType;
 	private JButton btnLupa;
+
+	public JCheckBox getChckbxSale() {
+		return chckbxSale;
+	}
+
+
+	public void setChckbxSale(JCheckBox chckbxSale) {
+		this.chckbxSale = chckbxSale;
+	}
+
+
+	public JTextField getTxtSearch() {
+		return txtSearch;
+	}
+
+
+	public void setTxtSearch(JTextField txtSearch) {
+		this.txtSearch = txtSearch;
+	}
+
+
+	public JButton getBtnAdd() {
+		return btnAdd;
+	}
+
+
+	public void setBtnAdd(JButton btnAdd) {
+		this.btnAdd = btnAdd;
+	}
+
+
+	public JScrollPane getScrollPaneProducts() {
+		return scrollPaneProducts;
+	}
+
+
+	public void setScrollPaneProducts(JScrollPane scrollPaneProducts) {
+		this.scrollPaneProducts = scrollPaneProducts;
+	}
+
+
+	public JButton getBtnCarrito() {
+		return btnCarrito;
+	}
+
+
+	public void setBtnCarrito(JButton btnCarrito) {
+		this.btnCarrito = btnCarrito;
+	}
+
+
+	public JLabel getLblWelcome() {
+		return lblWelcome;
+	}
+
+
+	public void setLblWelcome(JLabel lblWelcome) {
+		this.lblWelcome = lblWelcome;
+	}
+
+
+	public JComboBox<String> getCmbFilter() {
+		return cmbFilter;
+	}
+
+
+	public void setCmbFilter(JComboBox<String> cmbFilter) {
+		this.cmbFilter = cmbFilter;
+	}
+
+
+	public JList getList() {
+		return list;
+	}
+
+
+	public void setList(JList list) {
+		this.list = list;
+	}
+
+
+	public JComboBox<String> getComboProductType() {
+		return comboProductType;
+	}
+
+
+	public void setComboProductType(JComboBox<String> comboProductType) {
+		this.comboProductType = comboProductType;
+	}
+
+
+	public JButton getBtnLupa() {
+		return btnLupa;
+	}
+
+
+	public void setBtnLupa(JButton btnLupa) {
+		this.btnLupa = btnLupa;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 
 	/**
 	 * Create the panel.
@@ -82,9 +194,10 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 		txtSearch.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		txtSearch.setBounds(94, 206, 815, 50);
 		txtSearch.setEditable(getFocusTraversalKeysEnabled());
-		add(txtSearch);
 		txtSearch.setColumns(10);
-
+		add(txtSearch);
+		txtSearch.addFocusListener(this);
+		
 		/**
 		 * Add a label to the panel
 		 */
@@ -206,10 +319,22 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 			if (comboProductType.getSelectedIndex()==-1) {
 				JOptionPane.showMessageDialog(this, "Selecciona un tipo de producto");
 			} else {
+				int sel = comboProductType.getSelectedIndex();
 				if(search.isEmpty()) {
-
+					
 				
 				} else {
+					Set<Product> listProduct = new HashSet<Product>();
+					if (sel == 1) {
+						listProduct.add(pMember.searchInstrument(search));
+					}
+					if (sel == 2) {
+						pMember.searchComponent(search);
+					}
+					if (sel == 3) {
+						pMember.searchAccessory(search);
+					}
+					
 					cmbFilter.setEnabled(true);
 				}
 			}
@@ -240,6 +365,34 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 				btnLupa.doClick();
 			}
 		}
+	}
+
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
