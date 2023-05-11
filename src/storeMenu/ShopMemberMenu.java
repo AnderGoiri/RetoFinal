@@ -186,7 +186,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		cmbFilter.setBounds(919, 206, 316, 50);
 		cmbFilter.setEnabled(false);
 		add(cmbFilter);
-
+	
 		/**
 		 * Add a text field to the panel to be able to search a product by the name.
 		 */
@@ -197,6 +197,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		txtSearch.setColumns(10);
 		add(txtSearch);
 		txtSearch.addFocusListener(this);
+		txtSearch.addKeyListener(this);
 		
 		/**
 		 * Add a label to the panel
@@ -218,7 +219,11 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		btnLupa.setOpaque(false);
 		btnLupa.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				//TODO 
+				if(!txtSearch.getText().isEmpty()) {
+					String search = txtSearch.getText();	
+				} else {
+					cmbFilter.setEnabled(true);
+				}
 			}
 		});
 		
@@ -234,6 +239,8 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 			}
 		});
 
+		//TODO btnRemove
+		
 		btnCarrito = new JButton("");
 		btnCarrito.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/carrito_.png")));
 		btnCarrito.setBounds(1400, 36, 100, 100);
@@ -314,25 +321,27 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		try {
 			ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
 		
-			String search = new String(txtSearch.getText());
+			String search = txtSearch.getText();
 			
 			if (comboProductType.getSelectedIndex()==-1) {
 				JOptionPane.showMessageDialog(this, "Selecciona un tipo de producto");
 			} else {
+				
 				int sel = comboProductType.getSelectedIndex();
 				if(search.isEmpty()) {
 					
 				
 				} else {
+					comboProductType.setEnabled(true);
 					Set<Product> listProduct = new HashSet<Product>();
 					if (sel == 1) {
-						listProduct.add(pMember.searchInstrument(search));
+						listProduct = pMember.searchInstrument(search);
 					}
 					if (sel == 2) {
-						pMember.searchComponent(search);
+						listProduct = pMember.searchComponent(search);
 					}
 					if (sel == 3) {
-						pMember.searchAccessory(search);
+						listProduct = pMember.searchAccessory(search);
 					}
 					
 					cmbFilter.setEnabled(true);
@@ -359,10 +368,8 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-			if(e.getSource().equals(btnLupa)){
-				btnLupa.doClick();
-			} else if(e.getSource().equals(btnLupa)) {
-				btnLupa.doClick();
+			if(e.getSource().equals(txtSearch)){
+				actionPerformed(null);
 			}
 		}
 	}
