@@ -31,8 +31,8 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 	private CardLayout cardLayout;
 	private UserRegisterPanel userRegisterPanel;
 	private UserLogInPanel userLoginPanel;
-	private JButton btnLogIn, btnSignUp, btnConfirm;
-	private JLabel lblLogoFill, label, lblFondo, lblLogo;
+	//private JButton btnConfirm, btnLogIn, btnSignUp ;
+	private JLabel lblLogoFill, lblFondo, lblLogo;
 
 	/**
 	 * TODO Delete later
@@ -54,6 +54,7 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 	 * Create the frame.
 	 */
 	public Win_login_register() {
+	//JFrame and its components set up
 		setTitle("REGISTRATION & IDENTIFICATION");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1100, 600);
@@ -65,48 +66,63 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		userLoginPanel = new UserLogInPanel();
 		userRegisterPanel = new UserRegisterPanel();
 		
-		
+	// Creation of the Log In and Sign Up Panels' Container	
 		cardLayout = new CardLayout();
-		
 		switchLilPanel = new JPanel();
 		switchLilPanel.setOpaque(false);
-
-		switchLilPanel.setBounds(247, 0, 837, 460);
+		switchLilPanel.setBounds(247, 0, 837, 560);
 		contentPane.add(switchLilPanel);
 		switchLilPanel.setLayout(cardLayout);
 		switchLilPanel.add("LogIn", userLoginPanel);
 		switchLilPanel.add("SignUp", userRegisterPanel);
 		userLoginPanel.setOpaque(false);
 		userRegisterPanel.setOpaque(false);
-
-		btnLogIn = new JButton("LOG IN");
-		btnLogIn.setBackground(new Color(0, 151, 178));
-		btnLogIn.setForeground(new Color(255, 255, 255));
-		btnLogIn.setFont(new Font("Onyx", Font.BOLD, 45));
-		btnLogIn.setBounds(806, 470, 183, 81);
-
 		cardLayout.show(switchLilPanel, "LogIn");
+		
+	
+		
+	//Old JFrame buttons
+		
+		//btnLogIn = new JButton("LOG IN");
+		//btnLogIn.setBackground(new Color(0, 151, 178));
+		//btnLogIn.setForeground(new Color(255, 255, 255));
+		//btnLogIn.setFont(new Font("Onyx", Font.BOLD, 45));
+		//btnLogIn.setBounds(806, 470, 183, 81);
 
-		btnLogIn = new JButton("LOG IN");
-		btnLogIn.setEnabled(false);
-		btnLogIn.setVisible(false);
-		btnLogIn.setBackground(new Color(0, 151, 178));
-		btnLogIn.setForeground(new Color(255, 255, 255));
-		btnLogIn.setFont(new Font("Onyx", Font.BOLD, 45));
-		btnLogIn.setBounds(387, 470, 183, 81);
-		contentPane.add(btnLogIn);
-		btnLogIn.addActionListener(this);
-		btnLogIn.addKeyListener(this);
+		
 
-		btnSignUp = new JButton("SIGN UP");
-		btnSignUp.setBackground(new Color(0, 151, 178));
-		btnSignUp.setForeground(new Color(255, 255, 255));
-		btnSignUp.setFont(new Font("Onyx", Font.BOLD, 45));
-		btnSignUp.setBounds(387, 470, 183, 81);
-		contentPane.add(btnSignUp);
-		btnSignUp.addActionListener(this);
-		btnSignUp.addKeyListener(this);
+		//btnLogIn = new JButton("LOG IN");
+		//btnLogIn.setEnabled(false);
+		//btnLogIn.setVisible(false);
+		//btnLogIn.setBackground(new Color(0, 151, 178));
+		//btnLogIn.setForeground(new Color(255, 255, 255));
+		//btnLogIn.setFont(new Font("Onyx", Font.BOLD, 45));
+		//btnLogIn.setBounds(387, 470, 183, 81);
+		//contentPane.add(btnLogIn);
+		//btnLogIn.addActionListener(this);
+		//btnLogIn.addKeyListener(this);
 
+		//btnSignUp = new JButton("SIGN UP");
+		//btnSignUp.setBackground(new Color(0, 151, 178));
+		//btnSignUp.setForeground(new Color(255, 255, 255));
+		//btnSignUp.setFont(new Font("Onyx", Font.BOLD, 45));
+		//btnSignUp.setBounds(387, 470, 183, 81);
+		//contentPane.add(btnSignUp);
+		//btnSignUp.addActionListener(this);
+		//btnSignUp.addKeyListener(this);
+		
+		//btnConfirm = new JButton("CONFIRM");
+		//btnConfirm.setForeground(Color.WHITE);
+		//btnConfirm.setFont(new Font("Onyx", Font.BOLD, 45));
+		//btnConfirm.setBackground(new Color(0, 151, 178));
+		//btnConfirm.setBounds(806, 470, 183, 81);
+		//contentPane.add(btnConfirm);
+		//btnConfirm.addActionListener(this);
+//		btnConfirm.addKeyListener(this);
+	
+		
+	// Logo and background labels
+		
 		lblLogo = new JLabel("");
 		lblLogo.setBackground(Color.WHITE);
 		lblLogo.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -121,23 +137,13 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		lblLogoFill.setBounds(0, 0, 20, 560);
 		contentPane.add(lblLogoFill);
 
-		btnConfirm = new JButton("CONFIRM");
-		btnConfirm.setForeground(Color.WHITE);
-		btnConfirm.setFont(new Font("Onyx", Font.BOLD, 45));
-		btnConfirm.setBackground(new Color(0, 151, 178));
-		btnConfirm.setBounds(806, 470, 183, 81);
-		contentPane.add(btnConfirm);
-
-		label = new JLabel("New label");
-		label.setBounds(20, 10, 45, 13);
-		contentPane.add(label);
+		
 
 		lblFondo = new JLabel("New label");
 		lblFondo.setIcon(new ImageIcon(Win_login_register.class.getResource("/media/fondo2_.png")));
 		lblFondo.setBounds(0, 0, 1084, 573);
 		contentPane.add(lblFondo);
-		btnConfirm.addActionListener(this);
-		btnConfirm.addKeyListener(this);
+		
 	}
 
 	// --- Getters for the JPanels ---
@@ -153,22 +159,29 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 	public void actionPerformed(ActionEvent e) {
 	}
 
-	public String getSelectedPanelName(JPanel jP) {
-		String selectedPanel = "a";
+	
+	   //Old method to get the name of the selected panel. Used as variable inside the old Confirm button use, 
+	   //because this had two methods, the userRegister method and the logIn method.
+	  
+	  // public String getSelectedPanelName(JPanel jP) {
+		//	String selectedPanel = "a";
+	
+		//	for (Component c : jP.getComponents()) {
+		//		if (c.isVisible() == true) {
+		//			if (c instanceof UserLogInPanel) {
+		//				selectedPanel = "LogIn";
+		//			} else {
+		//				selectedPanel = "SignUp";
+		//			}
+		//		}
+		//	}
+	
+		//	return selectedPanel;
 
-		for (Component c : jP.getComponents()) {
-			if (c.isVisible() == true) {
-				if (c instanceof UserLogInPanel) {
-					selectedPanel = "LogIn";
-				} else {
-					selectedPanel = "SignUp";
-				}
-			}
-		}
-
-		return selectedPanel;
-
-	}
+	//	}
+	
+	
+	
 
 	@Override
 	public void keyPressed(KeyEvent e) {
