@@ -27,6 +27,7 @@ import model.Member;
 
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class UserRegisterPanel extends JPanel implements ActionListener, KeyListener, FocusListener, MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -34,10 +35,12 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			textFieldCreditCard, textFieldEmail;
 	private JCheckBox chckbxManager, chckbxTechnician, chckbxSupervisor, chckbxShowHideSignUp;
 	private JLabel lblAddress, lblCredirCard, lblRegistrationTitle, lblUserName, lblPassword, lblEmail, lblSurname,
-			lblName;
+			lblName, lblLogInAdvice,lblLogIn;
 	private JPasswordField textFieldPassword;
 	private JButton btnSignUp;
 	private JButton btnChangeToLogIn;
+	private final Font font1 = new Font("Tahoma", Font.ITALIC, 11);
+	private final Font font2 = new Font("Tahoma", Font.BOLD | Font.ITALIC, 11);
 
 	// --- Getters ---
 	public JTextField getTextFieldName() {
@@ -137,6 +140,22 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		lblRegistrationTitle.setFont(new Font("Elephant", Font.PLAIN, 45));
 		lblRegistrationTitle.setBounds(256, 10, 323, 60);
 		add(lblRegistrationTitle);
+		
+		lblLogInAdvice = new JLabel("Do you have a registered account?");
+		lblLogInAdvice.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogInAdvice.setForeground(Color.DARK_GRAY);
+		lblLogInAdvice.setBounds(255, 492, 205, 30);
+		add(lblLogInAdvice);
+		
+		lblLogIn = new JLabel("Log In");
+		lblLogIn.setFont(font1);
+		lblLogIn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogIn.setForeground(new Color(0, 151, 178));
+		lblLogIn.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblLogIn.setBounds(460, 492, 40, 30);
+		add(lblLogIn);
+		lblLogIn.addMouseListener(this);
+		
 
 		// --- TextField ---
 		textFieldName = new JTextField();
@@ -204,6 +223,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		chckbxTechnician.addKeyListener(this);
 		
 		chckbxShowHideSignUp = new JCheckBox("");
+		chckbxShowHideSignUp.setOpaque(false);
 		chckbxShowHideSignUp.setBounds(373, 409, 41, 41);
 		add(chckbxShowHideSignUp);
 		chckbxShowHideSignUp.addActionListener(this);
@@ -213,16 +233,10 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 		// --- JButton ---
 		btnSignUp = new JButton("Sign Up");
-		btnSignUp.setBounds(58, 480, 311, 41);
+		btnSignUp.setBounds(449, 409, 311, 41);
 		add(btnSignUp);
 		btnSignUp.addActionListener(this);
 
-		btnChangeToLogIn = new JButton("Log In");
-		btnChangeToLogIn.addActionListener(this);
-		btnChangeToLogIn.setBounds(626, 42, 134, 75);
-		add(btnChangeToLogIn);
-		btnChangeToLogIn.addActionListener(this);
-		
 	}
 	
 	
@@ -262,17 +276,11 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			}
 		}
 	};
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnChangeToLogIn)) {// receives the event from the change to Log In button
-
-			// To call the UserLogInPanel we need to go back to the JFrame
-			((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
-					.getUserLoginPanel().setVisible(true);
-			this.clearRegisterFields();
-			this.setVisible(false);
-		} else if (e.getSource().equals(btnSignUp)) {
+		if (e.getSource().equals(btnSignUp)) {
 			try {
 				// Create a LoginControllable Object
 				LoginControllable login = LoginFactory.getLoginControllable();
@@ -299,10 +307,8 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 				 * "LogIn"); btnLogIn.setEnabled(false); btnLogIn.setVisible(false);
 				 * btnSignUp.setEnabled(true); btnSignUp.setVisible(true);
 				 */
-
-				((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
-						.getUserLoginPanel().setVisible(true);
-				this.setVisible(false);
+				changePanel();
+				
 
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage());
@@ -315,6 +321,13 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			}
 		}
 
+	}
+	private void changePanel() {
+		// TODO Auto-generated method stub
+		((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
+		.getUserLoginPanel().setVisible(true);
+		this.clearRegisterFields();
+		this.setVisible(false);
 	}
 
 	@Override
@@ -358,31 +371,32 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Method that displays the "UserLogInPanel" when you click the Sign Up label.
+		if(e.getSource().equals(lblLogIn)) {
+			changePanel();
+		}
 	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Method that changes the Sign Up label's text format.
+		if(e.getComponent().equals(lblLogIn)) {
+			lblLogIn.setFont(font2);
+		}
 		
 	}
-
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getComponent().equals(lblLogIn)) {
+			lblLogIn.setFont(font1);
+		}
 	}
+
+	
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
 }

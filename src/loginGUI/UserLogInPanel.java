@@ -36,7 +36,7 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 	private JPasswordField passwordField;
 	private JLabel lblUsername, lblPassword, lblTitle, lblAdvice, lblSignUpAdvice, lblSignUp;
 	private JSeparator separator, separatorSignUp;
-	private JButton btnLogIn, btnChangeToSignUp;
+	private JButton btnLogIn;
 	private JCheckBox chckbxShowHideLogIn;
 	private final Font font1 = new Font("Tahoma", Font.ITALIC, 11);
 	private final Font font2 = new Font("Tahoma", Font.BOLD | Font.ITALIC, 11);
