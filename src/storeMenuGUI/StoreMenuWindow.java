@@ -15,8 +15,7 @@ import java.awt.event.ActionListener;
 
 public class StoreMenuWindow extends JDialog {
 	
-	private JPanel contentPanel;
-	private JPanel menuPanel;
+	private JPanel contentPanel,menuPanel;
 	
 	private MemberMenu memberPanel;
 	private ManagerMenu managerPanel;

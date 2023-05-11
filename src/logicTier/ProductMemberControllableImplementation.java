@@ -38,8 +38,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	//Attributes
 	private Product prod;
 	
-	//Sentencias SQL
-	
 	/**
 	 * Method for the search of products that are instruments
 	 * A call for a procedure in the script is made to search products that are instruments.
