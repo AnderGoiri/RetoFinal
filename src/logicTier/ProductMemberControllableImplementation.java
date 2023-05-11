@@ -665,6 +665,5 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		}
 	}
 
-	
 }
 

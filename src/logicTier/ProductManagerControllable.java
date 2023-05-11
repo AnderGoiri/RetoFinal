@@ -4,6 +4,7 @@ import java.util.Set;
 
 import exceptions.ProductFoundException;
 import exceptions.ProductNotFoundException;
+import model.Manager;
 import model.Product;
 
 public interface ProductManagerControllable {
@@ -17,4 +18,6 @@ public interface ProductManagerControllable {
 	public void removeProduct(Product p) throws ProductNotFoundException;
 	
 	public boolean existsProduct(int search);
+	
+	public void modifyManager(Manager m);
 }

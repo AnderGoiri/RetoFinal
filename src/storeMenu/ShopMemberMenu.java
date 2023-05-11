@@ -5,6 +5,7 @@ import javax.swing.JCheckBox;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
@@ -19,6 +20,10 @@ import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+
+import logicTier.ProductMemberControllable;
+import logicTier.ProductMemberFactory;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSeparator;
 import javax.swing.JList;
@@ -37,6 +42,8 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 	private JLabel lblWelcome;
 	private JComboBox<String> cmbFilter;
 	private JList list;
+	private JComboBox<String> comboProductType;
+	private JButton btnLupa;
 
 	/**
 	 * Create the panel.
@@ -60,11 +67,12 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 		 * features.
 		 */
 		String[] arrayFilter = new String[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
-		JComboBox cmbFilter = new JComboBox(arrayFilter);
+		cmbFilter = new JComboBox(arrayFilter);
 		cmbFilter.setModel(new DefaultComboBoxModel(arrayFilter));
 		cmbFilter.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		cmbFilter.setFont(new Font("Constantia", Font.PLAIN, 25));
 		cmbFilter.setBounds(919, 206, 316, 50);
+		cmbFilter.setEnabled(false);
 		add(cmbFilter);
 
 		/**
@@ -73,6 +81,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 		txtSearch = new JTextField();
 		txtSearch.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		txtSearch.setBounds(94, 206, 815, 50);
+		txtSearch.setEditable(getFocusTraversalKeysEnabled());
 		add(txtSearch);
 		txtSearch.setColumns(10);
 
@@ -88,12 +97,17 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 		 * Add a button to the panel to search for the products when you have already
 		 * entered them in textField.
 		 */
-		JButton btnLupa = new JButton("");
+		btnLupa = new JButton("");
 		btnLupa.setBackground(UIManager.getColor("ScrollPane.background"));
 		btnLupa.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/lupa_azul.png")));
 		btnLupa.setBounds(1245, 206, 50, 50);
 		add(btnLupa);
 		btnLupa.setOpaque(false);
+		btnLupa.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				//TODO 
+			}
+		});
 		
 		btnAdd = new JButton("Add");
 		btnAdd.setBackground(new Color(0, 151, 178));
@@ -161,7 +175,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 		 * Add a combo box to the panel to be able to select the specific type of
 		 * product you are looking for (Instrument, component and accessory).
 		 */
-		JComboBox comboProductType = new JComboBox();
+		comboProductType = new JComboBox();
 		comboProductType.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		comboProductType.setFont(new Font("Constantia", Font.PLAIN, 25));
 		comboProductType.setModel(new DefaultComboBoxModel(new String[] { "", "Instrument", "Component", "Accessory" }));
@@ -184,6 +198,48 @@ public class ShopMemberMenu extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		//TODO if textbox empty && btn
-		//comboProductType.getSelectedItem;
+		try {
+			ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+		
+			String search = new String(txtSearch.getText());
+			
+			if (comboProductType.getSelectedIndex()==-1) {
+				JOptionPane.showMessageDialog(this, "Selecciona un tipo de producto");
+			} else {
+				if(search.isEmpty()) {
+
+				
+				} else {
+					cmbFilter.setEnabled(true);
+				}
+			}
+			
+		
+		
+		
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		
+		
+		/**
+		 * TODO FILTRO
+		 */
+		String currentItem = (String) cmbFilter.getSelectedItem();
+		
+		
 	}
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+			if(e.getSource().equals(btnLupa)){
+				btnLupa.doClick();
+			} else if(e.getSource().equals(btnLupa)) {
+				btnLupa.doClick();
+			}
+		}
+	}
+	
 }

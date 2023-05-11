@@ -11,6 +11,8 @@ import exceptions.ProductNotFoundException;
 import model.Accessory;
 import model.Component;
 import model.Instrument;
+import model.Manager;
+import model.Member;
 import model.Product;
 
 public class ProductManagerControllableImplementation implements ProductManagerControllable{
@@ -266,6 +268,38 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			}
 		} else {
 			throw new ProductNotFoundException();
+		}
+	}
+	
+	/**
+	 * This method changes the manager's info in the database
+	 * @param Manager m is the current logged-in manager with the attributes already changed
+	 * @author Jago
+	 */
+	public void modifyManager(Manager m) {
+		con = connection.openConnection();
+		
+		try {
+			ctmt = con.prepareCall("UPDATE user SET username=?, name=?, surname=?, mail=?");
+			ctmt.setString(1, m.getUserName());
+			ctmt.setString(2, m.getName());
+			ctmt.setString(3, m.getSurname());
+			ctmt.setString(4, m.getMail());
+			ctmt.executeQuery();
+			
+			ctmt = con.prepareCall("UPDATE manager SET idSupervisor=?, isSupervisor=?, isTechnician=?, isAdmin=?, statusManager=? ");
+			ctmt.setInt(1, m.getIdSupervisor());
+			ctmt.setBoolean(2, m.isSupervisor());
+			ctmt.setBoolean(3, m.isTechnician());
+			ctmt.setBoolean(4, m.isAdmin());
+			ctmt.setString(5, m.getStatusManager().getLabel());
+			
+			ctmt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			connection.closeConnection();
 		}
 	}
 

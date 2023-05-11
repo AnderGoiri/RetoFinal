@@ -48,12 +48,32 @@ public class Manager extends User {
 	private Set<Management> managementSet;
 
 	// --- Getters & Setters ---
+	public Manager(int idSupervisor, boolean isSupervisor, boolean isTechnician, boolean isAdmin,
+			EnumStatusManager statusManager, Set<Repair> repairSet, Set<Management> managementSet) {
+		super();
+		this.idSupervisor = idSupervisor;
+		this.isSupervisor = isSupervisor;
+		this.isTechnician = isTechnician;
+		this.isAdmin = isAdmin;
+		this.statusManager = statusManager;
+		this.repairSet = repairSet;
+		this.managementSet = managementSet;
+	}
+
 	public int getIdSupervisor() {
 		return idSupervisor;
 	}
 
 	public void setIdSupervisor(int idSupervisor) {
 		this.idSupervisor = idSupervisor;
+	}
+
+	public boolean isSupervisor() {
+		return isSupervisor;
+	}
+
+	public void setSupervisor(boolean isSupervisor) {
+		this.isSupervisor = isSupervisor;
 	}
 
 	public boolean isTechnician() {
@@ -96,25 +116,8 @@ public class Manager extends User {
 		this.managementSet = managementSet;
 	}
 
-	public boolean isSupervisor() {
-		return isSupervisor;
-	}
-
-	public void setSupervisor(boolean isSupervisor) {
-		this.isSupervisor = isSupervisor;
-	}
-
-	// --- Constructores ---
-	public Manager(int idSupervisor, boolean isSupervisor, boolean isTechnician, boolean isAdmin,
-			EnumStatusManager statusManager, Set<Repair> repairSet, Set<Management> managementSet) {
-		super();
-		this.idSupervisor = idSupervisor;
-		this.isSupervisor = isSupervisor;
-		this.isTechnician = isTechnician;
-		this.isAdmin = isAdmin;
-		this.statusManager = statusManager;
-		this.repairSet = repairSet;
-		this.managementSet = managementSet;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public Manager() {
