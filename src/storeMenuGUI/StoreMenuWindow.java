@@ -5,8 +5,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import loginGUI.UserLogInPanel;
-import loginGUI.Win_login_register;
 import model.Manager;
 import model.Member;
 import model.User;

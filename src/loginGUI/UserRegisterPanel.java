@@ -5,7 +5,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -28,10 +27,17 @@ import model.Member;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
+/**
+ * The UserRegisterPanel class is a JPanel that allows users to sign up into the
+ * application.
+ * 
+ * @author Francisco Rafael de Ysasi González
+ * @author Ander Goirigolzarri Iturburu
+ */
 public class UserRegisterPanel extends JPanel implements ActionListener, KeyListener, FocusListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	private JTextField textFieldName, textFieldSurname, textFieldUsername, textFieldAddress,
-			textFieldCreditCard, textFieldEmail;
+	private JTextField textFieldName, textFieldSurname, textFieldUsername, textFieldAddress, textFieldCreditCard,
+			textFieldEmail;
 	private JCheckBox chckbxManager, chckbxTechnician, chckbxSupervisor, chckbxShowHideSignUp;
 	private JLabel lblAddress, lblCredirCard, lblRegistrationTitle, lblUserName, lblPassword, lblEmail, lblSurname,
 			lblName;
@@ -202,14 +208,11 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		chckbxTechnician.setBounds(459, 341, 201, 30);
 		add(chckbxTechnician);
 		chckbxTechnician.addKeyListener(this);
-		
+
 		chckbxShowHideSignUp = new JCheckBox("");
 		chckbxShowHideSignUp.setBounds(373, 409, 41, 41);
 		add(chckbxShowHideSignUp);
 		chckbxShowHideSignUp.addActionListener(this);
-		
-		
-		
 
 		// --- JButton ---
 		btnSignUp = new JButton("Sign Up");
@@ -222,10 +225,8 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		btnChangeToLogIn.setBounds(626, 42, 134, 75);
 		add(btnChangeToLogIn);
 		btnChangeToLogIn.addActionListener(this);
-		
+
 	}
-	
-	
 
 // ActionListener for the manager check box
 	ActionListener managerListener = new ActionListener() {
@@ -281,17 +282,18 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 				if (!chckbxManager.isSelected()) {
 
 					// registerUserMember
-					login.registerUserMember(new Member(textFieldUsername.getText(), textFieldName.getText(),
-							textFieldSurname.getText(), new String(textFieldPassword.getPassword()), textFieldEmail.getText(),
-							LocalDate.now(), textFieldAddress.getText(), textFieldCreditCard.getText()));
+					login.registerUserMember(
+							new Member(textFieldUsername.getText(), textFieldName.getText(), textFieldSurname.getText(),
+									new String(textFieldPassword.getPassword()), textFieldEmail.getText(),
+									LocalDate.now(), textFieldAddress.getText(), textFieldCreditCard.getText()));
 
 				} else {
 
 					// registerserManager
 					login.registerUserManager(new Manager(textFieldUsername.getText(), textFieldName.getText(),
-							textFieldSurname.getText(), new String(textFieldPassword.getPassword()), textFieldEmail.getText(),
-							LocalDate.now(), 0, chckbxSupervisor.isSelected(), chckbxTechnician.isSelected(), false,
-							EnumStatusManager.P));
+							textFieldSurname.getText(), new String(textFieldPassword.getPassword()),
+							textFieldEmail.getText(), LocalDate.now(), 0, chckbxSupervisor.isSelected(),
+							chckbxTechnician.isSelected(), false, EnumStatusManager.P));
 
 				}
 				/*
@@ -307,10 +309,10 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}
-		}else if(e.getSource().equals(chckbxShowHideSignUp)) {
-			if(chckbxShowHideSignUp.isSelected()) {
-				textFieldPassword.setEchoChar((char)0);
-			}else {
+		} else if (e.getSource().equals(chckbxShowHideSignUp)) {
+			if (chckbxShowHideSignUp.isSelected()) {
+				textFieldPassword.setEchoChar((char) 0);
+			} else {
 				textFieldPassword.setEchoChar('*');
 			}
 		}
@@ -359,30 +361,30 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
