@@ -1,9 +1,11 @@
 package loginGUI;
 
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -12,6 +14,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 
@@ -22,14 +26,16 @@ import model.Manager;
 import model.Member;
 
 import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
-public class UserRegisterPanel extends JPanel implements ActionListener, KeyListener, FocusListener {
+public class UserRegisterPanel extends JPanel implements ActionListener, KeyListener, FocusListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	private JTextField textFieldName, textFieldSurname, textFieldUsername, textFieldPassword, textFieldAddress,
+	private JTextField textFieldName, textFieldSurname, textFieldUsername, textFieldAddress,
 			textFieldCreditCard, textFieldEmail;
-	private JCheckBox chckbxManager, chckbxTechnician, chckbxSupervisor;
+	private JCheckBox chckbxManager, chckbxTechnician, chckbxSupervisor, chckbxShowHideSignUp;
 	private JLabel lblAddress, lblCredirCard, lblRegistrationTitle, lblUserName, lblPassword, lblEmail, lblSurname,
 			lblName;
+	private JPasswordField textFieldPassword;
 	private JButton btnSignUp;
 	private JButton btnChangeToLogIn;
 
@@ -88,7 +94,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 	 */
 	public UserRegisterPanel() {
 		setLayout(null);
-		setBounds(0, 0, 837, 460);
+		setBounds(0, 0, 837, 560);
 
 		// --- JLabel ---
 		lblUserName = new JLabel("User Name:");
@@ -127,8 +133,9 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		add(lblAddress);
 
 		lblRegistrationTitle = new JLabel("Registration");
+		lblRegistrationTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegistrationTitle.setFont(new Font("Elephant", Font.PLAIN, 45));
-		lblRegistrationTitle.setBounds(293, 10, 323, 60);
+		lblRegistrationTitle.setBounds(256, 10, 323, 60);
 		add(lblRegistrationTitle);
 
 		// --- TextField ---
@@ -148,7 +155,8 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		add(textFieldUsername);
 		textFieldUsername.addFocusListener(this);
 
-		textFieldPassword = new JTextField();
+		textFieldPassword = new JPasswordField();
+		textFieldPassword.setEchoChar('*');
 		textFieldPassword.setColumns(10);
 		textFieldPassword.setBounds(58, 409, 311, 41);
 		add(textFieldPassword);
@@ -194,10 +202,18 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		chckbxTechnician.setBounds(459, 341, 201, 30);
 		add(chckbxTechnician);
 		chckbxTechnician.addKeyListener(this);
+		
+		chckbxShowHideSignUp = new JCheckBox("");
+		chckbxShowHideSignUp.setBounds(373, 409, 41, 41);
+		add(chckbxShowHideSignUp);
+		chckbxShowHideSignUp.addActionListener(this);
+		
+		
+		
 
 		// --- JButton ---
 		btnSignUp = new JButton("Sign Up");
-		btnSignUp.setBounds(449, 409, 311, 41);
+		btnSignUp.setBounds(58, 480, 311, 41);
 		add(btnSignUp);
 		btnSignUp.addActionListener(this);
 
@@ -206,9 +222,12 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		btnChangeToLogIn.setBounds(626, 42, 134, 75);
 		add(btnChangeToLogIn);
 		btnChangeToLogIn.addActionListener(this);
+		
 	}
+	
+	
 
-	// ActionListener for the manager check box
+// ActionListener for the manager check box
 	ActionListener managerListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (chckbxManager.isSelected()) {
@@ -251,6 +270,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			// To call the UserLogInPanel we need to go back to the JFrame
 			((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
 					.getUserLoginPanel().setVisible(true);
+			this.clearRegisterFields();
 			this.setVisible(false);
 		} else if (e.getSource().equals(btnSignUp)) {
 			try {
@@ -262,14 +282,14 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 					// registerUserMember
 					login.registerUserMember(new Member(textFieldUsername.getText(), textFieldName.getText(),
-							textFieldSurname.getText(), textFieldPassword.getText(), textFieldEmail.getText(),
+							textFieldSurname.getText(), new String(textFieldPassword.getPassword()), textFieldEmail.getText(),
 							LocalDate.now(), textFieldAddress.getText(), textFieldCreditCard.getText()));
 
 				} else {
 
 					// registerserManager
 					login.registerUserManager(new Manager(textFieldUsername.getText(), textFieldName.getText(),
-							textFieldSurname.getText(), textFieldPassword.getText(), textFieldEmail.getText(),
+							textFieldSurname.getText(), new String(textFieldPassword.getPassword()), textFieldEmail.getText(),
 							LocalDate.now(), 0, chckbxSupervisor.isSelected(), chckbxTechnician.isSelected(), false,
 							EnumStatusManager.P));
 
@@ -286,6 +306,12 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage());
+			}
+		}else if(e.getSource().equals(chckbxShowHideSignUp)) {
+			if(chckbxShowHideSignUp.isSelected()) {
+				textFieldPassword.setEchoChar((char)0);
+			}else {
+				textFieldPassword.setEchoChar('*');
 			}
 		}
 
@@ -320,6 +346,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 	public void clearRegisterFields() {
 		// TODO Auto-generated method stub
 		chckbxManager.setSelected(false);
+		chckbxShowHideSignUp.setSelected(false);
 		textFieldAddress.setText("");
 		textFieldCreditCard.setText("");
 		textFieldEmail.setText("");
@@ -329,4 +356,33 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		textFieldUsername.setText("");
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
