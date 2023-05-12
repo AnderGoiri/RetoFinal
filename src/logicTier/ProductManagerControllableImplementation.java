@@ -24,6 +24,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	/**
 	 * Method for the search of products filtered by id
 	 * In the parameter list of products, the method searches the one thats equal to the id
+	 * @param int pId is the id of the product we want to search, listaProd is the list of all products
 	 * @return a list of products
 	 * @throws ProductNotFoundException if it doesn't exist
 	 * @author Jago
@@ -301,6 +302,10 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		} finally {
 			connection.closeConnection();
 		}
+	}
+	
+	public void searchPurchase(Member m) {
+		
 	}
 
 }
