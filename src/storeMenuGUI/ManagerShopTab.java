@@ -15,7 +15,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-public class ManagerShopPanel extends JPanel implements ActionListener, KeyListener{
+public class ManagerShopTab extends JPanel implements ActionListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -25,13 +25,13 @@ public class ManagerShopPanel extends JPanel implements ActionListener, KeyListe
 	private JScrollPane scrollPaneProductList;
 	private JTable productsTable;
 	private DefaultTableModel tableModel;
-	private ManagerProductManagementPanel mngProduct;
+	private ManagerProductManagementTab mngProduct;
 	
 
 	/**
 	 * Create the panel.
 	 */
-	public ManagerShopPanel() {
+	public ManagerShopTab() {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		
@@ -121,7 +121,7 @@ public class ManagerShopPanel extends JPanel implements ActionListener, KeyListe
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(btnShow)) {
-			mngProduct = new ManagerProductManagementPanel();
+			mngProduct = new ManagerProductManagementTab();
 			((JTabbedPane) this.getParent()).insertTab("Manage",null, mngProduct, null, ((JTabbedPane) this.getParent()).indexOfComponent(this)+1);
 			((JTabbedPane) this.getParent()).setSelectedIndex(((JTabbedPane) this.getParent()).getSelectedIndex()+1);
 		}

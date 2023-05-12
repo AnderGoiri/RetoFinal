@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 
 import java.awt.Color;
 
-public class ManagerProductManagementPanel extends JPanel implements ActionListener, KeyListener{
+public class ManagerProductManagementTab extends JPanel implements ActionListener, KeyListener{
 	private static final long serialVersionUID = 1L;
 	
 	private JTextField textFieldModel, textFieldPrice, textFieldSalePercentage;
@@ -42,7 +42,7 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 	
 	//TODO El constructor recogeria un objeto tipo Product 
 	
-	public ManagerProductManagementPanel() {
+	public ManagerProductManagementTab() {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		

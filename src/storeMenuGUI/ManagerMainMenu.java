@@ -11,10 +11,10 @@ import java.awt.Color;
 public class ManagerMainMenu extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	private ManagerShopPanel mngShop;
-	private ManagerInsertProductPanel mngInsert;
-	private ManagerTechnicianRepair mngTechRepair;
-	private ManagerSuperiorRepair mngSupRepair;
+	private ManagerShopTab mngShop;
+	private ManagerInsertProductTab mngInsert;
+	private ManagerTechnicianRepairTab mngTechRepair;
+	private ManagerSuperiorRepairTab mngSupRepair;
 	
 	/**
 	 * Create the panel.
@@ -30,16 +30,16 @@ public class ManagerMainMenu extends JPanel {
 		add(tabbedPane);
 		
 		
-		mngShop = new ManagerShopPanel();
+		mngShop = new ManagerShopTab();
 		tabbedPane.addTab("Shop", mngShop);
 		
-		mngInsert = new ManagerInsertProductPanel();
+		mngInsert = new ManagerInsertProductTab();
 		tabbedPane.addTab("Insert", mngInsert);
 		
-		mngTechRepair=new ManagerTechnicianRepair();
+		mngTechRepair=new ManagerTechnicianRepairTab();
 		tabbedPane.addTab("Repair Tech", mngTechRepair);
 		
-		mngSupRepair=new ManagerSuperiorRepair();
+		mngSupRepair=new ManagerSuperiorRepairTab();
 		tabbedPane.addTab("Repair Sup", mngSupRepair);
 		
 		comprobarManager(auxUser);

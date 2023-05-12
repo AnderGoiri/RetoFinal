@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
-public class ManagerAccountPanel extends JPanel implements ActionListener{
+public class ManagerAccountTab extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textaUsername;
@@ -28,7 +28,7 @@ public class ManagerAccountPanel extends JPanel implements ActionListener{
 	/**
 	 * @author Francisco Rafael de Ysasi González
 	 */
-	public ManagerAccountPanel() {
+	public ManagerAccountTab() {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		

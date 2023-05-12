@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 
-public class ManagerSuperiorRepair extends JPanel implements ActionListener, KeyListener {
+public class ManagerSuperiorRepairTab extends JPanel implements ActionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	
 	private JScrollPane scrollPanePendingRepairsTable;
@@ -31,7 +31,7 @@ public class ManagerSuperiorRepair extends JPanel implements ActionListener, Key
 	
 
 
-	public ManagerSuperiorRepair() {
+	public ManagerSuperiorRepairTab() {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		
