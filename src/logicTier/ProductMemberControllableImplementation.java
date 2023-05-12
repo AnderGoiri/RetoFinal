@@ -664,6 +664,14 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			connection.closeConnection();
 		}
 	}
+	/**
+	 * Method to get the list of Purchases of a Member
+	 * @param m
+	 */
+	public Set<Purchase> searchPurchase(Member m) {
+		return null;
+		
+	}
 
 }
 

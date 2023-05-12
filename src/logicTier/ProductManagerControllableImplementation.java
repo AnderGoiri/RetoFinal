@@ -14,6 +14,7 @@ import model.Instrument;
 import model.Manager;
 import model.Member;
 import model.Product;
+import model.Purchase;
 
 public class ProductManagerControllableImplementation implements ProductManagerControllable{
 	//DB Connection
@@ -303,9 +304,13 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			connection.closeConnection();
 		}
 	}
-	
-	public void searchPurchase(Member m) {
+
+	/**
+	 * Method to get the list of Managers with status Pending to let the Admin approve them
+	 * @return
+	 */
+	public Set<Manager> getListPending(){
+		return null;
 		
 	}
-
 }
