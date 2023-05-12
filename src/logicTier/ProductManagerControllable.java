@@ -17,7 +17,7 @@ public interface ProductManagerControllable {
 
 	public void removeProduct(Product p) throws ProductNotFoundException;
 	
-	public boolean existsProduct(int search);
+	public boolean existsProduct(int search) throws ProductNotFoundException;
 	
 	public void modifyManager(Manager m);
 }

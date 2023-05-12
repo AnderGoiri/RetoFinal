@@ -386,32 +386,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	}
 	
 	/**
-	 * This method checks within the database to see if the selected product exists
-	 * TODO Move to ProductManager, its only useful there
-	 * TODO Exception
-	 * @author Jago
-	 */
-	@Override
-	public boolean existsProduct(int search) {
-		boolean existe = false;
-
-		try {
-			con = connection.openConnection();
-			
-			ctmt = con.prepareCall("{CALL check_product_exists(?, ?)}");
-			ctmt.setInt(1, search);
-
-			ctmt.executeQuery();
-			existe = ctmt.getObject(2, boolean.class);
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return existe;
-	}
-
-	/**
 	 * First we transform a String value into enum. We check if the product has
 	 * stock and then update the product table. Then we check if the current
 	 * Purchase is new (to add it as a new one into the database) and if the status
@@ -432,7 +406,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
 
 		try {
-			if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
+			if (p.isActive() == true) {
 				if (checkProduct(p)) {
 					pTotal.getSetProduct().add(p);
 
@@ -526,10 +500,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			}
 
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+		
 			e1.printStackTrace();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 
@@ -667,8 +641,9 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	/**
 	 * Method to get the list of Purchases of a Member
 	 * @param m
+	 * TODO
 	 */
-	public Set<Purchase> searchPurchase(Member m) {
+	public Set<Purchase> getListPurchase(Member m) {
 		return null;
 		
 	}

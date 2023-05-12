@@ -40,8 +40,7 @@ public interface ProductMemberControllable {
 	public Purchase removeProduct(Purchase pset, Product p) throws Exception;
 	
 	public Purchase removePurchase(Purchase pset);
-	
-	public boolean existsProduct(int search) throws ProductNotFoundException;
 
+	public Set<Purchase> getListPurchase(Member m);
 
 }

@@ -174,8 +174,8 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 				if(panelName.equals("LogIn")) {
 					
 					//metodo comprobar identificacion
-					
-					StoreMenu sM = new StoreMenu(this, true);
+					//TODO
+					StoreMenu sM = new StoreMenu(this, true, null);
 					sM.setVisible(true);
 					sM.setLocationRelativeTo(null);
 				}else {

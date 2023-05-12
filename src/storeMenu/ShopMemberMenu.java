@@ -43,7 +43,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	private static final long serialVersionUID = 1L;
 	private JCheckBox chckbxSale;
 	private JTextField txtSearch;
-	private JButton btnAdd;
+	private JButton btnRemove;
 	private JScrollPane scrollPaneProducts;
 	private JButton btnCarrito;
 	private JLabel lblWelcome;
@@ -73,12 +73,12 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 
 
 	public JButton getBtnAdd() {
-		return btnAdd;
+		return btnRemove;
 	}
 
 
 	public void setBtnAdd(JButton btnAdd) {
-		this.btnAdd = btnAdd;
+		this.btnRemove = btnAdd;
 	}
 
 
@@ -168,6 +168,19 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		 * add a check box to the panel to be able to select only the products that are
 		 * currently on sale.
 		 */
+		
+		JButton btnAdd = new JButton("Add");
+		btnAdd.setForeground(Color.WHITE);
+		btnAdd.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnAdd.setBackground(new Color(0, 151, 178));
+		btnAdd.setBounds(999, 770, 205, 65);
+		add(btnAdd);
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?");
+			}
+		});
+		
 		chckbxSale = new JCheckBox("Sale");
 		chckbxSale.setFont(new Font("Constantia", Font.PLAIN, 30));
 		chckbxSale.setBounds(1349, 315, 85, 45);
@@ -222,17 +235,13 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 			}
 		});
 		
-		btnAdd = new JButton("Add");
-		btnAdd.setBackground(new Color(0, 151, 178));
-		btnAdd.setForeground(new Color(255, 255, 255));
-		btnAdd.setFont(new Font("Onyx", Font.BOLD, 45));
-		btnAdd.setBounds(1295, 770, 205, 65);
-		add(btnAdd);
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?");
-			}
-		});
+		btnRemove = new JButton("Remove");
+		btnRemove.setBackground(new Color(0, 151, 178));
+		btnRemove.setForeground(new Color(255, 255, 255));
+		btnRemove.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnRemove.setBounds(1229, 770, 205, 65);
+		add(btnRemove);
+		
 
 		btnCarrito = new JButton("");
 		btnCarrito.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/carrito_.png")));
@@ -394,5 +403,4 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		// TODO Auto-generated method stub
 		
 	}
-	
 }

@@ -22,6 +22,12 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	private CallableStatement ctmt;
 	private GateDB connection = new GateDB();
 	
+	//TODO
+	public Set<Product> getListProduct(){
+		return null;
+		
+	}
+	
 	/**
 	 * Method for the search of products filtered by id
 	 * In the parameter list of products, the method searches the one thats equal to the id
@@ -309,6 +315,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * Method to get the list of Managers with status Pending to let the Admin approve them
 	 * @return
 	 */
+	//TODO
 	public Set<Manager> getListPending(){
 		return null;
 		
