@@ -1,6 +1,7 @@
 package storeMenuGUI;
 
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 
@@ -9,8 +10,6 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -24,27 +23,21 @@ import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.ButtonGroup;
 
-public class ManagerInsertProductPanel extends JPanel implements ActionListener, KeyListener, FocusListener{
+public class ManagerInsertProductPanel extends JPanel implements ActionListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
 	
 	private JButton btnConfirm;
-	private JTextField textFieldPrice;
-	private JTextField textFieldModel;
-	private JTextField textFieldSalePercentage;
+	private JTextField textFieldPrice, textFieldModel, textFieldSalePercentage;
 	private final ButtonGroup buttonGroupProductType = new ButtonGroup();
-	private JCheckBox chckbxInstrument;
-	private JCheckBox chckbxAccessory;
-	private JCheckBox chckbxComponent;
+	private JRadioButton rdbtnInstrument, rdbtnAccessory, rdbtnComponent;
 	private JTextArea textAreaDescription;
-	private JComboBox<String> comboBoxBrand;
-	private JComboBox<String> comboBoxName;
-	private JComboBox<String> comboBoxColor;
-	private JComboBox<String> comboBoxClass;
-	private JComboBox<String> comboBoxType;
+	private JComboBox<String> comboBoxBrand, comboBoxName, comboBoxColor, comboBoxClass, comboBoxType;
 	private JSpinner spinnerStock;
 	private JCheckBox chckbxSale;
-	private JLabel lblSalePercentage;
+	private JLabel lblSalePercentage, lblDescription, lblBrand, lblModel, lblName, lblClass,
+				lblType, lblColor, lblPrice, lblStock;
+	private JSeparator separator;
 
 	/**
 	 * Create the panel.
@@ -53,39 +46,91 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		
-		chckbxInstrument = new JCheckBox("Instrument");
-		buttonGroupProductType.add(chckbxInstrument);
-		chckbxInstrument.setFont(new Font("Constantia", Font.BOLD, 35));
-		chckbxInstrument.setBounds(100, 50, 267, 50);
-		add(chckbxInstrument);
-		chckbxInstrument.addActionListener(this);
-		chckbxInstrument.addKeyListener(this);
 		
-		chckbxAccessory = new JCheckBox("Accessory");
-		buttonGroupProductType.add(chckbxAccessory);
-		chckbxAccessory.setFont(new Font("Constantia", Font.BOLD, 35));
-		chckbxAccessory.setBounds(1490, 50, 270, 50);
-		add(chckbxAccessory);
-		chckbxAccessory.addActionListener(this);
-		chckbxAccessory.addKeyListener(this);
+		// --- JRadioButton --- // 
+		
+		rdbtnInstrument = new JRadioButton("Instrument");
+		buttonGroupProductType.add(rdbtnInstrument);
+		rdbtnInstrument.setFont(new Font("Constantia", Font.BOLD, 35));
+		rdbtnInstrument.setBounds(100, 50, 267, 50);
+		add(rdbtnInstrument);
+		rdbtnInstrument.addActionListener(this);
+		rdbtnInstrument.addKeyListener(this);
+		
+		rdbtnAccessory = new JRadioButton("Accessory");
+		buttonGroupProductType.add(rdbtnAccessory);
+		rdbtnAccessory.setFont(new Font("Constantia", Font.BOLD, 35));
+		rdbtnAccessory.setBounds(1490, 50, 270, 50);
+		add(rdbtnAccessory);
+		rdbtnAccessory.addActionListener(this);
+		rdbtnAccessory.addKeyListener(this);
+		
+		rdbtnComponent = new JRadioButton("Component");
+		buttonGroupProductType.add(rdbtnComponent);
+		rdbtnComponent.setFont(new Font("Constantia", Font.BOLD, 35));
+		rdbtnComponent.setBounds(797, 50, 267, 50);
+		add(rdbtnComponent);
+		rdbtnComponent.addActionListener(this);
+		rdbtnComponent.addKeyListener(this);
 		
 		
-		chckbxComponent = new JCheckBox("Component");
-		buttonGroupProductType.add(chckbxComponent);
-		chckbxComponent.setFont(new Font("Constantia", Font.BOLD, 35));
-		chckbxComponent.setBounds(797, 50, 267, 50);
-		add(chckbxComponent);
-		chckbxComponent.addActionListener(this);
-		chckbxComponent.addKeyListener(this);
+		// --- JSeparator --- //
 		
-		JSeparator separator = new JSeparator();
+		separator = new JSeparator();
 		separator.setBounds(20, 130, 1820, 3);
 		add(separator);
 		
-		JLabel lblDescription = new JLabel("Description");
+		
+		// --- JLabel --- //
+		
+		lblDescription = new JLabel("Description");
 		lblDescription.setFont(new Font("Constantia", Font.BOLD, 35));
 		lblDescription.setBounds(700, 330, 210, 50);
 		add(lblDescription);
+		
+		lblBrand = new JLabel("Brand");
+		lblBrand.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblBrand.setBounds(50, 220, 140, 50);
+		add(lblBrand);
+		
+		lblModel = new JLabel("Model");
+		lblModel.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblModel.setBounds(50, 330, 140, 50);
+		add(lblModel);
+		
+		lblName = new JLabel("Name");
+		lblName.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblName.setBounds(50, 440, 140, 50);
+		add(lblName);
+		
+		lblClass = new JLabel("Class");
+		lblClass.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblClass.setBounds(700, 220, 140, 50);
+		add(lblClass);
+		
+		lblType = new JLabel("Type");
+		lblType.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblType.setBounds(1270, 220, 140, 50);
+		add(lblType);
+		
+		lblColor = new JLabel("Color");
+		lblColor.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblColor.setBounds(50, 550, 140, 50);
+		add(lblColor);
+		
+		lblPrice = new JLabel("Price");
+		lblPrice.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblPrice.setBounds(50, 660, 140, 50);
+		add(lblPrice);
+		
+		lblStock = new JLabel("Stock");
+		lblStock.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblStock.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblStock.setBounds(420, 550, 140, 50);
+		add(lblStock);
+		
+		
+		// --- JButton --- //
 		
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.setForeground(Color.WHITE);
@@ -95,21 +140,9 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 		add(btnConfirm);
 		btnConfirm.addActionListener(this);
 		btnConfirm.addKeyListener(this);
+	
 		
-		JLabel lblBrand = new JLabel("Brand");
-		lblBrand.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblBrand.setBounds(50, 220, 140, 50);
-		add(lblBrand);
-		
-		JLabel lblModel = new JLabel("Model");
-		lblModel.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblModel.setBounds(50, 330, 140, 50);
-		add(lblModel);
-		
-		JLabel lblName = new JLabel("Name");
-		lblName.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblName.setBounds(50, 440, 140, 50);
-		add(lblName);
+		// --- JTextArea --- //
 		
 		textAreaDescription = new JTextArea();
 		textAreaDescription.setEditable(true);
@@ -118,31 +151,8 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 		textAreaDescription.setName("Description");
 		textAreaDescription.addKeyListener(this);
 		
-		JLabel lblClass = new JLabel("Class");
-		lblClass.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblClass.setBounds(700, 220, 140, 50);
-		add(lblClass);
 		
-		JLabel lblType = new JLabel("Type");
-		lblType.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblType.setBounds(1270, 220, 140, 50);
-		add(lblType);
-		
-		JLabel lblColor = new JLabel("Color");
-		lblColor.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblColor.setBounds(50, 550, 140, 50);
-		add(lblColor);
-		
-		JLabel lblPrice = new JLabel("Price");
-		lblPrice.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblPrice.setBounds(50, 660, 140, 50);
-		add(lblPrice);
-		
-		JLabel lblStock = new JLabel("Stock");
-		lblStock.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblStock.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblStock.setBounds(420, 550, 140, 50);
-		add(lblStock);
+		// --- JComboBox --- //
 		
 		comboBoxBrand = new JComboBox<String>();
 		comboBoxBrand.setFont(new Font("Constantia", Font.PLAIN, 30));
@@ -164,13 +174,6 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 		comboBoxColor.setName("Color");
 		comboBoxColor.addKeyListener(this);
 		
-		textFieldPrice = new JTextField();
-		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 30));
-		textFieldPrice.setColumns(10);
-		textFieldPrice.setBounds(190, 661, 210, 50);
-		add(textFieldPrice);
-		textFieldPrice.setName("Price");
-		
 		comboBoxClass = new JComboBox<String>();
 		comboBoxClass.setFont(new Font("Constantia", Font.PLAIN, 30));
 		comboBoxClass.setBounds(840, 220, 400, 50);
@@ -184,6 +187,16 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 		add(comboBoxType);
 		comboBoxType.setName("Specification Type");
 		
+		
+		// --- JTextField --- //
+
+		textFieldPrice = new JTextField();
+		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldPrice.setColumns(10);
+		textFieldPrice.setBounds(190, 661, 210, 50);
+		add(textFieldPrice);
+		textFieldPrice.setName("Price");
+		
 		textFieldModel = new JTextField();
 		textFieldModel.setFont(new Font("Constantia", Font.PLAIN, 30));
 		textFieldModel.setColumns(10);
@@ -191,9 +204,15 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 		add(textFieldModel);
 		textFieldModel.setName("Model");
 		
+		
+		// --- JSpinner --- //
+		
 		spinnerStock = new JSpinner();
 		spinnerStock.setBounds(560, 550, 80, 50);
 		add(spinnerStock);
+		
+		
+		// --- Sale CheckBox, TextField and Label --- //
 		
 		chckbxSale = new JCheckBox("Sale");
 		chckbxSale.setFont(new Font("Constantia", Font.BOLD, 35));
@@ -300,13 +319,6 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 
 	
 
-	@Override
-	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-		
-		//Metodo comprobar id producto registrado
-		
-	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -348,9 +360,7 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 		}
 	}
 
-	
-	@Override
-	public void focusGained(FocusEvent e) {}
+
 	@Override
 	public void keyReleased(KeyEvent e) {}
 	@Override

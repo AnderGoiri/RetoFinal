@@ -38,7 +38,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			lblName, lblLogInAdvice,lblLogIn;
 	private JPasswordField textFieldPassword;
 	private JButton btnSignUp;
-	private JButton btnChangeToLogIn;
 	private final Font font1 = new Font("Tahoma", Font.ITALIC, 11);
 	private final Font font2 = new Font("Tahoma", Font.BOLD | Font.ITALIC, 11);
 

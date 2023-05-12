@@ -12,6 +12,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -25,70 +26,76 @@ import java.awt.Color;
 public class ManagerProductManagementPanel extends JPanel implements ActionListener, KeyListener{
 	private static final long serialVersionUID = 1L;
 	
-	private JTextField textFieldModel;
-	private JTextField textFieldPrice;
-	private JTextField textFieldSalePercentage;
-	private JLabel lblSalePercentage;
-	private JComboBox<String> comboBoxName;
-	private JComboBox<String> comboBoxBrand;
-	private JButton btnDelete;
-	private JButton btnModify;
-	private JButton btnConfirm;
-	private JButton btnCancel;
+	private JTextField textFieldModel, textFieldPrice, textFieldSalePercentage;
+	private JComboBox<String> comboBoxName, comboBoxBrand;
+	private JButton btnDelete, btnModify, btnConfirm, btnCancel, btnGoBack;
 	private JTextArea textAreaDescription;
 	private JSpinner spinnerStock;
-	private JCheckBox chckbxSale;
-	private JCheckBox chckbxActive;
+	private JCheckBox chckbxSale, chckbxActive;
+	private JLabel lblProduct, lblProductId, lblProductType, lblModel, lblBrand, lblStock, lblPrice, lblDescription, lblName, lblSalePercentage;
+	private JSeparator separatorUp, separatorDown;
 	
 	/**
 	 * Create the panel.
 	 */
+	
+	
+	//TODO El constructor recogeria un objeto tipo Product 
+	
 	public ManagerProductManagementPanel() {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		
 		
-		JLabel lblProduct = new JLabel("Product");
+		// --- JLabel --- //
+		
+		lblProduct = new JLabel("Product");
 		lblProduct.setFont(new Font("Constantia", Font.BOLD, 35));
 		lblProduct.setBounds(50, 50, 140, 50);
 		add(lblProduct);
 		
-		JLabel lblProductId = new JLabel("*id*");
+		lblProductId = new JLabel("*id*");
 		lblProductId.setFont(new Font("Constantia", Font.PLAIN, 35));
 		lblProductId.setBounds(200, 50, 360, 50);
 		add(lblProductId);
 		
-		JLabel lblProductType = new JLabel("*type*");
+		lblProductType = new JLabel("*type*");
 		lblProductType.setFont(new Font("Constantia", Font.ITALIC, 30));
 		lblProductType.setBounds(50, 100, 360, 50);
 		add(lblProductType);
 		
-		JLabel lblModel = new JLabel("Model");
+		lblModel = new JLabel("Model");
 		lblModel.setFont(new Font("Constantia", Font.BOLD, 35));
 		lblModel.setBounds(50, 430, 140, 50);
 		add(lblModel);
 		
-		JLabel lblBrand = new JLabel("Brand");
+		lblBrand = new JLabel("Brand");
 		lblBrand.setFont(new Font("Constantia", Font.BOLD, 35));
 		lblBrand.setBounds(50, 320, 140, 50);
 		add(lblBrand);
 		
-		JLabel lblStock = new JLabel("Stock");
+		lblStock = new JLabel("Stock");
 		lblStock.setFont(new Font("Constantia", Font.BOLD, 35));
 		lblStock.setBounds(50, 540, 140, 50);
 		add(lblStock);
 		
-		
-		
-		JLabel lblPrice = new JLabel("Price");
+		lblPrice = new JLabel("Price");
 		lblPrice.setFont(new Font("Constantia", Font.BOLD, 35));
 		lblPrice.setBounds(345, 540, 140, 50);
 		add(lblPrice);
 		
-		JLabel lblDescription = new JLabel("Description");
+		lblDescription = new JLabel("Description");
 		lblDescription.setFont(new Font("Constantia", Font.BOLD, 35));
 		lblDescription.setBounds(710, 210, 220, 50);
 		add(lblDescription);
+		
+		lblName = new JLabel("Name");
+		lblName.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblName.setBounds(50, 210, 140, 50);
+		add(lblName);
+		
+		
+		// --- CheckBox --- //
 		
 		chckbxSale = new JCheckBox("Sale");
 		chckbxSale.setEnabled(false);
@@ -101,6 +108,17 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 		chckbxSale.addActionListener(this);
 		chckbxSale.addKeyListener(this);
 		
+		chckbxActive = new JCheckBox("Active");
+		chckbxActive.setEnabled(false);
+		chckbxActive.setFont(new Font("Constantia", Font.BOLD, 35));
+		chckbxActive.setBounds(1670, 105, 140, 50);
+		add(chckbxActive);
+		chckbxActive.addActionListener(this);
+		chckbxActive.addKeyListener(this);
+		
+		
+		// --- Sale Percentage Label --- //
+		
 		lblSalePercentage = new JLabel("Sale %");
 		if(!chckbxSale.isSelected()) {
 			lblSalePercentage.setVisible(false);
@@ -110,6 +128,9 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 		lblSalePercentage.setBounds(345, 650, 140, 50);
 		add(lblSalePercentage);
 		
+		
+		// --- JSpinner --- //
+		
 		spinnerStock = new JSpinner();
 		spinnerStock.setFont(new Font("Constantia", Font.PLAIN, 30));
 		spinnerStock.setBounds(200, 540, 115, 50);
@@ -117,10 +138,16 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 		add(spinnerStock);
 		spinnerStock.addKeyListener(this);
 		
+		
+		// --- JTextArea --- //
+		
 		textAreaDescription = new JTextArea();
 		textAreaDescription.setEditable(false);
 		textAreaDescription.setBounds(710, 275, 1100, 425);
 		add(textAreaDescription);
+		
+		
+		// --- JTextField --- //
 		
 		textFieldModel = new JTextField();
 		textFieldModel.setEditable(false);
@@ -145,44 +172,8 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 		textFieldSalePercentage.setBounds(490, 650, 170, 50);
 		add(textFieldSalePercentage);
 		
-		btnDelete = new JButton("Delete");
-		btnDelete.setForeground(Color.WHITE);
-		btnDelete.setBackground(new Color(0, 151, 178));
-		btnDelete.setFont(new Font("Onyx", Font.BOLD, 45));
-		btnDelete.setBounds(300, 830, 230, 52);
-		add(btnDelete);
-		btnDelete.addActionListener(this);
-		btnDelete.addKeyListener(this);
 		
-		btnModify = new JButton("Modify");
-		btnModify.setForeground(Color.WHITE);
-		btnModify.setBackground(new Color(0, 151, 178));
-		btnModify.setFont(new Font("Onyx", Font.BOLD, 45));
-		btnModify.setBounds(1330, 830, 230, 52);
-		add(btnModify);
-		btnModify.addActionListener(this);
-		btnModify.addKeyListener(this);
-		
-		JSeparator separatorUp = new JSeparator();
-		separatorUp.setBounds(20, 170, 1820, 3);
-		add(separatorUp);
-		
-		JSeparator separatorDown = new JSeparator();
-		separatorDown.setBounds(20, 800, 1820, 3);
-		add(separatorDown);
-		
-		JLabel lblName = new JLabel("Name");
-		lblName.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblName.setBounds(50, 210, 140, 50);
-		add(lblName);
-		
-		chckbxActive = new JCheckBox("Active");
-		chckbxActive.setEnabled(false);
-		chckbxActive.setFont(new Font("Constantia", Font.BOLD, 35));
-		chckbxActive.setBounds(1670, 105, 140, 50);
-		add(chckbxActive);
-		chckbxActive.addActionListener(this);
-		chckbxActive.addKeyListener(this);
+		// --- JComboBox --- //
 		
 		comboBoxName = new JComboBox<String>();
 		comboBoxName.setMaximumRowCount(20);
@@ -201,11 +192,43 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 		comboBoxBrand.addActionListener(this);
 		comboBoxBrand.addKeyListener(this);
 		
+		
+		// --- JSeparator --- //
+		
+		separatorUp = new JSeparator();
+		separatorUp.setBounds(20, 170, 1820, 3);
+		add(separatorUp);
+		
+		separatorDown = new JSeparator();
+		separatorDown.setBounds(20, 800, 1820, 3);
+		add(separatorDown);
+		
+		
+		// --- JButton --- //
+				
+		btnDelete = new JButton("Delete");
+		btnDelete.setForeground(Color.WHITE);
+		btnDelete.setBackground(new Color(0, 151, 178));
+		btnDelete.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnDelete.setBounds(1530, 830, 230, 52);
+		add(btnDelete);
+		btnDelete.addActionListener(this);
+		btnDelete.addKeyListener(this);
+		
+		btnModify = new JButton("Modify");
+		btnModify.setForeground(Color.WHITE);
+		btnModify.setBackground(new Color(0, 151, 178));
+		btnModify.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnModify.setBounds(1250, 830, 230, 52);
+		add(btnModify);
+		btnModify.addActionListener(this);
+		btnModify.addKeyListener(this);
+		
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.setForeground(Color.WHITE);
 		btnConfirm.setFont(new Font("Onyx", Font.BOLD, 45));
 		btnConfirm.setBackground(new Color(0, 151, 178));
-		btnConfirm.setBounds(1330, 830, 230, 52);
+		btnConfirm.setBounds(1250, 830, 230, 52);
 		btnConfirm.setEnabled(false);
 		btnConfirm.setVisible(false);
 		add(btnConfirm);
@@ -218,17 +241,37 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 		btnCancel.setForeground(Color.WHITE);
 		btnCancel.setFont(new Font("Onyx", Font.BOLD, 45));
 		btnCancel.setBackground(new Color(0, 151, 178));
-		btnCancel.setBounds(300, 830, 230, 52);
+		btnCancel.setBounds(1530, 830, 230, 52);
 		add(btnCancel);
 		btnCancel.addActionListener(this);
 		btnCancel.addKeyListener(this);
+		
+		btnGoBack = new JButton("Go back");
+		btnGoBack.setForeground(Color.WHITE);
+		btnGoBack.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnGoBack.setBackground(new Color(0, 151, 178));
+		btnGoBack.setBounds(300, 830, 230, 52);
+		add(btnGoBack);
+		btnGoBack.addActionListener(this);
+		
+	//TODO
+		
+		// --- Method that print the received product data inside the components --- //
+		
+		getSelectedProductData();	//  <--- [The product object should be between the method's brackets]
+		
 
+	}
+
+
+	private void getSelectedProductData() {
+		// TODO Method that transfers the product data 
+		
 	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if(e.getSource().equals(btnModify)) {
 			componentsAccessibility("Enable");
 		}
@@ -274,13 +317,17 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 			}
 		}
 			
-			
+		else if(e.getSource().equals(btnGoBack)) {
+			if(JOptionPane.showConfirmDialog(this, "Are you sure want to leave this tab?", "Close Tab", JOptionPane.YES_NO_OPTION)==0) {
+				((JTabbedPane) this.getParent()).setSelectedIndex(((JTabbedPane) this.getParent()).getSelectedIndex()-1);
+				((JTabbedPane) this.getParent()).remove(this);
+			}
+		}
 		
 	}
 
 
 	private void componentsAccessibility(String s) {
-		// TODO Auto-generated method stub
 		boolean group1, group2;
 		
 		if(s.equals("Enable")) {
