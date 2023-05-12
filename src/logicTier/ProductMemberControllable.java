@@ -6,6 +6,7 @@ import exceptions.BrandNotFoundException;
 import exceptions.ModelNotFoundException;
 import exceptions.NameNotFoundException;
 import exceptions.ProductNotFoundException;
+import exceptions.PurchaseNotFoundException;
 import exceptions.StockNotFoundException;
 import exceptions.TypeNotFoundException;
 import model.Member;
@@ -41,6 +42,6 @@ public interface ProductMemberControllable {
 	
 	public Purchase removePurchase(Purchase pset);
 
-	public Set<Purchase> getListPurchase(Member m);
+	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException;
 
 }

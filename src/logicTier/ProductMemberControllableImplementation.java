@@ -38,7 +38,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	
 	// Attributes
 	private Product prod;
- 
+	private Purchase purch;
 	// Sentencias SQL
 
 	/**
@@ -124,7 +124,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			connection.openConnection();
 
 			ctmt = con.prepareCall("{CALL select_component()}");
-			rs = stmt.executeQuery();
+			rs = ctmt.executeQuery();
 
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
@@ -187,7 +187,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			connection.openConnection();
 
 			ctmt = con.prepareCall("{CALL select_accessory()}");
-			rs = stmt.executeQuery();
+			rs = ctmt.executeQuery();
 
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
@@ -603,10 +603,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				e.printStackTrace();
 			} finally {
 				connection.closeConnection();
-			}
-			
-			
-			
+			}						
 		}
 		return pTotal;
 	}
@@ -638,13 +635,50 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			connection.closeConnection();
 		}
 	}
+	
 	/**
 	 * Method to get the list of Purchases of a Member
-	 * @param m
+	 * @param Member m because we need the id of the member
 	 * TODO
+	 * @throws PurchaseNotFoundException 
 	 */
-	public Set<Purchase> getListPurchase(Member m) {
-		return null;
+	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException {
+		ResultSet rs = null;
+		Set<Purchase> listaPurchase = new HashSet<Purchase>();
+		con = connection.openConnection();
+		
+			connection.openConnection();
+
+			try {
+				stmt = con.prepareStatement("select * from purchase where idUser=?");
+				rs = stmt.executeQuery();
+				if (rs != null) {
+					while (rs.next()) {
+						
+						purch.setIdUser(rs.getInt("idUser"));
+						
+						LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
+						purch.setPurchaseDate(date);
+						
+						purch.setPurchaseTotalCost(rs.getFloat("totalPrice"));
+						purch.setPurchaseQuantity(rs.getInt("purchaseQuantity"));
+						
+						EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(rs.getString("purchaseStatus"));
+						purch.setStatusPurchase(statusPurch);
+						
+						listaPurchase.add(purch);
+					}
+				} else {
+					throw new PurchaseNotFoundException();
+				}
+				
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		
+			return listaPurchase;
 		
 	}
 
