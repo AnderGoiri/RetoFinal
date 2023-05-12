@@ -321,31 +321,31 @@ END
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `select_manager`()
 BEGIN
-	SELECT * from user u join manager ma on u.idUser = ma.idUser;
+	SELECT * from user u inner join manager ma on u.idUser = ma.idUser;
 END
 //
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `select_member`()
 BEGIN
-	SELECT * from user u join member me on u.idUser = me.idUser;
+	SELECT * from user u inner join member me on u.idUser = me.idUser;
 END
 //
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `select_instrument`()
 BEGIN
-	SELECT * from product p join instrument i on p.idProduct = i.idProduct;
+	SELECT * from product p inner join instrument i on p.idProduct = i.idProduct;
 END
 //
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `select_component`()
 BEGIN
-	SELECT * from product p join component c on p.idProduct = c.idProduct; 
+	SELECT * from product p inner join component c on p.idProduct = c.idProduct; 
 END
 //
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `select_accessory`()
 BEGIN
-	SELECT * from product p join accessory a on p.idProduct = a.idProduct;
+	SELECT * from product p inner join accessory a on p.idProduct = a.idProduct;
 END
 //
 DELIMITER //
