@@ -49,7 +49,7 @@ public class MemberMenu extends JPanel {
 		panelAccount = new MemberAccountPanel();
 		panelAccount.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Account", null, panelAccount, null);
-		
-
 	}
+	
+	
 }

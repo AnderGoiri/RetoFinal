@@ -5,6 +5,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+
 import model.Manager;
 import model.Member;
 import model.User;
@@ -27,6 +28,7 @@ public class StoreMenuWindow extends JDialog {
 //	private ManagerMenu managerPanel;
 
 	
+
 	public StoreMenuWindow(ActionListener actionListener, boolean b, User auxUser) {
 		
 		super();
@@ -70,6 +72,7 @@ public class StoreMenuWindow extends JDialog {
 	 * This method displays the members menu.
 	 * @param auxUser 
 	 */
+
 	private void showMenu(User auxUser) {
 		
 		if(auxUser instanceof Member) {
@@ -80,6 +83,7 @@ public class StoreMenuWindow extends JDialog {
 			cardLayout.show(menuPanel, "Manager");
 		}
 		
+
 
 	}
 

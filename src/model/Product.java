@@ -20,7 +20,7 @@ public abstract class Product implements Serializable {
 	protected String model;
 	protected String color;
 	protected boolean saleActive;
-	protected Float salePercentage;
+	protected int salePercentage;
 	protected boolean isActive;
 	// --- Getters & Setters ---
 	public int getIdProduct() {
@@ -51,8 +51,8 @@ public abstract class Product implements Serializable {
 	public int getStock() {
 		return stock;
 	}
-	public void setStock(int stock) {
-		this.stock = stock;
+	public int setStock(int stock) {
+		return this.stock = stock;
 	}
 	public String getBrand() {
 		return brand;
@@ -79,10 +79,10 @@ public abstract class Product implements Serializable {
 	public void setSaleActive(boolean saleActive) {
 		this.saleActive = saleActive;
 	}
-	public Float getSalePercentage() {
+	public int getSalePercentage() {
 		return salePercentage;
 	}
-	public void setSalePercentage(Float salePercentage) {
+	public void setSalePercentage(int salePercentage) {
 		this.salePercentage = salePercentage;
 	}
 	public boolean isActive() {
@@ -97,7 +97,7 @@ public abstract class Product implements Serializable {
 
 	// --- Constructors ---
 	public Product(int idProduct, String nameP, Float price, String descriptionP, int stock, String brand, String model,
-			String color, boolean saleActive, Float salePercentage, boolean isActive) {
+			String color, boolean saleActive, int salePercentage, boolean isActive) {
 		super();
 		this.idProduct = idProduct;
 		this.nameP = nameP;
