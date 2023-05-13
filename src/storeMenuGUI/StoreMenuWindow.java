@@ -18,7 +18,7 @@ public class StoreMenuWindow extends JDialog {
 	private JPanel contentPanel,menuPanel;
 	
 	private MemberMenu memberPanel;
-	private ManagerMenu managerPanel;
+	private ManagerMainMenu managerPanel;
 	private CardLayout cardLayout;
 
 
@@ -61,7 +61,7 @@ public class StoreMenuWindow extends JDialog {
 		memberPanel = new MemberMenu();
 		menuPanel.add( "Member", memberPanel);
 	
-		managerPanel = new ManagerMenu();
+		managerPanel = new ManagerMainMenu((Manager)auxUser);
 		menuPanel.add("Manager", managerPanel);
 
 		showMenu(auxUser);

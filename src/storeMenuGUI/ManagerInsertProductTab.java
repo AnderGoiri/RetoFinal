@@ -24,7 +24,7 @@ import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.ButtonGroup;
 
-public class ManagerInsertProductPanel extends JPanel implements ActionListener, KeyListener, FocusListener{
+public class ManagerInsertProductTab extends JPanel implements ActionListener, KeyListener, FocusListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -50,7 +50,7 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 	/**
 	 * Create the panel.
 	 */
-	public ManagerInsertProductPanel() {
+	public ManagerInsertProductTab() {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		

@@ -16,7 +16,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import java.awt.Color;
 
-public class ManagerTechnicianRepair extends JPanel implements ActionListener, KeyListener {
+public class ManagerTechnicianRepairTab extends JPanel implements ActionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	
 	private JScrollPane scrollPanePendingRepairsTable;
@@ -27,7 +27,7 @@ public class ManagerTechnicianRepair extends JPanel implements ActionListener, K
 	/**
 	 * Create the panel.
 	 */
-	public ManagerTechnicianRepair() {
+	public ManagerTechnicianRepairTab() {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		
