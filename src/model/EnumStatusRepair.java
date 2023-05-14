@@ -1,29 +1,28 @@
 package model;
 
 /**
- * 
- * @author Ander
- * 
- *         An enumeration representing the different possible statuses for a
- *         repair process.
- *         <p>
- *         This enumeration defines the following possible statuses:
- *         </p>
- *         <ul>
- *         <li><code>Pending</code>: The repair request has been received and is awaiting
- *         review.</li>
- *         <li><code>In progress</code>: The repair is currently being worked on.</li>
- *         <li><code>Cancelled</code>: The repair request has been cancelled.</li>
- *         <li><code>Accepted</code>: The repair request has been accepted and will be worked
- *         on.</li>
- *         <li><code>Denied</code>: The repair request has been denied and will not be worked
- *         on.</li>
- *         <li><code>Finished</code>: The repair process has been completed.</li>
- *         </ul>
- *         <p>
- *         Each status has a corresponding label that can be retrieved using the
- *         {@link #getLabel()} method.
- *         </p>
+ * An enumeration representing the different possible statuses for a repair
+ * process.
+ * <p>
+ * This enumeration defines the following possible statuses:
+ * </p>
+ * <ul>
+ * <li><code>Pending</code>: The repair request has been received and is
+ * awaiting review.</li>
+ * <li><code>In progress</code>: The repair is currently being worked on.</li>
+ * <li><code>Cancelled</code>: The repair request has been cancelled.</li>
+ * <li><code>Accepted</code>: The repair request has been accepted and will be
+ * worked on.</li>
+ * <li><code>Denied</code>: The repair request has been denied and will not be
+ * worked on.</li>
+ * <li><code>Finished</code>: The repair process has been completed.</li>
+ * </ul>
+ * <p>
+ * Each status has a corresponding label that can be retrieved using the
+ * {@link #getLabel()} method.
+ * </p>
+ *
+ * @author Ander Goirigolzarri Iturburu
  *
  */
 public enum EnumStatusRepair {
@@ -48,5 +47,25 @@ public enum EnumStatusRepair {
 	 */
 	public String getLabel() {
 		return label;
+	}
+
+	public static EnumStatusRepair getValue(String label) {
+		EnumStatusRepair enumValue = null;
+
+		if (label == "Pending") {
+			enumValue = EnumStatusRepair.PENDING;
+		}else if (label == "In progress") {
+			enumValue = EnumStatusRepair.IN_PROGRESS;
+		}else if (label == "Cancelled") {
+			enumValue = EnumStatusRepair.CANCELLED;
+		}else if (label == "Accepted") {
+			enumValue = EnumStatusRepair.ACCEPTED;
+		}else if (label == "Denied") {
+			enumValue = EnumStatusRepair.DENIED;
+		}else if (label == "Finished") {
+			enumValue = EnumStatusRepair.FINISHED;
+		}
+		
+		return enumValue;
 	}
 }

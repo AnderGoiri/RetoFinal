@@ -1,10 +1,10 @@
 package model;
 
 /**
- * @author Jago
+ * Enum class for a subdivision of accessory, using a label to get around the
+ * "nonElectric" value and read it as "Non-electric"
  * 
- *         Enum class for a subdivision of accessory, using a label to get
- *         around the "nonElectric" value and read it as "Non-electric"
+ * @author Jagoba Bartolomé Barroso
  */
 public enum EnumClassAccessory {
 	Electric("Electric"), nonElectric("Non-electric");
@@ -17,5 +17,17 @@ public enum EnumClassAccessory {
 
 	public String getLabel() {
 		return label;
+	}
+	
+	public static EnumClassAccessory getValue(String label) {
+		EnumClassAccessory enumValue = null;
+
+		if (label == "Electric") {
+			enumValue = EnumClassAccessory.Electric;
+		}else if (label == "nonElectric") {
+			enumValue = EnumClassAccessory.nonElectric;
+		}
+		
+		return enumValue;
 	}
 }

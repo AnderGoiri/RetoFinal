@@ -35,5 +35,17 @@ public enum EnumStatusPurchase {
 	public String getLabel() {
 		return label;
 	}
+	
+	public static EnumStatusPurchase getValue(String label) {
+		EnumStatusPurchase enumValue = null;
+
+		if (label == "In progress") {
+			enumValue = EnumStatusPurchase.IN_PROGRESS;
+		}else if (label == "Finished") {
+			enumValue = EnumStatusPurchase.FINISHED;
+		}
+		
+		return enumValue;
+	}
 
 }

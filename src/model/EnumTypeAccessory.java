@@ -15,4 +15,18 @@ public enum EnumTypeAccessory {
 	public String getLabel() {
 		return label;
 	}
+	
+	public static EnumTypeAccessory getValue(String label) {
+		EnumTypeAccessory enumValue = null;
+
+		if (label == "Audio") {
+			enumValue = EnumTypeAccessory.Audio;
+		}else if (label == "Connection") {
+			enumValue = EnumTypeAccessory.Connection;
+		}else if (label == "Item") {
+			enumValue = EnumTypeAccessory.Item;
+		}
+		
+		return enumValue;
+	}
 }

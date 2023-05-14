@@ -1,5 +1,6 @@
 package logicTier;
 
+import java.sql.SQLException;
 import java.util.Set;
 
 import exceptions.BrandNotFoundException;
@@ -14,7 +15,7 @@ import model.Product;
 import model.Purchase;
 
 public interface ProductMemberControllable {
-	public Set<Product> searchInstrument(String search) throws ProductNotFoundException;
+	public Set<Product> searchInstrument(String search) throws ProductNotFoundException, SQLException;
 	
 	public Set<Product> searchComponent(String search) throws ProductNotFoundException;
 	

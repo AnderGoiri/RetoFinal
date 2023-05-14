@@ -1,5 +1,6 @@
 package logicTier;
 
+import java.sql.SQLException;
 import java.util.Set;
 
 import exceptions.ProductFoundException;
@@ -20,4 +21,6 @@ public interface ProductManagerControllable {
 	public boolean existsProduct(int search) throws ProductNotFoundException;
 	
 	public void modifyManager(Manager m);
+	
+	public Set<Product> getAllProducts() throws SQLException;
 }
