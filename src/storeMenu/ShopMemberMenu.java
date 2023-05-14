@@ -26,15 +26,21 @@ import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
+import exceptions.ProductNotFoundException;
 import logicTier.ProductMemberControllable;
 import logicTier.ProductMemberFactory;
+import model.Accessory;
+import model.Component;
+import model.Instrument;
 import model.Product;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSeparator;
 import javax.swing.JList;
 import javax.swing.JRadioButton;
+import javax.swing.JTable;
 
 public class ShopMemberMenu extends JPanel implements ActionListener, KeyListener, FocusListener {
 	/**
@@ -48,9 +54,10 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	private JButton btnCarrito;
 	private JLabel lblWelcome;
 	private JComboBox<String> cmbFilter;
-	private JList list;
 	private JComboBox<String> comboProductType;
 	private JButton btnLupa;
+	private JTable productTable;
+	private JButton btnAdd;
 
 	public JCheckBox getChckbxSale() {
 		return chckbxSale;
@@ -121,17 +128,6 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		this.cmbFilter = cmbFilter;
 	}
 
-
-	public JList getList() {
-		return list;
-	}
-
-
-	public void setList(JList list) {
-		this.list = list;
-	}
-
-
 	public JComboBox<String> getComboProductType() {
 		return comboProductType;
 	}
@@ -169,9 +165,19 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		 * currently on sale.
 		 */
 		
-		JButton btnAdd = new JButton("Add");
+	
+		productTable = new JTable();
+		productTable.setFont(new Font("Constantia", Font.PLAIN, 25));
+		
+		scrollPaneProducts = new JScrollPane(productTable);
+		scrollPaneProducts.setBounds(94, 372, 1340, 371);
+		add(scrollPaneProducts);
+				
+		scrollPaneProducts.setRowHeaderView(productTable);
+		
+		btnAdd = new JButton("Add");
 		btnAdd.setForeground(Color.WHITE);
-		btnAdd.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnAdd.setFont(new Font("Dialog", Font.BOLD, 35));
 		btnAdd.setBackground(new Color(0, 151, 178));
 		btnAdd.setBounds(999, 770, 205, 65);
 		add(btnAdd);
@@ -243,12 +249,10 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		btnRemove = new JButton("Remove");
 		btnRemove.setBackground(new Color(0, 151, 178));
 		btnRemove.setForeground(new Color(255, 255, 255));
-		btnRemove.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnRemove.setFont(new Font("Dialog", Font.BOLD, 35));
 		btnRemove.setBounds(1229, 770, 205, 65);
 		add(btnRemove);
 		
-
-		//TODO btnRemove
 		
 		btnCarrito = new JButton("");
 		btnCarrito.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/carrito_.png")));
@@ -261,7 +265,6 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		});
 		
 		
-		
 		/**
 		 * Add a label to the panel.
 		 */
@@ -271,20 +274,6 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		lblLookProduct.setBounds(94, 176, 496, 31);
 		add(lblLookProduct);
 
-		/**
-		 * Add a scroll pane to the panel to see the list of all the products.
-		 */
-		
-		
-		String categories[] = { "a", "b", "c", "d", "e","a", "b", "c", "d", "e","a", "b", "c", "d"};
-		
-		list = new JList(categories);
-		list.setFont(new Font("Constantia", Font.PLAIN, 25));
-		//instanciamos la lista
-		scrollPaneProducts = new JScrollPane(list);
-		scrollPaneProducts.setBounds(94, 372, 1340, 371);
-		add(scrollPaneProducts);
-		
 		/**
 		 * 
 		 */
@@ -311,9 +300,9 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		comboProductType.setBounds(190, 295, 316, 50);
 		add(comboProductType);
 		
-		JLabel lblPurchase = new JLabel("Purchase");
+		JLabel lblPurchase = new JLabel("Shopping Cart");
 		lblPurchase.setFont(new Font("Constantia", Font.BOLD, 25));
-		lblPurchase.setBounds(1396, 135, 116, 61);
+		lblPurchase.setBounds(1361, 134, 168, 65);
 		add(lblPurchase);
 		
 		JLabel lblFondo = new JLabel("");
@@ -326,9 +315,20 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 
 	
 	public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnLupa) {
+            makeSearch();
+        } else if (e.getSource() == btnAdd) {
+            JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?");
+        } else if (e.getSource() == btnRemove) {
+            JOptionPane.showMessageDialog(null, "Are you sure you want to remove this product from the shopping cart?");
+        }
+		
+	}
+	
+	public void makeSearch() {
 		//TODO if textbox empty && btn
 		try {
-			ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();	
 		
 			String search = txtSearch.getText();
 			
@@ -336,43 +336,65 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 				JOptionPane.showMessageDialog(this, "Selecciona un tipo de producto");
 			} else {
 				
-				int sel = comboProductType.getSelectedIndex();
-				if(search.isEmpty()) {
-					
-				
-				} else {
+				String sel = (String) comboProductType.getSelectedItem();
+				if(!search.isEmpty()) {
+		
 					comboProductType.setEnabled(true);
 					Set<Product> listProduct = new HashSet<Product>();
-					if (sel == 1) {
+					if (sel.equals("Instrument")) {
 						listProduct = pMember.searchInstrument(search);
 					}
-					if (sel == 2) {
+					if (sel.equals("Component")) {
 						listProduct = pMember.searchComponent(search);
 					}
-					if (sel == 3) {
+					if (sel.equals("Accessory")) {
 						listProduct = pMember.searchAccessory(search);
 					}
 					
+					DefaultTableModel model = new DefaultTableModel();
+					
+					String[] columns= {"ID", "Name", "Price", "Stock", "Brand", "Model", "Color", "salePercentage"};
+					model.setColumnIdentifiers(columns);
+					
+					for (Product prod : listProduct) {					
+						if (prod instanceof Instrument) {
+					        Instrument instrument = (Instrument) prod;
+					        Object[] datos = {instrument.getIdProduct(), instrument.getNameP(), instrument.getPrice(), instrument.getStock(), instrument.getBrand(), instrument.getModel(), instrument.getColor(), instrument.getSalePercentage(), instrument.getTypeInstrument().name()};	
+					        model.addRow(datos);
+					    }
+					    if (prod instanceof Component) {
+					        Component component = (Component) prod;
+					        Object[] datos = {component.getIdProduct(), component.getNameP(), component.getPrice(), component.getStock(), component.getBrand(), component.getModel(), component.getColor(), component.getSalePercentage(), component.getTypeComponent().name()};	
+					        model.addRow(datos);
+					    }
+					    if (prod instanceof Accessory) {
+					        Accessory accessory = (Accessory) prod;
+					        Object[] datos = {accessory.getIdProduct(), accessory.getNameP(), accessory.getPrice(), accessory.getStock(), accessory.getBrand(), accessory.getModel(), accessory.getColor(), accessory.getSalePercentage(), accessory.getTypeAccessory().name()};	
+					        model.addRow(datos);
+					    }
+										
+					}	
+					JTable productTable = new JTable(model);
+					productTable.setFont(new Font("Constantia", Font.PLAIN, 25));
+
+					// Crear el JScrollPane y agregar la tabla
+					JScrollPane scrollPaneProducts = new JScrollPane(productTable);
+					scrollPaneProducts.setBounds(94, 372, 1340, 371);
+					add(scrollPaneProducts);
+					
 					cmbFilter.setEnabled(true);
-				}
-			}
-			
-		
-		
-		
-		} catch (Exception e1) {
+					
+					/**
+					 * TODO FILTRO
+					 */
+					String currentItem = (String) cmbFilter.getSelectedItem();
+					
+				}				
+			}				
+		} catch (ProductNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-
-		
-		
-		/**
-		 * TODO FILTRO
-		 */
-		String currentItem = (String) cmbFilter.getSelectedItem();
-		
-		
+		} 	
 	}
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub

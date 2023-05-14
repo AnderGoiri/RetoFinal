@@ -48,7 +48,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			rs = ctmt.executeQuery();
 
 			while (rs.next()) {
-
+						prod = new Instrument();
 						prod.setNameP(rs.getString("name"));
 						prod.setPrice(rs.getFloat("unitPrice"));
 						prod.setDescriptionP(rs.getString("description"));
