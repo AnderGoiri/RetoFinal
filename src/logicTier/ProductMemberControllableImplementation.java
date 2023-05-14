@@ -160,7 +160,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			e.printStackTrace();
 		} finally {
 			try {
-				connection.closeConnection(stmt, con, rs);
+				connection.closeConnection(ctmt, con, rs);
 			} catch (SQLException e) {
 
 				e.printStackTrace();
@@ -223,7 +223,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			e.printStackTrace();
 		} finally {
 			try {
-				connection.closeConnection(stmt, con, rs);
+				connection.closeConnection(ctmt, con, rs);
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
@@ -437,8 +437,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 							if (rs.next()) {
 								int idPurchase = rs.getInt(1);
 								float price = rs.getFloat(2);
-								EnumStatusPurchase enumStPurchase = EnumStatusPurchase
-										.valueOf(rs.getString("statusPurchase"));
+								EnumStatusPurchase enumStPurchase = EnumStatusPurchase.valueOf(rs.getString("statusPurchase"));
 								LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
 								int purchaseQ = 1;
 								pTotal.setIdPurchase(idPurchase);
@@ -599,10 +598,14 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				ctmt = con.prepareCall("UPDATE purchase SET purchaseStatus=?");
 				ctmt.setString(1, stPurch);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
-				connection.closeConnection();
+				try {
+					connection.closeConnection(ctmt, con);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}						
 		}
 		return pTotal;
@@ -639,7 +642,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	/**
 	 * Method to get the list of Purchases of a Member
 	 * @param Member m because we need the id of the member
-	 * TODO
 	 * @throws PurchaseNotFoundException 
 	 */
 	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException {
@@ -675,6 +677,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					connection.closeConnection(stmt, con, rs);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 		

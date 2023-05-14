@@ -3,13 +3,24 @@ package logicTier;
 import java.sql.CallableStatement;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import exceptions.ProductFoundException;
 import exceptions.ProductNotFoundException;
 import model.Accessory;
 import model.Component;
+import model.EnumClassAccessory;
+import model.EnumClassComponent;
+import model.EnumClassInstrument;
+import model.EnumStatusManager;
+import model.EnumTypeAccessory;
+import model.EnumTypeComponent;
+import model.EnumTypeInstrument;
 import model.Instrument;
 import model.Manager;
 import model.Member;
@@ -20,11 +31,124 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	//DB Connection
 	private Connection con;
 	private CallableStatement ctmt;
+	private PreparedStatement stmt;
 	private GateDB connection = new GateDB();
 	
-	//TODO
+	//Attributes
+	Product prod;
+	
 	public Set<Product> getListProduct(){
-		return null;
+		ResultSet rs = null;
+		Set<Product> listaProductos = new HashSet<Product>();
+
+		try {
+			con = connection.openConnection();
+
+			ctmt = con.prepareCall("{CALL select_instrument()}");
+			rs = ctmt.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getBoolean("isActive") == true) {
+						prod = new Instrument();
+
+						prod.setNameP(rs.getString("name"));
+						prod.setPrice(rs.getFloat("unitPrice"));
+						prod.setDescriptionP(rs.getString("description"));
+						prod.setStock(rs.getInt("stock"));
+						prod.setBrand(rs.getString("brand"));
+						prod.setModel(rs.getString("model"));
+						prod.setColor(rs.getString("color"));
+						prod.setActive(rs.getBoolean("isActive"));
+						prod.setSaleActive(rs.getBoolean("saleActive"));
+						prod.setSalePercentage(rs.getInt("salePercentage"));
+						System.out.println(prod.toString());
+						/**
+						 * Transformation of enum to String as JDBC doesn't support enums
+						 */
+						EnumClassInstrument enumClassInstr = EnumClassInstrument
+								.valueOf(rs.getString("classInstrument"));
+						((Instrument) prod).setClassInstrument(enumClassInstr);
+
+						EnumTypeInstrument enumTypeInstr = EnumTypeInstrument.valueOf(rs.getString("typeInstrument"));
+						((Instrument) prod).setTypeInstrument(enumTypeInstr);
+
+						listaProductos.add(prod);
+				}
+			}
+			rs.close();
+
+			ctmt = con.prepareCall("{CALL select_component()}");
+			rs = ctmt.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getBoolean("isActive") == true) {
+						prod = new Component();
+						prod.setNameP(rs.getString("name"));
+						prod.setPrice(rs.getFloat("unitPrice"));
+						prod.setDescriptionP(rs.getString("description"));
+						prod.setStock(rs.getInt("stock"));
+						prod.setBrand(rs.getString("brand"));
+						prod.setModel(rs.getString("model"));
+						prod.setColor(rs.getString("color"));
+						prod.setActive(rs.getBoolean("isActive"));
+						prod.setSaleActive(rs.getBoolean("saleActive"));
+						prod.setSalePercentage(rs.getInt("salePercentage"));
+
+						/**
+						 * Transformation of enum to String as JDBC doesn't support enums
+						 */
+						EnumClassComponent enumClassComp = EnumClassComponent.valueOf(rs.getString("classComponent"));
+						((Component) prod).setClassComponent(enumClassComp);
+
+						EnumTypeComponent enumTypeComp = EnumTypeComponent.valueOf(rs.getString("typeComponent"));
+						((Component) prod).setTypeComponent(enumTypeComp);
+
+						listaProductos.add(prod);
+				}
+			}
+			rs.close();
+			
+			ctmt = con.prepareCall("{CALL select_accessory()}");
+			rs = ctmt.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getBoolean("isActive") == true) {
+						prod = new Accessory();
+						prod.setNameP(rs.getString("name"));
+						prod.setPrice(rs.getFloat("unitPrice"));
+						prod.setDescriptionP(rs.getString("description"));
+						prod.setStock(rs.getInt("stock"));
+						prod.setBrand(rs.getString("brand"));
+						prod.setModel(rs.getString("model"));
+						prod.setColor(rs.getString("color"));
+						prod.setActive(rs.getBoolean("isActive"));
+						prod.setSaleActive(rs.getBoolean("saleActive"));
+						prod.setSalePercentage(rs.getInt("salePercentage"));
+
+						/**
+						 * Transformation of enum to String as JDBC doesn't support enums
+						 */
+						EnumClassAccessory enumClassAcc = EnumClassAccessory.valueOf(rs.getString("classAccessory"));
+						((Accessory) prod).setClassAccessory(enumClassAcc);
+
+						EnumTypeAccessory enumTypeAcc = EnumTypeAccessory.valueOf(rs.getString("typeAccessory"));
+						((Accessory) prod).setTypeAccessory(enumTypeAcc);
+
+						listaProductos.add(prod);
+					}
+				}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.closeConnection(ctmt, con, rs);
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		return listaProductos;
 		
 	}
 	
@@ -317,7 +441,45 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	//TODO
 	public Set<Manager> getListPending(){
-		return null;
+		ResultSet rs = null;
+		Set<Manager> listaManagers = new HashSet<Manager>();
+		Manager m = null;
+		
+		try {		
+			con = connection.openConnection();
+
+			ctmt = con.prepareCall("{CALL select_manager()}");
+			rs = ctmt.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getString("statusManager").equals("Pending")) {
+						m = new Manager();
+						m.setUserName(rs.getString("username"));
+						m.setName(rs.getString("name"));
+						m.setSurname(rs.getString("surname"));
+						m.setPassword(rs.getString("password"));
+						m.setMail(rs.getString("mail"));
+						LocalDate date = LocalDate.parse(rs.getString("date"));
+						m.setDateRegister(date);
+						m.setIdSupervisor(rs.getInt("idSupervisor"));
+						m.setTechnician(rs.getBoolean("isTechnician"));
+						m.setAdmin(rs.getBoolean("isAdmin"));
+						m.setStatusManager(EnumStatusManager.valueOf(rs.getString("statusManager")));
+						listaManagers.add(m);
+				}
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.closeConnection(ctmt, con, rs);
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		return listaManagers;
 		
 	}
 }
