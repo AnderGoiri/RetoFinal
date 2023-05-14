@@ -348,7 +348,7 @@ public class ManagerInsertProductPanel extends JPanel implements ActionListener,
 			}
 		}
 	}
-
+	
 	
 	@Override
 	public void focusGained(FocusEvent e) {}

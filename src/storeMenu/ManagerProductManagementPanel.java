@@ -361,8 +361,19 @@ public class ManagerProductManagementPanel extends JPanel implements ActionListe
 			}
 		}
 	}
-
-
+ 
+	/*public void modifyProduct(int productId, String newName, double newPrice, int newStock) {
+	    Product productToModify = productManagement.getProductById(productId);
+	    if (productToModify != null) {
+	        productToModify.setName(newName);
+	        productToModify.setPrice(newPrice);
+	        productToModify.setStock(newStock);
+	        JOptionPane.showMessageDialog(this, "Product modified successfully!");
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Product not found!");
+	    }
+	}
+*/
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub

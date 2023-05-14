@@ -8,9 +8,11 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 
@@ -35,7 +37,9 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 	private JButton btnConfirm;
 	private JButton btnCancel;
 	private JScrollPane scrollPane;
-	private JList list;
+	private DefaultTableModel tableModel;
+	private JTable productsTable;
+	/*tengo que hacer que coger la informacion del login y que se muestre la informacion necesaria*//*pull de la rama dev_Frander*/
 
 	/**
 	 * Create the panel.
@@ -163,13 +167,19 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		add(btnCancel);
 		btnCancel.addKeyListener(this);
 
-		//listado de sus compras
-		String categories[] = { "a", "b", "c", "d", "e", "a", "b", "c", "d", "e", "a" };
-		list = new JList(categories);
-		list.setFont(new Font("Constantia", Font.PLAIN, 25));
-		scrollPane = new JScrollPane(list);
+		
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(51, 469, 1437, 314);
 		add(scrollPane);
+		
+		tableModel = new DefaultTableModel();
+		String[] productTableHeaders = {"Product ID","Quantity","Total Cost","Date","Status"};
+		tableModel.setColumnIdentifiers(productTableHeaders);
+		tableModel=addProducts(tableModel);
+		productsTable = new JTable();
+		scrollPane.setViewportView(productsTable);
+		productsTable.setModel(tableModel);
+		productsTable.setEnabled(false);
 
 		JLabel lblNewFotoPerfil = new JLabel("");
 		lblNewFotoPerfil.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/profile2.png")));
@@ -181,6 +191,36 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
 		lblFondo.setBounds(0, 0, 1540, 870);
 		add(lblFondo);
+	}
+
+	private DefaultTableModel addProducts(DefaultTableModel tableModel2) {
+		// TODO Auto-generated method stub
+		/**
+		Set<Product> products = controlador.metodoListarProductos();
+		Iterator<Product> itProd = products.iterator();
+		**/
+		Object[] row;
+		
+		//while(itProd.hasNext()){
+			row=new Object[5];
+			row[0]="";
+			row[1]="";
+			row[2]="";
+			row[3]="";
+			row[4]="";
+			;
+			//Product product = itProd.next();
+			//row[0]=product.get();
+			//row[1]=product.get();
+			//row[2]=product.get();
+			//row[3]=product.get();
+			//row[4]=product.get();
+			//row[5]=product.get();
+			
+			
+			tableModel.addRow(row);
+			//}
+		return tableModel;
 	}
 
 	@Override
