@@ -77,7 +77,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 						prod.setActive(rs.getBoolean("isActive"));
 						prod.setSaleActive(rs.getBoolean("saleActive"));
 						prod.setSalePercentage(rs.getInt("salePercentage"));
-						System.out.println(prod.toString());
 						/**
 						 * Transformation of enum to String as JDBC doesn't support enums
 						 */
@@ -582,9 +581,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * This method checks if the pTotal status is "In progress" and if that's the case, the value is changed to "Finished". This method will be called when finishing shopping.
 	 * @param Purchase pTotal
 	 * @author Jago Bartolomé Barroso
+	 * @throws PurchaseNotFoundException 
 	 */
 	@Override
-	public Purchase removePurchase(Purchase pTotal) {
+	public Purchase removePurchase(Purchase pTotal) throws PurchaseNotFoundException {
 		String stPurch = "In progress";
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
 		
@@ -607,6 +607,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					e.printStackTrace();
 				}
 			}						
+		} else {
+			throw new PurchaseNotFoundException();
 		}
 		return pTotal;
 	}

@@ -48,8 +48,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			rs = ctmt.executeQuery();
 
 			while (rs.next()) {
-				if (rs.getBoolean("isActive") == true) {
-						prod = new Instrument();
 
 						prod.setNameP(rs.getString("name"));
 						prod.setPrice(rs.getFloat("unitPrice"));
@@ -73,7 +71,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 						((Instrument) prod).setTypeInstrument(enumTypeInstr);
 
 						listaProductos.add(prod);
-				}
 			}
 			rs.close();
 
@@ -81,7 +78,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			rs = ctmt.executeQuery();
 
 			while (rs.next()) {
-				if (rs.getBoolean("isActive") == true) {
+				
 						prod = new Component();
 						prod.setNameP(rs.getString("name"));
 						prod.setPrice(rs.getFloat("unitPrice"));
@@ -104,7 +101,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 						((Component) prod).setTypeComponent(enumTypeComp);
 
 						listaProductos.add(prod);
-				}
 			}
 			rs.close();
 			
@@ -112,7 +108,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			rs = ctmt.executeQuery();
 
 			while (rs.next()) {
-				if (rs.getBoolean("isActive") == true) {
 						prod = new Accessory();
 						prod.setNameP(rs.getString("name"));
 						prod.setPrice(rs.getFloat("unitPrice"));
@@ -135,8 +130,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 						((Accessory) prod).setTypeAccessory(enumTypeAcc);
 
 						listaProductos.add(prod);
-					}
-				}
+
+			}
 				
 		} catch (SQLException e) {
 			e.printStackTrace();
