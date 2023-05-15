@@ -1,12 +1,12 @@
 package model;
+
 /**
  * 
- * @author Ander
- * Enum class for a subdivision of instruments
+ * @author Ander Enum class for a subdivision of instruments
  *
  */
 public enum EnumClassInstrument {
-	WIND("Wind"), STRING("String"), PERCUSSION("Percussion");
+	WIND("Wind"), STRING("String"), PERCUSSION("Percussion"),UNKNOWN("Unknown");
 
 	private final String label;
 
@@ -26,6 +26,19 @@ public enum EnumClassInstrument {
 	 */
 	public String getLabel() {
 		return label;
+	}
+
+	public static EnumClassInstrument getValue(String label) {
+		EnumClassInstrument enumValue = EnumClassInstrument.UNKNOWN;
+
+		if (label.equalsIgnoreCase("Wind")) {
+			enumValue = EnumClassInstrument.WIND;
+		} else if (label.equalsIgnoreCase("String")) {
+			enumValue = EnumClassInstrument.STRING;
+		} else if (label.equalsIgnoreCase("Percussion")) {
+			enumValue = EnumClassInstrument.PERCUSSION;
+		}
+		return enumValue;
 	}
 
 }

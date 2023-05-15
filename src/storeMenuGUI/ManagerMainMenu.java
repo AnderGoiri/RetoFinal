@@ -1,6 +1,5 @@
 package storeMenuGUI;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -46,30 +45,31 @@ public class ManagerMainMenu extends JPanel {
 		mngAccount=new ManagerAccountTab(auxUser);
 		tabbedPane.addTab("Account", mngAccount);
 		
-		comprobarManager(auxUser);
+		//comprobarManager(auxUser);
 		
 	}
 
-	private void comprobarManager(Manager auxUser) {
+	//private void comprobarManager(Manager auxUser) {
 		// TODO Metodo que puede servir
-		String message="Error";
-		boolean tech=false,sup=false,adm=false;
+
+	//String message="Error";
+	//boolean tech=false,sup=false,adm=false;
 		
-		tech=auxUser.isTechnician();
-		sup=auxUser.isSupervisor();
-		adm=auxUser.isAdmin();
-		
-		
-		if(tech) {
-			message="Hello Technician "+auxUser.getIdUser();
-		}else if(sup) {
-			message="Hello Supervisor "+auxUser.getName();
-		}else if(adm) {
-			message="Hello Administator "+auxUser.getName();
-		}
+	//tech=auxUser.isTechnician();
+	//sup=auxUser.isSupervisor();
+	//adm=auxUser.isAdmin();
 		
 		
-		JOptionPane.showMessageDialog(this, message);
+	//if(tech) {
+	//	message="Hello Technician "+auxUser.getIdUser();
+	//}else if(sup) {
+	//	message="Hello Supervisor "+auxUser.getName();
+	//}else if(adm) {
+	//	message="Hello Administator "+auxUser.getName();
+	//}
 		
-	}
+		
+	//JOptionPane.showMessageDialog(this, message);
+		
+	//}
 }

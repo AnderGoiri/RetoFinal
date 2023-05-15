@@ -27,4 +27,16 @@ public enum EnumClassComponent {
 	public String getLabel() {
 		return label;
 	}
+	
+	public static EnumClassComponent getValue(String label) {
+		EnumClassComponent enumValue = null;
+
+		if (label.equalsIgnoreCase("Chasis")) {
+			enumValue = EnumClassComponent.CHASIS;
+		}else if (label.equalsIgnoreCase("Circuit")) {
+			enumValue = EnumClassComponent.CIRCUIT;
+		}
+		
+		return enumValue;
+	}
 }

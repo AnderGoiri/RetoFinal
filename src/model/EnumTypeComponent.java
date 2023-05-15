@@ -26,4 +26,18 @@ public enum EnumTypeComponent {
 	public String getLabel() {
 		return label;
 	}
+	
+	public static EnumTypeComponent getValue(String label) {
+		EnumTypeComponent enumValue = null;
+
+		if (label.equalsIgnoreCase("Architecture")) {
+			enumValue = EnumTypeComponent.ARCHITECTURE;
+		}else if (label.equalsIgnoreCase("Tuning")) {
+			enumValue = EnumTypeComponent.TUNING;
+		}else if (label.equalsIgnoreCase("Connection")) {
+			enumValue = EnumTypeComponent.CONNECTION;
+		}
+		
+		return enumValue;
+	}
 }

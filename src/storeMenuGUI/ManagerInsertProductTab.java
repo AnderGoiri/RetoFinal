@@ -23,6 +23,7 @@ import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.ButtonGroup;
 
+
 public class ManagerInsertProductTab extends JPanel implements ActionListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
@@ -37,6 +38,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 	private JCheckBox chckbxSale;
 	private JLabel lblSalePercentage, lblDescription, lblBrand, lblModel, lblName, lblClass,
 				lblType, lblColor, lblPrice, lblStock;
+
 	private JSeparator separator;
 
 	/**
@@ -73,6 +75,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		rdbtnComponent.addActionListener(this);
 		rdbtnComponent.addKeyListener(this);
 		
+
 		
 		// --- JSeparator --- //
 		
@@ -80,9 +83,9 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		separator.setBounds(20, 130, 1820, 3);
 		add(separator);
 		
-		
+
 		// --- JLabel --- //
-		
+
 		lblDescription = new JLabel("Description");
 		lblDescription.setFont(new Font("Constantia", Font.BOLD, 35));
 		lblDescription.setBounds(700, 330, 210, 50);
@@ -131,7 +134,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		
 		
 		// --- JButton --- //
-		
+
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.setForeground(Color.WHITE);
 		btnConfirm.setFont(new Font("Onyx", Font.BOLD, 45));
@@ -143,7 +146,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 	
 		
 		// --- JTextArea --- //
-		
+
 		textAreaDescription = new JTextArea();
 		textAreaDescription.setEditable(true);
 		textAreaDescription.setBounds(910, 330, 900, 380);
@@ -174,18 +177,18 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		comboBoxColor.setName("Color");
 		comboBoxColor.addKeyListener(this);
 		
+		comboBoxType = new JComboBox<String>();
+		comboBoxType.setFont(new Font("Constantia", Font.PLAIN, 30));
+		comboBoxType.setBounds(1410, 220, 400, 50);
+		add(comboBoxType);
+		comboBoxType.setName("Specification Type");
+
 		comboBoxClass = new JComboBox<String>();
 		comboBoxClass.setFont(new Font("Constantia", Font.PLAIN, 30));
 		comboBoxClass.setBounds(840, 220, 400, 50);
 		add(comboBoxClass);
 		comboBoxClass.setName("Specification Class");
 		comboBoxClass.addKeyListener(this);
-		
-		comboBoxType = new JComboBox<String>();
-		comboBoxType.setFont(new Font("Constantia", Font.PLAIN, 30));
-		comboBoxType.setBounds(1410, 220, 400, 50);
-		add(comboBoxType);
-		comboBoxType.setName("Specification Type");
 		
 		
 		// --- JTextField --- //
@@ -241,7 +244,6 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if(e.getSource().equals(chckbxSale)) {
 			if(chckbxSale.getModel().isSelected()) {
 				lblSalePercentage.setVisible(true);
@@ -253,12 +255,14 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 				textFieldSalePercentage.setEnabled(false);
 			}
 			
-			
+			//TODO Modificar lista productos con sale
 		}else if(e.getSource().equals(btnConfirm)){
 			if(blankText()==false) {
+				//TODO Introducir productos en la base de datos
 				JOptionPane.showMessageDialog(this, "Product added succesfully");
 			}
 		}
+		
 	}
 
 	private boolean blankText() {
@@ -299,6 +303,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 			}
 			
 		}
+		
 		if(buttonGroupProductType.getSelection()==null) {
 			if(blankSpaceComponents.equals("")) {
 				blankSpaceComponents+="Product Type";

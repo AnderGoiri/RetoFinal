@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,9 +26,14 @@ import storeMenuGUI.StoreMenuWindow;
 import javax.swing.JSeparator;
 import javax.swing.JCheckBox;
 
-
+/**
+ * The UserLogInPanel class is a JPanel that allows users to log in to the
+ * application.
+ * 
+ * @author Francisco Rafael de Ysasi González
+ * @author Ander Goirigolzarri Iturburu
+ */
 public class UserLogInPanel extends JPanel implements ActionListener, MouseListener, KeyListener {
-
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldUsername;
@@ -82,6 +86,20 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 		lblAdvice.setBounds(50, 89, 735, 30);
 		add(lblAdvice);
 
+		lblSignUpAdvice = new JLabel("You don't have an account?");
+		lblSignUpAdvice.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSignUpAdvice.setForeground(Color.DARK_GRAY);
+		lblSignUpAdvice.setBounds(313, 505, 160, 30);
+		add(lblSignUpAdvice);
+
+		lblSignUp = new JLabel("Sign Up");
+		lblSignUp.setFont(font1);
+		lblSignUp.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSignUp.setForeground(new Color(0, 151, 178));
+		lblSignUp.setBounds(473, 505, 50, 30);
+		add(lblSignUp);
+		lblSignUp.addMouseListener(this);
+
 		// --- JTextField ---
 		textFieldUsername = new JTextField();
 		textFieldUsername.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -91,7 +109,7 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 
 		// --- PasswordField ---
 		passwordField = new JPasswordField();
-		passwordField.setEchoChar('*'); //Cambia los caracteres del texto, mostrando el texto introducido con *
+		passwordField.setEchoChar('*'); // Cambia los caracteres del texto, mostrando el texto introducido con *
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		passwordField.setBounds(168, 268, 492, 68);
 		add(passwordField);
@@ -120,26 +138,13 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 		 * btnLogIn.addKeyListener(this);
 		 */
 
-		
+		// --- JSeparator ---
 		separatorSignUp = new JSeparator();
 		separatorSignUp.setForeground(Color.WHITE);
 		separatorSignUp.setBounds(10, 483, 817, 1);
 		add(separatorSignUp);
-		
-		lblSignUpAdvice = new JLabel("You don't have an account?");
-		lblSignUpAdvice.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSignUpAdvice.setForeground(Color.DARK_GRAY);
-		lblSignUpAdvice.setBounds(313, 505, 160, 30);
-		add(lblSignUpAdvice);
-		
-		lblSignUp = new JLabel("Sign Up");
-		lblSignUp.setFont(font1);
-		lblSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSignUp.setForeground(new Color(0, 151, 178));
-		lblSignUp.setBounds(473, 505, 50, 30);
-		add(lblSignUp);
-		lblSignUp.addMouseListener(this);
-		
+
+		// --- CheckBox ---
 		chckbxShowHideLogIn = new JCheckBox("");
 		chckbxShowHideLogIn.setOpaque(false);
 		chckbxShowHideLogIn.setHorizontalAlignment(SwingConstants.CENTER);
@@ -158,7 +163,7 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 		 * 470, 183, 81); contentPane.add(btnSignUp); btnSignUp.addActionListener(this);
 		 * btnSignUp.addKeyListener(this);
 		 */
-		
+
 		textFieldUsername.addKeyListener(this);
 		passwordField.addKeyListener(this);
 	}
@@ -166,14 +171,14 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 	// --- ActionListener Methods ---
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(chckbxShowHideLogIn)) {
-			if(chckbxShowHideLogIn.isSelected()) {
-				passwordField.setEchoChar((char)0); //Casting 0 as a char makes the passwordField change the character
-													//format of the text, uncensuring the text inside of it.
-			}else {
+		if (e.getSource().equals(chckbxShowHideLogIn)) {
+			if (chckbxShowHideLogIn.isSelected()) {
+				passwordField.setEchoChar((char) 0); // Casting 0 as a char makes the passwordField change the character
+														// format of the text, uncensuring the text inside of it.
+			} else {
 				passwordField.setEchoChar('*');
 			}
-		}else if (e.getSource().equals(btnLogIn)) { // actionPerformed receives the event from the login button
+		} else if (e.getSource().equals(btnLogIn)) { // actionPerformed receives the event from the login button
 			try {
 
 				// Create a LoginControllable Object
@@ -207,8 +212,8 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 	}
 
 	private void changePanel() {
-		((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
-		.getUserRegisterPanel().setVisible(true);
+		((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent())).getUserRegisterPanel()
+				.setVisible(true);
 		this.clearRegisterFields();
 		this.setVisible(false);
 	}
@@ -216,15 +221,14 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 	private void clearRegisterFields() {
 		passwordField.setText("");
 		textFieldUsername.setText("");
-
 	}
 
 	// --- KeyListener Methods ---
 	@Override
 	public void keyPressed(KeyEvent e) {
-	    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-	        btnLogIn.doClick();
-	    }
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			btnLogIn.doClick();
+		}
 	}
 
 	@Override
@@ -238,32 +242,34 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//Method that displays the "UserRegisterPanel" when you click the Sign Up label.
-		if(e.getSource().equals(lblSignUp)) {
+		// Method that displays the "UserRegisterPanel" when you click the Sign Up
+		// label.
+		if (e.getSource().equals(lblSignUp)) {
 			changePanel();
 		}
 	}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// Method that changes the Sign Up label's text format.
-		if(e.getComponent().equals(lblSignUp)) {
+		if (e.getComponent().equals(lblSignUp)) {
 			lblSignUp.setFont(font2);
 		}
-		
 	}
+
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if(e.getComponent().equals(lblSignUp)) {
+		if (e.getComponent().equals(lblSignUp)) {
 			lblSignUp.setFont(font1);
 		}
 	}
-	
-	
+
 	@Override
-	public void mouseReleased(MouseEvent e) {}
-	
+	public void mouseReleased(MouseEvent e) {
+	}
+
 	@Override
-	public void mousePressed(MouseEvent e) {}
-	
+	public void mousePressed(MouseEvent e) {
+	}
+
 }

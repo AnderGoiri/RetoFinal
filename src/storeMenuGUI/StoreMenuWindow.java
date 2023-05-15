@@ -5,8 +5,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import loginGUI.UserLogInPanel;
-import loginGUI.Win_login_register;
+
 import model.Manager;
 import model.Member;
 import model.User;
@@ -17,9 +16,7 @@ import java.awt.event.ActionListener;
 
 public class StoreMenuWindow extends JDialog {
 	
-	private JPanel contentPanel;
-	private JPanel menuPanel;
-	
+	private JPanel contentPanel,menuPanel;
 	private MemberMainMenu memberPanel;
 	private ManagerMainMenu managerPanel;
 	private CardLayout cardLayout;
@@ -30,13 +27,16 @@ public class StoreMenuWindow extends JDialog {
 //	private ManagerMenu managerPanel;
 
 	
+
 	public StoreMenuWindow(ActionListener actionListener, boolean b, User auxUser) {
+		
 		super();
 		setResizable(false);
 		setTitle("THOMANN STORE MENU");
 		setBackground(new Color(255, 255, 255));
 		getContentPane().setLayout(null);
 		setBounds(100, 100, 1900, 1000);
+		
 		/**
 		 * A panel is created that will contain all the other components.
 		 */
@@ -46,6 +46,7 @@ public class StoreMenuWindow extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane (contentPanel);
 		contentPanel.setLayout(null);
+		
 		/**
 		 * A panel containing the different menus is created.
 		 */
@@ -54,15 +55,18 @@ public class StoreMenuWindow extends JDialog {
 		cardLayout = new CardLayout();
 		menuPanel.setLayout (cardLayout);
 		contentPanel.add(menuPanel);
+		
 		/**
 		 * A panel for the members menu is created and added to the menu panel.
 		 */
+
 		showMenu(auxUser);
 	}
 	/**
 	 * This method displays the members menu.
 	 * @param auxUser 
 	 */
+
 	private void showMenu(User auxUser) {
 		
 		if(auxUser instanceof Member) {
@@ -77,6 +81,7 @@ public class StoreMenuWindow extends JDialog {
 			cardLayout.show(menuPanel, "Manager");
 		}
 		
+
 
 	}
 

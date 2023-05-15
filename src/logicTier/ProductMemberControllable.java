@@ -1,24 +1,25 @@
 package logicTier;
 
+import java.sql.SQLException;
 import java.util.Set;
 
 import exceptions.BrandNotFoundException;
 import exceptions.ModelNotFoundException;
 import exceptions.NameNotFoundException;
 import exceptions.ProductNotFoundException;
+import exceptions.PurchaseNotFoundException;
+import exceptions.StockNotFoundException;
 import exceptions.TypeNotFoundException;
 import model.Member;
 import model.Product;
 import model.Purchase;
 
 public interface ProductMemberControllable {
-	public Set<Product> searchInstrument(String search) throws ProductNotFoundException;
+	public Set<Product> searchInstrument(String search) throws ProductNotFoundException, SQLException;
 	
 	public Set<Product> searchComponent(String search) throws ProductNotFoundException;
 	
 	public Set<Product> searchAccessory(String search) throws ProductNotFoundException;
-	
-	public Product searchProductById(int pId, Set<Product> listaProd);
 	
 	public Set<Product> searchProductByName(String name, Set<Product> listaProd) throws NameNotFoundException;
 	
@@ -30,19 +31,18 @@ public interface ProductMemberControllable {
 	
 	public Set<Product> searchProductByClass(String classP, Set<Product> listaProd) throws TypeNotFoundException;
 	
+	public Set<Product> searchProductInSale(Set<Product> listaProd);
+	
 	public boolean checkProduct(Product p) throws Exception;
 	
-	public Purchase addPurchase(Product p, Member me);
+	public Purchase addProductPurchase(Purchase pset, Product p, Member m) throws StockNotFoundException, ProductNotFoundException; 
 	
-	public Purchase addProduct(Purchase pset, Product p, Member m); 
-	
-	public Purchase listPurchase(Purchase pset);
+	public Purchase searchPurchase(Member m);
 	
 	public Purchase removeProduct(Purchase pset, Product p) throws Exception;
 	
 	public Purchase removePurchase(Purchase pset);
-	
-	public boolean existsProduct(int search) throws ProductNotFoundException;
 
+	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException;
 
 }
