@@ -82,7 +82,6 @@ public class StoreMenuWindow extends JDialog {
 		}
 		
 
-
 	}
 
 }
