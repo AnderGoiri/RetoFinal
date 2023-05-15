@@ -345,7 +345,7 @@ END
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `select_accessory`()
 BEGIN
-	SELECT * from product p inner join accessory a on p.idProduct = a.idProduct;
+	SELECT * from product p inner  join accessory a on p.idProduct = a.idProduct;
 END
 //
 DELIMITER //
@@ -383,7 +383,14 @@ BEGIN
     CLOSE product_cursor;
 END
 //
-
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `select_all_products`()
+BEGIN
+	SELECT p.*,i.classInstrument 'class',i.typeInstrument 'type' from product p INNER JOIN instrument i on p.idProduct = i.idProduct UNION ALL
+    SELECT p.*,c.classComponent 'class',c.typeComponent 'type'  from product p INNER JOIN component c on p.idProduct = c.idProduct UNION ALL
+    SELECT p.*,a.classAccessory 'class',a.typeAccessory 'type' from product p INNER JOIN accessory a on p.idProduct = a.idProduct;
+END
+//
 DELIMITER //
 CREATE TRIGGER email_formattrigger BEFORE INSERT ON user
 FOR EACH ROW
@@ -392,3 +399,33 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid email format';
     END IF;
 END //
+
+/*VIEWS*/
+CREATE VIEW vw_member AS
+SELECT u.idUser, u.username, u.name, u.surname, u.password, u.mail, u.dateRegister, m.address, m.creditCard
+FROM user u
+INNER JOIN member m ON u.idUser = m.idUser;
+CREATE VIEW vw_manager AS
+SELECT u.idUser, u.username, u.name, u.surname,u.password, u.mail,  u.dateRegister,
+m.idSupervisor, m.isSupervisor, m.isTechnician, m.isAdmin, m.statusManager
+FROM user u
+INNER JOIN manager m ON u.idUser = m.idUser;
+CREATE VIEW vw_instrument AS
+SELECT p.idProduct, p.brand, p.model, p.description, p.unitPrice, p.stock, p.isActive, p.saleActive, p.salePercentage, p.name, p.color, i.classInstrument, i.typeInstrument
+FROM product p
+INNER JOIN instrument i ON p.idProduct = i.idProduct;
+CREATE VIEW vw_component AS
+SELECT p.idProduct, p.brand, p.model, p.description, p.unitPrice, p.stock, p.isActive, p.saleActive, p.salePercentage, p.name, p.color, c.classComponent, c.typeComponent
+FROM product p
+INNER JOIN component c ON p.idProduct = c.idProduct;
+CREATE VIEW vw_accessory AS
+SELECT p.idProduct, p.brand, p.model, p.description, p.unitPrice, p.stock, p.isActive, p.saleActive, p.salePercentage, p.name, p.color, a.classAccessory, a.typeAccessory
+FROM product p
+INNER JOIN accessory a ON p.idProduct = a.idProduct;
+
+
+
+
+
+
+
