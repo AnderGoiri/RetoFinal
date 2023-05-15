@@ -41,6 +41,14 @@ public class Instrument extends Product {
 		this.classInstrument = classInstrument;
 		this.typeInstrument = typeInstrument;
 	}
+	
+	public Instrument(String nameP, String model, String descriptionP, float price, int stock,
+			boolean isActive, boolean isSale, int salePercentage, String name, String color,
+			EnumClassInstrument classInstrument, EnumTypeInstrument typeInstrument) {
+		super(nameP, model, descriptionP, price, stock, isActive, isSale, salePercentage, name, color);
+		this.classInstrument = classInstrument;
+		this.typeInstrument = typeInstrument;
+	}
 
 	public Instrument() {
 		super();

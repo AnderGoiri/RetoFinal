@@ -27,7 +27,17 @@ import javax.swing.JScrollPane;
 
 /**
  * 
+ * The ManagerShopTab class represents a JPanel that displays the manager's shop
+ * tab in the store menu GUI.
+ * 
+ * It allows the manager to search for products and show all products in the
+ * inventory.
+ * 
+ * This class implements the ActionListener and KeyListener interfaces to handle
+ * user actions.
+ * 
  * @author Ander Goirigolzarri Iturburu
+ * @author Francisco Rafael de Ysasi González
  */
 public class ManagerShopTab extends JPanel implements ActionListener, KeyListener {
 
@@ -42,7 +52,8 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 	private Set<Product> products;
 
 	/**
-	 * Create the panel.
+	 * Creates a new instance of the ManagerShopTab class. Initializes and
+	 * configures the GUI components.
 	 */
 	public ManagerShopTab() {
 		setLayout(null);
@@ -94,6 +105,13 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 	}
 
+	/**
+	 * 
+	 * Displays all products in the inventory by retrieving the data from the logic
+	 * tier.
+	 * 
+	 * @return The set of products retrieved from the inventory.
+	 */
 	private Set<Product> showAllProducts() {
 		// Create a ProductManagerControllable object
 		ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
@@ -148,8 +166,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		if (e.getSource().equals(btnSearch) && textFieldProductId.getText().isBlank()) {
 			showAllProducts();
 		} else if (e.getSource().equals(btnSearch)) {
-			
-			
+
 		} else if (e.getSource().equals(btnShow)) {
 
 		}

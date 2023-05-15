@@ -41,6 +41,14 @@ public class Component extends Product {
 		this.classComponent = classComponent;
 		this.typeComponent = typeComponent;
 	}
+	
+	public Component(String nameP, String model, String descriptionP, float price, int stock,
+			boolean isActive, boolean isSale, int salePercentage, String name, String color,
+			EnumClassComponent classComponent, EnumTypeComponent typeComponent) {
+		super(nameP, model, descriptionP, price, stock, isActive, isSale, salePercentage, name, color);
+		this.classComponent = classComponent;
+		this.typeComponent = typeComponent;
+	}
 
 	public Component() {
 		super();

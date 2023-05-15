@@ -36,31 +36,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 	}
 
-	// --- Methods to Search Products ---
-	/**
-	 * Method for the search of products filtered by id In the parameter list of
-	 * products, the method searches the one thats equal to the id
-	 * 
-	 * @param int pId is the id of the product we want to search, listaProd is the
-	 *            list of all products
-	 * @return a list of products
-	 * @throws ProductNotFoundException if it doesn't exist
-	 * @author Jagoba Bartolomé Barroso
-	 */
-	public Product searchProductById(int pId, Set<Product> listaProd) throws ProductNotFoundException {
-		Product pAux = null;
-		for (Product prod : listaProd) {
-			if (prod.getIdProduct() == pId) {
-				pAux = prod;
-			}
-		}
-		if (pAux != null) {
-			return pAux;
-		} else {
-			throw new ProductNotFoundException();
-		}
-	}
-
 	/**
 	 * Method to add a product, if it doesn't exist, to the database
 	 * 
@@ -406,6 +381,31 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			}
 		}
 		return setProducts;
+	}
+	
+	// --- Methods to Search Products ---
+	/**
+	 * Method for the search of products filtered by id In the parameter list of
+	 * products, the method searches the one thats equal to the id
+	 * 
+	 * @param int pId is the id of the product we want to search, listaProd is the
+	 *            list of all products
+	 * @return a list of products
+	 * @throws ProductNotFoundException if it doesn't exist
+	 * @author Jagoba Bartolomé Barroso
+	 */
+	public Product searchProductById(int pId, Set<Product> listaProd) throws ProductNotFoundException {
+		Product pAux = null;
+		for (Product prod : listaProd) {
+			if (prod.getIdProduct() == pId) {
+				pAux = prod;
+			}
+		}
+		if (pAux != null) {
+			return pAux;
+		} else {
+			throw new ProductNotFoundException();
+		}
 	}
 	
 	/**
