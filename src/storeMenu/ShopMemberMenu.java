@@ -315,18 +315,20 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 
 	
 	public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnLupa) {
+        if (e.getSource().equals(btnLupa)) {
             makeSearch();
-        } else if (e.getSource() == btnAdd) {
+        }
+        if (e.getSource().equals(btnAdd)) {
             JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?");
-        } else if (e.getSource() == btnRemove) {
+        }
+        if (e.getSource().equals(btnRemove)) {
             JOptionPane.showMessageDialog(null, "Are you sure you want to remove this product from the shopping cart?");
         }
 		
 	}
 	
 	public void makeSearch() {
-		//TODO if textbox empty && btn
+		//TODO if textbox empty && btnLupa
 		try {
 		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();	
 		
@@ -374,10 +376,10 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 					    }
 										
 					}	
+					comboProductType.setSelectedIndex(-1);
 					JTable productTable = new JTable(model);
 					productTable.setFont(new Font("Constantia", Font.PLAIN, 25));
 
-					// Crear el JScrollPane y agregar la tabla
 					JScrollPane scrollPaneProducts = new JScrollPane(productTable);
 					scrollPaneProducts.setBounds(94, 372, 1340, 371);
 					add(scrollPaneProducts);
