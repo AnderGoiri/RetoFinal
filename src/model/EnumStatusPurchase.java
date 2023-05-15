@@ -39,9 +39,9 @@ public enum EnumStatusPurchase {
 	public static EnumStatusPurchase getValue(String label) {
 		EnumStatusPurchase enumValue = null;
 
-		if (label == "In progress") {
+		if (label.equalsIgnoreCase("In progress")) {
 			enumValue = EnumStatusPurchase.IN_PROGRESS;
-		}else if (label == "Finished") {
+		}else if (label.equalsIgnoreCase("Finished")) {
 			enumValue = EnumStatusPurchase.FINISHED;
 		}
 		

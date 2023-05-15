@@ -29,9 +29,9 @@ public enum EnumTypeInstrument {
 	public static EnumTypeInstrument getValue(String label) {
 		EnumTypeInstrument enumValue = null;
 
-		if (label == "Acoustic") {
+		if (label.equalsIgnoreCase("Acoustic")) {
 			enumValue = EnumTypeInstrument.ACOUSTIC;
-		}else if (label == "Electronic") {
+		}else if (label.equalsIgnoreCase("Electronic")) {
 			enumValue = EnumTypeInstrument.ELECTRONIC;
 		}
 		

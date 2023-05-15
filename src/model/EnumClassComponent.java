@@ -31,9 +31,9 @@ public enum EnumClassComponent {
 	public static EnumClassComponent getValue(String label) {
 		EnumClassComponent enumValue = null;
 
-		if (label == "Chasis") {
+		if (label.equalsIgnoreCase("Chasis")) {
 			enumValue = EnumClassComponent.CHASIS;
-		}else if (label == "Circuit") {
+		}else if (label.equalsIgnoreCase("Circuit")) {
 			enumValue = EnumClassComponent.CIRCUIT;
 		}
 		

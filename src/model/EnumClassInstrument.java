@@ -6,7 +6,7 @@ package model;
  *
  */
 public enum EnumClassInstrument {
-	WIND("Wind"), STRING("String"), PERCUSSION("Percussion");
+	WIND("Wind"), STRING("String"), PERCUSSION("Percussion"),UNKNOWN("Unknown");
 
 	private final String label;
 
@@ -29,13 +29,13 @@ public enum EnumClassInstrument {
 	}
 
 	public static EnumClassInstrument getValue(String label) {
-		EnumClassInstrument enumValue = null;
+		EnumClassInstrument enumValue = EnumClassInstrument.UNKNOWN;
 
-		if (label == "Wind") {
+		if (label.equalsIgnoreCase("Wind")) {
 			enumValue = EnumClassInstrument.WIND;
-		} else if (label == "String") {
+		} else if (label.equalsIgnoreCase("String")) {
 			enumValue = EnumClassInstrument.STRING;
-		} else if (label == "Percussion") {
+		} else if (label.equalsIgnoreCase("Percussion")) {
 			enumValue = EnumClassInstrument.PERCUSSION;
 		}
 		return enumValue;

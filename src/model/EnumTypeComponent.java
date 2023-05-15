@@ -30,11 +30,11 @@ public enum EnumTypeComponent {
 	public static EnumTypeComponent getValue(String label) {
 		EnumTypeComponent enumValue = null;
 
-		if (label == "Architecture") {
+		if (label.equalsIgnoreCase("Architecture")) {
 			enumValue = EnumTypeComponent.ARCHITECTURE;
-		}else if (label == "Tuning") {
+		}else if (label.equalsIgnoreCase("Tuning")) {
 			enumValue = EnumTypeComponent.TUNING;
-		}else if (label == "Connection") {
+		}else if (label.equalsIgnoreCase("Connection")) {
 			enumValue = EnumTypeComponent.CONNECTION;
 		}
 		

@@ -44,11 +44,11 @@ public enum EnumStatusManager {
 	public static EnumStatusManager getValue(String label) {
 		EnumStatusManager enumValue = null;
 
-		if (label == "Pending") {
+		if (label.equalsIgnoreCase("Pending")) {
 			enumValue = EnumStatusManager.P;
-		}else if (label == "Approved") {
+		}else if (label.equalsIgnoreCase("Approved")) {
 			enumValue = EnumStatusManager.A;
-		}else if (label == "Rejected") {
+		}else if (label.equalsIgnoreCase("Rejected")) {
 			enumValue = EnumStatusManager.R;
 		}
 		return enumValue;

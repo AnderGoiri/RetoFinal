@@ -36,6 +36,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	private ResultSet rset;
 	private ResultSetMetaData rsmd;
 	private GateDB connection = new GateDB();
+	private char typeProduct;
 
 	// TODO
 	public Set<Product> getListProduct() {
@@ -358,13 +359,44 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 	}
 
+	public char getTypeProduct(int idProduct) throws SQLException {
+		con = connection.openConnection();
+
+		// Check if the idProduct exists in the instrument table
+		String queryInstrument = "SELECT idProduct FROM instrument WHERE idProduct = ?";
+		PreparedStatement stmtInstrument = con.prepareStatement(queryInstrument);
+		stmtInstrument.setInt(1, idProduct);
+		ResultSet rsInstrument = stmtInstrument.executeQuery();
+		if (rsInstrument.next()) {
+			return 'I'; // 'I' represents Instrument
+		}
+
+		// Check if the idProduct exists in the component table
+		String queryComponent = "SELECT idProduct FROM component WHERE idProduct = ?";
+		PreparedStatement stmtComponent = con.prepareStatement(queryComponent);
+		stmtComponent.setInt(1, idProduct);
+		ResultSet rsComponent = stmtComponent.executeQuery();
+		if (rsComponent.next()) {
+			return 'C'; // 'C' represents Component
+		}
+
+		// Check if the idProduct exists in the accessory table
+		String queryAccessory = "SELECT idProduct FROM accessory WHERE idProduct = ?";
+		PreparedStatement stmtAccessory = con.prepareStatement(queryAccessory);
+		stmtAccessory.setInt(1, idProduct);
+		ResultSet rsAccessory = stmtAccessory.executeQuery();
+		if (rsAccessory.next()) {
+			return 'A'; // 'A' represents Accessory
+		}
+		return 'U'; // 'U' represents Unknown (product not found in any table)
+	}
+
 	@Override
 	public Set<Product> getAllProducts() throws SQLException {
 		con = connection.openConnection();
 		ctmt = con.prepareCall("{CALL select_all_products}");
 		rset = ctmt.executeQuery();
-		rsmd = rset.getMetaData();
-		
+
 		Set<Product> setProducts = new HashSet<Product>();
 
 		while (rset.next()) {
@@ -379,42 +411,37 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			boolean saleActive = rset.getBoolean("saleActive");
 			int salePercentage = rset.getInt("salePercentage");
 			boolean isActive = rset.getBoolean("isActive");
-			String productType = rsmd.getTableName(4);
 
-			if (productType.equals("instrument")) {
-				EnumClassInstrument classInstrument = EnumClassInstrument.getValue(rset.getString("classInstrument"));
-				
-				EnumTypeInstrument typeInstrument = EnumTypeInstrument.getValue(rset.getString("typeInstrument"));
-				
-				Instrument instrument = new Instrument(idProduct, name, unitPrice, description, stock, brand,
-						model, color, saleActive, salePercentage, isActive, classInstrument, typeInstrument);
-				
+			if (getTypeProduct(idProduct) == 'I') { // check if the value exists in the instrument table
+				EnumClassInstrument classInstrument = EnumClassInstrument.getValue(rset.getString(12));
+				EnumTypeInstrument typeInstrument = EnumTypeInstrument.getValue(rset.getString(13));
+
+				Instrument instrument = new Instrument(idProduct, name, unitPrice, description, stock, brand, model,
+						color, saleActive, salePercentage, isActive, classInstrument, typeInstrument);
+
 				setProducts.add(instrument);
 
-				
-			} else if (productType.equals("component")) {
-				EnumClassComponent classComponent = EnumClassComponent.getValue(rset.getString("classComponent"));
-				
-				EnumTypeComponent typeComponent = EnumTypeComponent.getValue(rset.getString("typeComponent"));
-				
-				Component component = new Component(idProduct, name, unitPrice, description, stock, brand,
-						model, color, saleActive, salePercentage, isActive, classComponent, typeComponent);
-				
+			} else if (getTypeProduct(idProduct) == 'C') { // check if the value exists in the component table
+				EnumClassComponent classComponent = EnumClassComponent.getValue(rset.getString(12));
+
+				EnumTypeComponent typeComponent = EnumTypeComponent.getValue(rset.getString(13));
+
+				Component component = new Component(idProduct, name, unitPrice, description, stock, brand, model, color,
+						saleActive, salePercentage, isActive, classComponent, typeComponent);
+
 				setProducts.add(component);
-				
-			} else if (productType.equals("accessory")) {
-				EnumClassAccessory classAccessory = EnumClassAccessory.getValue(rset.getString("classAccessory"));
-				
-				EnumTypeAccessory typeAccessory = EnumTypeAccessory.getValue(rset.getString("typeAccessory"));
-				
-				Accessory accessory = new Accessory(idProduct, name, unitPrice, description, stock, brand,
-						model, color, saleActive, salePercentage, isActive, classAccessory, typeAccessory);
-				
+
+			} else if (getTypeProduct(idProduct) == 'A') { // check if the value exists in the accessory table
+				EnumClassAccessory classAccessory = EnumClassAccessory.getValue(rset.getString(12));
+
+				EnumTypeAccessory typeAccessory = EnumTypeAccessory.getValue(rset.getString(13));
+
+				Accessory accessory = new Accessory(idProduct, name, unitPrice, description, stock, brand, model, color,
+						saleActive, salePercentage, isActive, classAccessory, typeAccessory);
+
 				setProducts.add(accessory);
 			}
 		}
-
 		return setProducts;
 	}
-
 }

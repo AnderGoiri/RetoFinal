@@ -111,8 +111,8 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 								instrument.getPrice(), instrument.getDescriptionP(), instrument.getStock(),
 								instrument.getBrand(), instrument.getModel(), instrument.getColor(),
 								instrument.isSaleActive() ? "Yes" : "No", instrument.getSalePercentage(),
-								instrument.isActive() ? "Yes" : "No", instrument.getClassInstrument(),
-								instrument.getTypeInstrument() };
+								instrument.isActive() ? "Yes" : "No", instrument.getClassInstrument().getLabel(),
+								instrument.getTypeInstrument().getLabel() };
 
 					} else if (product instanceof Component) {
 						Component component = (Component) product;
@@ -120,7 +120,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 								component.getDescriptionP(), component.getStock(), component.getBrand(),
 								component.getModel(), component.getColor(), component.isSaleActive() ? "Yes" : "No",
 								component.getSalePercentage(), component.isActive() ? "Yes" : "No",
-								component.getClassComponent(), component.getTypeComponent() };
+								component.getClassComponent().getLabel(), component.getTypeComponent().getLabel() };
 
 					} else if (product instanceof Accessory) {
 						Accessory accessory = (Accessory) product;
@@ -128,7 +128,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 								accessory.getDescriptionP(), accessory.getStock(), accessory.getBrand(),
 								accessory.getModel(), accessory.getColor(), accessory.isSaleActive() ? "Yes" : "No",
 								accessory.getSalePercentage(), accessory.isActive() ? "Yes" : "No",
-								accessory.getClassAccessory(), accessory.getTypeAccessory() };
+								accessory.getClassAccessory().getLabel(), accessory.getTypeAccessory().getLabel() };
 					}
 					modelProduct.addRow(rowData);
 				}

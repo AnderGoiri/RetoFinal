@@ -22,9 +22,9 @@ public enum EnumClassAccessory {
 	public static EnumClassAccessory getValue(String label) {
 		EnumClassAccessory enumValue = null;
 
-		if (label == "Electric") {
+		if (label.equalsIgnoreCase("Electric")) {
 			enumValue = EnumClassAccessory.Electric;
-		}else if (label == "nonElectric") {
+		}else if (label.equalsIgnoreCase("nonElectric")) {
 			enumValue = EnumClassAccessory.nonElectric;
 		}
 		

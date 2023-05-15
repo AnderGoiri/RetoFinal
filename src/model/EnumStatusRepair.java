@@ -52,17 +52,17 @@ public enum EnumStatusRepair {
 	public static EnumStatusRepair getValue(String label) {
 		EnumStatusRepair enumValue = null;
 
-		if (label == "Pending") {
+		if (label.equalsIgnoreCase("Pending")) {
 			enumValue = EnumStatusRepair.PENDING;
-		}else if (label == "In progress") {
+		}else if (label.equalsIgnoreCase("In progress")) {
 			enumValue = EnumStatusRepair.IN_PROGRESS;
-		}else if (label == "Cancelled") {
+		}else if (label.equalsIgnoreCase("Cancelled")) {
 			enumValue = EnumStatusRepair.CANCELLED;
-		}else if (label == "Accepted") {
+		}else if (label.equalsIgnoreCase("Accepted")) {
 			enumValue = EnumStatusRepair.ACCEPTED;
-		}else if (label == "Denied") {
+		}else if (label.equalsIgnoreCase("Denied")) {
 			enumValue = EnumStatusRepair.DENIED;
-		}else if (label == "Finished") {
+		}else if (label.equalsIgnoreCase("Finished")) {
 			enumValue = EnumStatusRepair.FINISHED;
 		}
 		
