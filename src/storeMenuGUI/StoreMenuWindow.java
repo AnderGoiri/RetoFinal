@@ -36,14 +36,14 @@ public class StoreMenuWindow extends JDialog {
 		setTitle("THOMANN STORE MENU");
 		setBackground(new Color(255, 255, 255));
 		getContentPane().setLayout(null);
-		setBounds(100, 100, 1900, 1000);
+		setBounds(100, 100, 1024, 768);
 		
 		/**
 		 * A panel is created that will contain all the other components.
 		 */
 		contentPanel = new JPanel();
 		contentPanel.setBackground(new Color(0, 150, 178));
-		contentPanel.setBounds(0, 0, 1900, 1000);
+		contentPanel.setBounds(0, 0, 1024, 768);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane (contentPanel);
 		contentPanel.setLayout(null);
@@ -52,7 +52,7 @@ public class StoreMenuWindow extends JDialog {
 		 * A panel containing the different menus is created.
 		 */
 		menuPanel = new JPanel();
-		menuPanel.setBounds(10, 0, 1860, 950);
+		menuPanel.setBounds(10, 0, 984, 718);
 		cardLayout = new CardLayout();
 		menuPanel.setLayout (cardLayout);
 		contentPanel.add(menuPanel);

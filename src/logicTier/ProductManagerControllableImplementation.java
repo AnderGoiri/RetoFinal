@@ -5,9 +5,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,20 +21,14 @@ import model.EnumTypeComponent;
 import model.EnumTypeInstrument;
 import model.Instrument;
 import model.Manager;
-import model.Member;
 import model.Product;
-import model.Purchase;
 
 public class ProductManagerControllableImplementation implements ProductManagerControllable {
 	// DB Connection
 	private Connection con;
-	private Statement stmt;
-	private PreparedStatement ptmt;
 	private CallableStatement ctmt;
 	private ResultSet rset;
-	private ResultSetMetaData rsmd;
 	private GateDB connection = new GateDB();
-	private char typeProduct;
 
 	// TODO
 	public Set<Product> getListProduct() {
@@ -44,6 +36,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 	}
 
+	// --- Methods to Search Products ---
 	/**
 	 * Method for the search of products filtered by id In the parameter list of
 	 * products, the method searches the one thats equal to the id
@@ -52,7 +45,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 *            list of all products
 	 * @return a list of products
 	 * @throws ProductNotFoundException if it doesn't exist
-	 * @author Jago
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	public Product searchProductById(int pId, Set<Product> listaProd) throws ProductNotFoundException {
 		Product pAux = null;
@@ -74,87 +67,16 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * @param Product p that the manager wants to add to the db
 	 * @throws ProductFoundException meaning the Product we want to add already
 	 *                               exists
-	 * @author Jago
+	 * @throws SQLException
+	 * @author Jagoba Bartolomé Barroso
 	 */
-	public void addProduct(Product p) throws ProductFoundException {
-		try {
-			if (!existsProduct(p.getIdProduct())) {
-				con = connection.openConnection();
+	public void addProduct(Product p) throws ProductFoundException, SQLException {
+		if (!existsProduct(p.getIdProduct())) {
+			con = connection.openConnection();
 
-				if (p instanceof Instrument) {
-					ctmt = con.prepareCall("{CALL insert_new_instrument(?,?,?,?,?,?,?,?,?,?,?,?}");
+			if (p instanceof Instrument) {
+				ctmt = con.prepareCall("{CALL insert_new_instrument(?,?,?,?,?,?,?,?,?,?,?,?}");
 
-					ctmt.setString(1, p.getBrand());
-					ctmt.setString(2, p.getModel());
-					ctmt.setString(3, p.getDescriptionP());
-					ctmt.setFloat(4, p.getPrice());
-					ctmt.setInt(5, p.getStock());
-					ctmt.setBoolean(6, true);
-					ctmt.setBoolean(7, p.isSaleActive());
-					ctmt.setInt(8, p.getSalePercentage());
-					ctmt.setString(9, p.getNameP());
-					ctmt.setString(10, p.getColor());
-					ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
-					ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
-				}
-				if (p instanceof Component) {
-					ctmt = con.prepareCall("{CALL insert_new_component(?,?,?,?,?,?,?,?,?,?,?,?}");
-
-					ctmt.setString(1, p.getBrand());
-					ctmt.setString(2, p.getModel());
-					ctmt.setString(3, p.getDescriptionP());
-					ctmt.setFloat(4, p.getPrice());
-					ctmt.setInt(5, p.getStock());
-					ctmt.setBoolean(6, true);
-					ctmt.setBoolean(7, p.isSaleActive());
-					ctmt.setInt(8, p.getSalePercentage());
-					ctmt.setString(9, p.getNameP());
-					ctmt.setString(10, p.getColor());
-					ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
-					ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
-				}
-				if (p instanceof Accessory) {
-					ctmt = con.prepareCall("{CALL insert_new_accessory(?,?,?,?,?,?,?,?,?,?,?,?}");
-
-					ctmt.setString(1, p.getBrand());
-					ctmt.setString(2, p.getModel());
-					ctmt.setString(3, p.getDescriptionP());
-					ctmt.setFloat(4, p.getPrice());
-					ctmt.setInt(5, p.getStock());
-					ctmt.setBoolean(6, true);
-					ctmt.setBoolean(7, p.isSaleActive());
-					ctmt.setInt(8, p.getSalePercentage());
-					ctmt.setString(9, p.getNameP());
-					ctmt.setString(10, p.getColor());
-					ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
-					ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
-				}
-			} else {
-				throw new ProductFoundException();
-			}
-
-		} catch (SQLException e1) {
-			// TODO Aqui qué
-		} finally {
-			connection.closeConnection();
-		}
-
-	}
-
-	/**
-	 * Modifies the located product in the database with the new data
-	 * 
-	 * @param A product with the already modified attributes
-	 * @throws ProductNotFoundException The product we want to modify doesn't exist
-	 *                                  in the database
-	 * @author Jago
-	 */
-	public void modifyProduct(Product p) throws ProductNotFoundException {
-		if (existsProduct(p.getIdProduct())) {
-			try {
-				con = connection.openConnection();
-				ctmt = con.prepareCall(
-						"UPDATE product SET brand=?, model=?, description=?, unitPrice=?, stock=?, isActive=?, saleActive=?, salePercentage=?, name=?, color=?");
 				ctmt.setString(1, p.getBrand());
 				ctmt.setString(2, p.getModel());
 				ctmt.setString(3, p.getDescriptionP());
@@ -165,37 +87,93 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 				ctmt.setInt(8, p.getSalePercentage());
 				ctmt.setString(9, p.getNameP());
 				ctmt.setString(10, p.getColor());
+				ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
+				ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
+			}
+			if (p instanceof Component) {
+				ctmt = con.prepareCall("{CALL insert_new_component(?,?,?,?,?,?,?,?,?,?,?,?}");
 
+				ctmt.setString(1, p.getBrand());
+				ctmt.setString(2, p.getModel());
+				ctmt.setString(3, p.getDescriptionP());
+				ctmt.setFloat(4, p.getPrice());
+				ctmt.setInt(5, p.getStock());
+				ctmt.setBoolean(6, true);
+				ctmt.setBoolean(7, p.isSaleActive());
+				ctmt.setInt(8, p.getSalePercentage());
+				ctmt.setString(9, p.getNameP());
+				ctmt.setString(10, p.getColor());
+				ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
+				ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
+			}
+			if (p instanceof Accessory) {
+				ctmt = con.prepareCall("{CALL insert_new_accessory(?,?,?,?,?,?,?,?,?,?,?,?}");
+
+				ctmt.setString(1, p.getBrand());
+				ctmt.setString(2, p.getModel());
+				ctmt.setString(3, p.getDescriptionP());
+				ctmt.setFloat(4, p.getPrice());
+				ctmt.setInt(5, p.getStock());
+				ctmt.setBoolean(6, true);
+				ctmt.setBoolean(7, p.isSaleActive());
+				ctmt.setInt(8, p.getSalePercentage());
+				ctmt.setString(9, p.getNameP());
+				ctmt.setString(10, p.getColor());
+				ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
+				ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
+			}
+		} else {
+			throw new ProductFoundException();
+		}
+	}
+
+	/**
+	 * Modifies the located product in the database with the new data
+	 * 
+	 * @param A product with the already modified attributes
+	 * @throws ProductNotFoundException The product we want to modify doesn't exist
+	 *                                  in the database
+	 * @throws SQLException
+	 * @author Jagoba Bartolomé Barroso
+	 */
+	public void modifyProduct(Product p) throws ProductNotFoundException, SQLException {
+		if (existsProduct(p.getIdProduct())) {
+			con = connection.openConnection();
+			ctmt = con.prepareCall(
+					"UPDATE product SET brand=?, model=?, description=?, unitPrice=?, stock=?, isActive=?, saleActive=?, salePercentage=?, name=?, color=?");
+			ctmt.setString(1, p.getBrand());
+			ctmt.setString(2, p.getModel());
+			ctmt.setString(3, p.getDescriptionP());
+			ctmt.setFloat(4, p.getPrice());
+			ctmt.setInt(5, p.getStock());
+			ctmt.setBoolean(6, true);
+			ctmt.setBoolean(7, p.isSaleActive());
+			ctmt.setInt(8, p.getSalePercentage());
+			ctmt.setString(9, p.getNameP());
+			ctmt.setString(10, p.getColor());
+
+			ctmt.executeUpdate();
+			if (p instanceof Instrument) {
+				ctmt = con.prepareCall("UPDATE instrument SET classInstrument=?, typeInstrument=?");
+				ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
+				ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
 				ctmt.executeUpdate();
-				if (p instanceof Instrument) {
-					ctmt = con.prepareCall("UPDATE instrument SET classInstrument=?, typeInstrument=?");
-					ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
-					ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
-					ctmt.executeUpdate();
-				}
-				if (p instanceof Component) {
-					ctmt = con.prepareCall("UPDATE component SET classComponent=?, typeComponent=?");
-					ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
-					ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
-					ctmt.executeUpdate();
-				}
-				if (p instanceof Accessory) {
-					ctmt = con.prepareCall("UPDATE accessory SET classAccessory=?, typeAccessory=?");
-					ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
-					ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
-					ctmt.executeUpdate();
-				}
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				connection.closeConnection();
+			}
+			if (p instanceof Component) {
+				ctmt = con.prepareCall("UPDATE component SET classComponent=?, typeComponent=?");
+				ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
+				ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
+				ctmt.executeUpdate();
+			}
+			if (p instanceof Accessory) {
+				ctmt = con.prepareCall("UPDATE accessory SET classAccessory=?, typeAccessory=?");
+				ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
+				ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
+				ctmt.executeUpdate();
 			}
 		} else {
 			throw new ProductNotFoundException();
 		}
-
 	}
 
 	/**
@@ -204,26 +182,19 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * 
 	 * @param int search is the id of the product we want to search
 	 * @return returns false if the product doesn't exist in the database
-	 * @author Jago
+	 * @throws SQLException
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
-	public boolean existsProduct(int search) {
+	public boolean existsProduct(int search) throws SQLException {
 		boolean existe = false;
+		con = connection.openConnection();
 
-		try {
-			con = connection.openConnection();
+		ctmt = con.prepareCall("{CALL check_product_exists(?, ?)}");
+		ctmt.setInt(1, search);
 
-			ctmt = con.prepareCall("{CALL check_product_exists(?, ?)}");
-			ctmt.setInt(1, search);
-
-			ctmt.executeQuery();
-			existe = ctmt.getObject(2, boolean.class);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			connection.closeConnection();
-		}
+		ctmt.executeQuery();
+		existe = ctmt.getObject(2, boolean.class);
 		return existe;
 	}
 
@@ -231,28 +202,20 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * This method sets the product to inactive so it won't show to the members
 	 * 
 	 * @param Product p is the one the manager wants to remove
-	 * @author Jago
+	 * @throws SQLException
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
-	public void removeProduct(Product p) throws ProductNotFoundException {
+	public void removeProduct(Product p) throws ProductNotFoundException, SQLException {
 		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
-			try {
-				con = connection.openConnection();
-				ctmt = con.prepareCall("UPDATE product SET isActive=?");
+			con = connection.openConnection();
+			ctmt = con.prepareCall("UPDATE product SET isActive=?");
 
-				ctmt.setBoolean(1, false);
-				ctmt.executeQuery();
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				connection.closeConnection();
-			}
+			ctmt.setBoolean(1, false);
+			ctmt.executeQuery();
 		} else {
 			throw new ProductNotFoundException();
 		}
-
 	}
 
 	/**
@@ -262,28 +225,21 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * @param Product p is the product in which we'll add a sale, int sale is how
 	 *                much it has the price reduced
 	 * @throws ProductNotFoundException
-	 * @author Jago
+	 * @throws SQLException
+	 * @author Jagoba Bartolomé Barroso
 	 */
-	public void setSale(Product p, int sale) throws ProductNotFoundException {
+	public void setSale(Product p, int sale) throws ProductNotFoundException, SQLException {
 		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
-			try {
-				con = connection.openConnection();
-				ctmt = con.prepareCall("UPDATE product SET saleActive=?, sale=?, unitPrice=?");
+			con = connection.openConnection();
+			ctmt = con.prepareCall("UPDATE product SET saleActive=?, sale=?, unitPrice=?");
 
-				ctmt.setBoolean(1, true);
-				ctmt.setInt(2, sale);
-				ctmt.setFloat(3, p.getPrice() * (sale / 100));
-				ctmt.executeQuery();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				connection.closeConnection();
-			}
+			ctmt.setBoolean(1, true);
+			ctmt.setInt(2, sale);
+			ctmt.setFloat(3, p.getPrice() * (sale / 100));
+			ctmt.executeQuery();
 		} else {
 			throw new ProductNotFoundException();
 		}
-
 	}
 
 	/**
@@ -291,22 +247,16 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * 
 	 * @param Product p is the product we want to
 	 * @throws ProductNotFoundException
+	 * @throws SQLException
+	 * @author Ander Goirigolzarri Iturburu
 	 */
-	public void removeSale(Product p) throws ProductNotFoundException {
+	public void removeSale(Product p) throws ProductNotFoundException, SQLException {
 		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
-			try {
-				con = connection.openConnection();
-				ctmt = con.prepareCall("UPDATE product SET saleActive=?");
+			con = connection.openConnection();
+			ctmt = con.prepareCall("UPDATE product SET saleActive=?");
 
-				ctmt.setBoolean(1, false);
-				ctmt.executeQuery();
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				connection.closeConnection();
-			}
+			ctmt.setBoolean(1, false);
+			ctmt.executeQuery();
 		} else {
 			throw new ProductNotFoundException();
 		}
@@ -317,34 +267,28 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * 
 	 * @param Manager m is the current logged-in manager with the attributes already
 	 *                changed
-	 * @author Jago
+	 * @throws SQLException
+	 * @author Jagoba Bartolomé Barroso
 	 */
-	public void modifyManager(Manager m) {
+	public void modifyManager(Manager m) throws SQLException {
 		con = connection.openConnection();
 
-		try {
-			ctmt = con.prepareCall("UPDATE user SET username=?, name=?, surname=?, mail=?");
-			ctmt.setString(1, m.getUserName());
-			ctmt.setString(2, m.getName());
-			ctmt.setString(3, m.getSurname());
-			ctmt.setString(4, m.getMail());
-			ctmt.executeQuery();
+		ctmt = con.prepareCall("UPDATE user SET username=?, name=?, surname=?, mail=?");
+		ctmt.setString(1, m.getUserName());
+		ctmt.setString(2, m.getName());
+		ctmt.setString(3, m.getSurname());
+		ctmt.setString(4, m.getMail());
+		ctmt.executeQuery();
 
-			ctmt = con.prepareCall(
-					"UPDATE manager SET idSupervisor=?, isSupervisor=?, isTechnician=?, isAdmin=?, statusManager=? ");
-			ctmt.setInt(1, m.getIdSupervisor());
-			ctmt.setBoolean(2, m.isSupervisor());
-			ctmt.setBoolean(3, m.isTechnician());
-			ctmt.setBoolean(4, m.isAdmin());
-			ctmt.setString(5, m.getStatusManager().getLabel());
+		ctmt = con.prepareCall(
+				"UPDATE manager SET idSupervisor=?, isSupervisor=?, isTechnician=?, isAdmin=?, statusManager=? ");
+		ctmt.setInt(1, m.getIdSupervisor());
+		ctmt.setBoolean(2, m.isSupervisor());
+		ctmt.setBoolean(3, m.isTechnician());
+		ctmt.setBoolean(4, m.isAdmin());
+		ctmt.setString(5, m.getStatusManager().getLabel());
 
-			ctmt.executeQuery();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			connection.closeConnection();
-		}
+		ctmt.executeQuery();
 	}
 
 	/**
@@ -359,6 +303,18 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 	}
 
+	/**
+	 * Retrieves the type of product based on the given product ID.
+	 *
+	 * @param idProduct The ID of the product.
+	 * @return A character representing the type of product:
+	 *         - 'I' for Instrument
+	 *         - 'C' for Component
+	 *         - 'A' for Accessory
+	 *         - 'U' for Unknown (product not found in any table)
+	 * @throws SQLException if a database access error occurs.
+	 * @author Ander Goirigolzarri Iturburu
+	 */
 	public char getTypeProduct(int idProduct) throws SQLException {
 		con = connection.openConnection();
 
@@ -391,6 +347,13 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		return 'U'; // 'U' represents Unknown (product not found in any table)
 	}
 
+	/**
+	 * Retrieves all products from the database.
+	 *
+	 * @return A set of Product objects representing all the products.
+	 * @throws SQLException if a database access error occurs.
+	 * @author Ander Goirigolzarri Iturburu
+	 */
 	@Override
 	public Set<Product> getAllProducts() throws SQLException {
 		con = connection.openConnection();
@@ -443,5 +406,144 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			}
 		}
 		return setProducts;
+	}
+	
+	/**
+	 * Method for the search of products filtered by name In the parameter list of
+	 * products, the method searches those that equal to the name
+	 * 
+	 * @return a list of products
+	 * @author Jagoba Bartolomé Barroso
+	 */
+	@Override
+	public Set<Product> searchProductByName(String name, Set<Product> listaProd) {
+		Set<Product> listaFiltr = new HashSet<Product>();
+		for (Product prod : listaProd) {
+			if (prod.getNameP().equals(name)) {
+				listaFiltr.add(prod);
+			}
+		}
+		return listaFiltr;
+	}
+	
+	/**
+	 * Method for the search of products filtered by brand In the parameter list of
+	 * products, the method searches those that equal to the name
+	 * 
+	 * @return a list of products
+	 * @author Jagoba Bartolomé Barroso
+	 */
+	@Override
+	public Set<Product> searchProductByBrand(String brand, Set<Product> listaProd) {
+		Set<Product> listaFiltr = new HashSet<Product>();
+		for (Product prod : listaProd) {
+			if (prod.getBrand().equals(brand)) {
+				listaFiltr.add(prod);
+			}
+		}
+		return listaFiltr;
+	}
+	
+	/**
+	 * Method for the search of products filtered by model In the parameter list of
+	 * products, the method searches those that equal to the name
+	 * 
+	 * @return a list of products
+	 * @author Jagoba Bartolomé Barroso
+	 */
+	@Override
+	public Set<Product> searchProductByModel(String model, Set<Product> listaProd) {
+		Set<Product> listaFiltr = new HashSet<Product>();
+		for (Product prod : listaProd) {
+			if (prod.getModel().equals(model)) {
+				listaFiltr.add(prod);
+			}
+		}
+		return listaFiltr;
+	}
+	
+	/**
+	 * The method searches in the list already provided by a previous search to
+	 * match the Type of Product selected. It iterates the list and checks the type
+	 * of object of the Products. Once it is inside it transforms the String type
+	 * value to an enum and if its equal type is the filter referring to the type of
+	 * product (Acoustic or Electric) listaProd is the list of products already
+	 * searched
+	 * 
+	 * @author Jagoba Bartolomé Barroso
+	 */
+	@Override
+	public Set<Product> searchProductByType(String type, Set<Product> listaProd) {
+		Set<Product> listaFiltr = new HashSet<Product>();
+
+		for (Product prod : listaProd) {
+			if (prod instanceof Instrument) {
+				EnumTypeInstrument enumType = EnumTypeInstrument.valueOf(type);
+				if (((Instrument) prod).getTypeInstrument().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			} else if (prod instanceof Component) {
+				EnumTypeComponent enumType = EnumTypeComponent.valueOf(type);
+				if (((Component) prod).getTypeComponent().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			} else if (prod instanceof Accessory) {
+				EnumTypeAccessory enumType = EnumTypeAccessory.valueOf(type);
+				if (((Accessory) prod).getTypeAccessory().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			}
+		}
+		return listaFiltr;
+	}
+	
+	/**
+	 * The method searches in the list already provided by a previous search to
+	 * match the Class of Product selected. It iterates the list and checks the
+	 * class of object of the Products. Once it is inside it transforms the String
+	 * class value to an enum and if its equal type is the filter referring to the
+	 * type of product (Acoustic or Electric) listaProd is the list of products
+	 * already searched
+	 * 
+	 * @author Jagoba Bartolomé Barroso
+	 */
+	@Override
+	public Set<Product> searchProductByClass(String classP, Set<Product> listaProd) {
+		Set<Product> listaFiltr = new HashSet<Product>();
+
+		for (Product prod : listaProd) {
+			if (prod instanceof Instrument) {
+				EnumClassInstrument enumType = EnumClassInstrument.valueOf(classP);
+				if (((Instrument) prod).getClassInstrument().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			} else if (prod instanceof Component) {
+				EnumClassComponent enumType = EnumClassComponent.valueOf(classP);
+				if (((Component) prod).getClassComponent().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			} else if (prod instanceof Accessory) {
+				EnumClassAccessory enumType = EnumClassAccessory.valueOf(classP);
+				if (((Accessory) prod).getClassAccessory().equals(enumType)) {
+					listaFiltr.add(prod);
+				}
+			}
+		}
+		return listaFiltr;
+	}
+	
+	/**
+	 * This method searches in a product list for products with any sale
+	 * @author Jagoba Bartolomé Barroso
+	 */
+	@Override
+	public Set<Product> searchProductInSale(Set<Product> listaProd) {
+		Set<Product> listaFiltr = new HashSet<Product>();
+		for (Product prod : listaProd) {
+			if (prod.isActive() && prod.isSaleActive()) {
+				listaFiltr.add(prod);
+			}
+		}
+		return listaFiltr;
 	}
 }

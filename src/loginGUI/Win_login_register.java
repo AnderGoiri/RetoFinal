@@ -55,7 +55,7 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		// JFrame and its components set up
 		setTitle("REGISTRATION & IDENTIFICATION");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1100, 600);
+		setBounds(100, 100, 1099, 584);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

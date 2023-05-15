@@ -95,7 +95,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * by the user, they are added to a list.
 	 * 
 	 * @return a list of components
-	 * @author Jago
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
 	public Set<Product> searchComponent(String search) {
@@ -219,7 +219,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * products, the method searches those that equal to the name
 	 * 
 	 * @return a list of products
-	 * @author Jago
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
 	public Set<Product> searchProductByName(String name, Set<Product> listaProd) {
@@ -230,7 +230,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				listaFiltr.add(prod);
 			}
 		}
-
 		return listaFiltr;
 	}
 
@@ -239,7 +238,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * products, the method searches those that equal to the name
 	 * 
 	 * @return a list of products
-	 * @author Jago
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
 	public Set<Product> searchProductByBrand(String brand, Set<Product> listaProd) {
@@ -282,7 +281,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * product (Acoustic or Electric) listaProd is the list of products already
 	 * searched
 	 * 
-	 * @author Jago
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
 	public Set<Product> searchProductByType(String type, Set<Product> listaProd) {
@@ -306,7 +305,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 			}
 		}
-
 		return listaFiltr;
 	}
 
@@ -318,7 +316,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * type of product (Acoustic or Electric) listaProd is the list of products
 	 * already searched
 	 * 
-	 * @author Jago
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
 	public Set<Product> searchProductByClass(String classP, Set<Product> listaProd) {
@@ -342,7 +340,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 			}
 		}
-
 		return listaFiltr;
 	}
 

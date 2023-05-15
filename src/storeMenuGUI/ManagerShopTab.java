@@ -39,154 +39,119 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 	private JTable productsTable;
 	private JLabel lblProductId;
 	private DefaultTableModel modelProduct;
+	private Set<Product> products;
 
 	/**
 	 * Create the panel.
 	 */
 	public ManagerShopTab() {
 		setLayout(null);
-		setBounds(0, 0, 1860, 910);
+		setBounds(0, 0, 984, 678);
 
 		// --- JLabel ---
 		lblProductId = new JLabel("Product ID");
 		lblProductId.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblProductId.setBounds(160, 50, 190, 50);
+		lblProductId.setBounds(10, 48, 190, 50);
 		add(lblProductId);
 
 		// --- TextField ---
 		textFieldProductId = new JTextField();
-		textFieldProductId.setBounds(360, 50, 1090, 50);
+		textFieldProductId.setBounds(210, 40, 562, 50);
 		add(textFieldProductId);
 		textFieldProductId.setColumns(10);
 
 		// --- JButton ---
 		btnSearch = new JButton("Search");
 		btnSearch.setFont(new Font("Onyx", Font.BOLD, 35));
-		btnSearch.setBounds(1460, 50, 270, 50);
+		btnSearch.setBounds(780, 40, 190, 50);
 		add(btnSearch);
 		btnSearch.addActionListener(this);
 		btnSearch.addKeyListener(this);
 
 		btnShow = new JButton("Show");
 		btnShow.setFont(new Font("Onyx", Font.BOLD, 35));
-		btnShow.setBounds(1460, 844, 270, 52);
+		btnShow.setBounds(780, 628, 190, 50);
 		add(btnShow);
 		btnShow.addActionListener(this);
 		btnShow.addKeyListener(this);
 
 		// --- JScrollPane ---
 		scrollPaneProductList = new JScrollPane();
-		scrollPaneProductList.setBounds(120, 125, 1640, 695);
+		scrollPaneProductList.setBounds(10, 108, 960, 510);
 		add(scrollPaneProductList);
 
 		// --- JTable ---
 		modelProduct = new DefaultTableModel(); // Establish the default table model
 		modelProduct.setColumnIdentifiers(new Object[] { "ID", "Name", "Price", "Description", "Stock", "Brand",
-				"Model", "Color", "Sale Active", "Sale Percentage", "Active", "Class", "Type" });
+				"Model", "Color", "Sale Active", "Sale %", "Active", "Class", "Type" });
 		productsTable = new JTable();
 		scrollPaneProductList.setViewportView(productsTable);
 		productsTable.setModel(modelProduct);
 		productsTable.setEnabled(false);
 
+		// --- Show all Products when the Tab is Created
+		showAllProducts();
+
+	}
+
+	private Set<Product> showAllProducts() {
+		// Create a ProductManagerControllable object
+		ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
+
+		// Receive the data from the logicTier
+		try {
+			products = proManager.getAllProducts();
+			modelProduct = (DefaultTableModel) productsTable.getModel();
+			modelProduct.setRowCount(0);
+
+			// Add the data to the JTable
+			for (Product product : products) {
+				Object[] rowData = null;
+				if (product instanceof Instrument) {
+					Instrument instrument = (Instrument) product;
+					rowData = new Object[] { instrument.getIdProduct(), instrument.getNameP(), instrument.getPrice(),
+							instrument.getDescriptionP(), instrument.getStock(), instrument.getBrand(),
+							instrument.getModel(), instrument.getColor(), instrument.isSaleActive() ? "Yes" : "No",
+							instrument.getSalePercentage(), instrument.isActive() ? "Yes" : "No",
+							instrument.getClassInstrument().getLabel(), instrument.getTypeInstrument().getLabel() };
+
+				} else if (product instanceof Component) {
+					Component component = (Component) product;
+					rowData = new Object[] { component.getIdProduct(), component.getNameP(), component.getPrice(),
+							component.getDescriptionP(), component.getStock(), component.getBrand(),
+							component.getModel(), component.getColor(), component.isSaleActive() ? "Yes" : "No",
+							component.getSalePercentage(), component.isActive() ? "Yes" : "No",
+							component.getClassComponent().getLabel(), component.getTypeComponent().getLabel() };
+
+				} else if (product instanceof Accessory) {
+					Accessory accessory = (Accessory) product;
+					rowData = new Object[] { accessory.getIdProduct(), accessory.getNameP(), accessory.getPrice(),
+							accessory.getDescriptionP(), accessory.getStock(), accessory.getBrand(),
+							accessory.getModel(), accessory.getColor(), accessory.isSaleActive() ? "Yes" : "No",
+							accessory.getSalePercentage(), accessory.isActive() ? "Yes" : "No",
+							accessory.getClassAccessory().getLabel(), accessory.getTypeAccessory().getLabel() };
+				}
+				modelProduct.addRow(rowData);
+			}
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(this, e1.getMessage());
+		}
+
+		// Set the table model to the JTable
+		productsTable.setModel(modelProduct);
+		productsTable.setEnabled(true);
+		return products;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnSearch) && textFieldProductId.getText().isBlank()) {
-			// Create a ProductManagerControllable object
-			ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
+			showAllProducts();
+		} else if (e.getSource().equals(btnSearch)) {
+			
+			
+		} else if (e.getSource().equals(btnShow)) {
 
-			// Receive the data from the logicTier
-			try {
-				Set<Product> products = proManager.getAllProducts();
-				modelProduct = (DefaultTableModel) productsTable.getModel();
-				modelProduct.setRowCount(0);
-
-				// Add the data to the JTable
-				for (Product product : products) {
-					Object[] rowData = null;
-					if (product instanceof Instrument) {
-						Instrument instrument = (Instrument) product;
-						rowData = new Object[] { instrument.getIdProduct(), instrument.getNameP(),
-								instrument.getPrice(), instrument.getDescriptionP(), instrument.getStock(),
-								instrument.getBrand(), instrument.getModel(), instrument.getColor(),
-								instrument.isSaleActive() ? "Yes" : "No", instrument.getSalePercentage(),
-								instrument.isActive() ? "Yes" : "No", instrument.getClassInstrument().getLabel(),
-								instrument.getTypeInstrument().getLabel() };
-
-					} else if (product instanceof Component) {
-						Component component = (Component) product;
-						rowData = new Object[] { component.getIdProduct(), component.getNameP(), component.getPrice(),
-								component.getDescriptionP(), component.getStock(), component.getBrand(),
-								component.getModel(), component.getColor(), component.isSaleActive() ? "Yes" : "No",
-								component.getSalePercentage(), component.isActive() ? "Yes" : "No",
-								component.getClassComponent().getLabel(), component.getTypeComponent().getLabel() };
-
-					} else if (product instanceof Accessory) {
-						Accessory accessory = (Accessory) product;
-						rowData = new Object[] { accessory.getIdProduct(), accessory.getNameP(), accessory.getPrice(),
-								accessory.getDescriptionP(), accessory.getStock(), accessory.getBrand(),
-								accessory.getModel(), accessory.getColor(), accessory.isSaleActive() ? "Yes" : "No",
-								accessory.getSalePercentage(), accessory.isActive() ? "Yes" : "No",
-								accessory.getClassAccessory().getLabel(), accessory.getTypeAccessory().getLabel() };
-					}
-					modelProduct.addRow(rowData);
-				}
-			} catch (SQLException e1) {
-				JOptionPane.showMessageDialog(this, e1.getMessage());
-			}
-
-			// Set the table model to the JTable
-			productsTable.setModel(modelProduct);
-			productsTable.setEnabled(true);
-		}
-		if (e.getSource().equals(btnShow)) {
-			// Create a ProductManagerControllable object
-			ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
-
-			// Receive the data from the logicTier
-			try {
-				Set<Product> products = proManager.getAllProducts();
-				modelProduct = (DefaultTableModel) productsTable.getModel();
-				modelProduct.setRowCount(0);
-
-				// Add the data to the JTable
-				for (Product product : products) {
-					Object[] rowData = null;
-					if (product instanceof Instrument) {
-						Instrument instrument = (Instrument) product;
-						rowData = new Object[] { instrument.getIdProduct(), instrument.getNameP(),
-								instrument.getPrice(), instrument.getDescriptionP(), instrument.getStock(),
-								instrument.getBrand(), instrument.getModel(), instrument.getColor(),
-								instrument.isSaleActive() ? "Yes" : "No", instrument.getSalePercentage(),
-								instrument.isActive() ? "Yes" : "No", instrument.getClassInstrument(),
-								instrument.getTypeInstrument() };
-
-					} else if (product instanceof Component) {
-						Component component = (Component) product;
-						rowData = new Object[] { component.getIdProduct(), component.getNameP(), component.getPrice(),
-								component.getDescriptionP(), component.getStock(), component.getBrand(),
-								component.getModel(), component.getColor(), component.isSaleActive() ? "Yes" : "No",
-								component.getSalePercentage(), component.isActive() ? "Yes" : "No",
-								component.getClassComponent(), component.getTypeComponent() };
-
-					} else if (product instanceof Accessory) {
-						Accessory accessory = (Accessory) product;
-						rowData = new Object[] { accessory.getIdProduct(), accessory.getNameP(), accessory.getPrice(),
-								accessory.getDescriptionP(), accessory.getStock(), accessory.getBrand(),
-								accessory.getModel(), accessory.getColor(), accessory.isSaleActive() ? "Yes" : "No",
-								accessory.getSalePercentage(), accessory.isActive() ? "Yes" : "No",
-								accessory.getClassAccessory(), accessory.getTypeAccessory() };
-					}
-					modelProduct.addRow(rowData);
-				}
-			} catch (SQLException e1) {
-				JOptionPane.showMessageDialog(this, e1.getMessage());
-			}
-
-			// Set the table model to the JTable
-			productsTable.setModel(modelProduct);
-			productsTable.setEnabled(true);
 		}
 
 	}
