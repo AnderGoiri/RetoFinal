@@ -35,7 +35,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	private PreparedStatement stmt;
 	private CallableStatement ctmt;
 	private GateDB connection = new GateDB();
-	
+	private ResultSet rs;
 	// Attributes
 	private Product prod;
 	private Purchase purch;
@@ -52,7 +52,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	@Override
 	public Set<Product> searchInstrument(String search) {
-		ResultSet rs = null;
 		Set<Product> listaProductos = new HashSet<Product>();
 
 		try {
@@ -64,7 +63,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
 					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search)) {
+							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
 						prod = new Instrument();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -95,12 +94,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	
 			e.printStackTrace();
 		} finally {
-			try {
-				connection.closeConnection(ctmt, con, rs);
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
+			//connection.closeConnection(ctmt, con, rs);
+			
 		}
 		return listaProductos;
 	}
@@ -116,7 +111,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	@Override
 	public Set<Product> searchComponent(String search) {
-		ResultSet rs = null;
 		Set<Product> listaProductos = new HashSet<Product>();
 
 		try {
@@ -128,7 +122,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
 					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search)) {
+							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
 						prod = new Component();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -156,15 +150,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 			}
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		} finally {
-			try {
-				connection.closeConnection(ctmt, con, rs);
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
+			//connection.closeConnection(rs, ctmt, con);
+			
 		}
 		return listaProductos;
 	}
@@ -180,7 +169,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	@Override
 	public Set<Product> searchAccessory(String search) throws ProductNotFoundException {
-		ResultSet rs = null;
 		Set<Product> listaProductos = new HashSet<Product>();
 
 		try {
@@ -192,7 +180,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
 					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search)) {
+							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
 						prod = new Accessory();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -219,16 +207,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					}
 				}
 			}
-		} catch (SQLException e) {
-			
+		} catch (SQLException e) {		
 			e.printStackTrace();
 		} finally {
-			try {
-				connection.closeConnection(ctmt, con, rs);
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
+			//connection.closeConnection(ctmt, con, rs);
 		}
 		return listaProductos;
 	}
@@ -638,7 +620,12 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.closeConnection();
+			try {
+				connection.closeConnection(ctmt, con);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -648,7 +635,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @throws PurchaseNotFoundException 
 	 */
 	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException {
-		ResultSet rs = null;
 		Set<Purchase> listaPurchase = new HashSet<Purchase>();
 		con = connection.openConnection();
 		
@@ -691,6 +677,111 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		
 			return listaPurchase;
 		
+	}
+	
+	/**
+	 * Retrieves the type of product based on the given product ID.
+	 *
+	 * @param idProduct The ID of the product.
+	 * @return A character representing the type of product:
+	 *         - 'I' for Instrument
+	 *         - 'C' for Component
+	 *         - 'A' for Accessory
+	 *         - 'U' for Unknown (product not found in any table)
+	 * @throws SQLException if a database access error occurs.
+	 * @author Ander Goirigolzarri Iturburu
+	 */
+	public char getTypeProduct(int idProduct) throws SQLException {
+		con = connection.openConnection();
+
+		// Check if the idProduct exists in the instrument table
+		String queryInstrument = "SELECT idProduct FROM instrument WHERE idProduct = ?";
+		PreparedStatement stmtInstrument = con.prepareStatement(queryInstrument);
+		stmtInstrument.setInt(1, idProduct);
+		ResultSet rsInstrument = stmtInstrument.executeQuery();
+		if (rsInstrument.next()) {
+			return 'I'; // 'I' represents Instrument
+		}
+
+		// Check if the idProduct exists in the component table
+		String queryComponent = "SELECT idProduct FROM component WHERE idProduct = ?";
+		PreparedStatement stmtComponent = con.prepareStatement(queryComponent);
+		stmtComponent.setInt(1, idProduct);
+		ResultSet rsComponent = stmtComponent.executeQuery();
+		if (rsComponent.next()) {
+			return 'C'; // 'C' represents Component
+		}
+
+		// Check if the idProduct exists in the accessory table
+		String queryAccessory = "SELECT idProduct FROM accessory WHERE idProduct = ?";
+		PreparedStatement stmtAccessory = con.prepareStatement(queryAccessory);
+		stmtAccessory.setInt(1, idProduct);
+		ResultSet rsAccessory = stmtAccessory.executeQuery();
+		if (rsAccessory.next()) {
+			return 'A'; // 'A' represents Accessory
+		}
+		return 'U'; // 'U' represents Unknown (product not found in any table)
+	}
+
+	/**
+	 * Retrieves all products from the database.
+	 *
+	 * @return A set of Product objects representing all the products.
+	 * @throws SQLException if a database access error occurs.
+	 * @author Ander Goirigolzarri Iturburu
+	 */
+	@Override
+	public Set<Product> getAllProducts() throws SQLException {
+		con = connection.openConnection();
+		ctmt = con.prepareCall("{CALL select_all_products}");
+		rs = ctmt.executeQuery();
+
+		Set<Product> setProducts = new HashSet<Product>();
+
+		while (rs.next()) {
+			int idProduct = rs.getInt("idProduct");
+			String name = rs.getString("name");
+			float unitPrice = rs.getInt("unitPrice");
+			String description = rs.getString("description");
+			int stock = rs.getInt("stock");
+			String brand = rs.getString("brand");
+			String model = rs.getString("model");
+			String color = rs.getString("color");
+			boolean saleActive = rs.getBoolean("saleActive");
+			int salePercentage = rs.getInt("salePercentage");
+			boolean isActive = rs.getBoolean("isActive");
+
+			if (getTypeProduct(idProduct) == 'I') { // check if the value exists in the instrument table
+				EnumClassInstrument classInstrument = EnumClassInstrument.getValue(rs.getString(12));
+				EnumTypeInstrument typeInstrument = EnumTypeInstrument.getValue(rs.getString(13));
+
+				Instrument instrument = new Instrument(idProduct, name, unitPrice, description, stock, brand, model,
+						color, saleActive, salePercentage, isActive, classInstrument, typeInstrument);
+
+				setProducts.add(instrument);
+
+			} else if (getTypeProduct(idProduct) == 'C') { // check if the value exists in the component table
+				EnumClassComponent classComponent = EnumClassComponent.getValue(rs.getString(12));
+
+				EnumTypeComponent typeComponent = EnumTypeComponent.getValue(rs.getString(13));
+
+				Component component = new Component(idProduct, name, unitPrice, description, stock, brand, model, color,
+						saleActive, salePercentage, isActive, classComponent, typeComponent);
+
+				setProducts.add(component);
+
+			} else if (getTypeProduct(idProduct) == 'A') { // check if the value exists in the accessory table
+				EnumClassAccessory classAccessory = EnumClassAccessory.getValue(rs.getString(12));
+
+				EnumTypeAccessory typeAccessory = EnumTypeAccessory.getValue(rs.getString(13));
+
+				Accessory accessory = new Accessory(idProduct, name, unitPrice, description, stock, brand, model, color,
+						saleActive, salePercentage, isActive, classAccessory, typeAccessory);
+
+				setProducts.add(accessory);
+			}
+		}
+		return setProducts;
 	}
 
 }

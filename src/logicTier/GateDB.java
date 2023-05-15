@@ -100,6 +100,15 @@ public class GateDB {
 		if (conn != null)
 			conn.close();
 	}
+	
+	public void closeConnection(ResultSet rset, Statement stmt, Connection conn) throws SQLException {
+		if (rset != null)
+			rset.close();
+		if (stmt != null)
+			stmt.close();
+		if (conn != null)
+			conn.close();
+	}
 
 	public void closeConnection(Statement stmt, Connection conn) throws SQLException {
 		if (stmt != null)

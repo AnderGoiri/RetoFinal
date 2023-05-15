@@ -1,5 +1,6 @@
 package logicTier;
 
+import java.sql.SQLException;
 import java.util.Set;
 
 import exceptions.BrandNotFoundException;
@@ -43,5 +44,9 @@ public interface ProductMemberControllable {
 	public Purchase removePurchase(Purchase pset) throws PurchaseNotFoundException;
 
 	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException;
+	
+	public char getTypeProduct(int idProduct) throws SQLException;
+
+	public Set<Product> getAllProducts() throws SQLException;
 
 }

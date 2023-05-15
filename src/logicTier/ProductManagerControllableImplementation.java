@@ -33,119 +33,9 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	private CallableStatement ctmt;
 	private PreparedStatement stmt;
 	private GateDB connection = new GateDB();
-	
+	private ResultSet rset;
 	//Attributes
 	Product prod;
-	
-	public Set<Product> getListProduct(){
-		ResultSet rs = null;
-		Set<Product> listaProductos = new HashSet<Product>();
-
-		try {
-			con = connection.openConnection();
-
-			ctmt = con.prepareCall("{CALL select_instrument()}");
-			rs = ctmt.executeQuery();
-
-			while (rs.next()) {
-						prod = new Instrument();
-						prod.setNameP(rs.getString("name"));
-						prod.setPrice(rs.getFloat("unitPrice"));
-						prod.setDescriptionP(rs.getString("description"));
-						prod.setStock(rs.getInt("stock"));
-						prod.setBrand(rs.getString("brand"));
-						prod.setModel(rs.getString("model"));
-						prod.setColor(rs.getString("color"));
-						prod.setActive(rs.getBoolean("isActive"));
-						prod.setSaleActive(rs.getBoolean("saleActive"));
-						prod.setSalePercentage(rs.getInt("salePercentage"));
-						System.out.println(prod.toString());
-						/**
-						 * Transformation of enum to String as JDBC doesn't support enums
-						 */
-						EnumClassInstrument enumClassInstr = EnumClassInstrument
-								.valueOf(rs.getString("classInstrument"));
-						((Instrument) prod).setClassInstrument(enumClassInstr);
-
-						EnumTypeInstrument enumTypeInstr = EnumTypeInstrument.valueOf(rs.getString("typeInstrument"));
-						((Instrument) prod).setTypeInstrument(enumTypeInstr);
-
-						listaProductos.add(prod);
-			}
-			rs.close();
-
-			ctmt = con.prepareCall("{CALL select_component()}");
-			rs = ctmt.executeQuery();
-
-			while (rs.next()) {
-				
-						prod = new Component();
-						prod.setNameP(rs.getString("name"));
-						prod.setPrice(rs.getFloat("unitPrice"));
-						prod.setDescriptionP(rs.getString("description"));
-						prod.setStock(rs.getInt("stock"));
-						prod.setBrand(rs.getString("brand"));
-						prod.setModel(rs.getString("model"));
-						prod.setColor(rs.getString("color"));
-						prod.setActive(rs.getBoolean("isActive"));
-						prod.setSaleActive(rs.getBoolean("saleActive"));
-						prod.setSalePercentage(rs.getInt("salePercentage"));
-
-						/**
-						 * Transformation of enum to String as JDBC doesn't support enums
-						 */
-						EnumClassComponent enumClassComp = EnumClassComponent.valueOf(rs.getString("classComponent"));
-						((Component) prod).setClassComponent(enumClassComp);
-
-						EnumTypeComponent enumTypeComp = EnumTypeComponent.valueOf(rs.getString("typeComponent"));
-						((Component) prod).setTypeComponent(enumTypeComp);
-
-						listaProductos.add(prod);
-			}
-			rs.close();
-			
-			ctmt = con.prepareCall("{CALL select_accessory()}");
-			rs = ctmt.executeQuery();
-
-			while (rs.next()) {
-						prod = new Accessory();
-						prod.setNameP(rs.getString("name"));
-						prod.setPrice(rs.getFloat("unitPrice"));
-						prod.setDescriptionP(rs.getString("description"));
-						prod.setStock(rs.getInt("stock"));
-						prod.setBrand(rs.getString("brand"));
-						prod.setModel(rs.getString("model"));
-						prod.setColor(rs.getString("color"));
-						prod.setActive(rs.getBoolean("isActive"));
-						prod.setSaleActive(rs.getBoolean("saleActive"));
-						prod.setSalePercentage(rs.getInt("salePercentage"));
-
-						/**
-						 * Transformation of enum to String as JDBC doesn't support enums
-						 */
-						EnumClassAccessory enumClassAcc = EnumClassAccessory.valueOf(rs.getString("classAccessory"));
-						((Accessory) prod).setClassAccessory(enumClassAcc);
-
-						EnumTypeAccessory enumTypeAcc = EnumTypeAccessory.valueOf(rs.getString("typeAccessory"));
-						((Accessory) prod).setTypeAccessory(enumTypeAcc);
-
-						listaProductos.add(prod);
-
-			}
-				
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.closeConnection(ctmt, con, rs);
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		return listaProductos;
-		
-	}
 	
 	/**
 	 * Method for the search of products filtered by id
@@ -476,5 +366,110 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return listaManagers;
 		
+	}
+	
+	/**
+	 * Retrieves the type of product based on the given product ID.
+	 *
+	 * @param idProduct The ID of the product.
+	 * @return A character representing the type of product:
+	 *         - 'I' for Instrument
+	 *         - 'C' for Component
+	 *         - 'A' for Accessory
+	 *         - 'U' for Unknown (product not found in any table)
+	 * @throws SQLException if a database access error occurs.
+	 * @author Ander Goirigolzarri Iturburu
+	 */
+	public char getTypeProduct(int idProduct) throws SQLException {
+		con = connection.openConnection();
+
+		// Check if the idProduct exists in the instrument table
+		String queryInstrument = "SELECT idProduct FROM instrument WHERE idProduct = ?";
+		PreparedStatement stmtInstrument = con.prepareStatement(queryInstrument);
+		stmtInstrument.setInt(1, idProduct);
+		ResultSet rsInstrument = stmtInstrument.executeQuery();
+		if (rsInstrument.next()) {
+			return 'I'; // 'I' represents Instrument
+		}
+
+		// Check if the idProduct exists in the component table
+		String queryComponent = "SELECT idProduct FROM component WHERE idProduct = ?";
+		PreparedStatement stmtComponent = con.prepareStatement(queryComponent);
+		stmtComponent.setInt(1, idProduct);
+		ResultSet rsComponent = stmtComponent.executeQuery();
+		if (rsComponent.next()) {
+			return 'C'; // 'C' represents Component
+		}
+
+		// Check if the idProduct exists in the accessory table
+		String queryAccessory = "SELECT idProduct FROM accessory WHERE idProduct = ?";
+		PreparedStatement stmtAccessory = con.prepareStatement(queryAccessory);
+		stmtAccessory.setInt(1, idProduct);
+		ResultSet rsAccessory = stmtAccessory.executeQuery();
+		if (rsAccessory.next()) {
+			return 'A'; // 'A' represents Accessory
+		}
+		return 'U'; // 'U' represents Unknown (product not found in any table)
+	}
+
+	/**
+	 * Retrieves all products from the database.
+	 *
+	 * @return A set of Product objects representing all the products.
+	 * @throws SQLException if a database access error occurs.
+	 * @author Ander Goirigolzarri Iturburu
+	 */
+	@Override
+	public Set<Product> getAllProducts() throws SQLException {
+		con = connection.openConnection();
+		ctmt = con.prepareCall("{CALL select_all_products}");
+		rset = ctmt.executeQuery();
+
+		Set<Product> setProducts = new HashSet<Product>();
+
+		while (rset.next()) {
+			int idProduct = rset.getInt("idProduct");
+			String name = rset.getString("name");
+			float unitPrice = rset.getInt("unitPrice");
+			String description = rset.getString("description");
+			int stock = rset.getInt("stock");
+			String brand = rset.getString("brand");
+			String model = rset.getString("model");
+			String color = rset.getString("color");
+			boolean saleActive = rset.getBoolean("saleActive");
+			int salePercentage = rset.getInt("salePercentage");
+			boolean isActive = rset.getBoolean("isActive");
+
+			if (getTypeProduct(idProduct) == 'I') { // check if the value exists in the instrument table
+				EnumClassInstrument classInstrument = EnumClassInstrument.getValue(rset.getString(12));
+				EnumTypeInstrument typeInstrument = EnumTypeInstrument.getValue(rset.getString(13));
+
+				Instrument instrument = new Instrument(idProduct, name, unitPrice, description, stock, brand, model,
+						color, saleActive, salePercentage, isActive, classInstrument, typeInstrument);
+
+				setProducts.add(instrument);
+
+			} else if (getTypeProduct(idProduct) == 'C') { // check if the value exists in the component table
+				EnumClassComponent classComponent = EnumClassComponent.getValue(rset.getString(12));
+
+				EnumTypeComponent typeComponent = EnumTypeComponent.getValue(rset.getString(13));
+
+				Component component = new Component(idProduct, name, unitPrice, description, stock, brand, model, color,
+						saleActive, salePercentage, isActive, classComponent, typeComponent);
+
+				setProducts.add(component);
+
+			} else if (getTypeProduct(idProduct) == 'A') { // check if the value exists in the accessory table
+				EnumClassAccessory classAccessory = EnumClassAccessory.getValue(rset.getString(12));
+
+				EnumTypeAccessory typeAccessory = EnumTypeAccessory.getValue(rset.getString(13));
+
+				Accessory accessory = new Accessory(idProduct, name, unitPrice, description, stock, brand, model, color,
+						saleActive, salePercentage, isActive, classAccessory, typeAccessory);
+
+				setProducts.add(accessory);
+			}
+		}
+		return setProducts;
 	}
 }
