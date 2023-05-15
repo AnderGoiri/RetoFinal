@@ -15,6 +15,7 @@ public class ManagerMainMenu extends JPanel {
 	private ManagerInsertProductTab mngInsert;
 	private ManagerTechnicianRepairTab mngTechRepair;
 	private ManagerSuperiorRepairTab mngSupRepair;
+	private ManagerAccountTab mngAccount;
 	
 	/**
 	 * Create the panel.
@@ -41,6 +42,9 @@ public class ManagerMainMenu extends JPanel {
 		
 		mngSupRepair=new ManagerSuperiorRepairTab();
 		tabbedPane.addTab("Repair Sup", mngSupRepair);
+		
+		mngAccount=new ManagerAccountTab(auxUser);
+		tabbedPane.addTab("Account", mngAccount);
 		
 		comprobarManager(auxUser);
 		

@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+import model.Manager;
+
 public class ManagerAccountTab extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
@@ -20,20 +22,20 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 	private JTextField textSurname;
 	private JTextField textEmail;
 	private JTextField textName;
-	private JTextField textAddress;
 	private JButton btnEditProfile;
 	private JButton btnConfirm;
 	private JButton btnCancel;
 	
 	/**
 	 * @author Francisco Rafael de Ysasi González
+	 * @param auxUser 
 	 */
-	public ManagerAccountTab() {
+	public ManagerAccountTab(Manager auxUser) {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		
 		
-		// --- JLabels ---
+		// --- JLabels --- //
 		
 			JLabel lblSurmane = new JLabel("Surname:");
 			lblSurmane.setFont(new Font("Constantia", Font.PLAIN, 35));
@@ -52,13 +54,8 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 	
 			JLabel lblEmail = new JLabel("Email:");
 			lblEmail.setFont(new Font("Constantia", Font.PLAIN, 35));
-			lblEmail.setBounds(268, 245, 143, 52);
+			lblEmail.setBounds(913, 165, 148, 41);
 			add(lblEmail);
-	
-			JLabel lblAddress = new JLabel("Address:");
-			lblAddress.setFont(new Font("Constantia", Font.PLAIN, 35));
-			lblAddress.setBounds(913, 165, 148, 41);
-			add(lblAddress);
 			
 			JLabel lblPurchase = new JLabel("Repairs");
 			lblPurchase.setFont(new Font("Elephant", Font.BOLD, 35));
@@ -71,10 +68,8 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			add(lblNewFotoPerfil);
 			lblNewFotoPerfil.setOpaque(false);
 			
-			
 		
-		
-		// --- JSeparator ---
+		// --- JSeparator --- //
 			
 			JSeparator separator = new JSeparator();
 			separator.setForeground(new Color(255, 255, 255));
@@ -82,7 +77,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			add(separator);
 			
 			
-		// --- JTextField ---
+		// --- JTextField --- //
 			
 			textaUsername = new JTextField();
 			textaUsername.setBounds(442, 72, 457, 50);
@@ -100,7 +95,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 
 			textEmail = new JTextField();
 			textEmail.setColumns(10);
-			textEmail.setBounds(442, 243, 457, 50);
+			textEmail.setBounds(1055, 157, 457, 50);
 			textEmail.setEditable(false);
 			textEmail.setEnabled(false);
 			add(textEmail);
@@ -111,17 +106,10 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			textName.setEditable(false);
 			textName.setEnabled(false);
 			add(textName);
-
-			textAddress = new JTextField();
-			textAddress.setColumns(10);
-			textAddress.setBounds(1055, 157, 457, 50);
-			textAddress.setEditable(false);
-			textAddress.setEnabled(false);
-			add(textAddress);
 			
 			
 			
-		// --- JButton ---
+		// --- JButton --- //
 			
 			btnEditProfile = new JButton("Edit Profile");
 			btnEditProfile.setBackground(new Color(0, 151, 178));
@@ -152,18 +140,30 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			add(btnCancel);
 			
 			
-		// --- JCalendar ---
+		// --- JCalendar --- //
 			
 			
 			
 			
-		// -- JLabel background ---
+		// --- JLabel background --- //
 			JLabel lblFondo = new JLabel("");
 			lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
 			lblFondo.setBounds(0, 0, 1860, 910);
 			add(lblFondo);
+		
+		// --- Method that insert the data of the manager inside the JTextFields --- //
+			getManagerData(auxUser);
 	}
 	
+	private void getManagerData(Manager auxUser) {
+				
+		textaUsername.setText(auxUser.getUserName());
+		textSurname.setText(auxUser.getSurname());
+		textEmail.setText(auxUser.getMail());
+		textName.setText(auxUser.getName());
+				
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -176,8 +176,6 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			textEmail.setEnabled(true);
 			textName.setEditable(true);
 			textName.setEnabled(true);
-			textAddress.setEditable(true);
-			textAddress.setEnabled(true);
 			btnConfirm.setEnabled(true);
 			btnConfirm.setVisible(true);
 			btnCancel.setEnabled(true);
@@ -192,13 +190,18 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			textEmail.setEnabled(false);
 			textName.setEditable(false);
 			textName.setEnabled(false);
-			textAddress.setEditable(false);
-			textAddress.setEnabled(false);
 			btnConfirm.setEnabled(false);
 			btnConfirm.setVisible(false);
 			btnCancel.setEnabled(false);
 			btnCancel.setVisible(false);
-
+			
+			//call the factory
+			
+			
+			//make the controllable method that modifies the data of the user
+			
+			
+			//pop a message that shows the user that the modification has been completed
 			JOptionPane.showMessageDialog(null, "Your profile has been edited successfully");
 
 		} else if (e.getSource().equals(btnCancel)) {
@@ -210,8 +213,6 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			textEmail.setEnabled(false);
 			textName.setEditable(false);
 			textName.setEnabled(false);
-			textAddress.setEditable(false);
-			textAddress.setEnabled(false);
 			btnConfirm.setEnabled(false);
 			btnConfirm.setVisible(false);
 			btnCancel.setEnabled(false);
@@ -220,6 +221,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Edition has been canceled","Modification Canceled",JOptionPane.ERROR_MESSAGE);
 
 		}
+	
 	}
 
 }
