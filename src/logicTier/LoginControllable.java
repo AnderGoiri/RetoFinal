@@ -61,8 +61,10 @@ public interface LoginControllable {
 	 *                                    found on the database and it should be.
 	 * 
 	 * @author Ander Goirigolzarri Iturburu
+	 * @return 
+	 * @throws SQLException 
 	 */
-	public void userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException;
+	public User userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException, SQLException;
 
 	/**
 	 * 
@@ -76,5 +78,9 @@ public interface LoginControllable {
 	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException;
 
 	public void deleteUserMember(Member me) throws UserNotFoundException;
+	
+	public Member createMember(int idUser) throws SQLException, WrongCredentialsException;
+	
+	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException;
 
 }

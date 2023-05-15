@@ -16,7 +16,7 @@ package model;
  * </p>
  * 
  * @author Ander Goirigolzarri Iturburu
- *   
+ * 
  */
 public enum EnumStatusManager {
 	P("Pending"), A("Approved"), R("Rejected");
@@ -40,4 +40,18 @@ public enum EnumStatusManager {
 	public String getLabel() {
 		return label;
 	}
+
+	public static EnumStatusManager getValue(String label) {
+		EnumStatusManager enumValue = null;
+
+		if (label == "Pending") {
+			enumValue = EnumStatusManager.P;
+		}else if (label == "Approved") {
+			enumValue = EnumStatusManager.A;
+		}else if (label == "Rejected") {
+			enumValue = EnumStatusManager.R;
+		}
+		return enumValue;
+	}
+
 }

@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Set;
-
 /**
  * Derived class Instrument from Product
  * 
