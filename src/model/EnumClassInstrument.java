@@ -27,5 +27,17 @@ public enum EnumClassInstrument {
 	public String getLabel() {
 		return label;
 	}
+	public static EnumClassInstrument getValue(String label) {
+		EnumClassInstrument enumValue = null;
+
+		if (label.equalsIgnoreCase("Wind")) {
+			enumValue = EnumClassInstrument.WIND;
+		} else if (label.equalsIgnoreCase("String")) {
+			enumValue = EnumClassInstrument.STRING;
+		} else if (label.equalsIgnoreCase("Percussion")) {
+			enumValue = EnumClassInstrument.PERCUSSION;
+		}
+		return enumValue;
+	}
 
 }

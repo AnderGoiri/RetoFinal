@@ -66,7 +66,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
 							|| rs.getString("model").equals(search)) {
 						prod = new Instrument();
-
+						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
 						prod.setPrice(rs.getFloat("unitPrice"));
 						prod.setDescriptionP(rs.getString("description"));
@@ -81,10 +81,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 						 * Transformation of enum to String as JDBC doesn't support enums
 						 */
 						EnumClassInstrument enumClassInstr = EnumClassInstrument
-								.valueOf(rs.getString("classInstrument"));
+								.getValue(rs.getString("classInstrument"));
 						((Instrument) prod).setClassInstrument(enumClassInstr);
 
-						EnumTypeInstrument enumTypeInstr = EnumTypeInstrument.valueOf(rs.getString("typeInstrument"));
+						EnumTypeInstrument enumTypeInstr = EnumTypeInstrument.getValue(rs.getString("typeInstrument"));
 						((Instrument) prod).setTypeInstrument(enumTypeInstr);
 
 						listaProductos.add(prod);
@@ -130,6 +130,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
 							|| rs.getString("model").equals(search)) {
 						prod = new Component();
+						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
 						prod.setPrice(rs.getFloat("unitPrice"));
 						prod.setDescriptionP(rs.getString("description"));
@@ -144,10 +145,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 						/**
 						 * Transformation of enum to String as JDBC doesn't support enums
 						 */
-						EnumClassComponent enumClassComp = EnumClassComponent.valueOf(rs.getString("classComponent"));
+						EnumClassComponent enumClassComp = EnumClassComponent.getValue(rs.getString("classComponent"));
 						((Component) prod).setClassComponent(enumClassComp);
 
-						EnumTypeComponent enumTypeComp = EnumTypeComponent.valueOf(rs.getString("typeComponent"));
+						EnumTypeComponent enumTypeComp = EnumTypeComponent.getValue(rs.getString("typeComponent"));
 						((Component) prod).setTypeComponent(enumTypeComp);
 
 						listaProductos.add(prod);
@@ -193,6 +194,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
 							|| rs.getString("model").equals(search)) {
 						prod = new Accessory();
+						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
 						prod.setPrice(rs.getFloat("unitPrice"));
 						prod.setDescriptionP(rs.getString("description"));
@@ -207,10 +209,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 						/**
 						 * Transformation of enum to String as JDBC doesn't support enums
 						 */
-						EnumClassAccessory enumClassAcc = EnumClassAccessory.valueOf(rs.getString("classAccessory"));
+						EnumClassAccessory enumClassAcc = EnumClassAccessory.getValue(rs.getString("classAccessory"));
 						((Accessory) prod).setClassAccessory(enumClassAcc);
 
-						EnumTypeAccessory enumTypeAcc = EnumTypeAccessory.valueOf(rs.getString("typeAccessory"));
+						EnumTypeAccessory enumTypeAcc = EnumTypeAccessory.getValue(rs.getString("typeAccessory"));
 						((Accessory) prod).setTypeAccessory(enumTypeAcc);
 
 						listaProductos.add(prod);
@@ -300,17 +302,17 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		
 		for (Product prod : listaProd) {
 			if (prod instanceof Instrument) {
-				EnumTypeInstrument enumType = EnumTypeInstrument.valueOf(type);
+				EnumTypeInstrument enumType = EnumTypeInstrument.getValue(type);
 				if(((Instrument) prod).getTypeInstrument().equals(enumType)) {
 					listaFiltr.add(prod);
 				}
 			} else if (prod instanceof Component) {
-				EnumTypeComponent enumType = EnumTypeComponent.valueOf(type);
+				EnumTypeComponent enumType = EnumTypeComponent.getValue(type);
 				if (((Component) prod).getTypeComponent().equals(enumType)) {
 					listaFiltr.add(prod);
 				}
 			} else if (prod instanceof Accessory) {
-				EnumTypeAccessory enumType = EnumTypeAccessory.valueOf(type);
+				EnumTypeAccessory enumType = EnumTypeAccessory.getValue(type);
 				if (((Accessory) prod).getTypeAccessory().equals(enumType)) {
 					listaFiltr.add(prod);
 				}
@@ -333,17 +335,17 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		
 		for (Product prod : listaProd) {
 			if (prod instanceof Instrument) {
-				EnumClassInstrument enumType = EnumClassInstrument.valueOf(classP);
+				EnumClassInstrument enumType = EnumClassInstrument.getValue(classP);
 				if(((Instrument) prod).getClassInstrument().equals(enumType)) {
 					listaFiltr.add(prod);
 				}
 			} else if (prod instanceof Component) {
-				EnumClassComponent enumType = EnumClassComponent.valueOf(classP);
+				EnumClassComponent enumType = EnumClassComponent.getValue(classP);
 				if (((Component) prod).getClassComponent().equals(enumType)) {
 					listaFiltr.add(prod);
 				}
 			} else if (prod instanceof Accessory) {
-				EnumClassAccessory enumType = EnumClassAccessory.valueOf(classP);
+				EnumClassAccessory enumType = EnumClassAccessory.getValue(classP);
 				if (((Accessory) prod).getClassAccessory().equals(enumType)) {
 					listaFiltr.add(prod);
 				}
@@ -402,7 +404,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m)
 			throws StockNotFoundException, ProductNotFoundException {
 		String stPurch = "In progress";
-		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
+		EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
 
 		try {
 			if (p.isActive() == true) {
@@ -436,7 +438,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 							if (rs.next()) {
 								int idPurchase = rs.getInt(1);
 								float price = rs.getFloat(2);
-								EnumStatusPurchase enumStPurchase = EnumStatusPurchase.valueOf(rs.getString("statusPurchase"));
+								EnumStatusPurchase enumStPurchase = EnumStatusPurchase.getValue(rs.getString("statusPurchase"));
 								LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
 								int purchaseQ = 1;
 								pTotal.setIdPurchase(idPurchase);
@@ -527,7 +529,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		
 		for (Purchase p : listPurchase) {
 			String stPurch = "In progress";
-			EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
+			EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
 			
 			if (p.getStatusPurchase().equals(statusPurch)) {
 				aux = p;
@@ -586,11 +588,11 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Purchase removePurchase(Purchase pTotal) throws PurchaseNotFoundException {
 		String stPurch = "In progress";
-		EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(stPurch);
+		EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
 		
 		if(pTotal.getStatusPurchase().equals(statusPurch)) {
 			stPurch = "Finished";
-			statusPurch = EnumStatusPurchase.valueOf(stPurch);
+			statusPurch = EnumStatusPurchase.getValue(stPurch);
 			pTotal.setStatusPurchase(statusPurch);
 			
 			try {
@@ -603,7 +605,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				try {
 					connection.closeConnection(ctmt, con);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}						
@@ -667,7 +668,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 						purch.setPurchaseTotalCost(rs.getFloat("totalPrice"));
 						purch.setPurchaseQuantity(rs.getInt("purchaseQuantity"));
 						
-						EnumStatusPurchase statusPurch = EnumStatusPurchase.valueOf(rs.getString("purchaseStatus"));
+						EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(rs.getString("purchaseStatus"));
 						purch.setStatusPurchase(statusPurch);
 						
 						listaPurchase.add(purch);
@@ -683,7 +684,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				try {
 					connection.closeConnection(stmt, con, rs);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -34,6 +34,7 @@ import logicTier.ProductMemberFactory;
 import model.Accessory;
 import model.Component;
 import model.Instrument;
+import model.Member;
 import model.Product;
 
 import javax.swing.DefaultComboBoxModel;
@@ -58,6 +59,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	private JButton btnLupa;
 	private JTable productTable;
 	private JButton btnAdd;
+	private DefaultTableModel model;
 
 	public JCheckBox getChckbxSale() {
 		return chckbxSale;
@@ -165,15 +167,19 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		 * currently on sale.
 		 */
 		
-	
-		productTable = new JTable();
-		productTable.setFont(new Font("Constantia", Font.PLAIN, 25));
+		
+		
+		model = new DefaultTableModel();
+		String[] columns= {"ID", "Name", "Price", "Stock", "Brand", "Model", "Color", "Sale Percentage"};
+		model.setColumnIdentifiers(columns);
+		productTable = new JTable();	
+		productTable.setModel(model);
+		productTable.setEnabled(false);
 		
 		scrollPaneProducts = new JScrollPane(productTable);
 		scrollPaneProducts.setBounds(94, 372, 1340, 371);
+		scrollPaneProducts.setViewportView(productTable);
 		add(scrollPaneProducts);
-				
-		scrollPaneProducts.setRowHeaderView(productTable);
 		
 		btnAdd = new JButton("Add");
 		btnAdd.setForeground(Color.WHITE);
@@ -215,9 +221,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		txtSearch.setEditable(getFocusTraversalKeysEnabled());
 		txtSearch.setColumns(10);
 		add(txtSearch);
-		txtSearch.addFocusListener(this);
-		txtSearch.addKeyListener(this);
-		
+
 		/**
 		 * Add a label to the panel
 		 */
@@ -236,15 +240,9 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		btnLupa.setBounds(1245, 206, 50, 50);
 		add(btnLupa);
 		btnLupa.setOpaque(false);
-		btnLupa.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				if(!txtSearch.getText().isEmpty()) {
-					String search = txtSearch.getText();	
-				} else {
-					cmbFilter.setEnabled(true);
-				}
-			}
-		});
+		btnLupa.addActionListener(this);
+		btnLupa.addKeyListener(this);	
+			
 		
 		btnRemove = new JButton("Remove");
 		btnRemove.setBackground(new Color(0, 151, 178));
@@ -310,6 +308,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		lblFondo.setBounds(0, 0, 1540, 845);
 		add(lblFondo);
 		
+		model.setRowCount(0);
 	
 	}
 
@@ -326,21 +325,22 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
         }
 		
 	}
-	
+	/**
+	 * This method searches a product depending on the type selected in the combobox (Instrument, Component or Accessory)
+	 */
 	public void makeSearch() {
-		//TODO if textbox empty && btnLupa
-		try {
 		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();	
 		
-			String search = txtSearch.getText();
-			
+		try {	
+			String search = new String(txtSearch.getText());
+	
 			if (comboProductType.getSelectedIndex()==-1) {
 				JOptionPane.showMessageDialog(this, "Selecciona un tipo de producto");
 			} else {
-				
 				String sel = (String) comboProductType.getSelectedItem();
-				if(!search.isEmpty()) {
-		
+				if(search.isBlank()) {
+					JOptionPane.showMessageDialog(this, "Please, search a product.");
+				} else {
 					comboProductType.setEnabled(true);
 					Set<Product> listProduct = new HashSet<Product>();
 					if (sel.equals("Instrument")) {
@@ -353,12 +353,9 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 						listProduct = pMember.searchAccessory(search);
 					}
 					
-					DefaultTableModel model = new DefaultTableModel();
-					
-					String[] columns= {"ID", "Name", "Price", "Stock", "Brand", "Model", "Color", "salePercentage"};
-					model.setColumnIdentifiers(columns);
-					
-					for (Product prod : listProduct) {					
+					for (Product prod : listProduct) {		
+						//TODO Mostrar Class y Type
+						//TODO Connection closed al buscar por segunda vez con la app abierta
 						if (prod instanceof Instrument) {
 					        Instrument instrument = (Instrument) prod;
 					        Object[] datos = {instrument.getIdProduct(), instrument.getNameP(), instrument.getPrice(), instrument.getStock(), instrument.getBrand(), instrument.getModel(), instrument.getColor(), instrument.getSalePercentage(), instrument.getTypeInstrument().name()};	
@@ -376,20 +373,14 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 					    }
 										
 					}	
-					comboProductType.setSelectedIndex(-1);
-					JTable productTable = new JTable(model);
-					productTable.setFont(new Font("Constantia", Font.PLAIN, 25));
-
-					JScrollPane scrollPaneProducts = new JScrollPane(productTable);
-					scrollPaneProducts.setBounds(94, 372, 1340, 371);
-					add(scrollPaneProducts);
+					productTable.setModel(model);
+					productTable.setEnabled(true);
 					
 					cmbFilter.setEnabled(true);
 					
 					/**
 					 * TODO FILTRO
 					 */
-					String currentItem = (String) cmbFilter.getSelectedItem();
 					
 				}				
 			}				
@@ -402,7 +393,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		// TODO Auto-generated method stub
 		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
 			if(e.getSource().equals(txtSearch)){
-				actionPerformed(null);
+				btnLupa.doClick();
 			}
 		}
 	}

@@ -49,4 +49,23 @@ public enum EnumStatusRepair {
 	public String getLabel() {
 		return label;
 	}
+	public static EnumStatusRepair getValue(String label) {
+		EnumStatusRepair enumValue = null;
+
+		if (label.equalsIgnoreCase("Pending")) {
+			enumValue = EnumStatusRepair.PENDING;
+		}else if (label.equalsIgnoreCase("In progress")) {
+			enumValue = EnumStatusRepair.IN_PROGRESS;
+		}else if (label.equalsIgnoreCase("Cancelled")) {
+			enumValue = EnumStatusRepair.CANCELLED;
+		}else if (label.equalsIgnoreCase("Accepted")) {
+			enumValue = EnumStatusRepair.ACCEPTED;
+		}else if (label.equalsIgnoreCase("Denied")) {
+			enumValue = EnumStatusRepair.DENIED;
+		}else if (label.equalsIgnoreCase("Finished")) {
+			enumValue = EnumStatusRepair.FINISHED;
+		}
+		
+		return enumValue;
+	}
 }

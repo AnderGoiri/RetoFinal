@@ -18,4 +18,16 @@ public enum EnumClassAccessory {
 	public String getLabel() {
 		return label;
 	}
+	
+	public static EnumClassAccessory getValue(String label) {
+		EnumClassAccessory enumValue = null;
+
+		if (label.equalsIgnoreCase("Electric")) {
+			enumValue = EnumClassAccessory.Electric;
+		}else if (label.equalsIgnoreCase("nonElectric")) {
+			enumValue = EnumClassAccessory.nonElectric;
+		}
+		
+		return enumValue;
+	}
 }

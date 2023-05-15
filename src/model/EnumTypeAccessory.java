@@ -4,7 +4,7 @@ package model;
  * Enum class for the types of Accessory
  */
 public enum EnumTypeAccessory {
-	Audio("Audio"), Connection("Connection"), Item("Item");
+	AUDIO("Audio"), CONNECTION("Connection"), ITEM("Item");
 	
 	private final String label;
 	
@@ -15,4 +15,20 @@ public enum EnumTypeAccessory {
 	public String getLabel() {
 		return label;
 	}
+	
+	public static EnumTypeAccessory getValue(String label) {
+		EnumTypeAccessory enumValue = null;
+
+		if (label.equalsIgnoreCase("Audio")) {
+			enumValue = EnumTypeAccessory.AUDIO;
+		}else if (label.equalsIgnoreCase("Connection")) {
+			enumValue = EnumTypeAccessory.CONNECTION;
+		}else if (label.equalsIgnoreCase("Item")) {
+			enumValue = EnumTypeAccessory.ITEM;
+		}
+		
+		return enumValue;
+	}
+	
+	
 }

@@ -40,4 +40,18 @@ public enum EnumStatusManager {
 	public String getLabel() {
 		return label;
 	}
+	
+	public static EnumStatusManager getValue(String label) {
+		EnumStatusManager enumValue = null;
+
+		if (label.equalsIgnoreCase("Pending")) {
+			enumValue = EnumStatusManager.P;
+		}else if (label.equalsIgnoreCase("Approved")) {
+			enumValue = EnumStatusManager.A;
+		}else if (label.equalsIgnoreCase("Rejected")) {
+			enumValue = EnumStatusManager.R;
+		}
+		return enumValue;
+	}
+
 }
