@@ -406,8 +406,7 @@ SELECT u.idUser, u.username, u.name, u.surname, u.password, u.mail, u.dateRegist
 FROM user u
 INNER JOIN member m ON u.idUser = m.idUser;
 CREATE VIEW vw_manager AS
-SELECT u.idUser, u.username, u.name, u.surname,u.password, u.mail,  u.dateRegister,
-m.idSupervisor, m.isSupervisor, m.isTechnician, m.isAdmin, m.statusManager
+SELECT u.idUser, u.username, u.name, u.surname,u.password, u.mail,  u.dateRegister, m.idSupervisor, m.isSupervisor, m.isTechnician, m.isAdmin, m.statusManager
 FROM user u
 INNER JOIN manager m ON u.idUser = m.idUser;
 CREATE VIEW vw_instrument AS
@@ -423,9 +422,75 @@ SELECT p.idProduct, p.brand, p.model, p.description, p.unitPrice, p.stock, p.isA
 FROM product p
 INNER JOIN accessory a ON p.idProduct = a.idProduct;
 
+/*MOCK DATA*/
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
+VALUES ('Fender', 'Stratocaster', 'Electric Guitar', 999, 5, 1, 0, 0, 'Stratocaster', 'Sunburst');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
+VALUES (@last_id_product, 'String', 'Electronic');
 
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
+VALUES ('Gibson', 'Les Paul', 'Electric Guitar', 1999, 3, 1, 1, 10, 'Les Paul', 'Black');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
+VALUES (@last_id_product, 'String', 'Electronic');
 
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name)
+VALUES ('Seymour Duncan', 'SH-4 JB', 'Humbucker Pickup', 89, 15, 1, 0, 0, 'SH-4 JB');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO component (idProduct, classComponent, typeComponent)
+VALUES (@last_id_product, 'Chasis', 'Architecture');
 
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name)
+VALUES ('EMG', '81', 'Active Pickup', 119, 10, 1, 1, 15, '81');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO component (idProduct, classComponent, typeComponent)
+VALUES (@last_id_product, 'Circuit', 'Tuning');
 
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name)
+VALUES ('Vox', 'AC30', 'Guitar Amplifier', 999, 5, 1, 0, 0, 'AC30');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
+VALUES (@last_id_product, 'Electric', 'Audio');
 
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name)
+VALUES ('Boss', 'DS-1', 'Distortion Pedal', 79, 8, 1, 1, 20, 'DS-1');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
+VALUES (@last_id_product, 'Electric', 'Connection');
 
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
+VALUES ('Yamaha', 'YAS-62', 'Alto Saxophone', 2999, 2, 1, 1, 10, 'YAS-62', 'Gold');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
+VALUES (@last_id_product, 'Wind', 'Acoustic');
+
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
+VALUES ('Pearl', 'Masterworks', 'Drum Set', 4999, 1, 1, 0, 0, 'Masterworks', 'Blue');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
+VALUES (@last_id_product, 'Percussion', 'Acoustic');
+
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name)
+VALUES ('Fender', 'Telecaster Neck', 'Guitar Neck', 199, 10, 1, 1, 15, 'Telecaster Neck');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO component (idProduct, classComponent, typeComponent)
+VALUES (@last_id_product, 'Chasis', 'Tuning');
+
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name)
+VALUES ('Mojotone', 'Vintage Pots', 'Guitar Potentiometers', 29, 20, 1, 0, 0, 'Vintage Pots');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO component (idProduct, classComponent, typeComponent)
+VALUES (@last_id_product, 'Circuit', 'Connection');
+
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name)
+VALUES ('Dunlop', 'Cry Baby', 'Guitar Wah Pedal', 129, 5, 1, 1, 10, 'Cry Baby');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
+VALUES (@last_id_product, 'Electric', 'Item');
+
+INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name)
+VALUES ('Shure', 'SM58', 'Vocal Microphone', 99, 12, 1, 0, 0, 'SM58');
+SET @last_id_product = LAST_INSERT_ID();
+INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
+VALUES (@last_id_product, 'Acoustic', 'Audio');
