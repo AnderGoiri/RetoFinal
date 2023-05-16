@@ -192,6 +192,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		chckbxSale.setBounds(1349, 315, 85, 45);
 		add(chckbxSale);
 		chckbxSale.setOpaque(false);
+		chckbxSale.addActionListener(this);
 		
 		cmbFilter = new JComboBox();
 		cmbFilter.setModel(new DefaultComboBoxModel());
@@ -295,7 +296,6 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
         if (e.getSource().equals(btnRemove)) {
             JOptionPane.showMessageDialog(null, "Are you sure you want to remove this product from the shopping cart?");
         }
-		
 	}
 	/**
 	 * This method searches a product depending on the type selected in the combobox (Instrument, Component or Accessory)
@@ -327,7 +327,10 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 				}
 				if (!filter.equals("") || !filter.isBlank()) {
 					listProduct = pMember.searchProductByClass(filter, listProduct);
-				}		
+				}	
+				if (chckbxSale.isSelected()) {
+					listProduct = pMember.searchProductInSale(listProduct);
+				}
 				if (comboProductType.getSelectedIndex() == 0) {
 					if(search.isBlank() && !sel.equals("All")) {
 						JOptionPane.showMessageDialog(this, "Please, search a product.");
