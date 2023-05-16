@@ -21,7 +21,13 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
+
+import logicTier.ProductManagerControllable;
+import logicTier.ProductManagerFactory;
+import model.Product;
+
 import javax.swing.ButtonGroup;
+import javax.swing.SpinnerNumberModel;
 
 
 public class ManagerInsertProductTab extends JPanel implements ActionListener, KeyListener{
@@ -29,11 +35,11 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 	private static final long serialVersionUID = 1L;
 	
 	private JButton btnConfirm;
-	private JTextField textFieldPrice, textFieldModel, textFieldSalePercentage;
+	private JTextField textFieldPrice, textFieldModel, textFieldBrand, textFieldName, textFieldColor, textFieldSalePercentage;
 	private final ButtonGroup buttonGroupProductType = new ButtonGroup();
 	private JRadioButton rdbtnInstrument, rdbtnAccessory, rdbtnComponent;
 	private JTextArea textAreaDescription;
-	private JComboBox<String> comboBoxBrand, comboBoxName, comboBoxColor, comboBoxClass, comboBoxType;
+	private JComboBox<String> comboBoxClass, comboBoxType;
 	private JSpinner spinnerStock;
 	private JCheckBox chckbxSale;
 	private JLabel lblSalePercentage, lblDescription, lblBrand, lblModel, lblName, lblClass,
@@ -157,26 +163,6 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		
 		// --- JComboBox --- //
 		
-		comboBoxBrand = new JComboBox<String>();
-		comboBoxBrand.setFont(new Font("Constantia", Font.PLAIN, 30));
-		comboBoxBrand.setBounds(190, 220, 450, 50);
-		add(comboBoxBrand);
-		comboBoxBrand.setName("Brand");
-		
-		comboBoxName = new JComboBox<String>();
-		comboBoxName.setFont(new Font("Constantia", Font.PLAIN, 30));
-		comboBoxName.setBounds(190, 440, 450, 50);
-		add(comboBoxName);
-		comboBoxName.setName("Name");
-		comboBoxName.addKeyListener(this);
-		
-		comboBoxColor = new JComboBox<String>();
-		comboBoxColor.setFont(new Font("Constantia", Font.PLAIN, 30));
-		comboBoxColor.setBounds(190, 550, 210, 50);
-		add(comboBoxColor);
-		comboBoxColor.setName("Color");
-		comboBoxColor.addKeyListener(this);
-		
 		comboBoxType = new JComboBox<String>();
 		comboBoxType.setFont(new Font("Constantia", Font.PLAIN, 30));
 		comboBoxType.setBounds(1410, 220, 400, 50);
@@ -192,6 +178,24 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		
 		
 		// --- JTextField --- //
+		
+		textFieldBrand = new JTextField();
+		textFieldBrand.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldBrand.setBounds(190, 220, 450, 50);
+		add(textFieldBrand);
+		textFieldBrand.setName("Brand");
+		
+		textFieldName = new JTextField();
+		textFieldName.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldName.setBounds(190, 440, 450, 50);
+		add(textFieldName);
+		textFieldName.setName("Name");
+		
+		textFieldColor = new JTextField();
+		textFieldColor.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldColor.setBounds(190, 550, 210, 50);
+		add(textFieldColor);
+		textFieldColor.setName("Color");
 
 		textFieldPrice = new JTextField();
 		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 30));
@@ -211,6 +215,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		// --- JSpinner --- //
 		
 		spinnerStock = new JSpinner();
+		spinnerStock.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		spinnerStock.setBounds(560, 550, 80, 50);
 		add(spinnerStock);
 		
@@ -259,7 +264,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		}else if(e.getSource().equals(btnConfirm)){
 			if(blankText()==false) {
 				//TODO Introducir productos en la base de datos
-				JOptionPane.showMessageDialog(this, "Product added succesfully");
+				
 			}
 		}
 		
@@ -269,39 +274,29 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		// TODO Auto-generated method stub
 		boolean thereIsBlankText=false;
 		String blankSpaceComponents="";
+		JTextField[] textFields = { textFieldBrand, textFieldModel, textFieldName, textFieldColor, textFieldPrice,
+				textFieldSalePercentage };
+		JComboBox[] comboBoxes = {comboBoxClass,comboBoxType};
 		
-		for(Component c : this.getComponents()) {
-			if(c.isEnabled()) {
-				if(c instanceof JTextField) {
-					if(((JTextField)c).getText().isBlank()) {
-						if(blankSpaceComponents.equals("")) {
-							blankSpaceComponents+=c.getName();
-						}else {
-							blankSpaceComponents+=", "+c.getName();
-						}
-					}
-					
-				}else if(c instanceof JComboBox) {
-					if(((JComboBox<?>)c).getSelectedIndex()==-1) {
-						if(blankSpaceComponents.equals("")) {
-							blankSpaceComponents+=c.getName();
-						}else {
-							blankSpaceComponents+=", "+c.getName();
-						}
-					}
-					
-				}else if(c instanceof JTextArea) {
-					if(((JTextArea)c).getText().isBlank()) {
-						if(blankSpaceComponents.equals("")) {
-							blankSpaceComponents+=c.getName();
-						}else {
-							blankSpaceComponents+=", "+c.getName();
-						}
-					}
+		
+		for (JTextField textField : textFields) {
+			if (textField.getText().trim().isEmpty() && textField.isEnabled()) {
+				if(blankSpaceComponents.equals("")) {
+					blankSpaceComponents+=textField.getName();
+				}else {
+					blankSpaceComponents+=textField.getName();
 				}
-				
 			}
+		}
 			
+		for (JComboBox comboBox : comboBoxes) {
+			if(comboBox.getSelectedIndex()==-1) {
+				if(blankSpaceComponents.equals("")) {
+					blankSpaceComponents+=comboBox.getName();
+				}else {
+					blankSpaceComponents+=comboBox.getName();
+				}
+			}
 		}
 		
 		if(buttonGroupProductType.getSelection()==null) {
@@ -315,7 +310,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		if(!blankSpaceComponents.equals("")) {
 			thereIsBlankText=true;
 			
-			JOptionPane.showMessageDialog(this, "Hay campos obligatorios que estan vacios. Estos son:\n"+blankSpaceComponents, "Campos vacios", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "There are empty fields. Those are:\n"+blankSpaceComponents, "Empty Fields", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		
@@ -349,7 +344,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
 			if(e.getSource().equals(spinnerStock)) {
 				spinnerStock.setValue(spinnerStock.getPreviousValue());
-			}else if(e.getSource().equals(comboBoxBrand)) {
+			}else if(e.getSource().equals(textFieldBrand)) {
 				if(((JComboBox<String>) e.getSource()).getComponentCount()>0) {
 					if(((JComboBox<String>) e.getSource()).getSelectedIndex()<((JComboBox<String>) e.getSource()).getComponentCount()) {
 						((JComboBox<String>) e.getSource()).setSelectedIndex(((JComboBox<String>) e.getSource()).getSelectedIndex()+1);

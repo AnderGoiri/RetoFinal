@@ -112,6 +112,21 @@ public abstract class Product implements Serializable {
 		this.isActive = isActive;
 	}
 
+	public Product(String nameP, Float price, String descriptionP, int stock, String brand, String model,
+			String color, boolean saleActive, int salePercentage, boolean isActive) {
+		super();
+		this.nameP = nameP;
+		this.price = price;
+		this.descriptionP = descriptionP;
+		this.stock = stock;
+		this.brand = brand;
+		this.model = model;
+		this.color = color;
+		this.saleActive = saleActive;
+		this.salePercentage = salePercentage;
+		this.isActive = isActive;
+	}
+	
 	public Product() {
 		super();
 	}

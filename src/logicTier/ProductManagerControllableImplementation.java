@@ -78,7 +78,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	public void addProduct(Product p) throws ProductFoundException {
 		try {
-			if (!existsProduct(p.getIdProduct())) {
+			
 				con = connection.openConnection();
 
 				if (p instanceof Instrument) {
@@ -129,9 +129,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 					ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
 					ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
 				}
-			} else {
-				throw new ProductFoundException();
-			}
 
 		} catch (SQLException e1) {
 			// TODO Aqui qué
@@ -222,7 +219,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.closeConnection();
+			//connection.closeConnection();
 		}
 		return existe;
 	}
@@ -238,16 +235,17 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
 			try {
 				con = connection.openConnection();
-				ctmt = con.prepareCall("UPDATE product SET isActive=?");
+				ptmt = con.prepareStatement("UPDATE product SET isActive=? WHERE idProduct=?");
 
-				ctmt.setBoolean(1, false);
-				ctmt.executeQuery();
+				ptmt.setBoolean(1, false);
+				ptmt.setInt(2, p.getIdProduct());
+				ptmt.executeUpdate();
 
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
-				connection.closeConnection();
+				//connection.closeConnection();
 			}
 		} else {
 			throw new ProductNotFoundException();

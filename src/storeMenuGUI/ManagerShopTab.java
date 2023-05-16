@@ -13,6 +13,8 @@ import java.util.Set;
 
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import exceptions.ProductNotFoundException;
 import logicTier.ProductManagerControllable;
 import logicTier.ProductManagerFactory;
 import model.Accessory;
@@ -42,6 +44,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 	private JLabel lblProductId;
 	private DefaultTableModel modelProduct;
 	private ManagerProductManagementTab mngProduct;
+	private Set<Product> products;
 
 	/**
 	 * Create the panel.
@@ -90,6 +93,8 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		modelProduct.setColumnIdentifiers(new Object[] { "ID", "Name", "Price", "Description", "Stock", "Brand",
 				"Model", "Color", "Sale Active", "Sale Percentage", "Active", "Class", "Type" });
 		productsTable = new JTable();
+		productsTable.setCellSelectionEnabled(false);
+		productsTable.setRowSelectionAllowed(true);
 		scrollPaneProductList.setViewportView(productsTable);
 		productsTable.setModel(modelProduct);
 		productsTable.setEnabled(false);
@@ -197,8 +202,35 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 			productsTable.setModel(modelProduct);
 			productsTable.setEnabled(true);
 		}
-		if (e.getSource().equals(btnShow)) {
-			mngProduct = new ManagerProductManagementTab();
+		if (e.getSource().equals(btnShow) && productsTable.getSelectedRow()!=-1) {
+			
+			// Use the product controller to create a product object using the getValueAt o searching it inside the db
+			ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
+			Product selectedProduct=null, auxProduct;
+			int idSelectedProduct;
+			
+			try {
+				idSelectedProduct=(int) productsTable.getValueAt(productsTable.getSelectedRow(), 0);
+				
+				auxProduct=proManager.searchProductById(idSelectedProduct, proManager.getAllProducts());
+				
+				if(auxProduct instanceof Instrument) {
+					selectedProduct=new Instrument();
+				}else if(auxProduct instanceof Component) {
+					selectedProduct=new Component();
+				}else if(auxProduct instanceof Accessory) {
+					selectedProduct=new Accessory();
+				}
+				
+				selectedProduct=auxProduct;
+				
+			} catch (ProductNotFoundException | SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+			mngProduct = new ManagerProductManagementTab(selectedProduct);
 			((JTabbedPane) this.getParent()).insertTab("Manage",null, mngProduct, null, ((JTabbedPane) this.getParent()).indexOfComponent(this)+1);
 			((JTabbedPane) this.getParent()).setSelectedIndex(((JTabbedPane) this.getParent()).getSelectedIndex()+1);
 		}

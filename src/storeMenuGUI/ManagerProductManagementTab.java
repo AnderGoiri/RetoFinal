@@ -17,35 +17,46 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
-import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import exceptions.ProductNotFoundException;
+import logicTier.ProductManagerControllable;
+import logicTier.ProductManagerFactory;
+import model.Accessory;
+import model.Component;
+import model.Instrument;
+import model.Product;
+
 import java.awt.Color;
+import javax.swing.JComboBox;
 
 public class ManagerProductManagementTab extends JPanel implements ActionListener, KeyListener{
 	private static final long serialVersionUID = 1L;
 	
-	private JTextField textFieldModel, textFieldPrice, textFieldSalePercentage;
-	private JComboBox<String> comboBoxName, comboBoxBrand;
+	private JTextField textFieldModel, textFieldPrice, textFieldSalePercentage, textFieldName, textFieldBrand;
 	private JButton btnDelete, btnModify, btnConfirm, btnCancel, btnGoBack;
 	private JTextArea textAreaDescription;
 	private JSpinner spinnerStock;
 	private JCheckBox chckbxSale, chckbxActive;
-	private JLabel lblProduct, lblProductId, lblProductType, lblModel, lblBrand, lblStock, lblPrice, lblDescription, lblName, lblSalePercentage;
+	private JLabel lblProduct, lblProductId, lblProductType, lblModel, lblBrand, lblStock, lblPrice, lblDescription,
+		lblName, lblSalePercentage, lblType, lblClass;
 	private JSeparator separatorUp, separatorDown;
+	private JComboBox<String> comboBoxType, comboBoxClass;
+	private Product product;
 	
 	/**
 	 * Create the panel.
+	 * @param selectedProduct 
 	 */
 	
 	
 	//TODO El constructor recogeria un objeto tipo Product 
 	
-	public ManagerProductManagementTab() {
+	public ManagerProductManagementTab(Product selectedProduct) {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
-		
+		product=selectedProduct;
 		
 		// --- JLabel --- //
 		
@@ -66,32 +77,32 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		
 		lblModel = new JLabel("Model");
 		lblModel.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblModel.setBounds(50, 430, 140, 50);
+		lblModel.setBounds(50, 505, 140, 50);
 		add(lblModel);
 		
 		lblBrand = new JLabel("Brand");
 		lblBrand.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblBrand.setBounds(50, 320, 140, 50);
+		lblBrand.setBounds(50, 395, 140, 50);
 		add(lblBrand);
 		
 		lblStock = new JLabel("Stock");
 		lblStock.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblStock.setBounds(50, 540, 140, 50);
+		lblStock.setBounds(50, 615, 140, 50);
 		add(lblStock);
 		
 		lblPrice = new JLabel("Price");
 		lblPrice.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblPrice.setBounds(345, 540, 140, 50);
+		lblPrice.setBounds(345, 615, 140, 50);
 		add(lblPrice);
 		
 		lblDescription = new JLabel("Description");
 		lblDescription.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblDescription.setBounds(710, 210, 220, 50);
+		lblDescription.setBounds(710, 285, 220, 50);
 		add(lblDescription);
 		
 		lblName = new JLabel("Name");
 		lblName.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblName.setBounds(50, 210, 140, 50);
+		lblName.setBounds(50, 285, 140, 50);
 		add(lblName);
 		
 		
@@ -101,7 +112,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		chckbxSale.setEnabled(false);
 		chckbxSale.setSelected(false);
 		chckbxSale.setFont(new Font("Constantia", Font.BOLD, 35));
-		chckbxSale.setBounds(50, 650, 140, 50);
+		chckbxSale.setBounds(50, 725, 140, 50);
 		UIManager.put("CheckBox.disabledText", Color.BLACK);
 		chckbxSale.updateUI();
 		add(chckbxSale);
@@ -125,7 +136,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		}
 		lblSalePercentage.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblSalePercentage.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblSalePercentage.setBounds(345, 650, 140, 50);
+		lblSalePercentage.setBounds(345, 725, 140, 50);
 		add(lblSalePercentage);
 		
 		
@@ -133,7 +144,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		
 		spinnerStock = new JSpinner();
 		spinnerStock.setFont(new Font("Constantia", Font.PLAIN, 30));
-		spinnerStock.setBounds(200, 540, 115, 50);
+		spinnerStock.setBounds(200, 615, 115, 50);
 		spinnerStock.setEnabled(false);
 		add(spinnerStock);
 		spinnerStock.addKeyListener(this);
@@ -143,7 +154,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		
 		textAreaDescription = new JTextArea();
 		textAreaDescription.setEditable(false);
-		textAreaDescription.setBounds(710, 275, 1100, 425);
+		textAreaDescription.setBounds(710, 350, 1100, 425);
 		add(textAreaDescription);
 		
 		
@@ -153,14 +164,14 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		textFieldModel.setEditable(false);
 		textFieldModel.setEnabled(false);
 		textFieldModel.setFont(new Font("Constantia", Font.PLAIN, 30));
-		textFieldModel.setBounds(200, 430, 460, 50);
+		textFieldModel.setBounds(200, 505, 460, 50);
 		add(textFieldModel);
 		
 		textFieldPrice = new JTextField();
 		textFieldPrice.setEditable(false);
 		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 30));
 		textFieldPrice.setColumns(10);
-		textFieldPrice.setBounds(490, 540, 170, 50);
+		textFieldPrice.setBounds(490, 615, 170, 50);
 		add(textFieldPrice);
 		
 		textFieldSalePercentage = new JTextField();
@@ -169,34 +180,29 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		}		
 		textFieldSalePercentage.setFont(new Font("Constantia", Font.PLAIN, 30));
 		textFieldSalePercentage.setColumns(10);
-		textFieldSalePercentage.setBounds(490, 650, 170, 50);
+		textFieldSalePercentage.setBounds(490, 725, 170, 50);
 		add(textFieldSalePercentage);
 		
 		
 		// --- JComboBox --- //
 		
-		comboBoxName = new JComboBox<String>();
-		comboBoxName.setMaximumRowCount(20);
-		comboBoxName.setEnabled(false);
-		comboBoxName.setFont(new Font("Constantia", Font.PLAIN, 30));
-		comboBoxName.setBounds(200, 210, 460, 50);
-		add(comboBoxName);
-		comboBoxName.addActionListener(this);
-		comboBoxName.addKeyListener(this);
+		textFieldName = new JTextField();
+		textFieldName.setEnabled(false);
+		textFieldName.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldName.setBounds(200, 285, 460, 50);
+		add(textFieldName);
 		
-		comboBoxBrand = new JComboBox<String>();
-		comboBoxBrand.setEnabled(false);
-		comboBoxBrand.setFont(new Font("Constantia", Font.PLAIN, 30));
-		comboBoxBrand.setBounds(200, 320, 460, 50);
-		add(comboBoxBrand);
-		comboBoxBrand.addActionListener(this);
-		comboBoxBrand.addKeyListener(this);
+		textFieldBrand = new JTextField();
+		textFieldBrand.setEnabled(false);
+		textFieldBrand.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldBrand.setBounds(200, 395, 460, 50);
+		add(textFieldBrand);
 		
 		
 		// --- JSeparator --- //
 		
 		separatorUp = new JSeparator();
-		separatorUp.setBounds(20, 170, 1820, 3);
+		separatorUp.setBounds(20, 160, 1820, 3);
 		add(separatorUp);
 		
 		separatorDown = new JSeparator();
@@ -254,19 +260,106 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		add(btnGoBack);
 		btnGoBack.addActionListener(this);
 		
+		lblClass = new JLabel("Class");
+		lblClass.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblClass.setBounds(50, 175, 140, 50);
+		add(lblClass);
+		
+		lblType = new JLabel("Type");
+		lblType.setFont(new Font("Constantia", Font.BOLD, 35));
+		lblType.setBounds(710, 175, 140, 50);
+		add(lblType);
+		
+		
+		// --- JComboBox --- //
+		
+		comboBoxClass = new JComboBox<String>();
+		comboBoxClass.setBounds(200, 175, 460, 50);
+		comboBoxClass.setEnabled(false);
+		add(comboBoxClass);
+		
+		comboBoxType = new JComboBox<String>();
+		comboBoxType.setBounds(860, 175, 460, 50);
+		comboBoxType.setEnabled(false);
+		add(comboBoxType);
+		
 	//TODO
+		// --- Method that set the options of the class and type comboboxes, based on the product type --- //
+		setClassAndTypeComboBoxValues(selectedProduct);
 		
 		// --- Method that print the received product data inside the components --- //
 		
-		getSelectedProductData();	//  <--- [The product object should be between the method's brackets]
+		getSelectedProductData(selectedProduct);	//  <--- [The product object should be between the method's brackets]
 		
 
 	}
 
 
-	private void getSelectedProductData() {
+	private void setClassAndTypeComboBoxValues(Product selectedProduct) {
+		// TODO Auto-generated method stub
+		if(selectedProduct instanceof Instrument) {
+			comboBoxClass.addItem("Wind");
+			comboBoxClass.addItem("String");
+			comboBoxClass.addItem("Percussion");
+			
+			comboBoxType.addItem("Acoustic");
+			comboBoxType.addItem("Electronic");
+			
+		}else if(selectedProduct instanceof Component) {
+			comboBoxClass.addItem("Chasis");
+			comboBoxClass.addItem("Circuit");
+			
+			comboBoxType.addItem("Architecture");
+			comboBoxType.addItem("Tuning");
+			comboBoxType.addItem("Connection");
+		}else if(selectedProduct instanceof Accessory) {
+			comboBoxClass.addItem("Electric");
+			comboBoxClass.addItem("nonElectric");
+			
+			comboBoxType.addItem("Architecture");
+			comboBoxType.addItem("Tuning");
+			comboBoxType.addItem("Connection");
+		}
+	}
+
+
+	private void getSelectedProductData(Product selectedProduct) {
 		// TODO Method that transfers the product data 
+		chckbxActive.setSelected(selectedProduct.isActive());
+		chckbxSale.setSelected(selectedProduct.isSaleActive());
+		lblProductId.setText(""+selectedProduct.getIdProduct());
+		lblProductType.setText(showType(selectedProduct));
+		spinnerStock.setValue(selectedProduct.getStock());
+		textAreaDescription.setText(selectedProduct.getDescriptionP());
+		textFieldBrand.setText(selectedProduct.getBrand());
+		textFieldModel.setText(selectedProduct.getModel());
+		textFieldName.setText(selectedProduct.getNameP());
+		textFieldPrice.setText(""+selectedProduct.getPrice());
+		if(selectedProduct.isSaleActive()==true) {
+			textFieldSalePercentage.setVisible(true);
+			textFieldSalePercentage.setText(""+selectedProduct.getSalePercentage());
+			lblSalePercentage.setVisible(true);
+		}
 		
+	}
+
+
+	private String showType(Product selectedProduct) {
+		// TODO Auto-generated method stub
+		if(selectedProduct instanceof Instrument) {
+			comboBoxClass.setSelectedItem(((Instrument) selectedProduct).getClassInstrument());
+			comboBoxType.setSelectedItem(((Instrument) selectedProduct).getTypeInstrument());
+			return "Instrument";
+		}else if(selectedProduct instanceof Component) {
+			comboBoxClass.setSelectedItem(((Component) selectedProduct).getClassComponent());
+			comboBoxType.setSelectedItem(((Component) selectedProduct).getTypeComponent());
+			return "Component";
+		}else if(selectedProduct instanceof Accessory) {
+			comboBoxClass.setSelectedItem(((Accessory) selectedProduct).getClassAccessory());
+			comboBoxType.setSelectedItem(((Accessory) selectedProduct).getTypeAccessory());
+			return "Accessory";
+		}else
+			return "Product";
 	}
 
 
@@ -282,6 +375,13 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 			int chosenOptionValue = JOptionPane.showOptionDialog(this, "Are you sure you want to take this product off the Market? if you close this pop-up, the proccess will be cancelled.", "Product removal", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, optPaneOptionsValues, 1);
 			
 			if(chosenOptionValue==0) {
+				ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
+				try {
+					proManager.removeProduct(product);
+				} catch (ProductNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				JOptionPane.showMessageDialog(this, "Product successfully taken off the market.");
 			}else {
 				JOptionPane.showMessageDialog(this, "The deletion proccess has been cancelled.");
@@ -290,6 +390,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		
 		else if(e.getSource().equals(btnConfirm)) {
 			if(JOptionPane.showConfirmDialog(this, "Do you want to save the updated product?", "Save changes", JOptionPane.YES_NO_OPTION)==0) {
+				
 				JOptionPane.showMessageDialog(this, "Product successfully modified.");	
 			}else {
 				JOptionPane.showMessageDialog(this, "The proccess has been cancelled.");
@@ -347,9 +448,11 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 			textFieldSalePercentage.setEnabled(group1);
 			chckbxSale.setEnabled(group1);
 			chckbxActive.setEnabled(group1);
-			comboBoxName.setEnabled(group1);
-			comboBoxBrand.setEnabled(group1);
+			textFieldName.setEnabled(group1);
+			textFieldBrand.setEnabled(group1);
 			spinnerStock.setEnabled(group1);
+			comboBoxClass.setEnabled(group1);
+			comboBoxType.setEnabled(group1);
 					
 			btnCancel.setEnabled(group1);
 			btnCancel.setVisible(group1);
@@ -387,24 +490,12 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		else if(e.getKeyCode()==KeyEvent.VK_UP) {
 			if(e.getSource().equals(spinnerStock)) {
 				spinnerStock.setValue(spinnerStock.getNextValue());
-			}else if(e.getSource() instanceof JComboBox) {
-				if(((JComboBox<String>) e.getSource()).getComponentCount()>0) {
-					if(((JComboBox<String>) e.getSource()).getSelectedIndex()>-1) {
-						((JComboBox<String>) e.getSource()).setSelectedIndex(((JComboBox<String>) e.getSource()).getSelectedIndex()-1);
-					}
-				}
 			}
 		}
 		
 		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
 			if(e.getSource().equals(spinnerStock)) {
 				spinnerStock.setValue(spinnerStock.getPreviousValue());
-			}else if(e.getSource().equals(comboBoxBrand)) {
-				if(((JComboBox<String>) e.getSource()).getComponentCount()>0) {
-					if(((JComboBox<String>) e.getSource()).getSelectedIndex()<((JComboBox<String>) e.getSource()).getComponentCount()) {
-						((JComboBox<String>) e.getSource()).setSelectedIndex(((JComboBox<String>) e.getSource()).getSelectedIndex()+1);
-					}
-				}
 			}
 		}
 	}
