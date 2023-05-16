@@ -286,16 +286,17 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		if(e.getSource().equals(comboProductType)) {
 			updateFilterComboBox();
 		}
-        if (e.getSource().equals(btnLupa) || e.getSource().equals(cmbFilter)) {
+        if (e.getSource().equals(btnLupa)) {
         	model.setRowCount(0);
             makeSearch();
-        }
+		}	  
         if (e.getSource().equals(btnAdd)) {
             JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?");
         }
         if (e.getSource().equals(btnRemove)) {
             JOptionPane.showMessageDialog(null, "Are you sure you want to remove this product from the shopping cart?");
         }
+
 	}
 	/**
 	 * This method searches a product depending on the type selected in the combobox (Instrument, Component or Accessory)
@@ -314,10 +315,10 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 				Set<Product> listProduct = new HashSet<Product>();
 				comboProductType.setEnabled(true);
 				if (sel.equals("All")) {
-					showAllProducts();
+					listProduct = pMember.getAllProducts();
 					cmbFilter.setEnabled(false);
 				} else if (sel.equals("Instrument")) {
-					listProduct = pMember.searchInstrument(search);
+					listProduct = pMember.searchInstrument(search);					
 				} else if (sel.equals("Component")) {
 					listProduct = pMember.searchComponent(search);
 				} else if (sel.equals("Accessory")) {
@@ -325,9 +326,11 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 				} else {
 					listProduct = pMember.getAllProducts();
 				}
-				if (!filter.equals("") || !filter.isBlank()) {
-					listProduct = pMember.searchProductByClass(filter, listProduct);
-				}	
+				if (filter != null) {
+					if (!filter.equals("") || !filter.isBlank()) {
+						listProduct = pMember.searchProductByClass(filter, listProduct);
+					}
+				}		
 				if (chckbxSale.isSelected()) {
 					listProduct = pMember.searchProductInSale(listProduct);
 				}

@@ -53,7 +53,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Set<Product> searchInstrument(String search) {
 		Set<Product> listaProductos = new HashSet<Product>();
-
+		ResultSet rs = null;
 		try {
 			con = connection.openConnection();
 
@@ -62,8 +62,34 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
-					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+					if (!search.equals("")) {
+						if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
+								|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+							prod = new Instrument();
+							prod.setIdProduct(rs.getInt("idProduct"));
+							prod.setNameP(rs.getString("name"));
+							prod.setPrice(rs.getFloat("unitPrice"));
+							prod.setDescriptionP(rs.getString("description"));
+							prod.setStock(rs.getInt("stock"));
+							prod.setBrand(rs.getString("brand"));
+							prod.setModel(rs.getString("model"));
+							prod.setColor(rs.getString("color"));
+							prod.setActive(rs.getBoolean("isActive"));
+							prod.setSaleActive(rs.getBoolean("saleActive"));
+							prod.setSalePercentage(rs.getInt("salePercentage"));
+							/**
+							 * Transformation of enum to String as JDBC doesn't support enums
+							 */
+							EnumClassInstrument enumClassInstr = EnumClassInstrument
+									.getValue(rs.getString("classInstrument"));
+							((Instrument) prod).setClassInstrument(enumClassInstr);
+
+							EnumTypeInstrument enumTypeInstr = EnumTypeInstrument.getValue(rs.getString("typeInstrument"));
+							((Instrument) prod).setTypeInstrument(enumTypeInstr);
+
+							listaProductos.add(prod);
+						}
+					} else {
 						prod = new Instrument();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -88,6 +114,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 						listaProductos.add(prod);
 					}
+					
 				}
 			}
 		} catch (SQLException e) {
@@ -112,7 +139,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Set<Product> searchComponent(String search) {
 		Set<Product> listaProductos = new HashSet<Product>();
-
+		ResultSet rs = null;
 		try {
 			connection.openConnection();
 
@@ -121,8 +148,34 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
-					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+					if (!search.equals("")) {
+						if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
+								|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+							prod = new Component();
+							prod.setIdProduct(rs.getInt("idProduct"));
+							prod.setNameP(rs.getString("name"));
+							prod.setPrice(rs.getFloat("unitPrice"));
+							prod.setDescriptionP(rs.getString("description"));
+							prod.setStock(rs.getInt("stock"));
+							prod.setBrand(rs.getString("brand"));
+							prod.setModel(rs.getString("model"));
+							prod.setColor(rs.getString("color"));
+							prod.setActive(rs.getBoolean("isActive"));
+							prod.setSaleActive(rs.getBoolean("saleActive"));
+							prod.setSalePercentage(rs.getInt("salePercentage"));
+
+							/**
+							 * Transformation of enum to String as JDBC doesn't support enums
+							 */
+							EnumClassComponent enumClassComp = EnumClassComponent.getValue(rs.getString("classComponent"));
+							((Component) prod).setClassComponent(enumClassComp);
+
+							EnumTypeComponent enumTypeComp = EnumTypeComponent.getValue(rs.getString("typeComponent"));
+							((Component) prod).setTypeComponent(enumTypeComp);
+
+							listaProductos.add(prod);
+						}
+					} else {
 						prod = new Component();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -147,13 +200,14 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 						listaProductos.add(prod);
 					}
+					
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			//connection.closeConnection(rs, ctmt, con);
-			
+
 		}
 		return listaProductos;
 	}
@@ -170,17 +224,44 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Set<Product> searchAccessory(String search) throws ProductNotFoundException {
 		Set<Product> listaProductos = new HashSet<Product>();
-
+		ResultSet rs = null;
 		try {
 			connection.openConnection();
 
 			ctmt = con.prepareCall("{CALL select_accessory()}");
 			rs = ctmt.executeQuery();
-
+			System.out.println(search);
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
-					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+					if (!search.equals("")) {
+						if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
+								|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+							prod = new Accessory();
+							prod.setIdProduct(rs.getInt("idProduct"));
+							prod.setNameP(rs.getString("name"));
+							prod.setPrice(rs.getFloat("unitPrice"));
+							prod.setDescriptionP(rs.getString("description"));
+							prod.setStock(rs.getInt("stock"));
+							prod.setBrand(rs.getString("brand"));
+							prod.setModel(rs.getString("model"));
+							prod.setColor(rs.getString("color"));
+							prod.setActive(rs.getBoolean("isActive"));
+							prod.setSaleActive(rs.getBoolean("saleActive"));
+							prod.setSalePercentage(rs.getInt("salePercentage"));
+
+							/**
+							 * Transformation of enum to String as JDBC doesn't support enums
+							 */
+							EnumClassAccessory enumClassAcc = EnumClassAccessory
+									.getValue(rs.getString("classAccessory"));
+							((Accessory) prod).setClassAccessory(enumClassAcc);
+
+							EnumTypeAccessory enumTypeAcc = EnumTypeAccessory.getValue(rs.getString("typeAccessory"));
+							((Accessory) prod).setTypeAccessory(enumTypeAcc);
+
+							listaProductos.add(prod);
+						}
+					} else {
 						prod = new Accessory();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -197,7 +278,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 						/**
 						 * Transformation of enum to String as JDBC doesn't support enums
 						 */
-						EnumClassAccessory enumClassAcc = EnumClassAccessory.getValue(rs.getString("classAccessory"));
+						EnumClassAccessory enumClassAcc = EnumClassAccessory
+								.getValue(rs.getString("classAccessory"));
 						((Accessory) prod).setClassAccessory(enumClassAcc);
 
 						EnumTypeAccessory enumTypeAcc = EnumTypeAccessory.getValue(rs.getString("typeAccessory"));
@@ -205,6 +287,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 						listaProductos.add(prod);
 					}
+
 				}
 			}
 		} catch (SQLException e) {		
@@ -636,6 +719,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException {
 		Set<Purchase> listaPurchase = new HashSet<Purchase>();
+		ResultSet rs = null;
 		con = connection.openConnection();
 		
 			connection.openConnection();
