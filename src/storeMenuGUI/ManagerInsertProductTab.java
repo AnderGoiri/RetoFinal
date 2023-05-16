@@ -178,21 +178,21 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 
 		// --- TextField ---
 		textFieldPrice = new JTextField();
-		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldPrice.setColumns(10);
 		textFieldPrice.setBounds(155, 365, 193, 30);
 		add(textFieldPrice);
 		textFieldPrice.setName("Price");
 
 		textFieldModel = new JTextField();
-		textFieldModel.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldModel.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldModel.setColumns(10);
 		textFieldModel.setBounds(155, 218, 193, 30);
 		add(textFieldModel);
 		textFieldModel.setName("Model");
 
 		textFieldSalePercentage = new JTextField();
-		textFieldSalePercentage.setFont(new Font("Constantia", Font.PLAIN, 30));
+		textFieldSalePercentage.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldSalePercentage.setColumns(10);
 		textFieldSalePercentage.setBounds(226, 464, 75, 50);
 		textFieldSalePercentage.setVisible(false);
@@ -201,19 +201,27 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		textFieldSalePercentage.setName("Sale Percentage");
 
 		textFieldBrand = new JTextField();
-		textFieldBrand.setBounds(156, 184, 96, 19);
-		add(textFieldBrand);
+		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 15));
+		textFieldBrand.setBounds(156, 173, 192, 30);
 		textFieldBrand.setColumns(10);
+		add(textFieldBrand);
+		textFieldBrand.setName("Brand");
 
 		textFieldName = new JTextField();
+		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldName.setBounds(156, 264, 96, 19);
-		add(textFieldName);
 		textFieldName.setColumns(10);
+		add(textFieldName);
+		textFieldName.setName("Name");
+		
 
 		textFieldColor = new JTextField();
+		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldColor.setBounds(156, 317, 96, 19);
-		add(textFieldColor);
 		textFieldColor.setColumns(10);
+		add(textFieldColor);
+		textFieldColor.setName("Color");
+		
 
 		// --- JSpinner ---
 		spinnerStock = new JSpinner();
@@ -229,7 +237,6 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		if (e.getSource().equals(chckbxSale)) {
 			if (chckbxSale.getModel().isSelected()) {
 				lblSalePercentage.setVisible(true);
@@ -267,8 +274,8 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 							.getValue((String) comboBoxType.getSelectedItem());
 
 					// Create a new Instrument with the info
-					Instrument instrument = new Instrument(brand, model, description, price, stock, isActive, isSale,
-							salePercentage, name, color, selectedClass, selectedType);
+					Instrument instrument = new Instrument(name, model, description, price, stock, isActive, isSale,
+							salePercentage, color, brand, selectedClass, selectedType);
 
 					// Use the Factory to send the info to the logicTier
 					ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
@@ -304,8 +311,8 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 							.getValue((String) comboBoxType.getSelectedItem());
 
 					// Create a new Component with the info
-					Component component = new Component(brand, model, description, price, stock, isActive, isSale,
-							salePercentage, name, color, selectedClass, selectedType);
+					Component component = new Component(name, model, description, price, stock, isActive, isSale,
+							salePercentage, color, brand, selectedClass, selectedType);
 
 					// Use the Factory to send the info to the logicTier
 					ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
@@ -341,8 +348,8 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 							.getValue((String) comboBoxType.getSelectedItem());
 
 					// Create a new Accessory with the info
-					Accessory accessory = new Accessory(brand, model, description, price, stock, isActive, isSale,
-							salePercentage, name, color, selectedClass, selectedType);
+					Accessory accessory = new Accessory(name, model, description, price, stock, isActive, isSale,
+							salePercentage, color, brand, selectedClass, selectedType);
 
 					// Use the Factory to send the info to the logicTier
 					ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();

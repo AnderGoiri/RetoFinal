@@ -39,12 +39,12 @@ public class Accessory extends Product {
 		super(idProduct, nameP, price, descriptionP, stock, brand, model, color, saleActive, salePercentage, isActive);
 		this.classAccessory = classAccessory;
 		this.typeAccessory = typeAccessory;
-		}
+	}
 
-	public Accessory(String nameP, String model, String descriptionP, float price, int stock,
-			boolean isActive, boolean isSale, int salePercentage, String name, String color,
-			EnumClassAccessory classAccessory, EnumTypeAccessory typeAccessory) {
-		super(nameP, model, descriptionP, price, stock, isActive, isSale, salePercentage, name, color);
+	public Accessory(String nameP, String model, String descriptionP, float price, int stock, boolean isActive,
+			boolean isSale, int salePercentage, String color, String brand, EnumClassAccessory classAccessory,
+			EnumTypeAccessory typeAccessory) {
+		super(nameP, model, descriptionP, price, stock, isActive, isSale, salePercentage, brand, color);
 		this.classAccessory = classAccessory;
 		this.typeAccessory = typeAccessory;
 	}

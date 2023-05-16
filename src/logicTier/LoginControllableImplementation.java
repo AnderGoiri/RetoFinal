@@ -167,7 +167,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		// open the connection with the database
 		conn = gate.openConnection();
 
-		final String UPDATEstatusManager = "UPDATE propietario SET statusManager=? WHERE id = ?";
+		final String UPDATEstatusManager = "UPDATE manager SET statusManager=? WHERE id = ?";
 
 		ptmt = conn.prepareStatement(UPDATEstatusManager);
 

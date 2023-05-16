@@ -46,59 +46,62 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * @author Jagoba Bartolomé Barroso
 	 */
 	public void addProduct(Product p) throws ProductFoundException, SQLException {
-		if (!existsProduct(p.getIdProduct())) {
-			con = connection.openConnection();
 
-			if (p instanceof Instrument) {
-				ctmt = con.prepareCall("{CALL insert_new_instrument(?,?,?,?,?,?,?,?,?,?,?,?}");
+		con = connection.openConnection();
 
-				ctmt.setString(1, p.getBrand());
-				ctmt.setString(2, p.getModel());
-				ctmt.setString(3, p.getDescriptionP());
-				ctmt.setFloat(4, p.getPrice());
-				ctmt.setInt(5, p.getStock());
-				ctmt.setBoolean(6, true);
-				ctmt.setBoolean(7, p.isSaleActive());
-				ctmt.setInt(8, p.getSalePercentage());
-				ctmt.setString(9, p.getNameP());
-				ctmt.setString(10, p.getColor());
-				ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
-				ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
-			}
-			if (p instanceof Component) {
-				ctmt = con.prepareCall("{CALL insert_new_component(?,?,?,?,?,?,?,?,?,?,?,?}");
+		if (p instanceof Instrument) {
+			ctmt = con.prepareCall("{CALL insert_new_instrument(?,?,?,?,?,?,?,?,?,?,?,?)}");
 
-				ctmt.setString(1, p.getBrand());
-				ctmt.setString(2, p.getModel());
-				ctmt.setString(3, p.getDescriptionP());
-				ctmt.setFloat(4, p.getPrice());
-				ctmt.setInt(5, p.getStock());
-				ctmt.setBoolean(6, true);
-				ctmt.setBoolean(7, p.isSaleActive());
-				ctmt.setInt(8, p.getSalePercentage());
-				ctmt.setString(9, p.getNameP());
-				ctmt.setString(10, p.getColor());
-				ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
-				ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
-			}
-			if (p instanceof Accessory) {
-				ctmt = con.prepareCall("{CALL insert_new_accessory(?,?,?,?,?,?,?,?,?,?,?,?}");
+			ctmt.setString(1, p.getBrand());
+			ctmt.setString(2, p.getModel());
+			ctmt.setString(3, p.getDescriptionP());
+			ctmt.setFloat(4, p.getPrice());
+			ctmt.setInt(5, p.getStock());
+			ctmt.setBoolean(6, true);
+			ctmt.setBoolean(7, p.isSaleActive());
+			ctmt.setInt(8, p.getSalePercentage());
+			ctmt.setString(9, p.getNameP());
+			ctmt.setString(10, p.getColor());
+			ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
+			ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
+			
+			ctmt.executeUpdate();
+		}
+		if (p instanceof Component) {
+			ctmt = con.prepareCall("{CALL insert_new_component(?,?,?,?,?,?,?,?,?,?,?,?)}");
 
-				ctmt.setString(1, p.getBrand());
-				ctmt.setString(2, p.getModel());
-				ctmt.setString(3, p.getDescriptionP());
-				ctmt.setFloat(4, p.getPrice());
-				ctmt.setInt(5, p.getStock());
-				ctmt.setBoolean(6, true);
-				ctmt.setBoolean(7, p.isSaleActive());
-				ctmt.setInt(8, p.getSalePercentage());
-				ctmt.setString(9, p.getNameP());
-				ctmt.setString(10, p.getColor());
-				ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
-				ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
-			}
-		} else {
-			throw new ProductFoundException();
+			ctmt.setString(1, p.getBrand());
+			ctmt.setString(2, p.getModel());
+			ctmt.setString(3, p.getDescriptionP());
+			ctmt.setFloat(4, p.getPrice());
+			ctmt.setInt(5, p.getStock());
+			ctmt.setBoolean(6, true);
+			ctmt.setBoolean(7, p.isSaleActive());
+			ctmt.setInt(8, p.getSalePercentage());
+			ctmt.setString(9, p.getNameP());
+			ctmt.setString(10, p.getColor());
+			ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
+			ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
+			
+			ctmt.executeUpdate();
+		}
+		if (p instanceof Accessory) {
+			ctmt = con.prepareCall("{CALL insert_new_accessory(?,?,?,?,?,?,?,?,?,?,?,?)}");
+
+			ctmt.setString(1, p.getBrand());
+			ctmt.setString(2, p.getModel());
+			ctmt.setString(3, p.getDescriptionP());
+			ctmt.setFloat(4, p.getPrice());
+			ctmt.setInt(5, p.getStock());
+			ctmt.setBoolean(6, true);
+			ctmt.setBoolean(7, p.isSaleActive());
+			ctmt.setInt(8, p.getSalePercentage());
+			ctmt.setString(9, p.getNameP());
+			ctmt.setString(10, p.getColor());
+			ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
+			ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
+			
+			ctmt.executeUpdate();
 		}
 	}
 
@@ -282,11 +285,9 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * Retrieves the type of product based on the given product ID.
 	 *
 	 * @param idProduct The ID of the product.
-	 * @return A character representing the type of product:
-	 *         - 'I' for Instrument
-	 *         - 'C' for Component
-	 *         - 'A' for Accessory
-	 *         - 'U' for Unknown (product not found in any table)
+	 * @return A character representing the type of product: - 'I' for Instrument -
+	 *         'C' for Component - 'A' for Accessory - 'U' for Unknown (product not
+	 *         found in any table)
 	 * @throws SQLException if a database access error occurs.
 	 * @author Ander Goirigolzarri Iturburu
 	 */
@@ -382,7 +383,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return setProducts;
 	}
-	
+
 	// --- Methods to Search Products ---
 	/**
 	 * Method for the search of products filtered by id In the parameter list of
@@ -407,7 +408,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			throw new ProductNotFoundException();
 		}
 	}
-	
+
 	/**
 	 * Method for the search of products filtered by name In the parameter list of
 	 * products, the method searches those that equal to the name
@@ -425,7 +426,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return listaFiltr;
 	}
-	
+
 	/**
 	 * Method for the search of products filtered by brand In the parameter list of
 	 * products, the method searches those that equal to the name
@@ -443,7 +444,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return listaFiltr;
 	}
-	
+
 	/**
 	 * Method for the search of products filtered by model In the parameter list of
 	 * products, the method searches those that equal to the name
@@ -461,7 +462,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return listaFiltr;
 	}
-	
+
 	/**
 	 * The method searches in the list already provided by a previous search to
 	 * match the Type of Product selected. It iterates the list and checks the type
@@ -496,7 +497,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return listaFiltr;
 	}
-	
+
 	/**
 	 * The method searches in the list already provided by a previous search to
 	 * match the Class of Product selected. It iterates the list and checks the
@@ -531,9 +532,10 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return listaFiltr;
 	}
-	
+
 	/**
 	 * This method searches in a product list for products with any sale
+	 * 
 	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
