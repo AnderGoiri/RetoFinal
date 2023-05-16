@@ -24,7 +24,7 @@ public enum EnumClassAccessory {
 
 		if (label.equalsIgnoreCase("Electric")) {
 			enumValue = EnumClassAccessory.Electric;
-		}else if (label.equalsIgnoreCase("nonElectric")) {
+		}else if (label.equalsIgnoreCase("Non-electric")) {
 			enumValue = EnumClassAccessory.nonElectric;
 		}
 		

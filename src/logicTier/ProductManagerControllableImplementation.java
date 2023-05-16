@@ -45,6 +45,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * @throws SQLException
 	 * @author Jagoba Bartolomé Barroso
 	 */
+
 	public void addProduct(Product p) throws ProductFoundException, SQLException {
 
 		con = connection.openConnection();
@@ -64,7 +65,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			ctmt.setString(10, p.getColor());
 			ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
 			ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
-			
+
 			ctmt.executeUpdate();
 		}
 		if (p instanceof Component) {
@@ -82,7 +83,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			ctmt.setString(10, p.getColor());
 			ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
 			ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
-			
+
 			ctmt.executeUpdate();
 		}
 		if (p instanceof Accessory) {
@@ -100,7 +101,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			ctmt.setString(10, p.getColor());
 			ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
 			ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
-			
+
 			ctmt.executeUpdate();
 		}
 	}
@@ -116,42 +117,48 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	public void modifyProduct(Product p) throws ProductNotFoundException, SQLException {
 		if (existsProduct(p.getIdProduct())) {
+
 			con = connection.openConnection();
 			ctmt = con.prepareCall(
-					"UPDATE product SET brand=?, model=?, description=?, unitPrice=?, stock=?, isActive=?, saleActive=?, salePercentage=?, name=?, color=?");
+					"UPDATE product SET brand=?, model=?, description=?, unitPrice=?, stock=?, isActive=?, saleActive=?, salePercentage=?, name=?, color=? WHERE idProduct=?");
 			ctmt.setString(1, p.getBrand());
 			ctmt.setString(2, p.getModel());
 			ctmt.setString(3, p.getDescriptionP());
 			ctmt.setFloat(4, p.getPrice());
 			ctmt.setInt(5, p.getStock());
-			ctmt.setBoolean(6, true);
+			ctmt.setBoolean(6, p.isActive());
 			ctmt.setBoolean(7, p.isSaleActive());
 			ctmt.setInt(8, p.getSalePercentage());
 			ctmt.setString(9, p.getNameP());
 			ctmt.setString(10, p.getColor());
+			ctmt.setInt(11, p.getIdProduct());
 
-			ctmt.executeUpdate();
 			if (p instanceof Instrument) {
-				ctmt = con.prepareCall("UPDATE instrument SET classInstrument=?, typeInstrument=?");
-				ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
-				ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
+				ctmt = con.prepareCall("UPDATE instrument SET classInstrument=?, typeInstrument=? WHERE idProduct=?");
+				ctmt.setString(1, ((Instrument) p).getClassInstrument().getLabel());
+				ctmt.setString(2, ((Instrument) p).getTypeInstrument().getLabel());
+				ctmt.setInt(3, p.getIdProduct());
 				ctmt.executeUpdate();
 			}
 			if (p instanceof Component) {
-				ctmt = con.prepareCall("UPDATE component SET classComponent=?, typeComponent=?");
-				ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
-				ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
+				ctmt = con.prepareCall("UPDATE component SET classComponent=?, typeComponent=? WHERE idProduct=?");
+				ctmt.setString(1, ((Component) p).getClassComponent().getLabel());
+				ctmt.setString(2, ((Component) p).getTypeComponent().getLabel());
+				ctmt.setInt(3, p.getIdProduct());
 				ctmt.executeUpdate();
 			}
 			if (p instanceof Accessory) {
-				ctmt = con.prepareCall("UPDATE accessory SET classAccessory=?, typeAccessory=?");
-				ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
-				ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
+				ctmt = con.prepareCall("UPDATE accessory SET classAccessory=?, typeAccessory=? WHERE idProduct=?");
+				ctmt.setString(1, ((Accessory) p).getClassAccessory().getLabel());
+				ctmt.setString(2, ((Accessory) p).getTypeAccessory().getLabel());
+				ctmt.setInt(3, p.getIdProduct());
 				ctmt.executeUpdate();
 			}
+
 		} else {
 			throw new ProductNotFoundException();
 		}
+
 	}
 
 	/**
@@ -173,7 +180,15 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 		ctmt.executeQuery();
 		existe = ctmt.getObject(2, boolean.class);
+		ctmt = con.prepareCall("{CALL check_product_exists(?, ?)}");
+		ctmt.setInt(1, search);
+
+		ctmt.executeQuery();
+		existe = ctmt.getObject(2, boolean.class);
+
 		return existe;
+
+		// connection.closeConnection();
 	}
 
 	/**
@@ -187,10 +202,11 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	public void removeProduct(Product p) throws ProductNotFoundException, SQLException {
 		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
 			con = connection.openConnection();
-			ctmt = con.prepareCall("UPDATE product SET isActive=?");
+			ctmt = con.prepareCall("UPDATE product SET isActive=? WHERE idProduct=?");
 
 			ctmt.setBoolean(1, false);
 			ctmt.executeQuery();
+
 		} else {
 			throw new ProductNotFoundException();
 		}
@@ -439,7 +455,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	@Override
 	public Set<Product> searchProductByBrand(String brand, Set<Product> listaProd) {
 		Set<Product> listaFiltr = new HashSet<Product>();
-		brand  = brand.toLowerCase();
+		brand = brand.toLowerCase();
 		for (Product prod : listaProd) {
 			String auxBrand = prod.getBrand().toLowerCase();
 			if (auxBrand.contains(brand)) {

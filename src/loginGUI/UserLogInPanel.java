@@ -197,6 +197,7 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 					User auxUser = login.userLogin(username, password);
 
 					// On successful log in, create a new StoreMenuWindow with the auxUser
+					
 					StoreMenuWindow storeMenuPanel = new StoreMenuWindow(this, true, auxUser);
 					storeMenuPanel.setVisible(true);
 					storeMenuPanel.setLocationRelativeTo(null);

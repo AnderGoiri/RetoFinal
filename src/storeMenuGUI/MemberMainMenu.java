@@ -2,11 +2,14 @@ package storeMenuGUI;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import model.Member;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JList;
 
-public class MemberMenu extends JPanel {
+public class MemberMainMenu extends JPanel {
 	/**
 	 * 
 	 */
@@ -16,8 +19,9 @@ public class MemberMenu extends JPanel {
 	private MemberAccountPanel panelAccount;
 	/**
 	 * Create the panel.
+	 * @param auxUser 
 	 */
-	public MemberMenu() {
+	public MemberMainMenu(Member auxUser) {
 		setBounds(100, 100, 1860, 950);
 		setLayout(null);
 	/**

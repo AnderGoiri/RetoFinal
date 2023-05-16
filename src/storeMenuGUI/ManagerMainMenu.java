@@ -26,9 +26,12 @@ public class ManagerMainMenu extends JPanel {
 	private ManagerTechnicianRepairTab mngTechRepair;
 	private ManagerSuperiorRepairTab mngSupRepair;
 	private JTabbedPane tabbedPane;
+	private ManagerAccountTab mngAccount;
 
 	/**
 	 * Create the panel.
+	 * 
+	 * @param auxUser
 	 */
 	public ManagerMainMenu(Manager auxUser) {
 		setBackground(new Color(0, 150, 178));
@@ -52,22 +55,32 @@ public class ManagerMainMenu extends JPanel {
 		tabbedPane.addTab("Repair Sup", mngSupRepair);
 
 		// comprobarManager(auxUser);
+		mngAccount = new ManagerAccountTab(auxUser);
+		tabbedPane.addTab("Account", mngAccount);
+
+		// comprobarManager(auxUser);
+
 	}
 
-	/*
-	 * private void comprobarManager(Manager auxUser) { String message="Error";
-	 * boolean tech=false,sup=false,adm=false;
-	 * 
-	 * tech=auxUser.isTechnician(); sup=auxUser.isSupervisor();
-	 * adm=auxUser.isAdmin();
-	 * 
-	 * 
-	 * if(tech) { message="Hello Technician "+auxUser.getIdUser(); }else if(sup) {
-	 * message="Hello Supervisor "+auxUser.getName(); }else if(adm) {
-	 * message="Hello Administator "+auxUser.getName(); }
-	 * 
-	 * 
-	 * JOptionPane.showMessageDialog(this, message);
-	 */
+	// private void comprobarManager(Manager auxUser) {
+	// TODO Metodo que puede servir
 
+	// String message="Error";
+	// boolean tech=false,sup=false,adm=false;
+
+	// tech=auxUser.isTechnician();
+	// sup=auxUser.isSupervisor();
+	// adm=auxUser.isAdmin();
+
+	// if(tech) {
+	// message="Hello Technician "+auxUser.getIdUser();
+	// }else if(sup) {
+	// message="Hello Supervisor "+auxUser.getName();
+	// }else if(adm) {
+	// message="Hello Administator "+auxUser.getName();
+	// }
+
+	// JOptionPane.showMessageDialog(this, message);
+
+	// }
 }

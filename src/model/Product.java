@@ -135,7 +135,7 @@ public abstract class Product implements Serializable {
 	}
 
 	public Product(String nameP, String model, String descriptionP, float price, int stock, boolean isActive,
-			boolean isSale, int salePercentage, String color,String brand) {
+			boolean isSale, int salePercentage, String color, String brand) {
 		super();
 		this.nameP = nameP;
 		this.model = model;
@@ -144,7 +144,7 @@ public abstract class Product implements Serializable {
 		this.stock = stock;
 		this.isActive = isActive;
 		this.saleActive = isSale;
-		this.salePercentage = salePercentage;	
+		this.salePercentage = salePercentage;
 		this.color = color;
 		this.brand = brand;
 	}

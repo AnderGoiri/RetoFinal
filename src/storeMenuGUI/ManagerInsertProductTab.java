@@ -3,7 +3,6 @@ package storeMenuGUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -37,7 +36,7 @@ import model.Accessory;
 import model.Component;
 import model.EnumClassAccessory;
 
-public class ManagerInsertProductTab extends JPanel implements ActionListener, KeyListener, FocusListener {
+public class ManagerInsertProductTab extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldPrice, textFieldModel, textFieldSalePercentage, textFieldBrand, textFieldName,
@@ -213,7 +212,6 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		textFieldName.setColumns(10);
 		add(textFieldName);
 		textFieldName.setName("Name");
-		
 
 		textFieldColor = new JTextField();
 		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 15));
@@ -221,7 +219,6 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		textFieldColor.setColumns(10);
 		add(textFieldColor);
 		textFieldColor.setName("Color");
-		
 
 		// --- JSpinner ---
 		spinnerStock = new JSpinner();
@@ -360,7 +357,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 						// Show error message if product already exists or if there's a database error
 						JOptionPane.showMessageDialog(this, e1.getMessage());
 					}
-				}else{
+				} else {
 					JOptionPane.showMessageDialog(this, "Please select what kind of Product you want to add");
 				}
 			} else {
@@ -426,25 +423,48 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 	}
 
 	private boolean blankText() {
-
-		// Add all your text fields here
+		boolean thereIsBlankText = false;
+		String blankSpaceComponents = "";
 		JTextField[] textFields = { textFieldBrand, textFieldModel, textFieldName, textFieldColor, textFieldPrice,
 				textFieldSalePercentage };
+		JComboBox[] comboBoxes = { comboBoxClass, comboBoxType };
 
 		for (JTextField textField : textFields) {
-			if (textField.getText().trim().isEmpty()) {
-				return false; // Return false if any text field is empty or contains only whitespace
+			if (textField.getText().trim().isEmpty() && textField.isEnabled()) {
+				if (blankSpaceComponents.equals("")) {
+					blankSpaceComponents += textField.getName();
+				} else {
+					blankSpaceComponents += textField.getName();
+				}
 			}
 		}
-		return true; // All text fields have content
-	}
 
-	@Override
-	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
+		for (JComboBox comboBox : comboBoxes) {
+			if (comboBox.getSelectedIndex() == -1) {
+				if (blankSpaceComponents.equals("")) {
+					blankSpaceComponents += comboBox.getName();
+				} else {
+					blankSpaceComponents += comboBox.getName();
+				}
+			}
+		}
 
-		// Metodo comprobar id producto registrado
+		if (buttonGroupProductType.getSelection() == null) {
+			if (blankSpaceComponents.equals("")) {
+				blankSpaceComponents += "Product Type";
+			} else {
+				blankSpaceComponents += ", Product Type";
+			}
+		}
 
+		if (!blankSpaceComponents.equals("")) {
+			thereIsBlankText = true;
+
+			JOptionPane.showMessageDialog(this, "There are empty fields. Those are:\n" + blankSpaceComponents,
+					"Empty Fields", JOptionPane.ERROR_MESSAGE);
+		}
+
+		return thereIsBlankText;
 	}
 
 	@Override
@@ -472,24 +492,20 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (e.getSource().equals(spinnerStock)) {
 				spinnerStock.setValue(spinnerStock.getPreviousValue());
-				// } else if (e.getSource().equals(comboBoxBrand)) {
-				// if (((JComboBox<String>) e.getSource()).getComponentCount() > 0) {
-				// if (((JComboBox<String>) e.getSource()).getSelectedIndex() <
-				// ((JComboBox<String>) e.getSource())
-				// .getComponentCount()) {
-				// ((JComboBox<String>) e.getSource())
-				// .setSelectedIndex(((JComboBox<String>) e.getSource()).getSelectedIndex() +
-				// 1);
+			} else if (e.getSource().equals(textFieldBrand)) {
+				if (((JComboBox<String>) e.getSource()).getComponentCount() > 0) {
+					if (((JComboBox<String>) e.getSource()).getSelectedIndex() < ((JComboBox<String>) e.getSource())
+							.getComponentCount()) {
+						((JComboBox<String>) e.getSource())
+								.setSelectedIndex(((JComboBox<String>) e.getSource()).getSelectedIndex() + 1);
+					}
+				}
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_TAB) {
 			if (e.getSource().equals(textAreaDescription) && textAreaDescription.getText().isBlank()) {
 				// ((Component) e.getSource()).transferFocus();
 			}
 		}
-	}
-
-	@Override
-	public void focusGained(FocusEvent e) {
 	}
 
 	@Override

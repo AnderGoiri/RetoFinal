@@ -3,7 +3,6 @@ package storeMenuGUI;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,7 +42,9 @@ import javax.swing.JCheckBox;
  * user actions.
  * 
  * @author Ander Goirigolzarri Iturburu
- * @author Francisco Rafael de Ysasi González
+ * @author Francisco Rafael de Ysasi González <<<<<<< HEAD =======
+ * 
+ *         >>>>>>> 8f05554af0aa3c03c241c64999a0f51067489cdb
  */
 public class ManagerShopTab extends JPanel implements ActionListener, KeyListener {
 
@@ -67,6 +68,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 	 */
 	public ManagerShopTab() {
 		setLayout(null);
+
 		setBounds(0, 0, 984, 678);
 
 		// --- TextField ---
@@ -76,6 +78,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		textFieldSearchBar.setColumns(10);
 
 		// --- JButton ---
+
 		btnSearch = new JButton("Search");
 		btnSearch.setFont(new Font("Onyx", Font.BOLD, 35));
 		btnSearch.setBounds(780, 20, 190, 70);
@@ -100,9 +103,13 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		modelProduct.setColumnIdentifiers(new Object[] { "ID", "Name", "Price", "Description", "Stock", "Brand",
 				"Model", "Color", "Sale Active", "Sale %", "Active", "Class", "Type" });
 		productsTable = new JTable();
+		productsTable.setCellSelectionEnabled(false);
+		productsTable.setRowSelectionAllowed(true);
 		scrollPaneProductList.setViewportView(productsTable);
 		productsTable.setModel(modelProduct);
 		productsTable.setEnabled(false);
+
+		showAllProducts();
 
 		// --- JComboBox ---
 		comboBoxSearchBy = new JComboBox<String>();
@@ -193,13 +200,13 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		if (e.getSource().equals(btnSearch) && textFieldSearchBar.getText().isBlank()
 				&& comboBoxSearchBy.getSelectedItem().equals("----------")) {
 			showAllProducts();
-			
+
 		} else if (e.getSource().equals(btnSearch) && !textFieldSearchBar.getText().isBlank()) {
-			
+
 			String selectedOption = comboBoxSearchBy.getSelectedItem().toString();
 
 			switch (selectedOption) {
@@ -330,13 +337,12 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 			((JTabbedPane) this.getParent()).insertTab("Manage", null, mngProduct, null,
 					((JTabbedPane) this.getParent()).indexOfComponent(this) + 1);
 			((JTabbedPane) this.getParent()).setSelectedIndex(((JTabbedPane) this.getParent()).getSelectedIndex() + 1);
-		}
 
+		}
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-
 	}
 
 	@Override
@@ -386,5 +392,4 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 			modelProduct.addRow(rowData);
 		}
 	}
-
 }
