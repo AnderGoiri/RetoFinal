@@ -151,35 +151,39 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			try {
 				con = connection.openConnection();
 				ctmt = con.prepareCall(
-						"UPDATE product SET brand=?, model=?, description=?, unitPrice=?, stock=?, isActive=?, saleActive=?, salePercentage=?, name=?, color=?");
+						"UPDATE product SET brand=?, model=?, description=?, unitPrice=?, stock=?, isActive=?, saleActive=?, salePercentage=?, name=?, color=? WHERE idProduct=?");
 				ctmt.setString(1, p.getBrand());
 				ctmt.setString(2, p.getModel());
 				ctmt.setString(3, p.getDescriptionP());
 				ctmt.setFloat(4, p.getPrice());
 				ctmt.setInt(5, p.getStock());
-				ctmt.setBoolean(6, true);
+				ctmt.setBoolean(6, p.isActive());
 				ctmt.setBoolean(7, p.isSaleActive());
 				ctmt.setInt(8, p.getSalePercentage());
 				ctmt.setString(9, p.getNameP());
 				ctmt.setString(10, p.getColor());
+				ctmt.setInt(11, p.getIdProduct());
 
 				ctmt.executeUpdate();
 				if (p instanceof Instrument) {
-					ctmt = con.prepareCall("UPDATE instrument SET classInstrument=?, typeInstrument=?");
-					ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
-					ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
+					ctmt = con.prepareCall("UPDATE instrument SET classInstrument=?, typeInstrument=? WHERE idProduct=?");
+					ctmt.setString(1, ((Instrument) p).getClassInstrument().getLabel());
+					ctmt.setString(2, ((Instrument) p).getTypeInstrument().getLabel());
+					ctmt.setInt(3, p.getIdProduct());
 					ctmt.executeUpdate();
 				}
 				if (p instanceof Component) {
-					ctmt = con.prepareCall("UPDATE component SET classComponent=?, typeComponent=?");
-					ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
-					ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());
+					ctmt = con.prepareCall("UPDATE component SET classComponent=?, typeComponent=? WHERE idProduct=?");
+					ctmt.setString(1, ((Component) p).getClassComponent().getLabel());
+					ctmt.setString(2, ((Component) p).getTypeComponent().getLabel());
+					ctmt.setInt(3, p.getIdProduct());
 					ctmt.executeUpdate();
 				}
 				if (p instanceof Accessory) {
-					ctmt = con.prepareCall("UPDATE accessory SET classAccessory=?, typeAccessory=?");
-					ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
-					ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
+					ctmt = con.prepareCall("UPDATE accessory SET classAccessory=?, typeAccessory=? WHERE idProduct=?");
+					ctmt.setString(1, ((Accessory) p).getClassAccessory().getLabel());
+					ctmt.setString(2, ((Accessory) p).getTypeAccessory().getLabel());
+					ctmt.setInt(3, p.getIdProduct());
 					ctmt.executeUpdate();
 				}
 
@@ -187,7 +191,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
-				connection.closeConnection();
+				//connection.closeConnection();
 			}
 		} else {
 			throw new ProductNotFoundException();
