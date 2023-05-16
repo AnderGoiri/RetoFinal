@@ -31,6 +31,8 @@ import javax.swing.table.DefaultTableModel;
 
 import exceptions.ModelNotFoundException;
 import exceptions.ProductNotFoundException;
+import exceptions.PurchaseNotFoundException;
+import exceptions.StockNotFoundException;
 import exceptions.TypeNotFoundException;
 import logicTier.ProductMemberControllable;
 import logicTier.ProductMemberFactory;
@@ -39,6 +41,8 @@ import model.Component;
 import model.Instrument;
 import model.Member;
 import model.Product;
+import model.Purchase;
+import model.User;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSeparator;
@@ -67,6 +71,9 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	private DefaultTableModel model;
 	private ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
 	private Set<Product> listProduct;
+	private Purchase purch;
+	private Product prod;
+	private User user;
 	
 	public JCheckBox getChckbxSale() {
 		return chckbxSale;
@@ -161,10 +168,12 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		return serialVersionUID;
 	}
 
-	public ShopMemberMenu() {
+	public ShopMemberMenu(User user) {
 		setBounds(0, 0, 1860, 950);
 		setLayout(null);
 
+		this.user = user;
+		
 		model = new DefaultTableModel();
 		String[] columns= {"ID", "Name", "Price", "Stock", "Brand", "Model", "Color", "Sale Percentage", "Class", "Type"};
 		model.setColumnIdentifiers(columns);
@@ -184,11 +193,8 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		btnAdd.setBackground(new Color(0, 151, 178));
 		btnAdd.setBounds(999, 770, 205, 65);
 		add(btnAdd);
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?");
-			}
-		});
+		btnAdd.addActionListener(this);
+			
 		
 		chckbxSale = new JCheckBox("Sale");
 		chckbxSale.setFont(new Font("Constantia", Font.PLAIN, 30));
@@ -242,16 +248,14 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		btnRemove.setFont(new Font("Dialog", Font.BOLD, 35));
 		btnRemove.setBounds(1229, 770, 205, 65);
 		add(btnRemove);
-		
+		btnRemove.addActionListener(this);
+		btnRemove.addKeyListener(this)
+;
 		btnCarrito = new JButton("");
 		btnCarrito.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/carrito_.png")));
 		btnCarrito.setBounds(1400, 36, 100, 100);
 		add(btnCarrito);
-		btnCarrito.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Are you sure you want to make this purchase?");
-			}
-		});
+		btnCarrito.addActionListener(this);
 		
 		JLabel lblLookProduct = new JLabel("Look for a product");
 		lblLookProduct.setForeground(new Color(0, 0, 0));
@@ -303,13 +307,127 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
             makeSearch();
 		}	  
         if (e.getSource().equals(btnAdd)) {
-            JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?");
-        }
+            JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?"); 
+            boolean added =  addToCart();
+            if (added) {
+            	JOptionPane.showMessageDialog(null, "Product added successfully to the cart");
+            }
+        }  
         if (e.getSource().equals(btnRemove)) {
             JOptionPane.showMessageDialog(null, "Are you sure you want to remove this product from the shopping cart?");
+            boolean removed = removeFromCart();
+            if (removed) {
+            	JOptionPane.showMessageDialog(null, "Product removed successfully from the cart");
+            }
         }
-
+        if (e.getSource().equals(btnCarrito)) {
+        	int confirm = JOptionPane.showConfirmDialog(null, "Do you want to finish the purchase?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        	if (confirm == JOptionPane.YES_OPTION) {
+        		purch = finishPurchase();
+        		if (purch!=null) {
+        			float price = purch.getPurchaseTotalCost();
+            		JOptionPane.showMessageDialog(null, "The final price will be: " + price);
+                } 
+        		
+        	}
+        }
 	}
+	private boolean removeFromCart() {
+		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+		boolean removed = true;
+		int productId = 0;
+		Set<Product> listProduct;
+		int filaSelect = productTable.getSelectedRow();
+		if (filaSelect != -1) {
+			productId = (int) productTable.getValueAt(filaSelect, 0);
+		}
+
+		try {
+			/**
+			 * Setting the selected product
+			 */
+			listProduct = pMember.getAllProducts("");
+			prod = pMember.searchProductById(productId, listProduct);
+
+			Member mUser = (Member) user;
+
+			/**
+			 * Setting the in progress purchase from the user
+			 */
+			purch = pMember.searchPurchase(mUser);
+
+			/**
+			 * Removing the product from the purchase
+			 */
+			purch = pMember.removeProduct(purch, prod);
+		} catch (PurchaseNotFoundException e) {
+			removed = false;
+			JOptionPane.showMessageDialog(null, "Purchase not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			removed = false;
+			JOptionPane.showMessageDialog(null, "Unknown Error", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return removed;
+	}
+
+	private Purchase finishPurchase() {
+		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+		try {
+			Member mUser = (Member) user;
+			purch = pMember.searchPurchase(mUser);
+			pMember.removePurchase(purch);
+		} catch (PurchaseNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Purchase not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (NullPointerException e) {
+			JOptionPane.showMessageDialog(null, "No products added to the cart", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return purch;
+	}
+	
+	private boolean addToCart() {
+		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+		boolean added = true;
+		int productId = 0;
+		Set<Product> listProduct;
+		int filaSelect = productTable.getSelectedRow();
+		if (filaSelect != -1) {
+			productId = (int) productTable.getValueAt(filaSelect, 0);
+		}
+		try {
+			/**
+			 * Setting the selected product
+			 */
+			listProduct = pMember.getAllProducts("");
+			prod = pMember.searchProductById(productId, listProduct);
+		
+			Member mUser = (Member) user;
+			
+			/**
+			 * Setting the in progress purchase from the user
+			 */
+			purch = pMember.searchPurchase(mUser);
+			
+			/**
+			 * Adding the product to the purchase
+			 */
+			pMember.addProductPurchase(purch, prod, mUser);
+			pMember.removeProduct(purch, prod);
+		} catch (StockNotFoundException e) {
+			added = false;
+			JOptionPane.showMessageDialog(null, "Stock not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (ProductNotFoundException e) {
+			added = false;
+			JOptionPane.showMessageDialog(null, "Product not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e) {
+			added = false;
+			JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			added = false;
+			JOptionPane.showMessageDialog(null, "Unknown Error", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return added;
+	}
+
 	/**
 	 * This method searches a product depending on the type selected in the combobox (Instrument, Component or Accessory)
 	 */
@@ -390,14 +508,11 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 				productTable.setEnabled(true);	
 			}				
 		} catch (ProductNotFoundException e1) {
-			
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Product not found", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e) {
-			
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (TypeNotFoundException e) {
-		
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Type of product not found", "Error", JOptionPane.ERROR_MESSAGE);
 		} 	
 	}
 	
@@ -434,8 +549,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		productTable.setModel(model);
 		productTable.setEnabled(true);

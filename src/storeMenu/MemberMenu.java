@@ -2,6 +2,9 @@ package storeMenu;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import model.User;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JList;
@@ -17,7 +20,7 @@ public class MemberMenu extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public MemberMenu() {
+	public MemberMenu(User user) {
 		setBounds(100, 100, 1860, 950);
 		setLayout(null);
 	/**
@@ -32,7 +35,7 @@ public class MemberMenu extends JPanel {
 	 * Add a panel called panelStore to the JTabbedPane tab in which the member can consult the products in the store.
 	 */
 		
-		panelStore = new ShopMemberMenu();
+		panelStore = new ShopMemberMenu(user);
 		panelStore.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Store", null, panelStore, null);
 	/**

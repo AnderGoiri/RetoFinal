@@ -35,7 +35,7 @@ public interface ProductMemberControllable {
 	
 	public boolean checkProduct(Product p) throws Exception;
 	
-	public Purchase addProductPurchase(Purchase pset, Product p, Member m) throws StockNotFoundException, ProductNotFoundException; 
+	public Purchase addProductPurchase(Purchase pset, Product p, Member m) throws StockNotFoundException, ProductNotFoundException, SQLException, Exception; 
 	
 	public Purchase searchPurchase(Member m);
 	
@@ -49,4 +49,5 @@ public interface ProductMemberControllable {
 
 	public Set<Product> getAllProducts(String search) throws SQLException;
 
+	public Product searchProductById(int pId, Set<Product> listaProd) throws ProductNotFoundException;
 }

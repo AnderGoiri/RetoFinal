@@ -454,7 +454,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	
 	/**
 	 * First we transform a String value into enum. We check if the product has
-	 * stock and then update the product table. Then we check if the current
+	 * stock (bool StockNotFound false) and then update the product table. Then we check if the current
 	 * Purchase is new (to add it as a new one into the database) and if the status
 	 * is NOT "In progress", Then we add a new purchase into the database and we
 	 * retrieve the info we just inserted to use it here. In case the Purchase is
@@ -465,16 +465,17 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 *                 the product we want to add to the shopping cart and Member m
 	 *                 the member using the application.
 	 * @author Jago Bartolomé Barroso
+	 * @throws Exception 
+	 * @throws SQLException 
 	 */
 	@Override
 	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m)
-			throws StockNotFoundException, ProductNotFoundException {
+			throws SQLException, Exception {
 		String stPurch = "In progress";
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
 
-		try {
 			if (p.isActive() == true) {
-				if (checkProduct(p)) {
+				if (!checkProduct(p)) {
 					pTotal.getSetProduct().add(p);
 
 					con = connection.openConnection();
@@ -486,76 +487,54 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 					if ((pTotal == null) || (!pTotal.getStatusPurchase().equals(statusPurch))) {
 						pTotal = new Purchase();
-						try {
-							con = connection.openConnection();
+						con = connection.openConnection();
 
-							ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
+						ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
 
-							ctmt.setInt(1, m.getIdUser());
-							ctmt.setInt(2, 1);
-							ctmt.setInt(3, 1);
-							ctmt.setFloat(4, p.getPrice());
-							ctmt.setString(5, "In progress");
+						ctmt.setInt(1, m.getIdUser());
+						ctmt.setInt(2, 1);
+						ctmt.setInt(3, 1);
+						ctmt.setFloat(4, p.getPrice());
+						ctmt.setString(5, "In progress");
 
-							ctmt.executeUpdate();
+						ctmt.executeUpdate();
 
-							// Obtener el idPurchase generado por la base de datos
-							ResultSet rs = ctmt.getGeneratedKeys();
-							if (rs.next()) {
-								int idPurchase = rs.getInt(1);
-								float price = rs.getFloat(2);
-								EnumStatusPurchase enumStPurchase = EnumStatusPurchase.getValue(rs.getString("statusPurchase"));
-								LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
-								int purchaseQ = 1;
-								pTotal.setIdPurchase(idPurchase);
-								pTotal.setPurchaseTotalCost(price);
-								pTotal.setStatusPurchase(enumStPurchase);
-								pTotal.setPurchaseDate(date);
-								pTotal.setPurchaseQuantity(purchaseQ);
-							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						} finally {
-							try {
-								connection.closeConnection(ctmt, con, null);
-							} catch (SQLException e) {
-								e.printStackTrace();
-							}
+						// Obtener el idPurchase generado por la base de datos
+						ResultSet rs = ctmt.getGeneratedKeys();
+						if (rs.next()) {
+							int idPurchase = rs.getInt(1);
+							float price = rs.getFloat(2);
+							EnumStatusPurchase enumStPurchase = EnumStatusPurchase
+									.getValue(rs.getString("statusPurchase"));
+							LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
+							int purchaseQ = 1;
+							pTotal.setIdPurchase(idPurchase);
+							pTotal.setPurchaseTotalCost(price);
+							pTotal.setStatusPurchase(enumStPurchase);
+							pTotal.setPurchaseDate(date);
+							pTotal.setPurchaseQuantity(purchaseQ);
 						}
-						try {
-							Set<Purchase> listPurchase = m.getPurchaseRecord();
-							listPurchase.add(pTotal);
-							m.setPurchaseRecord(listPurchase);
-							// TODO Check if this is saved correctly (db?)
-						} catch (Exception e) {
+						Set<Purchase> listPurchase = m.getPurchaseRecord();
+						listPurchase.add(pTotal);
+						m.setPurchaseRecord(listPurchase);
 
-							e.printStackTrace();
-						}
 					} else {
 						// If pTotal is not null, there's already a purchase in progress that we need to
 						// update
 
-						try {
-							con = connection.openConnection();
-							ctmt = con.prepareCall("UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
-							ctmt.setInt(1, pTotal.getPurchaseQuantity() + 1);
-							ctmt.setFloat(2, pTotal.getPurchaseTotalCost() + p.getPrice());
-							ctmt.setInt(3, pTotal.getIdPurchase());
+						con = connection.openConnection();
+						ctmt = con.prepareCall(
+								"UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
+						ctmt.setInt(1, pTotal.getPurchaseQuantity() + 1);
+						ctmt.setFloat(2, pTotal.getPurchaseTotalCost() + p.getPrice());
+						ctmt.setInt(3, pTotal.getIdPurchase());
 
-							ctmt.executeUpdate();
+						ctmt.executeUpdate();
 
-							// Actualizar pTotal con los nuevos datos de la compra
-							pTotal.setPurchaseTotalCost(pTotal.getPurchaseTotalCost() + p.getPrice());
-							pTotal.setPurchaseQuantity(pTotal.getPurchaseQuantity() + 1);
-						} catch (SQLException e) {
-							e.printStackTrace();
-						} finally {
-							try {
-								connection.closeConnection(ctmt, con, null);
-							} catch (SQLException e) {
-								e.printStackTrace();
-							}
-						}
+						// Actualizar pTotal con los nuevos datos de la compra
+						pTotal.setPurchaseTotalCost(pTotal.getPurchaseTotalCost() + p.getPrice());
+						pTotal.setPurchaseQuantity(pTotal.getPurchaseQuantity() + 1);
+
 					}
 
 				} else {
@@ -565,26 +544,15 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				throw new ProductNotFoundException();
 			}
 
-		} catch (SQLException e1) {
-		
-			e1.printStackTrace();
-		} catch (Exception e1) {
-			
-			e1.printStackTrace();
-		}
+			//connection.closeConnection(ctmt, con);
 
-		try {
-			connection.closeConnection(ctmt, con);
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-	
 		return pTotal;
 	}
 
 	/**
-	 * This method returns the current "In progress" purchase from the member purchase record
+	 * This method returns the current "In progress" purchase from the member
+	 * purchase record
+	 * 
 	 * @param Member m
 	 * @author Jago Bartolomé Barroso
 	 */
@@ -728,6 +696,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			try {
 				stmt = con.prepareStatement("select * from purchase where idUser=?");
+				stmt.setInt(1, m.getIdUser());
 				rs = stmt.executeQuery();
 				if (rs != null) {
 					while (rs.next()) {
@@ -924,4 +893,25 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		return setProducts;
 	}
 
-}
+	/**
+	 * Method for the search of products filtered by id
+	 * In the parameter list of products, the method searches the one thats equal to the id
+	 * @param int pId is the id of the product we want to search, listaProd is the list of all products
+	 * @return a list of products
+	 * @throws ProductNotFoundException if it doesn't exist
+	 * @author Jago
+	 */
+	public Product searchProductById(int pId, Set<Product> listaProd) throws ProductNotFoundException {
+		Product pAux = null;
+		for (Product prod : listaProd) {
+			if (prod.getIdProduct() == pId) {
+				pAux = prod;
+			}
+		}
+		if (pAux != null) {
+			return pAux;
+		} else {
+			throw new ProductNotFoundException();
+		}
+	}
+} 
