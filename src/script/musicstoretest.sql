@@ -78,7 +78,7 @@ create table if not exists component(
 
 create table if not exists accessory(
 	idProduct integer not null unique auto_increment,
-	classAccessory enum('Acoustic', 'Electric'),
+	classAccessory enum('Electric', 'Non-electric'),
     typeAccessory enum('Audio', 'Connection', 'Item'),
 	foreign key (idProduct) references product (idProduct) on delete cascade,
 	primary key (idProduct)
@@ -493,4 +493,4 @@ INSERT INTO product (brand, model, description, unitPrice, stock, isActive, sale
 VALUES ('Shure', 'SM58', 'Vocal Microphone', 99, 12, 1, 0, 0, 'SM58', 'Black');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
-VALUES (@last_id_product, 'Acoustic', 'Audio');
+VALUES (@last_id_product, 'Non-electric', 'Audio');
