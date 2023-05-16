@@ -78,7 +78,7 @@ create table if not exists component(
 
 create table if not exists accessory(
 	idProduct integer not null unique auto_increment,
-	classAccessory enum('Electric', 'Non-electric'),
+	classAccessory enum('Electric', 'NonElectric'),
     typeAccessory enum('Audio', 'Connection', 'Item'),
 	foreign key (idProduct) references product (idProduct) on delete cascade,
 	primary key (idProduct)
