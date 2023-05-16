@@ -45,6 +45,7 @@ import javax.swing.JSeparator;
 import javax.swing.JList;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
+import java.awt.SystemColor;
 
 public class ShopMemberMenu extends JPanel implements ActionListener, KeyListener, FocusListener {
 	/**
@@ -58,6 +59,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	private JButton btnCarrito;
 	private JLabel lblWelcome;
 	private JComboBox<String> cmbFilter;
+	private JComboBox<String> cmbFilter2;
 	private JComboBox<String> comboProductType;
 	private JButton btnLupa;
 	private JTable productTable;
@@ -166,6 +168,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		model = new DefaultTableModel();
 		String[] columns= {"ID", "Name", "Price", "Stock", "Brand", "Model", "Color", "Sale Percentage", "Class", "Type"};
 		model.setColumnIdentifiers(columns);
+		
 		productTable = new JTable();	
 		productTable.setModel(model);
 		productTable.setEnabled(false);
@@ -198,14 +201,23 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		cmbFilter.setModel(new DefaultComboBoxModel());
 		cmbFilter.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		cmbFilter.setFont(new Font("Constantia", Font.PLAIN, 25));
-		cmbFilter.setBounds(919, 206, 316, 50);
+		cmbFilter.setBounds(837, 206, 264, 50);
 		cmbFilter.setEnabled(false);
 		add(cmbFilter);
 		cmbFilter.addActionListener(this);
 	
+		cmbFilter2 = new JComboBox();
+		cmbFilter2.setFont(new Font("Constantia", Font.PLAIN, 25));
+		cmbFilter2.setEnabled(false);
+		cmbFilter2.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
+		cmbFilter2.setBounds(1110, 206, 264, 50);
+		cmbFilter2.setEnabled(false);
+		add(cmbFilter2);
+		cmbFilter2.addActionListener(this);
+		
 		txtSearch = new JTextField();
 		txtSearch.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
-		txtSearch.setBounds(94, 206, 815, 50);
+		txtSearch.setBounds(94, 206, 733, 50);
 		txtSearch.setEditable(getFocusTraversalKeysEnabled());
 		txtSearch.setColumns(10);
 		add(txtSearch);
@@ -218,7 +230,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		btnLupa = new JButton("");
 		btnLupa.setBackground(UIManager.getColor("ScrollPane.background"));
 		btnLupa.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/lupa_azul.png")));
-		btnLupa.setBounds(1245, 206, 50, 50);
+		btnLupa.setBounds(1384, 206, 50, 50);
 		add(btnLupa);
 		btnLupa.setOpaque(false);
 		btnLupa.addActionListener(this);
@@ -312,11 +324,13 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 			} else {
 				String sel = (String) comboProductType.getSelectedItem();
 				String filter = (String) cmbFilter.getSelectedItem();
+				String filter2 = (String) cmbFilter2.getSelectedItem();
 				Set<Product> listProduct = new HashSet<Product>();
 				comboProductType.setEnabled(true);
 				if (sel.equals("All")) {
 					listProduct = pMember.getAllProducts();
 					cmbFilter.setEnabled(false);
+					cmbFilter2.setEnabled(false);
 				} else if (sel.equals("Instrument")) {
 					listProduct = pMember.searchInstrument(search);					
 				} else if (sel.equals("Component")) {
@@ -331,6 +345,11 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 						listProduct = pMember.searchProductByClass(filter, listProduct);
 					}
 				}		
+				if (filter2 != null) {
+					if (!filter2.equals("") || !filter2.isBlank()) {
+						listProduct = pMember.searchProductByType(filter2, listProduct);
+					}
+				}	
 				if (chckbxSale.isSelected()) {
 					listProduct = pMember.searchProductInSale(listProduct);
 				}
@@ -449,6 +468,31 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	    }
 	    cmbFilter.setModel(filterModel);
 	    cmbFilter.setEnabled(true);
+	    
+	    DefaultComboBoxModel<String> filter2Model = new DefaultComboBoxModel<String>();
+	    if (selectedType != null) {
+	        switch (selectedType) {
+	            case "Instrument":
+	            	filter2Model.addElement("");
+	                filter2Model.addElement("ACOUSTIC");
+	                filter2Model.addElement("ELECTRONIC");
+	                break;
+	            case "Component":
+	            	filter2Model.addElement("");
+	                filter2Model.addElement("ARCHITECTURE");
+	                filter2Model.addElement("TUNNING");
+	                filter2Model.addElement("CONNECTION");
+	                break;
+	            case "Accessory":
+	            	filter2Model.addElement("");
+	                filter2Model.addElement("AUDIO");
+	                filter2Model.addElement("CONNECTION");
+	                filter2Model.addElement("ITEM");
+	                break;
+	        }
+	    }
+	    cmbFilter2.setModel(filter2Model);
+	    cmbFilter2.setEnabled(true);
 	}
 	
 	public void keyPressed(KeyEvent e) {

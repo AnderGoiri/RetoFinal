@@ -230,7 +230,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			ctmt = con.prepareCall("{CALL select_accessory()}");
 			rs = ctmt.executeQuery();
-			System.out.println(search);
 			while (rs.next()) {
 				if (rs.getBoolean("isActive") == true) {
 					if (!search.equals("")) {
@@ -687,24 +686,25 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		con = connection.openConnection();
 		
 		try {
-			ctmt = con.prepareCall("UPDATE user SET username=?, name=?, surname=?, mail=?");
-			ctmt.setString(1, m.getUserName());
-			ctmt.setString(2, m.getName());
-			ctmt.setString(3, m.getSurname());
-			ctmt.setString(4, m.getMail());
-			ctmt.executeQuery();
+			stmt = con.prepareStatement("UPDATE user SET username=?, name=?, surname=?, mail=? WHERE idUser=?");
+			stmt.setString(1, m.getUserName());
+			stmt.setString(2, m.getName());
+			stmt.setString(3, m.getSurname());
+			stmt.setString(4, m.getMail());
+			stmt.setInt(5, m.getIdUser());
+			stmt.executeUpdate();
 			
-			ctmt = con.prepareCall("UPDATE member SET address=?, creditCard=?, ");
-			ctmt.setString(1, m.getAddress());
-			ctmt.setString(2, m.getCreditCard());
-			
-			ctmt.executeQuery();
+			stmt = con.prepareCall("UPDATE member SET address=?, creditCard=? WHERE idUser=? ");
+			stmt.setString(1, m.getAddress());
+			stmt.setString(2, m.getCreditCard());
+			stmt.setInt(3, m.getIdUser());
+			stmt.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				connection.closeConnection(ctmt, con);
+				connection.closeConnection(stmt, con);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

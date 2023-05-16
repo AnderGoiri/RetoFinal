@@ -84,6 +84,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 					ctmt.setString(10, p.getColor());
 					ctmt.setString(11, ((Instrument) p).getClassInstrument().getLabel());
 					ctmt.setString(12, ((Instrument) p).getTypeInstrument().getLabel());
+					
+					ctmt.executeQuery();
 				}
 				if (p instanceof Component) {
 					ctmt = con.prepareCall("{CALL insert_new_component(?,?,?,?,?,?,?,?,?,?,?,?}");
@@ -100,6 +102,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 					ctmt.setString(10, p.getColor());
 					ctmt.setString(11, ((Component) p).getClassComponent().getLabel());
 					ctmt.setString(12, ((Component) p).getTypeComponent().getLabel());	
+					ctmt.executeQuery();
 				}
 				if (p instanceof Accessory) {
 					ctmt = con.prepareCall("{CALL insert_new_accessory(?,?,?,?,?,?,?,?,?,?,?,?}");
@@ -116,6 +119,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 					ctmt.setString(10, p.getColor());
 					ctmt.setString(11, ((Accessory) p).getClassAccessory().getLabel());
 					ctmt.setString(12, ((Accessory) p).getTypeAccessory().getLabel());
+					ctmt.executeQuery();
 				}	
 			} else {
 				throw new ProductFoundException();

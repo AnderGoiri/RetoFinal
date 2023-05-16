@@ -7,7 +7,7 @@ package model;
  *         around the "nonElectric" value and read it as "Non-electric"
  */
 public enum EnumClassAccessory {
-	Electric("Electric"), nonElectric("Non-electric");
+	ELECTRIC("Electric"), NONELECTRIC("Non-electric");
 
 	private final String label;
 
@@ -23,9 +23,9 @@ public enum EnumClassAccessory {
 		EnumClassAccessory enumValue = null;
 
 		if (label.equalsIgnoreCase("Electric")) {
-			enumValue = EnumClassAccessory.Electric;
-		}else if (label.equalsIgnoreCase("nonElectric")) {
-			enumValue = EnumClassAccessory.nonElectric;
+			enumValue = EnumClassAccessory.ELECTRIC;
+		}else if (label.equalsIgnoreCase("Non-electric")) {
+			enumValue = EnumClassAccessory.NONELECTRIC;
 		}
 		
 		return enumValue;
