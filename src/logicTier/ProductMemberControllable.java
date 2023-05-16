@@ -47,6 +47,6 @@ public interface ProductMemberControllable {
 	
 	public char getTypeProduct(int idProduct) throws SQLException;
 
-	public Set<Product> getAllProducts() throws SQLException;
+	public Set<Product> getAllProducts(String search) throws SQLException;
 
 }

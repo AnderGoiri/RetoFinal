@@ -328,7 +328,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 				Set<Product> listProduct = new HashSet<Product>();
 				comboProductType.setEnabled(true);
 				if (sel.equals("All")) {
-					listProduct = pMember.getAllProducts();
+					listProduct = pMember.getAllProducts(search);
 					cmbFilter.setEnabled(false);
 					cmbFilter2.setEnabled(false);
 				} else if (sel.equals("Instrument")) {
@@ -338,7 +338,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 				} else if (sel.equals("Accessory")) {
 					listProduct = pMember.searchAccessory(search);
 				} else {
-					listProduct = pMember.getAllProducts();
+					listProduct = pMember.getAllProducts(search);
 				}
 				if (filter != null) {
 					if (!filter.equals("") || !filter.isBlank()) {
@@ -402,8 +402,9 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	}
 	
 	public Set<Product> showAllProducts(){
+		String search = "";
 		try {
-			listProduct = pMember.getAllProducts();
+			listProduct = pMember.getAllProducts(search);
 			model.setRowCount(0);
 			for (Product prod : listProduct) {
 				if (prod instanceof Instrument) {

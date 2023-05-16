@@ -815,7 +815,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @author Ander Goirigolzarri Iturburu
 	 */
 	@Override
-	public Set<Product> getAllProducts() throws SQLException {
+	public Set<Product> getAllProducts(String search) throws SQLException {
 		con = connection.openConnection();
 		ctmt = con.prepareCall("{CALL select_all_products}");
 		rs = ctmt.executeQuery();
@@ -823,50 +823,103 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		Set<Product> setProducts = new HashSet<Product>();
 
 		while (rs.next()) {
-			int idProduct = rs.getInt("idProduct");
-			String name = rs.getString("name");
-			float unitPrice = rs.getInt("unitPrice");
-			String description = rs.getString("description");
-			int stock = rs.getInt("stock");
-			String brand = rs.getString("brand");
-			String model = rs.getString("model");
-			String color = rs.getString("color");
-			boolean saleActive = rs.getBoolean("saleActive");
-			int salePercentage = rs.getInt("salePercentage");
-			boolean isActive = rs.getBoolean("isActive");
+			if (rs.getBoolean("isActive") == true) {
+				if (!search.equals("")) {
+					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
+							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+						int idProduct = rs.getInt("idProduct");
+						String name = rs.getString("name");
+						float unitPrice = rs.getInt("unitPrice");
+						String description = rs.getString("description");
+						int stock = rs.getInt("stock");
+						String brand = rs.getString("brand");
+						String model = rs.getString("model");
+						String color = rs.getString("color");
+						boolean saleActive = rs.getBoolean("saleActive");
+						int salePercentage = rs.getInt("salePercentage");
+						boolean isActive = rs.getBoolean("isActive");
 
-			if (getTypeProduct(idProduct) == 'I') { // check if the value exists in the instrument table
-				EnumClassInstrument classInstrument = EnumClassInstrument.getValue(rs.getString(12));
-				EnumTypeInstrument typeInstrument = EnumTypeInstrument.getValue(rs.getString(13));
+						if (getTypeProduct(idProduct) == 'I') { // check if the value exists in the instrument table
+							EnumClassInstrument classInstrument = EnumClassInstrument.getValue(rs.getString(12));
+							EnumTypeInstrument typeInstrument = EnumTypeInstrument.getValue(rs.getString(13));
 
-				Instrument instrument = new Instrument(idProduct, name, unitPrice, description, stock, brand, model,
-						color, saleActive, salePercentage, isActive, classInstrument, typeInstrument);
+							Instrument instrument = new Instrument(idProduct, name, unitPrice, description, stock,
+									brand, model, color, saleActive, salePercentage, isActive, classInstrument,
+									typeInstrument);
 
-				setProducts.add(instrument);
+							setProducts.add(instrument);
 
-			} else if (getTypeProduct(idProduct) == 'C') { // check if the value exists in the component table
-				EnumClassComponent classComponent = EnumClassComponent.getValue(rs.getString(12));
+						} else if (getTypeProduct(idProduct) == 'C') { // check if the value exists in the component
+																		// table
+							EnumClassComponent classComponent = EnumClassComponent.getValue(rs.getString(12));
 
-				EnumTypeComponent typeComponent = EnumTypeComponent.getValue(rs.getString(13));
+							EnumTypeComponent typeComponent = EnumTypeComponent.getValue(rs.getString(13));
 
-				Component component = new Component(idProduct, name, unitPrice, description, stock, brand, model, color,
-						saleActive, salePercentage, isActive, classComponent, typeComponent);
+							Component component = new Component(idProduct, name, unitPrice, description, stock, brand,
+									model, color, saleActive, salePercentage, isActive, classComponent, typeComponent);
 
-				setProducts.add(component);
+							setProducts.add(component);
 
-			} else if (getTypeProduct(idProduct) == 'A') { // check if the value exists in the accessory table
-				EnumClassAccessory classAccessory = EnumClassAccessory.getValue(rs.getString(12));
+						} else if (getTypeProduct(idProduct) == 'A') { // check if the value exists in the accessory
+																		// table
+							EnumClassAccessory classAccessory = EnumClassAccessory.getValue(rs.getString(12));
 
-				EnumTypeAccessory typeAccessory = EnumTypeAccessory.getValue(rs.getString(13));
+							EnumTypeAccessory typeAccessory = EnumTypeAccessory.getValue(rs.getString(13));
 
-				Accessory accessory = new Accessory(idProduct, name, unitPrice, description, stock, brand, model, color,
-						saleActive, salePercentage, isActive, classAccessory, typeAccessory);
+							Accessory accessory = new Accessory(idProduct, name, unitPrice, description, stock, brand,
+									model, color, saleActive, salePercentage, isActive, classAccessory, typeAccessory);
 
-				setProducts.add(accessory);
+							setProducts.add(accessory);
+						}
+					}
+				} else {
+					int idProduct = rs.getInt("idProduct");
+					String name = rs.getString("name");
+					float unitPrice = rs.getInt("unitPrice");
+					String description = rs.getString("description");
+					int stock = rs.getInt("stock");
+					String brand = rs.getString("brand");
+					String model = rs.getString("model");
+					String color = rs.getString("color");
+					boolean saleActive = rs.getBoolean("saleActive");
+					int salePercentage = rs.getInt("salePercentage");
+					boolean isActive = rs.getBoolean("isActive");
+
+					if (getTypeProduct(idProduct) == 'I') { // check if the value exists in the instrument table
+						EnumClassInstrument classInstrument = EnumClassInstrument.getValue(rs.getString(12));
+						EnumTypeInstrument typeInstrument = EnumTypeInstrument.getValue(rs.getString(13));
+
+						Instrument instrument = new Instrument(idProduct, name, unitPrice, description, stock, brand,
+								model, color, saleActive, salePercentage, isActive, classInstrument, typeInstrument);
+
+						setProducts.add(instrument);
+
+					} else if (getTypeProduct(idProduct) == 'C') { // check if the value exists in the component
+																	// table
+						EnumClassComponent classComponent = EnumClassComponent.getValue(rs.getString(12));
+
+						EnumTypeComponent typeComponent = EnumTypeComponent.getValue(rs.getString(13));
+
+						Component component = new Component(idProduct, name, unitPrice, description, stock, brand,
+								model, color, saleActive, salePercentage, isActive, classComponent, typeComponent);
+
+						setProducts.add(component);
+
+					} else if (getTypeProduct(idProduct) == 'A') { // check if the value exists in the accessory
+																	// table
+						EnumClassAccessory classAccessory = EnumClassAccessory.getValue(rs.getString(12));
+
+						EnumTypeAccessory typeAccessory = EnumTypeAccessory.getValue(rs.getString(13));
+
+						Accessory accessory = new Accessory(idProduct, name, unitPrice, description, stock, brand,
+								model, color, saleActive, salePercentage, isActive, classAccessory, typeAccessory);
+
+						setProducts.add(accessory);
+					}
+				}
 			}
 		}
 		return setProducts;
 	}
 
 }
-
