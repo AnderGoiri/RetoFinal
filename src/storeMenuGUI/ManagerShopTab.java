@@ -27,6 +27,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 
@@ -58,6 +59,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 	private JLabel lblSearchBy;
 	private JCheckBox chckbxIsInSale;
 	private DefaultComboBoxModel<String> searchModel = new DefaultComboBoxModel<>();
+	private ManagerProductManagementTab mngProduct;
 
 	/**
 	 * Creates a new instance of the ManagerShopTab class. Initializes and
@@ -191,13 +193,17 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if (e.getSource().equals(btnSearch) && textFieldSearchBar.getText().isBlank()
 				&& comboBoxSearchBy.getSelectedItem().equals("----------")) {
 			showAllProducts();
+			
 		} else if (e.getSource().equals(btnSearch) && !textFieldSearchBar.getText().isBlank()) {
+			
 			String selectedOption = comboBoxSearchBy.getSelectedItem().toString();
 
 			switch (selectedOption) {
+
 			case "ID":
 				try {
 					ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
@@ -270,6 +276,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 					JOptionPane.showMessageDialog(this, e1.getMessage());
 				}
 				break;
+
 			case "Type":
 				try {
 					ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
@@ -280,6 +287,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 					JOptionPane.showMessageDialog(this, e1.getMessage());
 				}
 				break;
+
 			case "Class":
 				try {
 					ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
@@ -292,10 +300,36 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 				break;
 			}
 
-		} else if (e.getSource().equals(btnShow))
+		} else if (e.getSource().equals(btnShow) && productsTable.getSelectedRow() != -1) {
+			// Use the product controller to create a product object using the getValueAt o
+			// searching it inside the db
+			ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
+			Product selectedProduct = null, auxProduct;
+			int idSelectedProduct;
 
-		{
+			try {
+				idSelectedProduct = (int) productsTable.getValueAt(productsTable.getSelectedRow(), 0);
 
+				auxProduct = proManager.searchProductById(idSelectedProduct, proManager.getAllProducts());
+
+				if (auxProduct instanceof Instrument) {
+					selectedProduct = new Instrument();
+				} else if (auxProduct instanceof Component) {
+					selectedProduct = new Component();
+				} else if (auxProduct instanceof Accessory) {
+					selectedProduct = new Accessory();
+				}
+
+				selectedProduct = auxProduct;
+
+			} catch (ProductNotFoundException | SQLException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+			}
+
+			mngProduct = new ManagerProductManagementTab(selectedProduct);
+			((JTabbedPane) this.getParent()).insertTab("Manage", null, mngProduct, null,
+					((JTabbedPane) this.getParent()).indexOfComponent(this) + 1);
+			((JTabbedPane) this.getParent()).setSelectedIndex(((JTabbedPane) this.getParent()).getSelectedIndex() + 1);
 		}
 
 	}
@@ -324,31 +358,33 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		modelProduct = (DefaultTableModel) productsTable.getModel();
 		modelProduct.setRowCount(0);
 		Object[] rowData = null;
-		if (searchProducts instanceof Instrument) {
-			Instrument instrument = (Instrument) searchProducts;
-			rowData = new Object[] { instrument.getIdProduct(), instrument.getNameP(), instrument.getPrice(),
-					instrument.getDescriptionP(), instrument.getStock(), instrument.getBrand(), instrument.getModel(),
-					instrument.getColor(), instrument.isSaleActive() ? "Yes" : "No", instrument.getSalePercentage(),
-					instrument.isActive() ? "Yes" : "No", instrument.getClassInstrument().getLabel(),
-					instrument.getTypeInstrument().getLabel() };
+		for (Product product : searchProducts) {
+			if (product instanceof Instrument) {
+				Instrument instrument = (Instrument) product;
+				rowData = new Object[] { instrument.getIdProduct(), instrument.getNameP(), instrument.getPrice(),
+						instrument.getDescriptionP(), instrument.getStock(), instrument.getBrand(),
+						instrument.getModel(), instrument.getColor(), instrument.isSaleActive() ? "Yes" : "No",
+						instrument.getSalePercentage(), instrument.isActive() ? "Yes" : "No",
+						instrument.getClassInstrument().getLabel(), instrument.getTypeInstrument().getLabel() };
 
-		} else if (searchProducts instanceof Component) {
-			Component component = (Component) searchProducts;
-			rowData = new Object[] { component.getIdProduct(), component.getNameP(), component.getPrice(),
-					component.getDescriptionP(), component.getStock(), component.getBrand(), component.getModel(),
-					component.getColor(), component.isSaleActive() ? "Yes" : "No", component.getSalePercentage(),
-					component.isActive() ? "Yes" : "No", component.getClassComponent().getLabel(),
-					component.getTypeComponent().getLabel() };
+			} else if (product instanceof Component) {
+				Component component = (Component) product;
+				rowData = new Object[] { component.getIdProduct(), component.getNameP(), component.getPrice(),
+						component.getDescriptionP(), component.getStock(), component.getBrand(), component.getModel(),
+						component.getColor(), component.isSaleActive() ? "Yes" : "No", component.getSalePercentage(),
+						component.isActive() ? "Yes" : "No", component.getClassComponent().getLabel(),
+						component.getTypeComponent().getLabel() };
 
-		} else if (searchProducts instanceof Accessory) {
-			Accessory accessory = (Accessory) searchProducts;
-			rowData = new Object[] { accessory.getIdProduct(), accessory.getNameP(), accessory.getPrice(),
-					accessory.getDescriptionP(), accessory.getStock(), accessory.getBrand(), accessory.getModel(),
-					accessory.getColor(), accessory.isSaleActive() ? "Yes" : "No", accessory.getSalePercentage(),
-					accessory.isActive() ? "Yes" : "No", accessory.getClassAccessory().getLabel(),
-					accessory.getTypeAccessory().getLabel() };
+			} else if (product instanceof Accessory) {
+				Accessory accessory = (Accessory) product;
+				rowData = new Object[] { accessory.getIdProduct(), accessory.getNameP(), accessory.getPrice(),
+						accessory.getDescriptionP(), accessory.getStock(), accessory.getBrand(), accessory.getModel(),
+						accessory.getColor(), accessory.isSaleActive() ? "Yes" : "No", accessory.getSalePercentage(),
+						accessory.isActive() ? "Yes" : "No", accessory.getClassAccessory().getLabel(),
+						accessory.getTypeAccessory().getLabel() };
+			}
+			modelProduct.addRow(rowData);
 		}
-		modelProduct.addRow(rowData);
 	}
 
 }

@@ -419,8 +419,10 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	@Override
 	public Set<Product> searchProductByName(String name, Set<Product> listaProd) {
 		Set<Product> listaFiltr = new HashSet<Product>();
+		name = name.toLowerCase();
 		for (Product prod : listaProd) {
-			if (prod.getNameP().equals(name)) {
+			String auxName = prod.getNameP().toLowerCase();
+			if (auxName.contains(name)) {
 				listaFiltr.add(prod);
 			}
 		}
@@ -437,8 +439,10 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	@Override
 	public Set<Product> searchProductByBrand(String brand, Set<Product> listaProd) {
 		Set<Product> listaFiltr = new HashSet<Product>();
+		brand  = brand.toLowerCase();
 		for (Product prod : listaProd) {
-			if (prod.getBrand().equals(brand)) {
+			String auxBrand = prod.getBrand().toLowerCase();
+			if (auxBrand.contains(brand)) {
 				listaFiltr.add(prod);
 			}
 		}
@@ -455,8 +459,10 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	@Override
 	public Set<Product> searchProductByModel(String model, Set<Product> listaProd) {
 		Set<Product> listaFiltr = new HashSet<Product>();
+		model = model.toLowerCase();
 		for (Product prod : listaProd) {
-			if (prod.getModel().equals(model)) {
+			String auxModel = prod.getModel().toLowerCase();
+			if (auxModel.contains(model)) {
 				listaFiltr.add(prod);
 			}
 		}
@@ -476,7 +482,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	@Override
 	public Set<Product> searchProductByType(String type, Set<Product> listaProd) {
 		Set<Product> listaFiltr = new HashSet<Product>();
-
 		for (Product prod : listaProd) {
 			if (prod instanceof Instrument) {
 				EnumTypeInstrument enumType = EnumTypeInstrument.valueOf(type);
