@@ -141,7 +141,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		Set<Product> listaProductos = new HashSet<Product>();
 		ResultSet rs = null;
 		try {
-			connection.openConnection();
+			con = connection.openConnection();
 
 			ctmt = con.prepareCall("{CALL select_component()}");
 			rs = ctmt.executeQuery();
@@ -220,14 +220,15 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * 
 	 * @return a list of accessories
 	 * @author Jago
+	 * @throws SQLException 
 	 */
 	@Override
-	public Set<Product> searchAccessory(String search) throws ProductNotFoundException {
+	public Set<Product> searchAccessory(String search) throws ProductNotFoundException, SQLException {
 		Set<Product> listaProductos = new HashSet<Product>();
 		ResultSet rs = null;
+		
 		try {
-			connection.openConnection();
-
+			con = connection.openConnection();
 			ctmt = con.prepareCall("{CALL select_accessory()}");
 			rs = ctmt.executeQuery();
 			while (rs.next()) {
@@ -286,14 +287,15 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 						listaProductos.add(prod);
 					}
-
+					
 				}
+				
 			}
+			connection.closeConnection(ctmt, con, rs);
 		} catch (SQLException e) {		
 			e.printStackTrace();
-		} finally {
-			//connection.closeConnection(ctmt, con, rs);
-		}
+		} 
+			
 		return listaProductos;
 	}
 	

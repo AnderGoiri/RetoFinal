@@ -19,7 +19,7 @@ public interface ProductMemberControllable {
 	
 	public Set<Product> searchComponent(String search) throws ProductNotFoundException;
 	
-	public Set<Product> searchAccessory(String search) throws ProductNotFoundException;
+	public Set<Product> searchAccessory(String search) throws ProductNotFoundException, SQLException;
 	
 	public Set<Product> searchProductByName(String name, Set<Product> listaProd) throws NameNotFoundException;
 	

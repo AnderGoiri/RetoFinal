@@ -1,5 +1,6 @@
 package logicTier;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -95,6 +96,15 @@ public class GateDB {
 	public void closeConnection(Statement stmt, Connection conn, ResultSet rset) throws SQLException {
 		if (stmt != null)
 			stmt.close();
+		if (rset != null)
+			rset.close();
+		if (conn != null)
+			conn.close();
+	}
+
+	public void closeConnection(CallableStatement ctmt, Connection conn, ResultSet rset) throws SQLException {
+		if (ctmt != null)
+			ctmt.close();
 		if (rset != null)
 			rset.close();
 		if (conn != null)
