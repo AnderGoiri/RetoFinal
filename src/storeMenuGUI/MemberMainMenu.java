@@ -13,7 +13,6 @@ public class MemberMainMenu extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ShopMemberMenu panelStore;
-	private MemberRepairPanel panelRepair;
 	private MemberAccountPanel panelAccount;
 
 	/**
@@ -40,14 +39,7 @@ public class MemberMainMenu extends JPanel {
 		panelStore = new ShopMemberMenu(auxUser);
 		panelStore.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Store", null, panelStore, null);
-		/**
-		 * Add a panel called panelRepair to the JTabbedPane tab where the member can
-		 * request a repair of a product
-		 */
-		panelRepair = new MemberRepairPanel();
-		panelRepair.setForeground(new Color(0, 151, 178));
-		tabbedPane.setFont(new Font("Elephant", Font.PLAIN, 15));
-		tabbedPane.addTab("Repair", null, panelRepair, null);
+
 		
 	/**
 	 * Add a panel called panelAccount to the JTabbedPane tab where the member can consult his account information.

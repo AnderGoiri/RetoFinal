@@ -69,6 +69,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		} else {
 			throw new UserFoundException("User found");
 		}
+		gate.closeConnection();
 	}
 
 	/**
@@ -111,6 +112,7 @@ public class LoginControllableImplementation implements LoginControllable {
 			// If User exists, throw UserFoundException.
 			throw new UserFoundException("User found");
 		}
+		gate.closeConnection();
 	}
 
 	/**
@@ -148,15 +150,13 @@ public class LoginControllableImplementation implements LoginControllable {
 		// Check if the result set contains a manager or member ID
 		int memberId = rset.getInt("m.idUser");
 		int managerId = rset.getInt("ma.idUser");
-
+		
 		if (memberId != 0) {
 			// This is a member
-			return createMember(memberId);
-
+			return createMember(memberId,conn);
 		} else if (managerId != 0) {
 			// This is a manager
-			return createManager(managerId);
-
+			return createManager(managerId,conn);
 		} else {
 			throw new UserNotFoundException("Invalid user");
 		}
@@ -179,7 +179,7 @@ public class LoginControllableImplementation implements LoginControllable {
 
 	//TODO Comenta Ander
 	@Override
-	public Member createMember(int idUser) throws SQLException, WrongCredentialsException {
+	public Member createMember(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
 
 		ptmt = conn.prepareStatement("SELECT * FROM vw_member WHERE idUser =" + idUser + ";");
 
@@ -197,13 +197,15 @@ public class LoginControllableImplementation implements LoginControllable {
 		LocalDate dateRegister = rset.getDate(7).toLocalDate();
 		String address = rset.getString(8);
 		String creditCard = rset.getString(9);
-
+		
+		gate.closeConnection();
+		
 		return new Member(username, name, surname, password, mail, dateRegister, address, creditCard);
 	}
 
 	//TODO Comenta Ander
 	@Override
-	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException {
+	public Manager createManager(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
 
 		ptmt = conn.prepareStatement("SELECT * FROM vw_manager WHERE idUser =" + idUser + ";");
 
@@ -224,7 +226,9 @@ public class LoginControllableImplementation implements LoginControllable {
 		boolean isTechnician = rset.getBoolean(10);
 		boolean isAdmin = rset.getBoolean(11);
 		EnumStatusManager statusManager = EnumStatusManager.getValue(rset.getString(12));
-
+		
+		gate.closeConnection();
+		
 		return new Manager(username, name, surname, password, mail, dateRegister, idSupervisor, isSupervisor,
 				isTechnician, isAdmin, statusManager);
 	}

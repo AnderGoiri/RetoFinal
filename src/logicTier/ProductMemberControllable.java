@@ -47,13 +47,10 @@ public interface ProductMemberControllable {
 	
 	public char getTypeProduct(int idProduct) throws SQLException;
 	
-	public boolean existsProduct(int search) throws ProductNotFoundException;
-	
 	public void modifyMember(Member m, String username) throws SQLException;
 
 	public Set<Product> getAllProducts(String search) throws SQLException;
 
 	public Product searchProductById(int pId, Set<Product> listaProd) throws ProductNotFoundException;
 
-	public void modifyMember(Member m) throws SQLException;
 }

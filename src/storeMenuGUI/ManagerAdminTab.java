@@ -14,6 +14,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class ManagerAdminTab extends JPanel implements ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JComboBox<String> comboBoxStatus;
 	private JLabel lblManagerSignUpRequests, lblManagerStatus;
 	private JScrollPane scrollPaneManagerAccounts;
@@ -27,27 +31,27 @@ public class ManagerAdminTab extends JPanel implements ActionListener{
 	 */
 	public ManagerAdminTab() {
 		setLayout(null);
-		setBounds(0, 0, 1860, 910);
+		setBounds(0, 0, 984, 718);
 		
 		
 		// --- JLabels --- //
 		
 		lblManagerSignUpRequests = new JLabel("Manager Sign Up Requests");
 		lblManagerSignUpRequests.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManagerSignUpRequests.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblManagerSignUpRequests.setBounds(50, 50, 550, 80);
+		lblManagerSignUpRequests.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblManagerSignUpRequests.setBounds(50, 50, 322, 80);
 		add(lblManagerSignUpRequests);
 		
 		lblManagerStatus = new JLabel("Manager Account State:");
-		lblManagerStatus.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblManagerStatus.setBounds(50, 815, 350, 50);
+		lblManagerStatus.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblManagerStatus.setBounds(50, 627, 233, 50);
 		add(lblManagerStatus);
 		
 		
 		// --- JScrollPane --- //
 		
 		scrollPaneManagerAccounts = new JScrollPane();
-		scrollPaneManagerAccounts.setBounds(50, 165, 1760, 600);
+		scrollPaneManagerAccounts.setBounds(50, 152, 876, 463);
 		add(scrollPaneManagerAccounts);
 		
 		
@@ -67,8 +71,8 @@ public class ManagerAdminTab extends JPanel implements ActionListener{
 		// --- JButton --- //
 		
 		btnApply = new JButton("Apply");
-		btnApply.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		btnApply.setBounds(1610, 815, 200, 50);
+		btnApply.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnApply.setBounds(755, 631, 171, 43);
 		add(btnApply);
 		btnApply.addActionListener(this);
 		

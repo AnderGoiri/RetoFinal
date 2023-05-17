@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -18,6 +19,8 @@ import javax.swing.JPasswordField;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 
+import exceptions.UserNotFoundException;
+import exceptions.WrongCredentialsException;
 import logicTier.LoginControllable;
 import logicTier.LoginFactory;
 import model.User;
@@ -197,7 +200,7 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 					User auxUser = login.userLogin(username, password);
 
 					// On successful log in, create a new StoreMenuWindow with the auxUser
-					
+
 					StoreMenuWindow storeMenuPanel = new StoreMenuWindow(this, true, auxUser);
 					storeMenuPanel.setVisible(true);
 					storeMenuPanel.setLocationRelativeTo(null);
@@ -205,7 +208,11 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 					// Once StoreMenuWindow is created, dispose this window
 					((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent())).dispose();
 				}
-			} catch (Exception e1) {
+			} catch (SQLException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+			} catch (WrongCredentialsException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+			} catch (UserNotFoundException e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}
 		}

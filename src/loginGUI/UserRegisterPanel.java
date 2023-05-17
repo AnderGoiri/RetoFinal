@@ -304,14 +304,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 							chckbxTechnician.isSelected(), false, EnumStatusManager.P));
 
 				}
-				/*
-				 * userRegisterPanel.clearRegisterFields(); cardLayout.show(switchLilPanel,
-				 * "LogIn"); btnLogIn.setEnabled(false); btnLogIn.setVisible(false);
-				 * btnSignUp.setEnabled(true); btnSignUp.setVisible(true);
-				 */
 				changePanel();
-				
-
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}
@@ -322,10 +315,8 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 				textFieldPassword.setEchoChar('*');
 			}
 		}
-
 	}
 	private void changePanel() {
-		// TODO Auto-generated method stub
 		((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
 		.getUserLoginPanel().setVisible(true);
 		this.clearRegisterFields();
@@ -338,7 +329,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (e.getSource() instanceof JCheckBox) {
 				((JCheckBox) e.getSource()).doClick();
@@ -359,7 +349,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 	}
 
 	public void clearRegisterFields() {
-		// TODO Auto-generated method stub
 		chckbxManager.setSelected(false);
 		chckbxShowHideSignUp.setSelected(false);
 		textFieldAddress.setText("");
@@ -385,9 +374,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		if(e.getComponent().equals(lblLogIn)) {
 			lblLogIn.setFont(font2);
 		}
-		
-
-
 	}
 
 	@Override
@@ -395,7 +381,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		if(e.getComponent().equals(lblLogIn)) {
 			lblLogIn.setFont(font1);
 		}
-
 	}
 
 	
@@ -405,5 +390,4 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 	@Override
 	public void mouseReleased(MouseEvent e) {}
-
 }

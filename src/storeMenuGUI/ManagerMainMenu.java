@@ -22,8 +22,6 @@ public class ManagerMainMenu extends JPanel {
 
 	private ManagerShopTab mngShop;
 	private ManagerInsertProductTab mngInsert;
-	private ManagerTechnicianRepairTab mngTechRepair;
-	private ManagerSuperiorRepairTab mngSupRepair;
 	private JTabbedPane tabbedPane;
 	private ManagerAccountTab mngAccount;
 
@@ -46,12 +44,6 @@ public class ManagerMainMenu extends JPanel {
 
 		mngInsert = new ManagerInsertProductTab();
 		tabbedPane.addTab("Insert", mngInsert);
-
-		mngTechRepair = new ManagerTechnicianRepairTab();
-		tabbedPane.addTab("Repair Tech", mngTechRepair);
-
-		mngSupRepair = new ManagerSuperiorRepairTab();
-		tabbedPane.addTab("Repair Sup", mngSupRepair);
 
 		mngAccount = new ManagerAccountTab(auxUser);
 		tabbedPane.addTab("Account", mngAccount);

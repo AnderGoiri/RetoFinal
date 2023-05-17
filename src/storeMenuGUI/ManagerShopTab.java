@@ -42,9 +42,7 @@ import javax.swing.JCheckBox;
  * user actions.
  * 
  * @author Ander Goirigolzarri Iturburu
- * @author Francisco Rafael de Ysasi González <<<<<<< HEAD =======
- * 
- *         >>>>>>> 8f05554af0aa3c03c241c64999a0f51067489cdb
+ * @author Francisco Rafael de Ysasi González 
  */
 public class ManagerShopTab extends JPanel implements ActionListener, KeyListener {
 

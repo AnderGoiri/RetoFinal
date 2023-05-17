@@ -113,7 +113,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			}
 		}
-
+		connection.closeConnection();
 		return listaProductos;
 	}
 
@@ -193,6 +193,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			}
 		}
+		connection.closeConnection();
 		return listaProductos;
 	}
 
@@ -270,7 +271,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 
 			}
-
+			connection.closeConnection();
 		}
 		return listaProductos;
 	}
@@ -406,6 +407,9 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 	/**
 	 * This method searches in a product list for products with any sale
+	 * 
+	 * @return Set<Product>
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	public Set<Product> searchProductInSale(Set<Product> listaProd) {
 		Set<Product> listaFiltr = new HashSet<Product>();
@@ -455,12 +459,11 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m) throws SQLException, Exception {
 		String stPurch = "In progress";
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
+		con = connection.openConnection();
 
 		if (p.isActive() == true) {
 			if (!checkProduct(p)) {
 				pTotal.getSetProduct().add(p);
-
-				con = connection.openConnection();
 				ctmt = con.prepareCall("UPDATE product SET stock=? WHERE idProduct=?");
 				ctmt.setInt(1, p.setStock((int) (p.getStock() - 1f)));
 				ctmt.setInt(2, p.getIdProduct());
@@ -469,8 +472,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 				if ((pTotal == null) || (!pTotal.getStatusPurchase().equals(statusPurch))) {
 					pTotal = new Purchase();
-					con = connection.openConnection();
-
 					ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
 
 					ctmt.setInt(1, m.getIdUser());
@@ -503,7 +504,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					// If pTotal is not null, there's already a purchase in progress that we need to
 					// update
 
-					con = connection.openConnection();
 					ctmt = con.prepareCall("UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
 					ctmt.setInt(1, pTotal.getPurchaseQuantity() + 1);
 					ctmt.setFloat(2, pTotal.getPurchaseTotalCost() + p.getPrice());
@@ -523,7 +523,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} else {
 			throw new ProductNotFoundException();
 		}
-
+		connection.closeConnection();
 		return pTotal;
 	}
 
@@ -565,6 +565,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Purchase removeProduct(Purchase pTotal, Product p) throws Exception {
 		Set<Product> pAux = new HashSet<Product>();
+		con = connection.openConnection();
 		if (pTotal == null) {
 			throw new PurchaseNotFoundException();
 		} else {
@@ -576,26 +577,16 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			pTotal.setSetProduct(pAux);
 			pTotal.setPurchaseTotalCost(pTotal.getPurchaseTotalCost() - p.getPrice());
 			pTotal.setPurchaseQuantity(pTotal.getPurchaseQuantity() - 1);
-			try {
-				con = connection.openConnection();
-				ctmt = con.prepareCall("UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
-				ctmt.setInt(1, pTotal.getPurchaseQuantity() - 1);
-				ctmt.setFloat(2, pTotal.getPurchaseTotalCost() - p.getPrice());
-				ctmt.setInt(3, pTotal.getIdPurchase());
-				ctmt.executeUpdate();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					connection.closeConnection(ctmt, con, null);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			ctmt = con.prepareCall("UPDATE purchase SET purchaseQuantity=?, totalPrice=?  WHERE idPurchase=?");
+			ctmt.setInt(1, pTotal.getPurchaseQuantity() - 1);
+			ctmt.setFloat(2, pTotal.getPurchaseTotalCost() - p.getPrice());
+			ctmt.setInt(3, pTotal.getIdPurchase());
+			ctmt.executeUpdate();
 
 		}
+		connection.closeConnection();
 		return pTotal;
+
 	}
 
 	/**
@@ -606,26 +597,25 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @param Purchase pTotal
 	 * @author Jago Bartolomé Barroso
 	 * @throws PurchaseNotFoundException
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	@Override
 	public Purchase removePurchase(Purchase pTotal) throws PurchaseNotFoundException, SQLException {
 		String stPurch = "In progress";
-
+		con = connection.openConnection();
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
 
 		if (pTotal.getStatusPurchase().equals(statusPurch)) {
 			stPurch = "Finished";
 			statusPurch = EnumStatusPurchase.getValue(stPurch);
 			pTotal.setStatusPurchase(statusPurch);
-
-			con = connection.openConnection();
 			ctmt = con.prepareCall("UPDATE purchase SET purchaseStatus=?");
 			ctmt.setString(1, stPurch);
 
 		} else {
 			throw new PurchaseNotFoundException();
 		}
+		connection.closeConnection();
 		return pTotal;
 	}
 
@@ -635,32 +625,32 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @param Member m is the current logged-in member with the attributes already
 	 *               changed
 	 * @author Jago
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	@Override
 	public void modifyMember(Member m, String username) throws SQLException {
 		con = connection.openConnection();
 		ResultSet rs = null;
-		
-			stmt = con.prepareStatement("UPDATE user SET username=?, name=?, surname=?, mail=? WHERE username= ?");
-			stmt.setString(1, m.getUserName());
-			stmt.setString(2, m.getName());
-			stmt.setString(3, m.getSurname());
-			stmt.setString(4, m.getMail());
-			stmt.setString(5, username);
-			stmt.executeUpdate();
-			
-			stmt = con.prepareStatement("SELECT * from user where username = " + m.getUserName());
-			rs = stmt.executeQuery();
-			int idU = rs.getInt("idUser");
-			
-			stmt = con.prepareStatement("UPDATE member m SET address=?, creditCard=? WHERE idUser = ?");
-			stmt.setString(1, m.getAddress());
-			stmt.setString(2, m.getCreditCard());
-			stmt.setInt(3, idU);
-			
-			stmt.executeUpdate();
 
+		stmt = con.prepareStatement("UPDATE user SET username=?, name=?, surname=?, mail=? WHERE username= ?");
+		stmt.setString(1, m.getUserName());
+		stmt.setString(2, m.getName());
+		stmt.setString(3, m.getSurname());
+		stmt.setString(4, m.getMail());
+		stmt.setString(5, username);
+		stmt.executeUpdate();
+
+		stmt = con.prepareStatement("SELECT * from user where username = " + m.getUserName());
+		rs = stmt.executeQuery();
+		int idU = rs.getInt("idUser");
+
+		stmt = con.prepareStatement("UPDATE member m SET address=?, creditCard=? WHERE idUser = ?");
+		stmt.setString(1, m.getAddress());
+		stmt.setString(2, m.getCreditCard());
+		stmt.setInt(3, idU);
+
+		stmt.executeUpdate();
+		connection.closeConnection();
 	}
 
 	/**
@@ -668,7 +658,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * 
 	 * @param Member m because we need the id of the member
 	 * @throws PurchaseNotFoundException
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	@Override
 	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException, SQLException {
@@ -698,6 +688,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} else {
 			throw new PurchaseNotFoundException();
 		}
+		connection.closeConnection();
 		return listaPurchase;
 	}
 
@@ -705,11 +696,9 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * Retrieves the type of product based on the given product ID.
 	 *
 	 * @param idProduct The ID of the product.
-	 * @return A character representing the type of product:
-	 *         - 'I' for Instrument
-	 *         - 'C' for Component
-	 *         - 'A' for Accessory
-	 *         - 'U' for Unknown (product not found in any table)
+	 * @return A character representing the type of product: - 'I' for Instrument -
+	 *         'C' for Component - 'A' for Accessory - 'U' for Unknown (product not
+	 *         found in any table)
 	 * @throws SQLException if a database access error occurs.
 	 * @author Ander Goirigolzarri Iturburu
 	 */
@@ -743,6 +732,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		if (rsAccessory.next()) {
 			return 'A'; // 'A' represents Accessory
 		}
+		connection.closeConnection();
 		return 'U'; // 'U' represents Unknown (product not found in any table)
 	}
 
@@ -778,7 +768,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 						int salePercentage = rs.getInt("salePercentage");
 						boolean isActive = rs.getBoolean("isActive");
 
-						if (getTypeProduct(idProduct) == 'I') { // check if the value exists in the instrument table
+						if (getTypeProduct(idProduct) == 'I') { // check if the value f in the instrument table
 							EnumClassInstrument classInstrument = EnumClassInstrument.getValue(rs.getString(12));
 							EnumTypeInstrument typeInstrument = EnumTypeInstrument.getValue(rs.getString(13));
 
@@ -858,13 +848,16 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 			}
 		}
+		connection.closeConnection();
 		return setProducts;
 	}
 
 	/**
-	 * Method for the search of products filtered by id
-	 * In the parameter list of products, the method searches the one thats equal to the id
-	 * @param int pId is the id of the product we want to search, listaProd is the list of all products
+	 * Method for the search of products filtered by id In the parameter list of
+	 * products, the method searches the one thats equal to the id
+	 * 
+	 * @param int pId is the id of the product we want to search, listaProd is the
+	 *            list of all products
 	 * @return a list of products
 	 * @throws ProductNotFoundException if it doesn't exist
 	 * @author Jago
@@ -882,17 +875,5 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} else {
 			throw new ProductNotFoundException();
 		}
-	}
-
-	@Override
-	public boolean existsProduct(int search) throws ProductNotFoundException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void modifyMember(Member m) throws SQLException {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -1,5 +1,6 @@
 package logicTier;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import exceptions.CredentialNotValidException;
@@ -77,8 +78,8 @@ public interface LoginControllable {
 	 */
 	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException;
 	
-	public Member createMember(int idUser) throws SQLException, WrongCredentialsException;
+	public Member createMember(int idUser, Connection conn) throws SQLException, WrongCredentialsException;
 	
-	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException;
+	public Manager createManager(int idUser, Connection conn) throws SQLException, WrongCredentialsException;
 
 }

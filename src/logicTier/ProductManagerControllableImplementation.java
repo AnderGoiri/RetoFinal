@@ -100,6 +100,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 			ctmt.executeUpdate();
 		}
+		connection.closeConnection();
 	}
 
 	/**
@@ -113,9 +114,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	@Override
 	public void modifyProduct(Product p) throws ProductNotFoundException, SQLException {
+		con = connection.openConnection();
 		if (existsProduct(p.getIdProduct())) {
-
-			con = connection.openConnection();
 			ctmt = con.prepareCall(
 					"UPDATE product SET brand=?, model=?, description=?, unitPrice=?, stock=?, isActive=?, saleActive=?, salePercentage=?, name=?, color=? WHERE idProduct=?");
 			ctmt.setString(1, p.getBrand());
@@ -129,6 +129,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			ctmt.setString(9, p.getNameP());
 			ctmt.setString(10, p.getColor());
 			ctmt.setInt(11, p.getIdProduct());
+			
+			ctmt.executeUpdate();
 
 			if (p instanceof Instrument) {
 				ctmt = con.prepareCall("UPDATE instrument SET classInstrument=?, typeInstrument=? WHERE idProduct=?");
@@ -155,7 +157,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		} else {
 			throw new ProductNotFoundException();
 		}
-
+		connection.closeConnection();
 	}
 
 	/**
@@ -184,8 +186,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		existe = ctmt.getObject(2, boolean.class);
 
 		return existe;
-
-		// connection.closeConnection();
 	}
 
 	/**
@@ -197,8 +197,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	@Override
 	public void removeProduct(Product p) throws ProductNotFoundException, SQLException {
+		con = connection.openConnection();
 		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
-			con = connection.openConnection();
 			ctmt = con.prepareCall("UPDATE product SET isActive=? WHERE idProduct=?");
 
 			ctmt.setBoolean(1, false);
@@ -207,6 +207,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		} else {
 			throw new ProductNotFoundException();
 		}
+		connection.closeConnection();
 	}
 
 	/**
@@ -221,8 +222,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	@Override
 	public void setSale(Product p, int sale) throws ProductNotFoundException, SQLException {
+		con = connection.openConnection();
 		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
-			con = connection.openConnection();
 			ctmt = con.prepareCall("UPDATE product SET saleActive=?, sale=?, unitPrice=?");
 
 			ctmt.setBoolean(1, true);
@@ -232,6 +233,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		} else {
 			throw new ProductNotFoundException();
 		}
+		connection.closeConnection();
 	}
 
 	/**
@@ -244,8 +246,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	@Override
 	public void removeSale(Product p) throws ProductNotFoundException, SQLException {
+		con = connection.openConnection();
 		if (existsProduct(p.getIdProduct()) && (p.isActive() == true)) {
-			con = connection.openConnection();
 			ctmt = con.prepareCall("UPDATE product SET saleActive=?");
 
 			ctmt.setBoolean(1, false);
@@ -253,6 +255,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		} else {
 			throw new ProductNotFoundException();
 		}
+		connection.closeConnection();
 	}
 
 	/**
@@ -274,8 +277,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		ctmt.setString(4, m.getMail());
 		ctmt.executeQuery();
 
-		ctmt = con.prepareCall(
-				"UPDATE manager SET idSupervisor=?, isSupervisor=?, isTechnician=?, isAdmin=?, statusManager=? ");
+		ctmt = con.prepareCall("UPDATE manager SET idSupervisor=?, isSupervisor=?, isTechnician=?, isAdmin=?, statusManager=? ");
 		ctmt.setInt(1, m.getIdSupervisor());
 		ctmt.setBoolean(2, m.isSupervisor());
 		ctmt.setBoolean(3, m.isTechnician());
@@ -283,6 +285,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		ctmt.setString(5, m.getStatusManager().getLabel());
 
 		ctmt.executeQuery();
+		
+		connection.closeConnection();
 	}
 
 	// --- Methods to Search Products ---
@@ -316,7 +320,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * products, the method searches those that equal to the name
 	 * 
 	 * @return a list of products
-	 * @author Jagoba Bartolomé Barroso
+	 * @author Jagoba Bartolomé Barroso, Ander Goirigolzarri Iturburu
 	 */
 	@Override
 	public Set<Product> searchProductByName(String name, Set<Product> listaProd) {
@@ -336,7 +340,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * products, the method searches those that equal to the name
 	 * 
 	 * @return a list of products
-	 * @author Jagoba Bartolomé Barroso
+	 * @author Jagoba Bartolomé Barroso, Ander Goirigolzarri Iturburu
 	 */
 	@Override
 	public Set<Product> searchProductByBrand(String brand, Set<Product> listaProd) {
@@ -356,7 +360,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * products, the method searches those that equal to the name
 	 * 
 	 * @return a list of products
-	 * @author Jagoba Bartolomé Barroso
+	 * @author Jagoba Bartolomé Barroso, Ander Goirigolzarri Iturburu
 	 */
 	@Override
 	public Set<Product> searchProductByModel(String model, Set<Product> listaProd) {
@@ -378,7 +382,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * value to an enum and if its equal type is the filter referring to the type of
 	 * product (Acoustic or Electric) listaProd is the list of products already
 	 * searched
-	 * 
+	 * @return Set<Product>
 	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
@@ -412,7 +416,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * class value to an enum and if its equal type is the filter referring to the
 	 * type of product (Acoustic or Electric) listaProd is the list of products
 	 * already searched
-	 * 
+	 * @return Set<Product>
 	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
@@ -442,7 +446,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 	/**
 	 * This method searches in a product list for products with any sale
-	 * 
+	 * @return Set<Product>
 	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
@@ -455,7 +459,11 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return listaFiltr;
 	}
-
+	/**
+	 * Get the list of Pending managers
+	 * @return Set<Product>
+	 * @author Jagoba Bartolomé Barroso
+	 */
 	@Override
 	public Set<Manager> getListPending() throws SQLException {
 		ResultSet rs = null;
@@ -526,6 +534,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		if (rsAccessory.next()) {
 			return 'A'; // 'A' represents Accessory
 		}
+		connection.closeConnection();
 		return 'U'; // 'U' represents Unknown (product not found in any table)
 	}
 
@@ -587,6 +596,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 				setProducts.add(accessory);
 			}
 		}
+		connection.closeConnection();
 		return setProducts;
 	}
 }
