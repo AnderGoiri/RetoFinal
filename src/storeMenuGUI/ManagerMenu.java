@@ -2,6 +2,9 @@ package storeMenuGUI;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import model.Manager;
+
 import java.awt.Color;
 
 public class ManagerMenu extends JPanel {
@@ -15,8 +18,9 @@ public class ManagerMenu extends JPanel {
 	
 	/**
 	 * Create the panel.
+	 * @param auxUser 
 	 */
-	public ManagerMenu() {
+	public ManagerMenu(Manager auxUser) {
 		setBackground(new Color(0, 150, 178));
 		setLayout(null);
 		

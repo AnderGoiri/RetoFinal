@@ -280,7 +280,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 				// If statement depending on the state of the check box for manager
 				if (!chckbxManager.isSelected()) {
-
+					
 					// registerUserMember
 					login.registerUserMember(
 							new Member(textFieldUsername.getText(), textFieldName.getText(), textFieldSurname.getText(),

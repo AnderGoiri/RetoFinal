@@ -2,6 +2,9 @@ package storeMenuGUI;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import model.Member;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JList;
@@ -16,8 +19,9 @@ public class MemberMenu extends JPanel {
 	private MemberAccountPanel panelAccount;
 	/**
 	 * Create the panel.
+	 * @param auxUser 
 	 */
-	public MemberMenu() {
+	public MemberMenu(Member auxUser) {
 		setBounds(100, 100, 1860, 950);
 		setLayout(null);
 	/**
@@ -46,7 +50,7 @@ public class MemberMenu extends JPanel {
 	/**
 	 * Add a panel called panelAccount to the JTabbedPane tab where the member can consult his account information.
 	 */
-		panelAccount = new MemberAccountPanel();
+		panelAccount = new MemberAccountPanel(auxUser);
 		panelAccount.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Account", null, panelAccount, null);
 		

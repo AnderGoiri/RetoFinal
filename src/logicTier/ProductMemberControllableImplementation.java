@@ -641,27 +641,34 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @param Member m is the current logged-in member with the attributes already changed
 	 * @author Jago
 	 */
-	public void modifyMember(Member m) {
+	public void modifyMember(Member m, String username) {
 		con = connection.openConnection();
+		ResultSet rs = null;
 		
 		try {
-			ctmt = con.prepareCall("UPDATE user SET username=?, name=?, surname=?, mail=?");
-			ctmt.setString(1, m.getUserName());
-			ctmt.setString(2, m.getName());
-			ctmt.setString(3, m.getSurname());
-			ctmt.setString(4, m.getMail());
-			ctmt.executeQuery();
+			stmt = con.prepareStatement("UPDATE user SET username=?, name=?, surname=?, mail=? WHERE username= ?");
+			stmt.setString(1, m.getUserName());
+			stmt.setString(2, m.getName());
+			stmt.setString(3, m.getSurname());
+			stmt.setString(4, m.getMail());
+			stmt.setString(5, username);
+			stmt.executeUpdate();
 			
-			ctmt = con.prepareCall("UPDATE member SET address=?, creditCard=?, ");
-			ctmt.setString(1, m.getAddress());
-			ctmt.setString(2, m.getCreditCard());
+			stmt = con.prepareStatement("SELECT * from user where username = " + m.getUserName());
+			rs = stmt.executeQuery();
+			int idU = rs.getInt("idUser");
 			
-			ctmt.executeQuery();
+			stmt = con.prepareStatement("UPDATE member m SET address=?, creditCard=? WHERE idUser = ?");
+			stmt.setString(1, m.getAddress());
+			stmt.setString(2, m.getCreditCard());
+			stmt.setInt(3, idU);
+			
+			stmt.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.closeConnection();
+		//	connection.closeConnection();
 		}
 	}
 

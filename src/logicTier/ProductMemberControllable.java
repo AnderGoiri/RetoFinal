@@ -42,6 +42,8 @@ public interface ProductMemberControllable {
 	public Purchase removePurchase(Purchase pset);
 	
 	public boolean existsProduct(int search) throws ProductNotFoundException;
+	
+	public void modifyMember(Member m, String username);
 
 
 }
