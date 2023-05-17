@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import model.Manager;
+import model.User;
 
 import java.awt.Color;
 
@@ -33,7 +34,7 @@ public class ManagerMainMenu extends JPanel {
 	 * 
 	 * @param auxUser
 	 */
-	public ManagerMainMenu(Manager auxUser) {
+	public ManagerMainMenu(User auxUser) {
 		setBackground(new Color(0, 150, 178));
 		setLayout(null);
 		setBounds(0, 0, 984, 718);

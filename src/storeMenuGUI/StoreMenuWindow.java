@@ -59,6 +59,11 @@ public class StoreMenuWindow extends JDialog {
 		/**
 		 * A panel for the members menu is created and added to the menu panel.
 		 */
+		memberPanel = new MemberMainMenu(auxUser);
+		menuPanel.add( "Member", memberPanel);
+	
+		managerPanel = new ManagerMainMenu(auxUser);
+		menuPanel.add("Manager", managerPanel);
 
 		showMenu(auxUser);
 	}

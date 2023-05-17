@@ -10,6 +10,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,15 +27,29 @@ import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
+import exceptions.ModelNotFoundException;
+import exceptions.ProductNotFoundException;
+import exceptions.PurchaseNotFoundException;
+import exceptions.StockNotFoundException;
+import exceptions.TypeNotFoundException;
 import logicTier.ProductMemberControllable;
 import logicTier.ProductMemberFactory;
+import model.Accessory;
+import model.Component;
+import model.Instrument;
+import model.Member;
 import model.Product;
+import model.Purchase;
+import model.User;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSeparator;
 import javax.swing.JList;
 import javax.swing.JRadioButton;
+import javax.swing.JTable;
+import java.awt.SystemColor;
 
 public class ShopMemberMenu extends JPanel implements ActionListener, KeyListener, FocusListener {
 	/**
@@ -48,10 +63,18 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	private JButton btnCarrito;
 	private JLabel lblWelcome;
 	private JComboBox<String> cmbFilter;
-	private JList list;
+	private JComboBox<String> cmbFilter2;
 	private JComboBox<String> comboProductType;
 	private JButton btnLupa;
-
+	private JTable productTable;
+	private JButton btnAdd;
+	private DefaultTableModel model;
+	private ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+	private Set<Product> listProduct;
+	private Purchase purch;
+	private Product prod;
+	private User user;
+	
 	public JCheckBox getChckbxSale() {
 		return chckbxSale;
 	}
@@ -121,17 +144,6 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		this.cmbFilter = cmbFilter;
 	}
 
-
-	public JList getList() {
-		return list;
-	}
-
-
-	public void setList(JList list) {
-		this.list = list;
-	}
-
-
 	public JComboBox<String> getComboProductType() {
 		return comboProductType;
 	}
@@ -156,164 +168,122 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		return serialVersionUID;
 	}
 
-
-	/**
-	 * Create the panel.
-	 */
-	public ShopMemberMenu() {
+	public ShopMemberMenu(User user) {
 		setBounds(0, 0, 1860, 950);
 		setLayout(null);
 
-		/**
-		 * add a check box to the panel to be able to select only the products that are
-		 * currently on sale.
-		 */
+		this.user = user;
 		
-		JButton btnAdd = new JButton("Add");
+		model = new DefaultTableModel();
+		String[] columns= {"ID", "Name", "Price", "Stock", "Brand", "Model", "Color", "Sale Percentage", "Class", "Type"};
+		model.setColumnIdentifiers(columns);
+		
+		productTable = new JTable();	
+		productTable.setModel(model);
+		productTable.setEnabled(false);
+		
+		scrollPaneProducts = new JScrollPane(productTable);
+		scrollPaneProducts.setBounds(94, 372, 1340, 371);
+		scrollPaneProducts.setViewportView(productTable);
+		add(scrollPaneProducts);
+		
+		btnAdd = new JButton("Add");
 		btnAdd.setForeground(Color.WHITE);
-		btnAdd.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnAdd.setFont(new Font("Dialog", Font.BOLD, 35));
 		btnAdd.setBackground(new Color(0, 151, 178));
 		btnAdd.setBounds(999, 770, 205, 65);
 		add(btnAdd);
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?");
-			}
-		});
+		btnAdd.addActionListener(this);
+			
 		
 		chckbxSale = new JCheckBox("Sale");
 		chckbxSale.setFont(new Font("Constantia", Font.PLAIN, 30));
 		chckbxSale.setBounds(1349, 315, 85, 45);
 		add(chckbxSale);
 		chckbxSale.setOpaque(false);
-
-		/**
-		 * Add a combo box to the panel to be able to filter the products by different
-		 * features.
-		 */
-		String[] arrayFilter = new String[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
-		cmbFilter = new JComboBox(arrayFilter);
-		cmbFilter.setModel(new DefaultComboBoxModel(arrayFilter));
+		chckbxSale.addActionListener(this);
+		
+		cmbFilter = new JComboBox();
+		cmbFilter.setModel(new DefaultComboBoxModel());
 		cmbFilter.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		cmbFilter.setFont(new Font("Constantia", Font.PLAIN, 25));
-		cmbFilter.setBounds(919, 206, 316, 50);
+		cmbFilter.setBounds(837, 206, 264, 50);
 		cmbFilter.setEnabled(false);
 		add(cmbFilter);
+		cmbFilter.addActionListener(this);
 	
-		/**
-		 * Add a text field to the panel to be able to search a product by the name.
-		 */
+		cmbFilter2 = new JComboBox();
+		cmbFilter2.setFont(new Font("Constantia", Font.PLAIN, 25));
+		cmbFilter2.setEnabled(false);
+		cmbFilter2.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
+		cmbFilter2.setBounds(1110, 206, 264, 50);
+		cmbFilter2.setEnabled(false);
+		add(cmbFilter2);
+		cmbFilter2.addActionListener(this);
+		
 		txtSearch = new JTextField();
 		txtSearch.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
-		txtSearch.setBounds(94, 206, 815, 50);
+		txtSearch.setBounds(94, 206, 733, 50);
 		txtSearch.setEditable(getFocusTraversalKeysEnabled());
 		txtSearch.setColumns(10);
 		add(txtSearch);
-		txtSearch.addFocusListener(this);
-		txtSearch.addKeyListener(this);
-		
-		/**
-		 * Add a label to the panel
-		 */
+
 		lblWelcome = new JLabel("Welcome to our shop");
 		lblWelcome.setFont(new Font("Elephant", Font.PLAIN, 55));
 		lblWelcome.setBounds(509, 10, 598, 154);
 		add(lblWelcome);
 
-		/**
-		 * Add a button to the panel to search for the products when you have already
-		 * entered them in textField.
-		 */
 		btnLupa = new JButton("");
 		btnLupa.setBackground(UIManager.getColor("ScrollPane.background"));
 		btnLupa.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/lupa_azul.png")));
-		btnLupa.setBounds(1245, 206, 50, 50);
+		btnLupa.setBounds(1384, 206, 50, 50);
 		add(btnLupa);
 		btnLupa.setOpaque(false);
-		btnLupa.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				if(!txtSearch.getText().isEmpty()) {
-					String search = txtSearch.getText();	
-				} else {
-					cmbFilter.setEnabled(true);
-				}
-			}
-		});
-		
+		btnLupa.addActionListener(this);
+		btnLupa.addKeyListener(this);	
+			
 		btnRemove = new JButton("Remove");
 		btnRemove.setBackground(new Color(0, 151, 178));
 		btnRemove.setForeground(new Color(255, 255, 255));
-		btnRemove.setFont(new Font("Onyx", Font.BOLD, 45));
+		btnRemove.setFont(new Font("Dialog", Font.BOLD, 35));
 		btnRemove.setBounds(1229, 770, 205, 65);
 		add(btnRemove);
-		
-
-		//TODO btnRemove
-		
+		btnRemove.addActionListener(this);
+		btnRemove.addKeyListener(this)
+;
 		btnCarrito = new JButton("");
 		btnCarrito.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/carrito_.png")));
 		btnCarrito.setBounds(1400, 36, 100, 100);
 		add(btnCarrito);
-		btnCarrito.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Are you sure you want to make this purchase?");
-			}
-		});
+		btnCarrito.addActionListener(this);
 		
-		
-		
-		/**
-		 * Add a label to the panel.
-		 */
 		JLabel lblLookProduct = new JLabel("Look for a product");
 		lblLookProduct.setForeground(new Color(0, 0, 0));
 		lblLookProduct.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblLookProduct.setBounds(94, 176, 496, 31);
 		add(lblLookProduct);
 
-		/**
-		 * Add a scroll pane to the panel to see the list of all the products.
-		 */
-		
-		
-		String categories[] = { "a", "b", "c", "d", "e","a", "b", "c", "d", "e","a", "b", "c", "d"};
-		
-		list = new JList(categories);
-		list.setFont(new Font("Constantia", Font.PLAIN, 25));
-		//instanciamos la lista
-		scrollPaneProducts = new JScrollPane(list);
-		scrollPaneProducts.setBounds(94, 372, 1340, 371);
-		add(scrollPaneProducts);
-		
-		/**
-		 * 
-		 */
 		JSeparator separator = new JSeparator();
 		separator.setBounds(451, 134, 707, 2);
 		add(separator);
 
-		/**
-		 * Add a label to the panel.
-		 */
 		JLabel lblList = new JLabel("List of:");
 		lblList.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblList.setBounds(94, 315, 94, 37);
 		add(lblList);
 
-		/**
-		 * Add a combo box to the panel to be able to select the specific type of
-		 * product you are looking for (Instrument, component and accessory).
-		 */
 		comboProductType = new JComboBox();
 		comboProductType.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		comboProductType.setFont(new Font("Constantia", Font.PLAIN, 25));
-		comboProductType.setModel(new DefaultComboBoxModel(new String[] { "", "Instrument", "Component", "Accessory" }));
+		comboProductType.setModel(new DefaultComboBoxModel(new String[] { "", "All", "Instrument", "Component", "Accessory" }));
 		comboProductType.setBounds(190, 295, 316, 50);
 		add(comboProductType);
+		comboProductType.addActionListener(this);
 		
-		JLabel lblPurchase = new JLabel("Purchase");
+		
+		JLabel lblPurchase = new JLabel("Shopping Cart");
 		lblPurchase.setFont(new Font("Constantia", Font.BOLD, 25));
-		lblPurchase.setBounds(1396, 135, 116, 61);
+		lblPurchase.setBounds(1361, 134, 168, 65);
 		add(lblPurchase);
 		
 		JLabel lblFondo = new JLabel("");
@@ -321,64 +291,332 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		lblFondo.setBounds(0, 0, 1540, 845);
 		add(lblFondo);
 		
-	
+		model.setRowCount(0);
+		
+		showAllProducts();
 	}
 
 	
 	public void actionPerformed(ActionEvent e) {
-		//TODO if textbox empty && btn
-		try {
-			ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
 		
-			String search = txtSearch.getText();
+		if(e.getSource().equals(comboProductType)) {
+			updateFilterComboBox();
+		}
+        if (e.getSource().equals(btnLupa)) {
+        	model.setRowCount(0);
+            makeSearch();
+		}	  
+        if (e.getSource().equals(btnAdd)) {
+            JOptionPane.showMessageDialog(null, "You want to add this product to the shopping cart?"); 
+            boolean added =  addToCart();
+            if (added) {
+            	JOptionPane.showMessageDialog(null, "Product added successfully to the cart");
+            }
+        }  
+        if (e.getSource().equals(btnRemove)) {
+            JOptionPane.showMessageDialog(null, "Are you sure you want to remove this product from the shopping cart?");
+            boolean removed = removeFromCart();
+            if (removed) {
+            	JOptionPane.showMessageDialog(null, "Product removed successfully from the cart");
+            }
+        }
+        if (e.getSource().equals(btnCarrito)) {
+        	int confirm = JOptionPane.showConfirmDialog(null, "Do you want to finish the purchase?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        	if (confirm == JOptionPane.YES_OPTION) {
+        		purch = finishPurchase();
+        		if (purch!=null) {
+        			float price = purch.getPurchaseTotalCost();
+            		JOptionPane.showMessageDialog(null, "The final price will be: " + price);
+                } 
+        		
+        	}
+        }
+	}
+	private boolean removeFromCart() {
+		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+		boolean removed = true;
+		int productId = 0;
+		Set<Product> listProduct;
+		int filaSelect = productTable.getSelectedRow();
+		if (filaSelect != -1) {
+			productId = (int) productTable.getValueAt(filaSelect, 0);
+		}
+
+		try {
+			/**
+			 * Setting the selected product
+			 */
+			listProduct = pMember.getAllProducts("");
+			prod = pMember.searchProductById(productId, listProduct);
+
+			Member mUser = (Member) user;
+
+			/**
+			 * Setting the in progress purchase from the user
+			 */
+			purch = pMember.searchPurchase(mUser);
+
+			/**
+			 * Removing the product from the purchase
+			 */
+			purch = pMember.removeProduct(purch, prod);
+		} catch (PurchaseNotFoundException e) {
+			removed = false;
+			JOptionPane.showMessageDialog(null, "Purchase not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			removed = false;
+			JOptionPane.showMessageDialog(null, "Unknown Error", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return removed;
+	}
+
+	private Purchase finishPurchase() {
+		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+		try {
+			Member mUser = (Member) user;
+			purch = pMember.searchPurchase(mUser);
+			pMember.removePurchase(purch);
+		} catch (PurchaseNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Purchase not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (NullPointerException e) {
+			JOptionPane.showMessageDialog(null, "No products added to the cart", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return purch;
+	}
+	
+	private boolean addToCart() {
+		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+		boolean added = true;
+		int productId = 0;
+		Set<Product> listProduct;
+		int filaSelect = productTable.getSelectedRow();
+		if (filaSelect != -1) {
+			productId = (int) productTable.getValueAt(filaSelect, 0);
+		}
+		try {
+			/**
+			 * Setting the selected product
+			 */
+			listProduct = pMember.getAllProducts("");
+			prod = pMember.searchProductById(productId, listProduct);
+		
+			Member mUser = (Member) user;
 			
-			if (comboProductType.getSelectedIndex()==-1) {
+			/**
+			 * Setting the in progress purchase from the user
+			 */
+			purch = pMember.searchPurchase(mUser);
+			
+			/**
+			 * Adding the product to the purchase
+			 */
+			pMember.addProductPurchase(purch, prod, mUser);
+			pMember.removeProduct(purch, prod);
+		} catch (StockNotFoundException e) {
+			added = false;
+			JOptionPane.showMessageDialog(null, "Stock not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (ProductNotFoundException e) {
+			added = false;
+			JOptionPane.showMessageDialog(null, "Product not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e) {
+			added = false;
+			JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			added = false;
+			JOptionPane.showMessageDialog(null, "Unknown Error", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return added;
+	}
+
+	/**
+	 * This method searches a product depending on the type selected in the combobox (Instrument, Component or Accessory)
+	 */
+	public void makeSearch() {
+		ProductMemberControllable pMember = ProductMemberFactory.getProductMember();	
+		
+		try {	
+			String search = new String(txtSearch.getText());
+	
+			if (comboProductType.getSelectedIndex()==0) {
 				JOptionPane.showMessageDialog(this, "Selecciona un tipo de producto");
 			} else {
-				
-				int sel = comboProductType.getSelectedIndex();
-				if(search.isEmpty()) {
-					
-				
+				String sel = (String) comboProductType.getSelectedItem();
+				String filter = (String) cmbFilter.getSelectedItem();
+				String filter2 = (String) cmbFilter2.getSelectedItem();
+				Set<Product> listProduct = new HashSet<Product>();
+				comboProductType.setEnabled(true);
+				if (sel.equals("All")) {
+					listProduct = pMember.getAllProducts(search);
+					cmbFilter.setEnabled(false);
+					cmbFilter2.setEnabled(false);
+				} else if (sel.equals("Instrument")) {
+					listProduct = pMember.searchInstrument(search);					
+				} else if (sel.equals("Component")) {
+					listProduct = pMember.searchComponent(search);
+				} else if (sel.equals("Accessory")) {
+					listProduct = pMember.searchAccessory(search);
 				} else {
-					comboProductType.setEnabled(true);
-					Set<Product> listProduct = new HashSet<Product>();
-					if (sel == 1) {
-						listProduct = pMember.searchInstrument(search);
+					listProduct = pMember.getAllProducts(search);
+				}
+				if (filter != null) {
+					if (!filter.equals("") || !filter.isBlank()) {
+						listProduct = pMember.searchProductByClass(filter, listProduct);
 					}
-					if (sel == 2) {
-						listProduct = pMember.searchComponent(search);
+				}		
+				if (filter2 != null) {
+					if (!filter2.equals("") || !filter2.isBlank()) {
+						listProduct = pMember.searchProductByType(filter2, listProduct);
 					}
-					if (sel == 3) {
-						listProduct = pMember.searchAccessory(search);
+				}	
+				if (chckbxSale.isSelected()) {
+					listProduct = pMember.searchProductInSale(listProduct);
+				}
+				if (comboProductType.getSelectedIndex() == 0) {
+					if(search.isBlank() && !sel.equals("All")) {
+						JOptionPane.showMessageDialog(this, "Please, search a product.");
 					}
-					
-					cmbFilter.setEnabled(true);
+				}
+				
+				for (Product prod : listProduct) {			
+					if (prod instanceof Instrument) {
+						Instrument instrument = (Instrument) prod;
+						Object[] datos = { instrument.getIdProduct(), instrument.getNameP(), instrument.getPrice(),
+								instrument.getStock(), instrument.getBrand(), instrument.getModel(),
+								instrument.getColor(), instrument.getSalePercentage(), instrument.getClassInstrument(),
+								instrument.getTypeInstrument().name() };
+						model.addRow(datos);
+					}
+					if (prod instanceof Component) {
+						Component component = (Component) prod;
+						Object[] datos = { component.getIdProduct(), component.getNameP(), component.getPrice(),
+								component.getStock(), component.getBrand(), component.getModel(), component.getColor(),
+								component.getSalePercentage(), component.getClassComponent(),
+								component.getTypeComponent().name() };
+						model.addRow(datos);
+					}
+					if (prod instanceof Accessory) {
+						Accessory accessory = (Accessory) prod;
+						Object[] datos = { accessory.getIdProduct(), accessory.getNameP(), accessory.getPrice(),
+								accessory.getStock(), accessory.getBrand(), accessory.getModel(), accessory.getColor(),
+								accessory.getSalePercentage(), accessory.getClassAccessory(),
+								accessory.getTypeAccessory().name() };
+						model.addRow(datos);
+					}
+
+				}
+				productTable.setModel(model);
+				productTable.setEnabled(true);	
+			}				
+		} catch (ProductNotFoundException e1) {
+			JOptionPane.showMessageDialog(null, "Product not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (TypeNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Type of product not found", "Error", JOptionPane.ERROR_MESSAGE);
+		} 	
+	}
+	
+	public Set<Product> showAllProducts(){
+		String search = "";
+		try {
+			listProduct = pMember.getAllProducts(search);
+			model.setRowCount(0);
+			for (Product prod : listProduct) {
+				if (prod instanceof Instrument) {
+					Instrument instrument = (Instrument) prod;
+					Object[] datos = { instrument.getIdProduct(), instrument.getNameP(), instrument.getPrice(),
+							instrument.getStock(), instrument.getBrand(), instrument.getModel(),
+							instrument.getColor(), instrument.getSalePercentage(), instrument.getClassInstrument(),
+							instrument.getTypeInstrument().name() };
+					model.addRow(datos);
+				}
+				if (prod instanceof Component) {
+					Component component = (Component) prod;
+					Object[] datos = { component.getIdProduct(), component.getNameP(), component.getPrice(),
+							component.getStock(), component.getBrand(), component.getModel(), component.getColor(),
+							component.getSalePercentage(), component.getClassComponent(),
+							component.getTypeComponent().name() };
+					model.addRow(datos);
+				}
+				if (prod instanceof Accessory) {
+					Accessory accessory = (Accessory) prod;
+					Object[] datos = { accessory.getIdProduct(), accessory.getNameP(), accessory.getPrice(),
+							accessory.getStock(), accessory.getBrand(), accessory.getModel(), accessory.getColor(),
+							accessory.getSalePercentage(), accessory.getClassAccessory(),
+							accessory.getTypeAccessory().name() };
+					model.addRow(datos);
 				}
 			}
 			
-		
-		
-		
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-
-		
-		
-		/**
-		 * TODO FILTRO
-		 */
-		String currentItem = (String) cmbFilter.getSelectedItem();
-		
-		
+		productTable.setModel(model);
+		productTable.setEnabled(true);
+		return listProduct;
 	}
+	/**
+	 * Method to change the filter if the product is an instrument, component or accessory
+	 */
+	private void updateFilterComboBox() {
+	    String selectedType = (String) comboProductType.getSelectedItem();
+	    DefaultComboBoxModel<String> filterModel = new DefaultComboBoxModel<String>();
+	    if (selectedType != null) {
+	        switch (selectedType) {
+	            case "Instrument":
+	            	filterModel.addElement("");
+	                filterModel.addElement("WIND");
+	                filterModel.addElement("STRING");
+	                filterModel.addElement("PERCUSSION");
+	                break;
+	            case "Component":
+	            	filterModel.addElement("");
+	                filterModel.addElement("CHASIS");
+	                filterModel.addElement("CIRCUIT");
+	                break;
+	            case "Accessory":
+	            	filterModel.addElement("");
+	                filterModel.addElement("ELECTRIC");
+	                filterModel.addElement("NON-ELECTRIC");
+	                break;
+	        }
+	    }
+	    cmbFilter.setModel(filterModel);
+	    cmbFilter.setEnabled(true);
+	    
+	    DefaultComboBoxModel<String> filter2Model = new DefaultComboBoxModel<String>();
+	    if (selectedType != null) {
+	        switch (selectedType) {
+	            case "Instrument":
+	            	filter2Model.addElement("");
+	                filter2Model.addElement("ACOUSTIC");
+	                filter2Model.addElement("ELECTRONIC");
+	                break;
+	            case "Component":
+	            	filter2Model.addElement("");
+	                filter2Model.addElement("ARCHITECTURE");
+	                filter2Model.addElement("TUNNING");
+	                filter2Model.addElement("CONNECTION");
+	                break;
+	            case "Accessory":
+	            	filter2Model.addElement("");
+	                filter2Model.addElement("AUDIO");
+	                filter2Model.addElement("CONNECTION");
+	                filter2Model.addElement("ITEM");
+	                break;
+	        }
+	    }
+	    cmbFilter2.setModel(filter2Model);
+	    cmbFilter2.setEnabled(true);
+	}
+	
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
 			if(e.getSource().equals(txtSearch)){
-				actionPerformed(null);
+				btnLupa.doClick();
 			}
 		}
 	}

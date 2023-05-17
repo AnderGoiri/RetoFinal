@@ -1,9 +1,9 @@
 package model;
 
 /**
+ * Enum class for a subdivision of instruments
  * 
- * @author Ander Enum class for a subdivision of instruments
- *
+ * @author Ander
  */
 public enum EnumClassInstrument {
 	WIND("Wind"), STRING("String"), PERCUSSION("Percussion");
@@ -40,5 +40,4 @@ public enum EnumClassInstrument {
 		}
 		return enumValue;
 	}
-
 }

@@ -1,17 +1,18 @@
 package model;
 
 /**
- * @author Ander
  * 
- *         An enumeration representing the different possible statuses for a
- *         purchase.
- *         <p>
- *         This enumeration defines the following possible statuses:
- *         </p>
- *         <p>
- *         Each status has a corresponding label that can be retrieved using the
- *         {@link #getLabel()} method.
- *         </p>
+ * 
+ * An enumeration representing the different possible statuses for a purchase.
+ * <p>
+ * This enumeration defines the following possible statuses:
+ * </p>
+ * <p>
+ * Each status has a corresponding label that can be retrieved using the
+ * {@link #getLabel()} method.
+ * </p>
+ * 
+ * @author Ander
  */
 public enum EnumStatusPurchase {
 	IN_PROGRESS("In progress"), FINISHED("Finished");
@@ -35,17 +36,15 @@ public enum EnumStatusPurchase {
 	public String getLabel() {
 		return label;
 	}
-	
+
 	public static EnumStatusPurchase getValue(String label) {
 		EnumStatusPurchase enumValue = null;
 
 		if (label.equalsIgnoreCase("In progress")) {
 			enumValue = EnumStatusPurchase.IN_PROGRESS;
-		}else if (label.equalsIgnoreCase("Finished")) {
+		} else if (label.equalsIgnoreCase("Finished")) {
 			enumValue = EnumStatusPurchase.FINISHED;
 		}
-		
 		return enumValue;
 	}
-
 }

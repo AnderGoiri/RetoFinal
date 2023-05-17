@@ -7,7 +7,7 @@ package model;
  * @author Jagoba Bartolomé Barroso
  */
 public enum EnumClassAccessory {
-	Electric("Electric"), nonElectric("Non-electric");
+	ELECTRIC("Electric"), NONELECTRIC("Non-electric");
 
 	private final String label;
 
@@ -23,9 +23,9 @@ public enum EnumClassAccessory {
 		EnumClassAccessory enumValue = null;
 
 		if (label.equalsIgnoreCase("Electric")) {
-			enumValue = EnumClassAccessory.Electric;
+			enumValue = EnumClassAccessory.ELECTRIC;
 		}else if (label.equalsIgnoreCase("Non-electric")) {
-			enumValue = EnumClassAccessory.nonElectric;
+			enumValue = EnumClassAccessory.NONELECTRIC;
 		}
 		
 		return enumValue;

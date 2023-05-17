@@ -14,6 +14,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import model.Manager;
+import model.User;
 
 public class ManagerAccountTab extends JPanel implements ActionListener{
 
@@ -30,7 +31,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 	 * @author Francisco Rafael de Ysasi González
 	 * @param auxUser 
 	 */
-	public ManagerAccountTab(Manager auxUser) {
+	public ManagerAccountTab(User auxUser) {
 		setLayout(null);
 		setBounds(0, 0, 1860, 910);
 		
@@ -155,7 +156,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			getManagerData(auxUser);
 	}
 	
-	private void getManagerData(Manager auxUser) {
+	private void getManagerData(User auxUser) {
 				
 		textaUsername.setText(auxUser.getUserName());
 		textSurname.setText(auxUser.getSurname());

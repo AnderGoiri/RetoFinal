@@ -17,9 +17,9 @@ import model.Purchase;
 public interface ProductMemberControllable {
 	public Set<Product> searchInstrument(String search) throws ProductNotFoundException, SQLException;
 	
-	public Set<Product> searchComponent(String search) throws ProductNotFoundException;
+	public Set<Product> searchComponent(String search) throws ProductNotFoundException, SQLException;
 	
-	public Set<Product> searchAccessory(String search) throws ProductNotFoundException;
+	public Set<Product> searchAccessory(String search) throws ProductNotFoundException, SQLException;
 	
 	public Set<Product> searchProductByName(String name, Set<Product> listaProd) throws NameNotFoundException;
 	
@@ -35,14 +35,21 @@ public interface ProductMemberControllable {
 	
 	public boolean checkProduct(Product p) throws Exception;
 	
-	public Purchase addProductPurchase(Purchase pset, Product p, Member m) throws StockNotFoundException, ProductNotFoundException; 
+	public Purchase addProductPurchase(Purchase pset, Product p, Member m) throws StockNotFoundException, ProductNotFoundException, SQLException, Exception; 
 	
 	public Purchase searchPurchase(Member m);
 	
 	public Purchase removeProduct(Purchase pset, Product p) throws Exception;
 	
-	public Purchase removePurchase(Purchase pset);
+	public Purchase removePurchase(Purchase pset) throws PurchaseNotFoundException, SQLException;
 
-	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException;
+	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException, SQLException;
+	
+	public char getTypeProduct(int idProduct) throws SQLException;
 
+	public Set<Product> getAllProducts(String search) throws SQLException;
+
+	public Product searchProductById(int pId, Set<Product> listaProd) throws ProductNotFoundException;
+
+	public void modifyMember(Member m) throws SQLException;
 }

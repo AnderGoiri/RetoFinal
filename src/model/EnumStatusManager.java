@@ -40,7 +40,6 @@ public enum EnumStatusManager {
 	public String getLabel() {
 		return label;
 	}
-
 	public static EnumStatusManager getValue(String label) {
 		EnumStatusManager enumValue = null;
 
