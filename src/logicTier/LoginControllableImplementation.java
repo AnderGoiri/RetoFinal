@@ -14,6 +14,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * 
+ * The LoginControllableImplementation class implements the LoginControllable
+ * interface and provides methods for user registration and authentication.
+ * 
+ * It interacts with a database to perform the necessary operations.
+ * 
+ * @author Ander Goirigolzarri Iturburu
+ */
 public class LoginControllableImplementation implements LoginControllable {
 
 	private Connection conn; // Establish a Connection attribute
@@ -28,8 +37,8 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @return existUserName - true if the username exists in the USER table, false
 	 *         otherwise
 	 * @throws SQLException if there is an error executing the SQL query
-	 * @author Ander Goirigolzarri Iturburu
 	 */
+	@Override
 	public boolean checkUserName(String userName) throws SQLException {
 		return gate.openConnection().createStatement()
 				.executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
@@ -43,7 +52,6 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @throws SQLException       if there is an error in the SQL statements or
 	 *                            database connection.
 	 * @throws UserFoundException if the username already exists in the database.
-	 * @author Ander Goirigolzarri Iturburu
 	 */
 	@Override
 	public void registerUserMember(Member me) throws SQLException, UserFoundException {
@@ -67,8 +75,13 @@ public class LoginControllableImplementation implements LoginControllable {
 			ptmt.executeUpdate();
 
 		} else {
-			throw new UserFoundException("User found");
+			throw new UserFoundException(
+					"The user already exists. Please choose a different username or try logging in."); // Throw this
+																										// exception if
+																										// a User is
+																										// found
 		}
+		// Close connection with DB
 		gate.closeConnection();
 	}
 
@@ -80,7 +93,6 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @throws SQLException       if there is an error in the SQL statements or
 	 *                            database connection.
 	 * @throws UserFoundException if the username already exists in the database.
-	 * @author Ander Goirigolzarri Iturburu
 	 */
 	@Override
 	public void registerUserManager(Manager ma) throws UserFoundException, SQLException {
@@ -110,8 +122,10 @@ public class LoginControllableImplementation implements LoginControllable {
 
 		} else {
 			// If User exists, throw UserFoundException.
-			throw new UserFoundException("User found");
+			throw new UserFoundException(
+					"The user already exists. Please choose a different username or try logging in.");
 		}
+		// Close Connection with the DB
 		gate.closeConnection();
 	}
 
@@ -124,8 +138,6 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @throws UserNotFoundException     if the specified user does not exist in the
 	 *                                   system.
 	 * @throws SQLException
-	 * 
-	 * @author Ander Goirigolzarri Iturburu
 	 */
 	@Override
 	public User userLogin(String username, String password)
@@ -144,27 +156,41 @@ public class LoginControllableImplementation implements LoginControllable {
 		rset = ptmt.executeQuery();
 
 		if (!rset.next()) {
-			throw new WrongCredentialsException("You have entered an invalid username or password");
+			throw new WrongCredentialsException(
+					"The provided credentials are incorrect. Please make sure you have entered the correct username and password.");
 		}
 
 		// Check if the result set contains a manager or member ID
 		int memberId = rset.getInt("m.idUser");
 		int managerId = rset.getInt("ma.idUser");
-		
+
 		if (memberId != 0) {
 			// This is a member
-			return createMember(memberId,conn);
+			Member auxMember = createMember(memberId); // Creates an auxiliar object Member
+			gate.closeConnection();
+			return auxMember;
 		} else if (managerId != 0) {
 			// This is a manager
-			return createManager(managerId,conn);
+			Manager auxManager = createManager(managerId);// Creates an auxiliar object Manager
+			gate.closeConnection();
+			return auxManager;
 		} else {
-			throw new UserNotFoundException("Invalid user");
+			throw new UserNotFoundException(
+					"The specified user does not exist in the system. Please verify the username and try again or register as a new user.");
 		}
 	}
-	//TODO Comenta Ander
+
+	/**
+	 * Updates the status of a manager in the database.
+	 * 
+	 * @param ma the Manager object containing the updated status.
+	 * @throws UserNotFoundException if the manager is not found in the database.
+	 * @throws SQLException          if there is an error in the SQL statements or
+	 *                               database connection.
+	 */
 	@Override
 	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException {
-		// open the connection with the database
+		// Open the connection with the database
 		conn = gate.openConnection();
 
 		final String UPDATEstatusManager = "UPDATE manager SET statusManager=? WHERE id = ?";
@@ -177,9 +203,17 @@ public class LoginControllableImplementation implements LoginControllable {
 		ptmt.executeUpdate();
 	}
 
-	//TODO Comenta Ander
+	/**
+	 * Creates a Member object with the provided user ID.
+	 * 
+	 * @param idUser the ID of the member.
+	 * @return the created Member object.
+	 * @throws SQLException              if there is an error executing the SQL
+	 *                                   query.
+	 * @throws WrongCredentialsException if the member is not found in the database.
+	 */
 	@Override
-	public Member createMember(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
+	public Member createMember(int idUser) throws SQLException, WrongCredentialsException {
 
 		ptmt = conn.prepareStatement("SELECT * FROM vw_member WHERE idUser =" + idUser + ";");
 
@@ -197,15 +231,23 @@ public class LoginControllableImplementation implements LoginControllable {
 		LocalDate dateRegister = rset.getDate(7).toLocalDate();
 		String address = rset.getString(8);
 		String creditCard = rset.getString(9);
-		
-		gate.closeConnection();
-		
+
 		return new Member(username, name, surname, password, mail, dateRegister, address, creditCard);
 	}
 
-	//TODO Comenta Ander
+	/**
+	 * Creates a Manager object with the provided user ID and database connection.
+	 * 
+	 * @param idUser the ID of the manager.
+	 * @param conn   the database connection.
+	 * @return the created Manager object.
+	 * @throws SQLException              if there is an error executing the SQL
+	 *                                   query.
+	 * @throws WrongCredentialsException if the manager is not found in the
+	 *                                   database.
+	 */
 	@Override
-	public Manager createManager(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
+	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException {
 
 		ptmt = conn.prepareStatement("SELECT * FROM vw_manager WHERE idUser =" + idUser + ";");
 
@@ -226,9 +268,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		boolean isTechnician = rset.getBoolean(10);
 		boolean isAdmin = rset.getBoolean(11);
 		EnumStatusManager statusManager = EnumStatusManager.getValue(rset.getString(12));
-		
-		gate.closeConnection();
-		
+
 		return new Manager(username, name, surname, password, mail, dateRegister, idSupervisor, isSupervisor,
 				isTechnician, isAdmin, statusManager);
 	}

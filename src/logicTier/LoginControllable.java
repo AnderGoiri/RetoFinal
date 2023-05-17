@@ -1,6 +1,5 @@
 package logicTier;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import exceptions.CredentialNotValidException;
@@ -22,64 +21,84 @@ import model.User;
 public interface LoginControllable {
 
 	/**
+	 * Checks if a given username exists in the USER table of the database.
 	 * 
-	 * Method to register a new member in the database.
+	 * @param userName - the username to be checked
+	 * @return existUserName - true if the username exists in the USER table, false
+	 *         otherwise
+	 * @throws SQLException if there is an error executing the SQL query
+	 */
+	public boolean checkUserName(String userName) throws SQLException;
+	
+	/**
+	 * Registers a new member in the system with the provided Member object.
 	 * 
-	 * @param me - Member object instantiation
-	 * @throws CredentialNotValidException: Exception thrown when the credentials
-	 *                                      given by the user are not valid.
-	 * @throws UserFoundException:          Exception thrown when the User is found
-	 *                                      in the database and it should not be.
-	 * @throws SQLException:                Exception thrown when the SQL query
-	 *                                      fails.
-	 * @author Ander Goirigolzarri Iturburu
+	 * @param me the Member object containing the details of the member to be
+	 *           registered.
+	 * @throws SQLException       if there is an error in the SQL statements or
+	 *                            database connection.
+	 * @throws UserFoundException if the username already exists in the database.
 	 */
 	public void registerUserMember(Member me) throws CredentialNotValidException, UserFoundException, SQLException;
 
 	/**
+	 * Registers a new manager in the system with the provided Manager object.
 	 * 
-	 * Method to register a new Manager in the database.
-	 * 
-	 * @param ma - Manager object instantiation
-	 * @throws CredentialNotValidException: Exception thrown when the credentials
-	 *                                      given by the user are not valid.
-	 * @throws UserFoundException:          Exception thrown when the User is found
-	 *                                      in the database and it should not be.
-	 * @throws SQLException:                Exception thrown when the SQL query
-	 *                                      fails.
-	 * @author Ander Goirigolzarri Iturburu
-	 * 
+	 * @param me the Manager object containing the details of the manager to be
+	 *           registered.
+	 * @throws SQLException       if there is an error in the SQL statements or
+	 *                            database connection.
+	 * @throws UserFoundException if the username already exists in the database.
 	 */
 	public void registerUserManager(Manager ma) throws CredentialNotValidException, UserFoundException, SQLException;
 
 	/**
+	 * Authenticates a user with the provided username and password.
 	 * 
-	 * @param ma - Manager object instantiation
-	 * @throws WrongCredentialsException: Exception thrown when the credentials
-	 *                                    given by the user do not match the
-	 *                                    credentials on the database
-	 * @throws UserNotFoundException:     Exception thrown when the User is not
-	 *                                    found on the database and it should be.
-	 * 
-	 * @author Ander Goirigolzarri Iturburu
-	 * @return 
-	 * @throws SQLException 
+	 * @param username the username of the user attempting to log in.
+	 * @param password the password of the user attempting to log in.
+	 * @throws WrongCredentialsException if the provided credentials are incorrect.
+	 * @throws UserNotFoundException     if the specified user does not exist in the
+	 *                                   system.
+	 * @throws SQLException
 	 */
-	public User userLogin(String userName, String password) throws WrongCredentialsException, UserNotFoundException, SQLException;
+	public User userLogin(String userName, String password)
+			throws WrongCredentialsException, UserNotFoundException, SQLException;
 
 	/**
+	 * Updates the status of a manager in the database.
 	 * 
-	 * @param ma - Manager object created
-	 * @return
-	 * @throws UserNotFoundException: Exception thrown when the User is not found on
-	 *                                the database and it should be.
-	 * @throws SQLException 
-	 * @author Ander Goirigolzarri Iturburu
+	 * @param ma the Manager object containing the updated status.
+	 * @throws UserNotFoundException if the manager is not found in the database.
+	 * @throws SQLException          if there is an error in the SQL statements or
+	 *                               database connection.
 	 */
 	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException;
-	
-	public Member createMember(int idUser, Connection conn) throws SQLException, WrongCredentialsException;
-	
-	public Manager createManager(int idUser, Connection conn) throws SQLException, WrongCredentialsException;
+
+	/**
+	 * Creates a Member object with the provided user ID.
+	 * 
+	 * @param idUser the ID of the member.
+	 * @return the created Member object.
+	 * @throws SQLException              if there is an error executing the SQL
+	 *                                   query.
+	 * @throws WrongCredentialsException if the member is not found in the database.
+	 */
+	public Member createMember(int idUser) throws SQLException, WrongCredentialsException;
+
+	/**
+	 * Creates a Manager object with the provided user ID and database connection.
+	 * 
+	 * @param idUser the ID of the manager.
+	 * @param conn   the database connection.
+	 * @return the created Manager object.
+	 * @throws SQLException              if there is an error executing the SQL
+	 *                                   query.
+	 * @throws WrongCredentialsException if the manager is not found in the
+	 *                                   database.
+	 */
+	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException;
+
+
 
 }

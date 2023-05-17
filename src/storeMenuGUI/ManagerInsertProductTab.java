@@ -315,9 +315,14 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 					try {
 						proManager.addProduct(component);
 						JOptionPane.showMessageDialog(this, "Product added successfully"); // Show success message
-					} catch (ProductFoundException | SQLException e1) {
-						// Show error message if product already exists or if there's a database error
-						JOptionPane.showMessageDialog(this, e1.getMessage());
+					} catch (ProductFoundException e1) {
+						// Show error message if product already exists
+						JOptionPane.showMessageDialog(this,
+								"Product not found. Please check the product details and try again.");
+					} catch (SQLException e1) {
+						// Show error message if there's a database error
+						JOptionPane.showMessageDialog(this,
+								"An error occurred while accessing the database. Please contact the system administrator for assistance.");
 					}
 
 				} else if (rdbtnAccessory.isSelected()) {
@@ -352,10 +357,16 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 					try {
 						proManager.addProduct(accessory);
 						JOptionPane.showMessageDialog(this, "Product added successfully"); // Show success message
-					} catch (ProductFoundException | SQLException e1) {
-						// Show error message if product already exists or if there's a database error
-						JOptionPane.showMessageDialog(this, e1.getMessage());
+					} catch (ProductFoundException e1) {
+						// Show error message if product already exists
+						JOptionPane.showMessageDialog(this,
+								"Product not found. Please check the product details and try again.");
+					} catch (SQLException e1) {
+						// Show error message if there's a database error
+						JOptionPane.showMessageDialog(this,
+								"An error occurred while accessing the database. Please contact the system administrator for assistance.");
 					}
+
 				} else {
 					JOptionPane.showMessageDialog(this, "Please select what kind of Product you want to add");
 				}
