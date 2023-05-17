@@ -871,9 +871,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			}
 		}
 		if (pAux != null) {
-			return pAux;
+		
 		} else {
 			throw new ProductNotFoundException();
 		}
+		return pAux;
 	}
 }

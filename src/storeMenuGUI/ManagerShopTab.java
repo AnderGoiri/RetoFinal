@@ -309,7 +309,8 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 			// Use the product controller to create a product object using the getValueAt o
 			// searching it inside the db
 			ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
-			Product selectedProduct = null, auxProduct;
+			Product selectedProduct = null;
+			Product auxProduct = null;
 			int idSelectedProduct;
 
 			try {
@@ -319,16 +320,21 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 				if (auxProduct instanceof Instrument) {
 					selectedProduct = new Instrument();
+					selectedProduct = (Instrument)auxProduct;
 				} else if (auxProduct instanceof Component) {
 					selectedProduct = new Component();
+					selectedProduct = (Component)auxProduct;
 				} else if (auxProduct instanceof Accessory) {
 					selectedProduct = new Accessory();
+					selectedProduct = (Accessory)auxProduct;
 				}
 
-				selectedProduct = auxProduct;
+			
 
-			} catch (ProductNotFoundException | SQLException e1) {
-				JOptionPane.showMessageDialog(this, e1.getMessage());
+			} catch (ProductNotFoundException e1) {
+				JOptionPane.showMessageDialog(null, "Product not found", "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (SQLException e1){
+				JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 
 			mngProduct = new ManagerProductManagementTab(selectedProduct);
