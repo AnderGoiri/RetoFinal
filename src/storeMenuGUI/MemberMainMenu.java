@@ -2,11 +2,9 @@ package storeMenuGUI;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import model.Member;
 import model.User;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.JList;
 
 public class MemberMainMenu extends JPanel {
 	/**

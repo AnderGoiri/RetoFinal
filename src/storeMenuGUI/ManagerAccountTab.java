@@ -12,8 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
-
-import model.Manager;
 import model.User;
 
 public class ManagerAccountTab extends JPanel implements ActionListener{
@@ -140,12 +138,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 			btnCancel.setBounds(1310, 232, 205, 65);
 			add(btnCancel);
 			
-			
-		// --- JCalendar --- //
-			
-			
-			
-			
+		
 		// --- JLabel background --- //
 			JLabel lblFondo = new JLabel("");
 			lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
@@ -167,7 +160,6 @@ public class ManagerAccountTab extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource().equals(btnEditProfile)) {
 			textaUsername.setEditable(true);
 			textaUsername.setEnabled(true);

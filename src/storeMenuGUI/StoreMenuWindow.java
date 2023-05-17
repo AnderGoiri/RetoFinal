@@ -16,17 +16,11 @@ import java.awt.event.ActionListener;
 
 public class StoreMenuWindow extends JDialog {
 	
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel,menuPanel;
 	private MemberMainMenu memberPanel;
 	private ManagerMainMenu managerPanel;
 	private CardLayout cardLayout;
-
-
-	private static final long serialVersionUID = 1L;
-	
-//	private ManagerMenu managerPanel;
-
-	
 
 	public StoreMenuWindow(ActionListener actionListener, boolean b, User auxUser) {
 		

@@ -2,8 +2,6 @@ package storeMenuGUI;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-import model.Manager;
 import model.User;
 
 import java.awt.Color;
@@ -55,33 +53,8 @@ public class ManagerMainMenu extends JPanel {
 		mngSupRepair = new ManagerSuperiorRepairTab();
 		tabbedPane.addTab("Repair Sup", mngSupRepair);
 
-		// comprobarManager(auxUser);
 		mngAccount = new ManagerAccountTab(auxUser);
 		tabbedPane.addTab("Account", mngAccount);
 
-		// comprobarManager(auxUser);
-
 	}
-
-	// private void comprobarManager(Manager auxUser) {
-	// TODO Metodo que puede servir
-
-	// String message="Error";
-	// boolean tech=false,sup=false,adm=false;
-
-	// tech=auxUser.isTechnician();
-	// sup=auxUser.isSupervisor();
-	// adm=auxUser.isAdmin();
-
-	// if(tech) {
-	// message="Hello Technician "+auxUser.getIdUser();
-	// }else if(sup) {
-	// message="Hello Supervisor "+auxUser.getName();
-	// }else if(adm) {
-	// message="Hello Administator "+auxUser.getName();
-	// }
-
-	// JOptionPane.showMessageDialog(this, message);
-
-	// }
 }

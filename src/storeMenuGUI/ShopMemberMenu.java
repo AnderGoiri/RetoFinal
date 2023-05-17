@@ -7,29 +7,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Color;
-import java.awt.FlowLayout;
-
 import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-
-import exceptions.ModelNotFoundException;
 import exceptions.ProductNotFoundException;
 import exceptions.PurchaseNotFoundException;
 import exceptions.StockNotFoundException;
@@ -43,13 +35,9 @@ import model.Member;
 import model.Product;
 import model.Purchase;
 import model.User;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSeparator;
-import javax.swing.JList;
-import javax.swing.JRadioButton;
 import javax.swing.JTable;
-import java.awt.SystemColor;
 
 public class ShopMemberMenu extends JPanel implements ActionListener, KeyListener, FocusListener {
 	/**

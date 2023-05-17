@@ -2,30 +2,27 @@ package storeMenuGUI;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JList;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import model.Manager;
-
 public class ManagerAdminTab extends JPanel implements ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JComboBox<String> comboBoxStatus;
 	private JLabel lblManagerSignUpRequests, lblManagerStatus;
 	private JScrollPane scrollPaneManagerAccounts;
 	private JButton btnApply;
 	private JTable managerTable;
-	private JList<String> managerList;
 	private DefaultTableModel managerTableModel;
 	
 	
