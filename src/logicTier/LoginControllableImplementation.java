@@ -161,7 +161,7 @@ public class LoginControllableImplementation implements LoginControllable {
 			throw new UserNotFoundException("Invalid user");
 		}
 	}
-
+	//TODO Comenta Ander
 	@Override
 	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException {
 		// open the connection with the database
@@ -177,11 +177,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		ptmt.executeUpdate();
 	}
 
-	@Override
-	public void deleteUserMember(Member me) throws UserNotFoundException {
-
-	}
-
+	//TODO Comenta Ander
 	@Override
 	public Member createMember(int idUser) throws SQLException, WrongCredentialsException {
 
@@ -205,6 +201,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		return new Member(username, name, surname, password, mail, dateRegister, address, creditCard);
 	}
 
+	//TODO Comenta Ander
 	@Override
 	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException {
 

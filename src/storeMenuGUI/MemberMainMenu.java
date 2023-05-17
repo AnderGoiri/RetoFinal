@@ -3,6 +3,7 @@ package storeMenuGUI;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import model.User;
+import model.Member;
 import java.awt.Font;
 import java.awt.Color;
 
@@ -18,10 +19,9 @@ public class MemberMainMenu extends JPanel {
 	/**
 	 * Create the panel.
 	 * 
-	 * @param auxUser
+	 * @param auxUser 
 	 */
-	public MemberMainMenu(User user) {
-
+	public MemberMainMenu(Member auxUser) {
 		setBounds(100, 100, 1860, 950);
 		setLayout(null);
 		/**
@@ -37,7 +37,7 @@ public class MemberMainMenu extends JPanel {
 		 * consult the products in the store.
 		 */
 
-		panelStore = new ShopMemberMenu(user);
+		panelStore = new ShopMemberMenu(auxUser);
 		panelStore.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Store", null, panelStore, null);
 		/**
@@ -48,12 +48,11 @@ public class MemberMainMenu extends JPanel {
 		panelRepair.setForeground(new Color(0, 151, 178));
 		tabbedPane.setFont(new Font("Elephant", Font.PLAIN, 15));
 		tabbedPane.addTab("Repair", null, panelRepair, null);
-
-		/**
-		 * Add a panel called panelAccount to the JTabbedPane tab where the member can
-		 * consult his account information.
-		 */
-		panelAccount = new MemberAccountPanel();
+		
+	/**
+	 * Add a panel called panelAccount to the JTabbedPane tab where the member can consult his account information.
+	 */
+		panelAccount = new MemberAccountPanel(auxUser);
 		panelAccount.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Account", null, panelAccount, null);
 	}

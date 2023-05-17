@@ -53,11 +53,6 @@ public class StoreMenuWindow extends JDialog {
 		/**
 		 * A panel for the members menu is created and added to the menu panel.
 		 */
-		memberPanel = new MemberMainMenu(auxUser);
-		menuPanel.add( "Member", memberPanel);
-	
-		managerPanel = new ManagerMainMenu(auxUser);
-		menuPanel.add("Manager", managerPanel);
 
 		showMenu(auxUser);
 	}
@@ -70,17 +65,18 @@ public class StoreMenuWindow extends JDialog {
 		
 		if(auxUser instanceof Member) {
 			memberPanel = new MemberMainMenu((Member)auxUser);
+
 			menuPanel.add( "Member", memberPanel);
 			cardLayout.show(menuPanel, "Member");
 		}
 		
 		if(auxUser instanceof Manager) {
 			managerPanel = new ManagerMainMenu((Manager)auxUser);
+			
 			menuPanel.add("Manager", managerPanel);
 			cardLayout.show(menuPanel, "Manager");
 		}
-		
-
+		cardLayout.show(menuPanel, "Member");
 	}
 
 }

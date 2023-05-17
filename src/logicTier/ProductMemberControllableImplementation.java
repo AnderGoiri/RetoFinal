@@ -638,22 +638,28 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @throws SQLException 
 	 */
 	@Override
-	public void modifyMember(Member m) throws SQLException {
+	public void modifyMember(Member m, String username) throws SQLException {
 		con = connection.openConnection();
-
-		stmt = con.prepareStatement("UPDATE user SET username=?, name=?, surname=?, mail=? WHERE idUser=?");
-		stmt.setString(1, m.getUserName());
-		stmt.setString(2, m.getName());
-		stmt.setString(3, m.getSurname());
-		stmt.setString(4, m.getMail());
-		stmt.setInt(5, m.getIdUser());
-		stmt.executeUpdate();
-
-		stmt = con.prepareCall("UPDATE member SET address=?, creditCard=? WHERE idUser=? ");
-		stmt.setString(1, m.getAddress());
-		stmt.setString(2, m.getCreditCard());
-		stmt.setInt(3, m.getIdUser());
-		stmt.executeUpdate();
+		ResultSet rs = null;
+		
+			stmt = con.prepareStatement("UPDATE user SET username=?, name=?, surname=?, mail=? WHERE username= ?");
+			stmt.setString(1, m.getUserName());
+			stmt.setString(2, m.getName());
+			stmt.setString(3, m.getSurname());
+			stmt.setString(4, m.getMail());
+			stmt.setString(5, username);
+			stmt.executeUpdate();
+			
+			stmt = con.prepareStatement("SELECT * from user where username = " + m.getUserName());
+			rs = stmt.executeQuery();
+			int idU = rs.getInt("idUser");
+			
+			stmt = con.prepareStatement("UPDATE member m SET address=?, creditCard=? WHERE idUser = ?");
+			stmt.setString(1, m.getAddress());
+			stmt.setString(2, m.getCreditCard());
+			stmt.setInt(3, idU);
+			
+			stmt.executeUpdate();
 
 	}
 
@@ -876,5 +882,17 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} else {
 			throw new ProductNotFoundException();
 		}
+	}
+
+	@Override
+	public boolean existsProduct(int search) throws ProductNotFoundException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void modifyMember(Member m) throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 }

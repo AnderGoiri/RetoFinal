@@ -5,8 +5,6 @@ import javax.swing.JCheckBox;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -15,6 +13,7 @@ import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -36,10 +35,9 @@ import model.Product;
 import model.Purchase;
 import model.User;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 
-public class ShopMemberMenu extends JPanel implements ActionListener, KeyListener, FocusListener {
+public class ShopMemberMenu extends JPanel implements KeyListener, ActionListener {
 	/**
 	 * 
 	 */
@@ -47,6 +45,7 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	private JCheckBox chckbxSale;
 	private JTextField txtSearch;
 	private JButton btnRemove;
+	private JComboBox comboBoxFilter;
 	private JScrollPane scrollPaneProducts;
 	private JButton btnCarrito;
 	private JLabel lblWelcome;
@@ -229,7 +228,6 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		btnLupa.setOpaque(false);
 		btnLupa.addActionListener(this);
 		btnLupa.addKeyListener(this);	
-			
 		btnRemove = new JButton("Remove");
 		btnRemove.setBackground(new Color(0, 151, 178));
 		btnRemove.setForeground(new Color(255, 255, 255));
@@ -237,28 +235,30 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		btnRemove.setBounds(1229, 770, 205, 65);
 		add(btnRemove);
 		btnRemove.addActionListener(this);
-		btnRemove.addKeyListener(this)
-;
+		btnRemove.addKeyListener(this);
 		btnCarrito = new JButton("");
 		btnCarrito.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/carrito_.png")));
 		btnCarrito.setBounds(1400, 36, 100, 100);
 		add(btnCarrito);
 		btnCarrito.addActionListener(this);
-		
 		JLabel lblLookProduct = new JLabel("Look for a product");
 		lblLookProduct.setForeground(new Color(0, 0, 0));
 		lblLookProduct.setFont(new Font("Constantia", Font.PLAIN, 25));
 		lblLookProduct.setBounds(94, 176, 496, 31);
 		add(lblLookProduct);
 
-		JSeparator separator = new JSeparator();
-		separator.setBounds(451, 134, 707, 2);
-		add(separator);
+		/**
+		 * Add a scroll pane to the panel to see the list of all the products.
+		 */
 
-		JLabel lblList = new JLabel("List of:");
-		lblList.setFont(new Font("Constantia", Font.PLAIN, 25));
-		lblList.setBounds(94, 315, 94, 37);
-		add(lblList);
+		String categories[] = { "a", "b", "c", "d", "e", "a", "b", "c", "d", "e", "a", "b", "c", "d" };
+
+		JList listProducts = new JList(categories);
+		listProducts.setFont(new Font("Constantia", Font.PLAIN, 25));
+		scrollPaneProducts = new JScrollPane(listProducts);
+		scrollPaneProducts.setBounds(94, 372, 1340, 371);
+		add(scrollPaneProducts);
+
 
 		comboProductType = new JComboBox();
 		comboProductType.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
@@ -273,18 +273,16 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 		lblPurchase.setFont(new Font("Constantia", Font.BOLD, 25));
 		lblPurchase.setBounds(1361, 134, 168, 65);
 		add(lblPurchase);
-		
+
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/descarga.jpg")));
 		lblFondo.setBounds(0, 0, 1540, 845);
 		add(lblFondo);
-		
 		model.setRowCount(0);
 		
 		showAllProducts();
-	}
+}
 
-	
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource().equals(comboProductType)) {
@@ -601,39 +599,18 @@ public class ShopMemberMenu extends JPanel implements ActionListener, KeyListene
 	}
 	
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
 			if(e.getSource().equals(txtSearch)){
 				btnLupa.doClick();
 			}
-		}
 	}
-
-
-	@Override
-	public void focusGained(FocusEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 }

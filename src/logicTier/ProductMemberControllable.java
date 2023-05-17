@@ -46,6 +46,10 @@ public interface ProductMemberControllable {
 	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException, SQLException;
 	
 	public char getTypeProduct(int idProduct) throws SQLException;
+	
+	public boolean existsProduct(int search) throws ProductNotFoundException;
+	
+	public void modifyMember(Member m, String username) throws SQLException;
 
 	public Set<Product> getAllProducts(String search) throws SQLException;
 

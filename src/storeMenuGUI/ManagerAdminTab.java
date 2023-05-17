@@ -14,10 +14,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class ManagerAdminTab extends JPanel implements ActionListener{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private JComboBox<String> comboBoxStatus;
 	private JLabel lblManagerSignUpRequests, lblManagerStatus;
 	private JScrollPane scrollPaneManagerAccounts;

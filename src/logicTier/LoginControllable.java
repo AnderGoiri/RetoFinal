@@ -76,8 +76,6 @@ public interface LoginControllable {
 	 * @author Ander Goirigolzarri Iturburu
 	 */
 	public void verificationAdminToManager(Manager ma) throws UserNotFoundException, SQLException;
-
-	public void deleteUserMember(Member me) throws UserNotFoundException;
 	
 	public Member createMember(int idUser) throws SQLException, WrongCredentialsException;
 	
