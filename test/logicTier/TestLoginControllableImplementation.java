@@ -62,11 +62,7 @@ class TestLoginControllableImplementation {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				gate.closeConnection(stmt, conn, rset);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			gate.closeConnection();
 		}
 	}
 
@@ -95,11 +91,7 @@ class TestLoginControllableImplementation {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				gate.closeConnection(stmt, conn, rset);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			gate.closeConnection();
 		}
 	}
 
