@@ -300,12 +300,12 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 					login.registerUserManager(new Manager(textFieldUsername.getText(), textFieldName.getText(),
 							textFieldSurname.getText(), new String(textFieldPassword.getPassword()),
 							textFieldEmail.getText(), LocalDate.now(), 0, chckbxSupervisor.isSelected(),
-							chckbxTechnician.isSelected(), false, EnumStatusManager.P));
+							chckbxTechnician.isSelected(), false, EnumStatusManager.A));
 
 				}
 				changePanel();
 			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(this, e1.getMessage());
+				JOptionPane.showMessageDialog(this, "An error occured during the Sign Up");
 			}
 		} else if (e.getSource().equals(chckbxShowHideSignUp)) {
 			if (chckbxShowHideSignUp.isSelected()) {
@@ -387,6 +387,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
+
 
 	@Override
 	public void mouseReleased(MouseEvent e) {

@@ -32,7 +32,6 @@ import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 
 /**
- * 
  * The ManagerShopTab class represents a JPanel that displays the manager's shop
  * tab in the store menu GUI.
  * 
@@ -100,7 +99,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		// --- JTable ---
 		modelProduct = new DefaultTableModel(); // Establish the default table model
 		modelProduct.setColumnIdentifiers(new Object[] { "ID", "Name", "Price", "Description", "Stock", "Brand",
-				"Model", "Color", "Sale Active", "Sale %", "Active", "Class", "Type" });
+				"Model", "Color", "Sale Active", "Sale %", "Active", "Class", "Type"});
 		productsTable = new JTable();
 		productsTable.setCellSelectionEnabled(false);
 		productsTable.setRowSelectionAllowed(true);
@@ -116,7 +115,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		add(comboBoxSearchBy);
 
 		// Add options to the class combo box
-		searchModel.addElement("----------");
+		searchModel.addElement("All");
 		searchModel.addElement("ID");
 		searchModel.addElement("Name");
 		searchModel.addElement("Brand");
@@ -203,7 +202,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource().equals(btnSearch) && textFieldSearchBar.getText().isBlank()
-				&& comboBoxSearchBy.getSelectedItem().equals("----------")) {
+				&& comboBoxSearchBy.getSelectedItem().equals("All")) {
 			showAllProducts();
 
 		} else if (e.getSource().equals(btnSearch) && !textFieldSearchBar.getText().isBlank()) {

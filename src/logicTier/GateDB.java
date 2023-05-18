@@ -1,17 +1,15 @@
 package logicTier;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 
 /**
- * 
- * Class with the open and close connection methods with the DB.
+ * Provides methods for opening and closing a connection with a database. This
+ * class establishes a connection to the database using the URL, username, and
+ * password provided in the {@link logicTier.config configuration file}. It also provides a method for
+ * closing the connection.
  * 
  * @author Ander Goirigolzarri Iturburu
  */
@@ -19,7 +17,6 @@ public class GateDB {
 
 	private ResourceBundle configFile;
 	private String url, user, pass;
-	private Connection conn;
 
 	public GateDB() {
 		configFile = ResourceBundle.getBundle("logicTier.config");
@@ -29,20 +26,14 @@ public class GateDB {
 	}
 
 	/**
-	 * 
 	 * Establishes a connection to the database using the URL, user, and password
 	 * set when creating the GateDB object.
 	 * 
 	 * @return a connection object to the database
 	 * @throws SQLException if the connection could not be established
-	 * @throws SQLException
-	 * 
-	 * @author Ander Goirigolzarri Iturburu
 	 */
 	public Connection openConnection() {
-		if (conn != null) {
-			return conn;
-		}
+		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, user, pass);
 		} catch (SQLException e) {
@@ -52,14 +43,10 @@ public class GateDB {
 	}
 
 	/**
-	 * 
 	 * Method used to close a connection with the database.
 	 * 
 	 * @param conn The <code>Connection</code> to close.
-	 * @throws SQLException if any error occurs while closing the connection, the
-	 *                      statement, or the result set.
-	 * 
-	 * @author Ander Goirigolzarri Iturburu
+	 * @throws SQLException if any error occurs while closing the connection.
 	 */
 	public Connection closeConnection() {
 		if (conn != null)
@@ -120,9 +107,16 @@ public class GateDB {
 			conn.close();
 	}
 
-	public void closeConnection(Statement stmt, Connection conn) throws SQLException {
+	public void closeConnection(PreparedStatement stmt, Connection conn) throws SQLException {
 		if (stmt != null)
 			stmt.close();
+		if (conn != null)
+			conn.close();
+	}
+	
+	public void closeConnection(CallableStatement ctmt, Connection conn) throws SQLException {
+		if (ctmt != null)
+			ctmt.close();
 		if (conn != null)
 			conn.close();
 	}
@@ -145,5 +139,6 @@ public class GateDB {
 			rset.close();
 		if (conn != null)
 			conn.close();
+
 	}
 }

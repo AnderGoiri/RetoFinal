@@ -19,6 +19,13 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
+/**
+ * This class represents the Member Account Panel in the storeMenuGUI package.
+ * It is a JPanel that displays and allows the modification of user account
+ * information.
+ * 
+ * @author Olaia Sainz Lorenzo
+ */
 public class MemberAccountPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * 
@@ -42,6 +49,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 	public MemberAccountPanel(User user) {
 		setLayout(null);
 		setBounds(0, 0, 984, 718);
+
 		this.user = user;
 		/**
 		 * Creation of a series of in which the user can see their data and can modify

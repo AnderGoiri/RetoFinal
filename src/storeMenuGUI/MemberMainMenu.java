@@ -7,10 +7,15 @@ import model.Member;
 import java.awt.Font;
 import java.awt.Color;
 
+/**
+ * The MemberMainMenu class represents a JPanel for the main menu of a member
+ * user.
+ * 
+ * @author Olaia Sainz Lorenzo
+ */
+
 public class MemberMainMenu extends JPanel {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private ShopMemberMenu panelStore;
 	private MemberAccountPanel panelAccount;

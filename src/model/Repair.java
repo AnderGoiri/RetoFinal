@@ -3,14 +3,13 @@ package model;
 import java.time.LocalDate;
 
 /**
- * @author Ander
+ * The <code>Repair</code> class represents a repair task assigned to a
+ * technician in the system. It contains information such as the ID of the
+ * repair task, the cost of the repair, the current status of the repair, the ID
+ * of the technician assigned to the task, the start date and deadline date of
+ * the repair, and a description of the repair needed.
  * 
- *         The <code>Repair</code> class represents a repair task assigned to a
- *         technician in the system. It contains information such as the ID of
- *         the repair task, the cost of the repair, the current status of the
- *         repair, the ID of the technician assigned to the task, the start date
- *         and deadline date of the repair, and a description of the repair
- *         needed.
+ * @author Ander Goirigolzarri Iturburu
  */
 public class Repair {
 

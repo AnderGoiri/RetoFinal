@@ -39,10 +39,30 @@ import javax.swing.JTable;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+/**
+ * The ShopMemberMenu class represents a graphical user interface (GUI) panel
+ * for the member's shop menu. It extends the JPanel class and implements the
+ * KeyListener and ActionListener interfaces. The panel contains various
+ * components such as checkboxes, text fields, labels, buttons, combo boxes,
+ * table, and scroll panes to facilitate member's interaction with the shop
+ * menu. The class provides methods to get and set the state of checkboxes, text
+ * fields, buttons, and combo boxes. It also handles various actions performed
+ * by the user, such as searching for products, adding products to the cart,
+ * removing products from the cart, and finishing the purchase. The panel
+ * displays a list of products in a table, which can be filtered based on the
+ * product type selected by the user. The user can search for products by
+ * entering a search query and clicking the search button. The search results
+ * are displayed in the table. The panel allows the user to add selected
+ * products to the shopping cart, remove products from the cart, and finish the
+ * purchase. The user's progress in the purchase is stored in a Purchase object.
+ * The class uses the ProductMemberControllable and ProductMemberFactory classes
+ * to interact with the product and purchase data. This class is designed to be
+ * used as a component of a larger application's GUI to provide the member's
+ * shop menu functionality.
+ * 
+ * @author Olaia Sainz Lorenzo
+ */
 public class ShopMemberMenu extends JPanel implements KeyListener, ActionListener {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JCheckBox chckbxSale;
 	private JTextField txtSearch;
@@ -239,11 +259,19 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 
 		String categories[] = { "a", "b", "c", "d", "e", "a", "b", "c", "d", "e", "a", "b", "c", "d" };
 
+
+		JList listProducts = new JList(categories);
+		listProducts.setFont(new Font("Constantia", Font.PLAIN, 25));
+		scrollPaneProducts = new JScrollPane(listProducts);
+		scrollPaneProducts.setBounds(94, 372, 1340, 371);
+		add(scrollPaneProducts);
+
 		comboProductType = new JComboBox();
 		comboProductType.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		comboProductType.setFont(new Font("Constantia", Font.PLAIN, 25));
 		comboProductType
 				.setModel(new DefaultComboBoxModel(new String[] { "", "All", "Instrument", "Component", "Accessory" }));
+
 		comboProductType.setBounds(50, 240, 220, 50);
 		add(comboProductType);
 		comboProductType.addActionListener(this);
@@ -263,6 +291,7 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 		lblFondo.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/descarga.jpg")));
 		lblFondo.setBounds(0, 0, 984, 718);
 		add(lblFondo);
+		model.setRowCount(0);
 
 		showAllProducts();
 	}

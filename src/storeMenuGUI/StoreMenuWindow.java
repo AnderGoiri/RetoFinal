@@ -12,6 +12,13 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 
+/**
+ * The StoreMenuWindow class represents a dialog window for the store menu. It
+ * extends the JDialog class and provides a graphical user interface (GUI) for
+ * the store menu functionality.
+ * 
+ * @author Francisco Rafael de Ysasi González
+ */
 public class StoreMenuWindow extends JDialog {
 
 	private static final long serialVersionUID = 1L;

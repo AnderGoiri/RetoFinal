@@ -1,9 +1,11 @@
 package logicTier;
 
 /**
- *
- *
- *
+ * 
+ * Factory class for creating instances of ProductManagerControllable. The
+ * factory provides a single instance of
+ * ProductManagerControllableImplementation.
+ * 
  * @author Ander Goirigolzarri Iturburu
  */
 public class ProductManagerFactory {
@@ -13,7 +15,7 @@ public class ProductManagerFactory {
 	/**
 	 * Method to create a LoginControllableImplementation Object
 	 * 
-	 * @return
+	 * @return a LoginControllableImplementation Object
 	 */
 	public static ProductManagerControllable getProductManagerControllable() {
 		return obj;
