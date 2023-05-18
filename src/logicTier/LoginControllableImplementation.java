@@ -28,6 +28,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	private PreparedStatement ptmt; // Establish a PreparedStatement attribute
 	private GateDB gate = new GateDB(); // Establish a GateDB attribute
 
+	
 	/**
 	 * Checks if a given username exists in the USER table of the database.
 	 * 
