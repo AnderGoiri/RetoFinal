@@ -119,7 +119,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			}
 		}
-		//connection.closeConnection(ctmt, con);
+		connection.closeConnection(ctmt, con);
 		return listaProductos;
 	}
 
@@ -198,7 +198,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			}
 		}
-		//connection.closeConnection(ctmt, con);
+		connection.closeConnection(ctmt, con);
 		return listaProductos;
 	}
 
@@ -279,7 +279,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 
 			}
-			//connection.closeConnection(ctmt, con);
+			connection.closeConnection(ctmt, con);
 		}
 		return listaProductos;
 	}
@@ -473,7 +473,9 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 		if (p.isActive() == true) {
 			if (!checkProduct(p)) {
-				pTotal.getSetProduct().add(p);
+				Set<Product> pProd = pTotal.getSetProduct();
+				pProd.add(p);
+				pTotal.setSetProduct(pProd);
 				ctmt = con.prepareCall("UPDATE product SET stock=? WHERE idProduct=?");
 				ctmt.setInt(1, p.setStock((int) (p.getStock() - 1f)));
 				ctmt.setInt(2, p.getIdProduct());
@@ -482,13 +484,12 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 				if ((pTotal == null) || (!pTotal.getStatusPurchase().equals(statusPurch))) {
 					pTotal = new Purchase();
-					ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?,?)}");
+					ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?)}");
 
 					ctmt.setInt(1, m.getIdUser());
 					ctmt.setInt(2, 1);
-					ctmt.setInt(3, 1);
-					ctmt.setFloat(4, p.getPrice());
-					ctmt.setString(5, "In progress");
+					ctmt.setFloat(3, p.getPrice());
+					ctmt.setString(4, "In progress");
 
 					ctmt.executeUpdate();
 
@@ -534,7 +535,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			throw new ProductNotFoundException(
 					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
-		//connection.closeConnection(ctmt, con);
+		connection.closeConnection(ctmt, con);
 		return pTotal;
 	}
 
@@ -549,17 +550,86 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	public Purchase searchPurchase(Member m) {
 		Set<Purchase> listPurchase = m.getPurchaseRecord();
 		Purchase aux = null;
+		if (listPurchase != null) {
+			for (Purchase p : listPurchase) {
+				String stPurch = "In progress";
 
-		for (Purchase p : listPurchase) {
-			String stPurch = "In progress";
+				EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
 
-			EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
-
-			if (p.getStatusPurchase().equals(statusPurch)) {
-				aux = p;
+				if (p.getStatusPurchase().equals(statusPurch)) {
+					aux = p;
+				}
 			}
 		}
 		return aux;
+	}
+	/**
+	 * This method adds a Purchase to the Member Set of purchases
+	 * @param p
+	 * @param m
+	 * @return
+	 * @throws SQLException
+	 * @throws StockNotFoundException
+	 * @throws ProductNotFoundException
+	 */
+	@Override
+	public Set<Purchase> addPurchase(Product p, Member m) throws SQLException, StockNotFoundException, ProductNotFoundException {
+		String stPurch = "In progress";
+		EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
+		Purchase pTotal = new Purchase();
+		Set<Purchase> pList = new HashSet<Purchase>();
+		Set<Product> pProd = new HashSet<Product>();
+		pProd.add(p);
+		pTotal.setSetProduct(pProd);
+		
+		if (p.isActive() == true) {
+			if (!checkProduct(p)) {
+				pTotal.getSetProduct().add(p);
+				ctmt = con.prepareCall("UPDATE product SET stock=? WHERE idProduct=?");
+				ctmt.setInt(1, p.setStock((int) (p.getStock() - 1f)));
+				ctmt.setInt(2, p.getIdProduct());
+
+				ctmt.executeUpdate();
+
+
+					pTotal = new Purchase();
+					ctmt = con.prepareCall("{CALL insert_new_purchase(?,?,?,?)}");
+
+					ctmt.setInt(1, m.getIdUser());
+					ctmt.setInt(2, 1);
+					ctmt.setFloat(3, p.getPrice());
+					ctmt.setString(4, pTotal.getStatusPurchase().getLabel());
+
+					ctmt.executeUpdate();
+
+					// Obtener el idPurchase generado por la base de datos
+					ResultSet rs = ctmt.getGeneratedKeys();
+					if (rs.next()) {
+						int idPurchase = rs.getInt(1);
+						float price = rs.getFloat(2);
+						EnumStatusPurchase enumStPurchase = EnumStatusPurchase.getValue(rs.getString("statusPurchase"));
+						LocalDate date = LocalDate.parse(rs.getString("datePurchase"));
+						int purchaseQ = 1;
+						pTotal.setIdPurchase(idPurchase);
+						pTotal.setPurchaseTotalCost(price);
+						pTotal.setStatusPurchase(enumStPurchase);
+						pTotal.setPurchaseDate(date);
+						pTotal.setPurchaseQuantity(purchaseQ);
+					}
+					Set<Purchase> listPurchase = m.getPurchaseRecord();
+					listPurchase.add(pTotal);
+					m.setPurchaseRecord(listPurchase);
+			} else {
+				throw new StockNotFoundException(
+						"The stock for the specified product could not be found. Please check the product details and try again or contact the administrator for assistance.");
+			}
+		} else {
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
+		}
+	connection.closeConnection(ctmt, con);
+	pList.add(pTotal);
+	return pList;
 	}
 
 	/**
@@ -596,7 +666,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			ctmt.executeUpdate();
 
 		}
-		//connection.closeConnection(ctmt, con);
+		connection.closeConnection(ctmt, con);
 		return pTotal;
 
 	}
@@ -628,7 +698,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			throw new PurchaseNotFoundException(
 					"The requested purchase could not be found. Please check the purchase details and try again or contact customer support for further assistance.");
 		}
-		//connection.closeConnection(ctmt, con);
+		connection.closeConnection(ctmt, con);
 		return pTotal;
 	}
 
@@ -662,7 +732,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		stmt.setInt(3, idU);
 
 		stmt.executeUpdate();
-		//connection.closeConnection(stmt, con);
+		connection.closeConnection(stmt, con);
 	}
 
 	/**
@@ -700,7 +770,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			throw new PurchaseNotFoundException(
 					"The requested purchase could not be found. Please check the purchase details and try again or contact customer support for further assistance.");
 		}
-		//connection.closeConnection(stmt, con);
+		connection.closeConnection(stmt, con);
 		return listaPurchase;
 	}
 
@@ -744,9 +814,9 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		if (rsAccessory.next()) {
 			return 'A'; // 'A' represents Accessory
 		}
-		//connection.closeConnection(stmtInstrument, con);
-		//connection.closeConnection(stmtComponent, con);
-		//connection.closeConnection(stmtAccessory, con);
+		connection.closeConnection(stmtInstrument, con);
+		connection.closeConnection(stmtComponent, con);
+		connection.closeConnection(stmtAccessory, con);
 		return 'U'; // 'U' represents Unknown (product not found in any table)
 	}
 
@@ -862,7 +932,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 			}
 		}
-		//connection.closeConnection();
+		connection.closeConnection();
 		return setProducts;
 	}
 

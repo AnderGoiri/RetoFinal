@@ -53,4 +53,6 @@ public interface ProductMemberControllable {
 
 	public Product searchProductById(int pId, Set<Product> listaProd) throws ProductNotFoundException;
 
+	public Set<Purchase> addPurchase(Product p, Member m) throws SQLException, StockNotFoundException, ProductNotFoundException;
+	
 }

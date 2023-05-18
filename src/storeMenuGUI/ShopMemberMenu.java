@@ -384,6 +384,7 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 			productId = (int) productTable.getValueAt(filaSelect, 0);
 		}
 		try {
+			
 			/**
 			 * Setting the selected product
 			 */
@@ -396,7 +397,10 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 			 * Setting the in progress purchase from the user
 			 */
 			purch = pMember.searchPurchase(mUser);
-
+			if (purch == null) {
+				pMember.addPurchase(prod, mUser);
+				purch = pMember.searchPurchase(mUser);
+			}
 			/**
 			 * Adding the product to the purchase
 			 */
