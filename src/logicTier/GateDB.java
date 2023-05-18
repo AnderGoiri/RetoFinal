@@ -1,8 +1,12 @@
 package logicTier;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 /**
@@ -48,7 +52,7 @@ public class GateDB {
 	 * @param conn The <code>Connection</code> to close.
 	 * @throws SQLException if any error occurs while closing the connection.
 	 */
-	public Connection closeConnection() {
+	public Connection closeConnection(Connection conn) {
 		if (conn != null)
 			try {
 				conn.close();
@@ -141,4 +145,5 @@ public class GateDB {
 			conn.close();
 
 	}
+
 }

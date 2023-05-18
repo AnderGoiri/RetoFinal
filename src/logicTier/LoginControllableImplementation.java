@@ -213,7 +213,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @throws WrongCredentialsException if the member is not found in the database.
 	 */
 	@Override
-	public Member createMember(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
+	public Member createMember(int idUser) throws SQLException, WrongCredentialsException {
 		ResultSet rset = null;
 		ptmt = conn.prepareStatement("SELECT * FROM vw_member WHERE idUser =" + idUser + ";");
 
@@ -231,8 +231,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		LocalDate dateRegister = rset.getDate(7).toLocalDate();
 		String address = rset.getString(8);
 		String creditCard = rset.getString(9);
-    
-		gate.closeConnection(ptmt, conn);
+   
 
 		return new Member(username, name, surname, password, mail, dateRegister, address, creditCard);
 	}
@@ -249,7 +248,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	 *                                   database.
 	 */
 	@Override
-	public Manager createManager(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
+	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException {
 		ResultSet rset = null;
 		ptmt = conn.prepareStatement("SELECT * FROM vw_manager WHERE idUser =" + idUser + ";");
 		
@@ -271,10 +270,10 @@ public class LoginControllableImplementation implements LoginControllable {
 		boolean isAdmin = rset.getBoolean(11);
 		EnumStatusManager statusManager = EnumStatusManager.getValue(rset.getString(12));
 		
-		gate.closeConnection(ptmt, conn);
 		
     return new Manager(username, name, surname, password, mail, dateRegister, idSupervisor, isSupervisor,
 				isTechnician, isAdmin, statusManager);
 	}
+
 
 }

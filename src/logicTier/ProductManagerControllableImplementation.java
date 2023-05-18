@@ -196,7 +196,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		ctmt.executeQuery();
 		existe = ctmt.getObject(2, boolean.class);
 
-		connection.closeConnection();
+		connection.closeConnection(ctmt,con);
 
 		return existe;
 	}

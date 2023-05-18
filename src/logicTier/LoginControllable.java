@@ -84,6 +84,7 @@ public interface LoginControllable {
 	 * @throws WrongCredentialsException if the member is not found in the database.
 	 */
 	public Member createMember(int idUser) throws SQLException, WrongCredentialsException;
+	
 
 	/**
 	 * Creates a Manager object with the provided user ID and database connection.

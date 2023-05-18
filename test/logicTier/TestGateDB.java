@@ -60,7 +60,7 @@ class TestGateDB {
 	@Test
 	void testCloseConnectionWithDBSuccesful() throws SQLException {
 		gate.openConnection();
-		assertTrue(gate.closeConnection().isClosed());
+		assertTrue(gate.closeConnection());
 	}
 
 	/**
