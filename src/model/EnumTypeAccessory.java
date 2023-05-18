@@ -1,10 +1,9 @@
 package model;
 
 /**
- * 
  * Enum class for the types of Accessory
  * 
- * @author Jago
+ * @author Jagoba Bartolomé Barroso
  */
 public enum EnumTypeAccessory {
 	AUDIO("Audio"), CONNECTION("Connection"), ITEM("Item");

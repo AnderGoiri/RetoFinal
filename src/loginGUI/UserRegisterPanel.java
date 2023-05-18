@@ -306,7 +306,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 				}
 				changePanel();
 			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(this, e1.getMessage());
+				JOptionPane.showMessageDialog(this, "An error occured during the Sign Up");
 			}
 		} else if (e.getSource().equals(chckbxShowHideSignUp)) {
 			if (chckbxShowHideSignUp.isSelected()) {
@@ -382,8 +382,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			lblLogIn.setFont(font1);
 		}
 	}
-
-	
 
 	@Override
 	public void mousePressed(MouseEvent e) {}

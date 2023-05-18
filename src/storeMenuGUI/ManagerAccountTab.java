@@ -14,6 +14,11 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import model.User;
 
+/**
+ * The ManagerAccountTab class represents a JPanel for managing user accounts.
+ * 
+ * @author Francisco Rafael de Ysasi González
+ */
 public class ManagerAccountTab extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -24,13 +29,9 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 	private JButton btnEditProfile;
 	private JButton btnConfirm;
 	private JButton btnCancel;
-	private JLabel lblSurname, lblName, lblUsername, lblEmail, lblPurchase, lblNewFotoPerfil,lblFondo;
+	private JLabel lblSurname, lblName, lblUsername, lblEmail, lblPurchase, lblNewFotoPerfil, lblFondo;
 	private JSeparator separator;
 
-	/**
-	 * @author Francisco Rafael de Ysasi González
-	 * @param auxUser
-	 */
 	public ManagerAccountTab(User auxUser) {
 		setLayout(null);
 		setBounds(0, 0, 984, 718);

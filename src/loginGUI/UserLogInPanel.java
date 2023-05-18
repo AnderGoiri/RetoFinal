@@ -129,18 +129,6 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 		add(btnLogIn);
 		btnLogIn.addActionListener(this);
 
-		/*
-		 * This is the code for the button when it was on the Win_login_Register. It is
-		 * kept to use the same style later
-		 * 
-		 * btnLogIn = new JButton("LOG IN"); btnLogIn.setEnabled(false);
-		 * btnLogIn.setVisible(false); btnLogIn.setBackground(new Color(0, 151, 178));
-		 * btnLogIn.setForeground(new Color(255, 255, 255)); btnLogIn.setFont(new
-		 * Font("Onyx", Font.BOLD, 45)); btnLogIn.setBounds(387, 470, 183, 81);
-		 * contentPane.add(btnLogIn); btnLogIn.addActionListener(this);
-		 * btnLogIn.addKeyListener(this);
-		 */
-
 		// --- JSeparator ---
 		separatorSignUp = new JSeparator();
 		separatorSignUp.setForeground(Color.WHITE);
@@ -154,18 +142,6 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 		chckbxShowHideLogIn.setBounds(660, 268, 68, 68);
 		add(chckbxShowHideLogIn);
 		chckbxShowHideLogIn.addActionListener(this);
-
-		/*
-		 * 
-		 * This is the code for the button when it was on the Win_login_Register. It is
-		 * kept to use the same style later
-		 * 
-		 * btnSignUp = new JButton("SIGN UP"); btnSignUp.setBackground(new Color(0, 151,
-		 * 178)); btnSignUp.setForeground(new Color(255, 255, 255));
-		 * btnSignUp.setFont(new Font("Onyx", Font.BOLD, 45)); btnSignUp.setBounds(387,
-		 * 470, 183, 81); contentPane.add(btnSignUp); btnSignUp.addActionListener(this);
-		 * btnSignUp.addKeyListener(this);
-		 */
 
 		textFieldUsername.addKeyListener(this);
 		passwordField.addKeyListener(this);
@@ -211,9 +187,10 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 			} catch (SQLException e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 			} catch (WrongCredentialsException e1) {
-				JOptionPane.showMessageDialog(this, e1.getMessage());
+				JOptionPane.showMessageDialog(this,
+						"Invalid username or password. Please check your credentials and try again.");
 			} catch (UserNotFoundException e1) {
-				JOptionPane.showMessageDialog(this, e1.getMessage());
+				JOptionPane.showMessageDialog(this, "User not found. Please verify your username and try again.");
 			}
 		}
 	}

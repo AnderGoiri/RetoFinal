@@ -1,11 +1,12 @@
 package model;
+
 /**
- * 
+ * The EnumTypeInstrument enum represents the types of instruments.
+ * @author Ander Goirigolzarri Iturburu
  */
 public enum EnumTypeInstrument {
-	ACOUSTIC("Acoustic"),
-	ELECTRONIC("Electronic");
-	
+	ACOUSTIC("Acoustic"), ELECTRONIC("Electronic");
+
 	private final String label;
 
 	/**
@@ -25,16 +26,16 @@ public enum EnumTypeInstrument {
 	public String getLabel() {
 		return label;
 	}
-	
+
 	public static EnumTypeInstrument getValue(String label) {
 		EnumTypeInstrument enumValue = null;
 
 		if (label.equalsIgnoreCase("Acoustic")) {
 			enumValue = EnumTypeInstrument.ACOUSTIC;
-		}else if (label.equalsIgnoreCase("Electronic")) {
+		} else if (label.equalsIgnoreCase("Electronic")) {
 			enumValue = EnumTypeInstrument.ELECTRONIC;
 		}
-		
+
 		return enumValue;
 	}
 }
