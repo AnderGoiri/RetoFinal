@@ -18,10 +18,10 @@ public class MemberMainMenu extends JPanel {
 	/**
 	 * Create the panel.
 	 * 
-	 * @param auxUser 
+	 * @param auxUser
 	 */
 	public MemberMainMenu(Member auxUser) {
-		setBounds(100, 100, 1860, 950);
+		setBounds(100, 100, 1024, 768);
 		setLayout(null);
 		/**
 		 * Creating a JTabbedPane and configuring its appearance.
@@ -40,10 +40,10 @@ public class MemberMainMenu extends JPanel {
 		panelStore.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Store", null, panelStore, null);
 
-		
-	/**
-	 * Add a panel called panelAccount to the JTabbedPane tab where the member can consult his account information.
-	 */
+		/**
+		 * Add a panel called panelAccount to the JTabbedPane tab where the member can
+		 * consult his account information.
+		 */
 		panelAccount = new MemberAccountPanel(auxUser);
 		panelAccount.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Account", null, panelAccount, null);

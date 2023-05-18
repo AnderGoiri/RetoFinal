@@ -41,7 +41,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			textFieldEmail;
 	private JCheckBox chckbxManager, chckbxTechnician, chckbxSupervisor, chckbxShowHideSignUp;
 	private JLabel lblAddress, lblCredirCard, lblRegistrationTitle, lblUserName, lblPassword, lblEmail, lblSurname,
-			lblName, lblLogInAdvice,lblLogIn;
+			lblName, lblLogInAdvice, lblLogIn;
 	private JPasswordField textFieldPassword;
 	private JButton btnSignUp;
 	private final Font font1 = new Font("Tahoma", Font.ITALIC, 11);
@@ -145,22 +145,21 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 		lblRegistrationTitle.setFont(new Font("Elephant", Font.PLAIN, 45));
 		lblRegistrationTitle.setBounds(256, 10, 323, 60);
 		add(lblRegistrationTitle);
-		
+
 		lblLogInAdvice = new JLabel("Do you have a registered account?");
+		lblLogInAdvice.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblLogInAdvice.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogInAdvice.setForeground(Color.DARK_GRAY);
-		lblLogInAdvice.setBounds(255, 492, 205, 30);
+		lblLogInAdvice.setBounds(255, 492, 234, 30);
 		add(lblLogInAdvice);
-		
+
 		lblLogIn = new JLabel("Log In");
-		lblLogIn.setFont(font1);
+		lblLogIn.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		lblLogIn.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogIn.setForeground(new Color(0, 151, 178));
-		lblLogIn.setFont(new Font("Tahoma", Font.ITALIC, 11));
-		lblLogIn.setBounds(460, 492, 40, 30);
+		lblLogIn.setBounds(484, 492, 55, 30);
 		add(lblLogIn);
 		lblLogIn.addMouseListener(this);
-		
 
 		// --- TextField ---
 		textFieldName = new JTextField();
@@ -235,10 +234,11 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 		// --- JButton ---
 		btnSignUp = new JButton("Sign Up");
+		btnSignUp.setFont(new Font("Onyx", Font.PLAIN, 35));
+		btnSignUp.setBackground(new Color(0, 151, 178));
 		btnSignUp.setBounds(449, 409, 311, 41);
 		add(btnSignUp);
 		btnSignUp.addActionListener(this);
-
 
 	}
 
@@ -277,7 +277,6 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			}
 		}
 	};
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -288,7 +287,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 				// If statement depending on the state of the check box for manager
 				if (!chckbxManager.isSelected()) {
-					
+
 					// registerUserMember
 					login.registerUserMember(
 							new Member(textFieldUsername.getText(), textFieldName.getText(), textFieldSurname.getText(),
@@ -316,9 +315,10 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 			}
 		}
 	}
+
 	private void changePanel() {
-		((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent()))
-		.getUserLoginPanel().setVisible(true);
+		((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent())).getUserLoginPanel()
+				.setVisible(true);
 		this.clearRegisterFields();
 		this.setVisible(false);
 	}
@@ -363,31 +363,32 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
-		//Method that displays the "UserLogInPanel" when you click the Sign Up label.
-		if(e.getSource().equals(lblLogIn)) {
+		// Method that displays the "UserLogInPanel" when you click the Sign Up label.
+		if (e.getSource().equals(lblLogIn)) {
 			changePanel();
 		}
 	}
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// Method that changes the Sign Up label's text format.
-		if(e.getComponent().equals(lblLogIn)) {
+		if (e.getComponent().equals(lblLogIn)) {
 			lblLogIn.setFont(font2);
 		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if(e.getComponent().equals(lblLogIn)) {
+		if (e.getComponent().equals(lblLogIn)) {
 			lblLogIn.setFont(font1);
 		}
 	}
 
-	
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
 }

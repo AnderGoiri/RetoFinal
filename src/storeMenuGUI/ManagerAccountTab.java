@@ -24,8 +24,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 	private JButton btnEditProfile;
 	private JButton btnConfirm;
 	private JButton btnCancel;
-	private JLabel lblSurname, lblName, lblUsername, lblEmail, lblPurchase, lblNewFotoPerfil,lblFondo;
-	private JSeparator separator;
+	private JLabel lblSurname, lblName, lblUsername, lblEmail, lblNewFotoPerfil, lblFondo;
 
 	/**
 	 * @author Francisco Rafael de Ysasi González
@@ -38,48 +37,36 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		// --- JLabels --- //
 
 		lblSurname = new JLabel("Surname:");
-		lblSurname.setFont(new Font("Constantia", Font.PLAIN, 15));
-		lblSurname.setBounds(483, 121, 83, 41);
+		lblSurname.setFont(new Font("Constantia", Font.PLAIN, 35));
+		lblSurname.setBounds(290, 155, 148, 41);
 		add(lblSurname);
 
 		lblName = new JLabel("Name:");
-		lblName.setFont(new Font("Constantia", Font.PLAIN, 15));
-		lblName.setBounds(483, 54, 148, 41);
+		lblName.setFont(new Font("Constantia", Font.PLAIN, 35));
+		lblName.setBounds(290, 335, 148, 41);
 		add(lblName);
 
 		lblUsername = new JLabel("Username:");
-		lblUsername.setFont(new Font("Constantia", Font.PLAIN, 15));
-		lblUsername.setBounds(224, 54, 81, 41);
+		lblUsername.setFont(new Font("Constantia", Font.PLAIN, 35));
+		lblUsername.setBounds(290, 65, 192, 41);
 		add(lblUsername);
 
 		lblEmail = new JLabel("Email:");
-		lblEmail.setFont(new Font("Constantia", Font.PLAIN, 15));
-		lblEmail.setBounds(224, 124, 75, 35);
+		lblEmail.setFont(new Font("Constantia", Font.PLAIN, 35));
+		lblEmail.setBounds(290, 245, 143, 52);
 		add(lblEmail);
-
-		lblPurchase = new JLabel("Repairs");
-		lblPurchase.setFont(new Font("Elephant", Font.BOLD, 35));
-		lblPurchase.setBounds(33, 421, 205, 41);
-		add(lblPurchase);
 
 		lblNewFotoPerfil = new JLabel("");
 		lblNewFotoPerfil.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/profile2.png")));
-		lblNewFotoPerfil.setBounds(57, 47, 143, 150);
+		lblNewFotoPerfil.setBounds(70, 57, 143, 150);
 		add(lblNewFotoPerfil);
 		lblNewFotoPerfil.setOpaque(false);
-
-		// --- JSeparator --- //
-
-		separator = new JSeparator();
-		separator.setForeground(new Color(255, 255, 255));
-		separator.setBounds(33, 389, 891, 2);
-		add(separator);
 
 		// --- JTextField --- //
 
 		textaUsername = new JTextField();
 		textaUsername.setFont(new Font("Constantia", Font.PLAIN, 15));
-		textaUsername.setBounds(315, 56, 137, 35);
+		textaUsername.setBounds(466, 65, 457, 50);
 		textaUsername.setEditable(false);
 		textaUsername.setEnabled(false);
 		add(textaUsername);
@@ -88,7 +75,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		textSurname = new JTextField();
 		textSurname.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textSurname.setColumns(10);
-		textSurname.setBounds(568, 124, 137, 35);
+		textSurname.setBounds(466, 155, 457, 50);
 		textSurname.setEditable(false);
 		textSurname.setEnabled(false);
 		add(textSurname);
@@ -96,7 +83,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		textEmail = new JTextField();
 		textEmail.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textEmail.setColumns(10);
-		textEmail.setBounds(315, 121, 137, 35);
+		textEmail.setBounds(466, 245, 457, 50);
 		textEmail.setEditable(false);
 		textEmail.setEnabled(false);
 		add(textEmail);
@@ -104,7 +91,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		textName = new JTextField();
 		textName.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textName.setColumns(10);
-		textName.setBounds(568, 56, 137, 35);
+		textName.setBounds(466, 335, 457, 50);
 		textName.setEditable(false);
 		textName.setEnabled(false);
 		add(textName);
@@ -116,7 +103,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		btnEditProfile.setForeground(new Color(255, 255, 255));
 		btnEditProfile.setFont(new Font("Onyx", Font.BOLD, 45));
 		btnEditProfile.addActionListener(this);
-		btnEditProfile.setBounds(33, 232, 205, 65);
+		btnEditProfile.setBounds(33, 232, 215, 70);
 		add(btnEditProfile);
 
 		btnConfirm = new JButton("Confirm");
@@ -126,7 +113,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		btnConfirm.setEnabled(false);
 		btnConfirm.setVisible(false);
 		btnConfirm.setBackground(new Color(0, 151, 178));
-		btnConfirm.setBounds(1055, 232, 205, 65);
+		btnConfirm.setBounds(466, 425, 205, 65);
 		add(btnConfirm);
 
 		btnCancel = new JButton("Cancel");
@@ -136,7 +123,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		btnCancel.setEnabled(false);
 		btnCancel.setVisible(false);
 		btnCancel.setBackground(new Color(0, 151, 178));
-		btnCancel.setBounds(1310, 232, 205, 65);
+		btnCancel.setBounds(718, 426, 205, 65);
 		add(btnCancel);
 
 		// --- JLabel background --- //
