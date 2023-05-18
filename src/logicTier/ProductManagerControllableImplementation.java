@@ -626,4 +626,41 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		connection.closeConnection(ctmt, con);
 		return setProducts;
 	}
+	
+	/**
+     * This method removes the product from the database
+     * 
+     * @param Product p is the product that the manager wants to delete from the database
+     * @throws SQLException
+     * @author Francisco Rafael de Ysasi González
+     */
+    @Override
+    public void deleteProduct(Product p) throws ProductNotFoundException, SQLException {
+        con = connection.openConnection();
+        if (existsProduct(p.getIdProduct())) {
+
+            if (p instanceof Instrument) {
+                ctmt = con.prepareCall("DELETE FROM instrument WHERE idProduct=?");
+                ctmt.setInt(1, p.getIdProduct());
+                ctmt.executeUpdate();
+            }
+            if (p instanceof Component) {
+                ctmt = con.prepareCall("DELETE FROM component WHERE idProduct=?");
+                ctmt.setInt(1, p.getIdProduct());
+                ctmt.executeUpdate();
+            }
+            if (p instanceof Accessory) {
+                ctmt = con.prepareCall("DELETE FROM accessory WHERE idProduct=?");
+                ctmt.setInt(1, p.getIdProduct());
+                ctmt.executeUpdate();
+            }
+
+            ctmt = con.prepareCall("DELETE FROM product WHERE idProduct=?");
+            ctmt.setInt(1, p.getIdProduct());
+            ctmt.executeQuery();
+        } else {
+            throw new ProductNotFoundException();
+        }
+        connection.closeConnection();
+    }
 }

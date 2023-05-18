@@ -12,8 +12,8 @@ import java.util.ResourceBundle;
 /**
  * Provides methods for opening and closing a connection with a database. This
  * class establishes a connection to the database using the URL, username, and
- * password provided in the {@link logicTier.config configuration file}. It also provides a method for
- * closing the connection.
+ * password provided in the {@link logicTier.config configuration file}. It also
+ * provides a method for closing the connection.
  * 
  * @author Ander Goirigolzarri Iturburu
  */
@@ -101,7 +101,7 @@ public class GateDB {
 		if (conn != null)
 			conn.close();
 	}
-	
+
 	public void closeConnection(ResultSet rset, Statement stmt, Connection conn) throws SQLException {
 		if (rset != null)
 			rset.close();
@@ -117,7 +117,7 @@ public class GateDB {
 		if (conn != null)
 			conn.close();
 	}
-	
+
 	public void closeConnection(CallableStatement ctmt, Connection conn) throws SQLException {
 		if (ctmt != null)
 			ctmt.close();
@@ -146,4 +146,13 @@ public class GateDB {
 
 	}
 
+	public void closeConnection() {
+		Connection conn;
+		try {
+			conn = DriverManager.getConnection(url, user, pass);
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

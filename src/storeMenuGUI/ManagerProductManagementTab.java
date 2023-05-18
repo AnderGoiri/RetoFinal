@@ -221,7 +221,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		btnDelete.setForeground(Color.WHITE);
 		btnDelete.setBackground(new Color(0, 151, 178));
 		btnDelete.setFont(new Font("Onyx", Font.PLAIN, 25));
-		btnDelete.setBounds(800, 400, 125, 35);
+		btnDelete.setBounds(800, 495, 125, 35);
 		add(btnDelete);
 		btnDelete.addActionListener(this);
 		btnDelete.addKeyListener(this);
@@ -230,7 +230,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		btnModify.setForeground(Color.WHITE);
 		btnModify.setBackground(new Color(0, 151, 178));
 		btnModify.setFont(new Font("Onyx", Font.PLAIN, 25));
-		btnModify.setBounds(800, 325, 125, 35);
+		btnModify.setBounds(800, 375, 125, 35);
 		add(btnModify);
 		btnModify.addActionListener(this);
 		btnModify.addKeyListener(this);
@@ -239,7 +239,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		btnConfirm.setForeground(Color.WHITE);
 		btnConfirm.setFont(new Font("Onyx", Font.PLAIN, 45));
 		btnConfirm.setBackground(new Color(0, 151, 178));
-		btnConfirm.setBounds(800, 325, 125, 35);
+		btnConfirm.setBounds(800, 375, 125, 35);
 		btnConfirm.setEnabled(false);
 		btnConfirm.setVisible(false);
 		add(btnConfirm);
@@ -252,7 +252,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		btnCancel.setForeground(Color.WHITE);
 		btnCancel.setFont(new Font("Onyx", Font.PLAIN, 45));
 		btnCancel.setBackground(new Color(0, 151, 178));
-		btnCancel.setBounds(800, 400, 125, 35);
+		btnCancel.setBounds(800, 495, 125, 35);
 		add(btnCancel);
 		btnCancel.addActionListener(this);
 		btnCancel.addKeyListener(this);
@@ -469,9 +469,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		} else if (e.getSource().equals(btnCancel)) {
 			JOptionPane.showMessageDialog(this, "The proccess has been cancelled.");
 			componentsAccessibility("Disable");
-		}
-
-		else if (e.getSource().equals(chckbxSale)) {
+		} else if (e.getSource().equals(chckbxSale)) {
 			if (chckbxSale.isSelected()) {
 				textFieldSalePercentage.setVisible(true);
 				lblSalePercentage.setVisible(true);
@@ -490,6 +488,40 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 			if (JOptionPane.showConfirmDialog(this, "Are you sure want to leave this tab?", "Close Tab",
 					JOptionPane.YES_NO_OPTION) == 0) {
 				goBackToTheShopPanel();
+			}
+		} else if (e.getSource().equals(btnDelete)) {
+			String[] optPaneOptionsValues = { "Delete", "Take off market", "Cancel" };
+			int chosenOptionValue = JOptionPane.showOptionDialog(this,
+					"What do you want to do with the product? if you close this pop-up, the proccess will be cancelled.",
+					"Delete or take off the product from the market?", JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, optPaneOptionsValues, 1);
+			ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
+			if (chosenOptionValue == 0) {
+				try {
+					try {
+						proManager.deleteProduct(product);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				} catch (ProductNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(this, "Product was successfully deleted.");
+				goBackToTheShopPanel();
+			} else if (chosenOptionValue == 1) {
+				try {
+					try {
+						proManager.removeProduct(product);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				} catch (ProductNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(this, "Product was successfully taken off the market.");
+				goBackToTheShopPanel();
+			} else {
+				JOptionPane.showMessageDialog(this, "The proccess has been cancelled.");
 			}
 		}
 

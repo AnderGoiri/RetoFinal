@@ -59,8 +59,7 @@ class TestGateDB {
 	 */
 	@Test
 	void testCloseConnectionWithDBSuccesful() throws SQLException {
-		gate.openConnection();
-		assertTrue(gate.closeConnection());
+		assertTrue(gate.closeConnection(gate.openConnection()).isClosed());
 	}
 
 	/**
@@ -70,11 +69,10 @@ class TestGateDB {
 	 */
 	@Test
 	void testCloseConnectionWithDBWorks() throws SQLException {
-		gate.openConnection();
 		java.sql.SQLNonTransientConnectionException thrown = Assertions
 				.assertThrows(java.sql.SQLNonTransientConnectionException.class, () -> {
-					assertTrue(gate.closeConnection().isClosed(), "Connection is not closed correctly");
-					assertNotNull(gate.closeConnection().createStatement().executeQuery("SELECT true;"),
+					assertTrue(gate.closeConnection(gate.openConnection()).isClosed(), "Connection is not closed correctly");
+					assertNotNull(gate.closeConnection(gate.openConnection()).createStatement().executeQuery("SELECT true;"),
 							"Data retrieve from DB fails");
 				});
 		Assertions.assertEquals("No operations allowed after connection closed.", thrown.getMessage());

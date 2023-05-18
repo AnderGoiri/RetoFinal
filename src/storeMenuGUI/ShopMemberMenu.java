@@ -253,19 +253,6 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 		lblLookProduct.setBounds(50, 125, 230, 31);
 		add(lblLookProduct);
 
-		/**
-		 * Add a scroll pane to the panel to see the list of all the products.
-		 */
-
-		String categories[] = { "a", "b", "c", "d", "e", "a", "b", "c", "d", "e", "a", "b", "c", "d" };
-
-
-		JList listProducts = new JList(categories);
-		listProducts.setFont(new Font("Constantia", Font.PLAIN, 25));
-		scrollPaneProducts = new JScrollPane(listProducts);
-		scrollPaneProducts.setBounds(94, 372, 1340, 371);
-		add(scrollPaneProducts);
-
 		comboProductType = new JComboBox();
 		comboProductType.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		comboProductType.setFont(new Font("Constantia", Font.PLAIN, 25));

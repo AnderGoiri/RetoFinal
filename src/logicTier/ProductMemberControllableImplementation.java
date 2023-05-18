@@ -438,7 +438,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * This method checks if there is stock and returns a boolean
 	 * 
 	 * @param Product p is the product the user selected
-	 * @author Jago TODO Exception
+	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
 	public boolean checkProduct(Product p) {

@@ -43,4 +43,6 @@ public interface ProductManagerControllable {
 	public Set<Manager> getListPending() throws SQLException;
 
 	public char getTypeProduct(int idProduct) throws SQLException;
+
+	public void deleteProduct(Product p) throws ProductNotFoundException, SQLException;
 }

@@ -42,7 +42,7 @@ import javax.swing.SwingConstants;
  * user actions.
  * 
  * @author Ander Goirigolzarri Iturburu
- * @author Francisco Rafael de Ysasi González 
+ * @author Francisco Rafael de Ysasi González
  */
 public class ManagerShopTab extends JPanel implements ActionListener, KeyListener {
 
@@ -99,7 +99,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		// --- JTable ---
 		modelProduct = new DefaultTableModel(); // Establish the default table model
 		modelProduct.setColumnIdentifiers(new Object[] { "ID", "Name", "Price", "Description", "Stock", "Brand",
-				"Model", "Color", "Sale Active", "Sale %", "Active", "Class", "Type"});
+				"Model", "Color", "Sale Active", "Sale %", "Active", "Class", "Type" });
 		productsTable = new JTable();
 		productsTable.setCellSelectionEnabled(false);
 		productsTable.setRowSelectionAllowed(true);
@@ -136,6 +136,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		chckbxIsInSale.setFont(new Font("Constantia", Font.PLAIN, 20));
 		chckbxIsInSale.setBounds(230, 62, 93, 35);
 		add(chckbxIsInSale);
+		chckbxIsInSale.addActionListener(this);
 
 		// --- Show all Products when the Tab is Created
 		showAllProducts();
@@ -322,20 +323,17 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 				if (auxProduct instanceof Instrument) {
 					selectedProduct = new Instrument();
-					selectedProduct = (Instrument)auxProduct;
+					selectedProduct = (Instrument) auxProduct;
 				} else if (auxProduct instanceof Component) {
 					selectedProduct = new Component();
-					selectedProduct = (Component)auxProduct;
+					selectedProduct = (Component) auxProduct;
 				} else if (auxProduct instanceof Accessory) {
 					selectedProduct = new Accessory();
-					selectedProduct = (Accessory)auxProduct;
+					selectedProduct = (Accessory) auxProduct;
 				}
-
-			
-
 			} catch (ProductNotFoundException e1) {
 				JOptionPane.showMessageDialog(null, "Product not found", "Error", JOptionPane.ERROR_MESSAGE);
-			} catch (SQLException e1){
+			} catch (SQLException e1) {
 				JOptionPane.showMessageDialog(null, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 
@@ -344,6 +342,14 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 					((JTabbedPane) this.getParent()).indexOfComponent(this) + 1);
 			((JTabbedPane) this.getParent()).setSelectedIndex(((JTabbedPane) this.getParent()).getSelectedIndex() + 1);
 
+		} else if (e.getSource().equals(chckbxIsInSale)) {
+			try {
+				ProductManagerControllable proManager = ProductManagerFactory.getProductManagerControllable();
+				Set<Product> searchProducts = proManager.searchProductInSale(products);
+				selectSetofProducts(searchProducts);
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+			}
 		}
 	}
 
