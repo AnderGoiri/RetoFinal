@@ -18,7 +18,6 @@ public class LoginControllableImplementation implements LoginControllable {
 
 	private Connection conn; // Establish a Connection attribute
 	private PreparedStatement ptmt; // Establish a PreparedStatement attribute
-	private ResultSet rset; // Establish a ResultSet attribute
 	private GateDB gate = new GateDB(); // Establish a GateDB attribute
 
 	/**
@@ -31,8 +30,12 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @author Ander Goirigolzarri Iturburu
 	 */
 	public boolean checkUserName(String userName) throws SQLException {
-		return gate.openConnection().createStatement()
-				.executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
+		
+		conn = gate.openConnection();
+		boolean b = conn.createStatement().executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
+		gate.closeConnection(ptmt, conn);
+		return b;
+	
 	}
 
 	/**
@@ -69,7 +72,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		} else {
 			throw new UserFoundException("User found");
 		}
-		gate.closeConnection();
+		gate.closeConnection(ptmt, conn);
 	}
 
 	/**
@@ -112,7 +115,7 @@ public class LoginControllableImplementation implements LoginControllable {
 			// If User exists, throw UserFoundException.
 			throw new UserFoundException("User found");
 		}
-		gate.closeConnection();
+		gate.closeConnection(ptmt, conn);
 	}
 
 	/**
@@ -130,6 +133,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	@Override
 	public User userLogin(String username, String password)
 			throws WrongCredentialsException, UserNotFoundException, SQLException {
+		ResultSet rset = null;
 		// Open connection with DB
 		conn = gate.openConnection();
 
@@ -152,11 +156,13 @@ public class LoginControllableImplementation implements LoginControllable {
 		int managerId = rset.getInt("ma.idUser");
 		
 		if (memberId != 0) {
-			// This is a member
-			return createMember(memberId,conn);
+			Member m = createMember(memberId,conn);
+			gate.closeConnection(ptmt, conn);
+			return m;
 		} else if (managerId != 0) {
-			// This is a manager
-			return createManager(managerId,conn);
+			Manager m = createManager(managerId,conn);
+			gate.closeConnection(ptmt, conn);
+			return m;
 		} else {
 			throw new UserNotFoundException("Invalid user");
 		}
@@ -175,12 +181,13 @@ public class LoginControllableImplementation implements LoginControllable {
 		ptmt.setInt(2, ma.getIdUser());
 
 		ptmt.executeUpdate();
+		gate.closeConnection(ptmt, conn);
 	}
 
 	//TODO Comenta Ander
 	@Override
 	public Member createMember(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
-
+		ResultSet rset = null;
 		ptmt = conn.prepareStatement("SELECT * FROM vw_member WHERE idUser =" + idUser + ";");
 
 		rset = ptmt.executeQuery();
@@ -198,7 +205,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		String address = rset.getString(8);
 		String creditCard = rset.getString(9);
 		
-		gate.closeConnection();
+		gate.closeConnection(ptmt, conn);
 		
 		return new Member(username, name, surname, password, mail, dateRegister, address, creditCard);
 	}
@@ -206,9 +213,9 @@ public class LoginControllableImplementation implements LoginControllable {
 	//TODO Comenta Ander
 	@Override
 	public Manager createManager(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
-
+		ResultSet rset = null;
 		ptmt = conn.prepareStatement("SELECT * FROM vw_manager WHERE idUser =" + idUser + ";");
-
+		
 		rset = ptmt.executeQuery();
 
 		if (!rset.next()) {
@@ -227,7 +234,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		boolean isAdmin = rset.getBoolean(11);
 		EnumStatusManager statusManager = EnumStatusManager.getValue(rset.getString(12));
 		
-		gate.closeConnection();
+		gate.closeConnection(ptmt, conn);
 		
 		return new Manager(username, name, surname, password, mail, dateRegister, idSupervisor, isSupervisor,
 				isTechnician, isAdmin, statusManager);

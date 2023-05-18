@@ -19,7 +19,6 @@ public class GateDB {
 
 	private ResourceBundle configFile;
 	private String url, user, pass;
-	private Connection conn;
 
 	public GateDB() {
 		configFile = ResourceBundle.getBundle("logicTier.config");
@@ -40,9 +39,7 @@ public class GateDB {
 	 * @author Ander Goirigolzarri Iturburu
 	 */
 	public Connection openConnection() {
-		if (conn != null) {
-			return conn;
-		}
+		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, user, pass);
 		} catch (SQLException e) {
@@ -60,8 +57,8 @@ public class GateDB {
 	 *                      statement, or the result set.
 	 * 
 	 * @author Ander Goirigolzarri Iturburu
-	 */
-	public Connection closeConnection() {
+	 *
+	public Connection closeConnection() throws SQLException {
 		if (conn != null)
 			try {
 				conn.close();
@@ -69,7 +66,7 @@ public class GateDB {
 				e.printStackTrace();
 			}
 		return conn;
-	}
+	}/
 
 	/**
 	 * 
@@ -120,9 +117,16 @@ public class GateDB {
 			conn.close();
 	}
 
-	public void closeConnection(Statement stmt, Connection conn) throws SQLException {
+	public void closeConnection(PreparedStatement stmt, Connection conn) throws SQLException {
 		if (stmt != null)
 			stmt.close();
+		if (conn != null)
+			conn.close();
+	}
+	
+	public void closeConnection(CallableStatement ctmt, Connection conn) throws SQLException {
+		if (ctmt != null)
+			ctmt.close();
 		if (conn != null)
 			conn.close();
 	}

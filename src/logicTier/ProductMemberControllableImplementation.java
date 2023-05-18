@@ -33,7 +33,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	private PreparedStatement stmt;
 	private CallableStatement ctmt;
 	private GateDB connection = new GateDB();
-	private ResultSet rs;
 
 	// --- Attributes ---
 	private Product prod;
@@ -60,8 +59,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		while (rs.next()) {
 			if (rs.getBoolean("isActive") == true) {
 				if (!search.equals("")) {
-					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+					if (rs.getString("name").contains(search) || rs.getString("brand").contains(search)
+							|| rs.getString("model").contains(search) || rs.getString("color").contains(search)) {
 						prod = new Instrument();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -113,7 +112,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			}
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 		return listaProductos;
 	}
 
@@ -139,8 +138,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		while (rs.next()) {
 			if (rs.getBoolean("isActive") == true) {
 				if (!search.equals("")) {
-					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+					if (rs.getString("name").contains(search) || rs.getString("brand").contains(search)
+							|| rs.getString("model").contains(search) || rs.getString("color").contains(search)) {
 						prod = new Component();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -193,7 +192,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			}
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 		return listaProductos;
 	}
 
@@ -218,8 +217,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		while (rs.next()) {
 			if (rs.getBoolean("isActive") == true) {
 				if (!search.equals("")) {
-					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+					if (rs.getString("name").contains(search) || rs.getString("brand").contains(search)
+							|| rs.getString("model").contains(search) || rs.getString("color").contains(search)) {
 						prod = new Accessory();
 						prod.setIdProduct(rs.getInt("idProduct"));
 						prod.setNameP(rs.getString("name"));
@@ -271,7 +270,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 
 			}
-			connection.closeConnection();
+			connection.closeConnection(ctmt, con);
 		}
 		return listaProductos;
 	}
@@ -523,7 +522,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} else {
 			throw new ProductNotFoundException();
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 		return pTotal;
 	}
 
@@ -584,7 +583,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			ctmt.executeUpdate();
 
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 		return pTotal;
 
 	}
@@ -615,7 +614,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} else {
 			throw new PurchaseNotFoundException();
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 		return pTotal;
 	}
 
@@ -650,7 +649,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		stmt.setInt(3, idU);
 
 		stmt.executeUpdate();
-		connection.closeConnection();
+		connection.closeConnection(stmt, con);
 	}
 
 	/**
@@ -688,7 +687,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		} else {
 			throw new PurchaseNotFoundException();
 		}
-		connection.closeConnection();
+		connection.closeConnection(stmt, con);
 		return listaPurchase;
 	}
 
@@ -732,7 +731,9 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		if (rsAccessory.next()) {
 			return 'A'; // 'A' represents Accessory
 		}
-		connection.closeConnection();
+		connection.closeConnection(stmtInstrument, con);
+		connection.closeConnection(stmtComponent, con);
+		connection.closeConnection(stmtAccessory, con);
 		return 'U'; // 'U' represents Unknown (product not found in any table)
 	}
 
@@ -745,6 +746,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	@Override
 	public Set<Product> getAllProducts(String search) throws SQLException {
+		ResultSet rs = null;
 		con = connection.openConnection();
 		ctmt = con.prepareCall("{CALL select_all_products}");
 		rs = ctmt.executeQuery();
@@ -754,8 +756,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		while (rs.next()) {
 			if (rs.getBoolean("isActive") == true) {
 				if (!search.equals("")) {
-					if (rs.getString("name").equals(search) || rs.getString("brand").equals(search)
-							|| rs.getString("model").equals(search) || rs.getString("color").equals(search)) {
+					if (rs.getString("name").contains(search) || rs.getString("brand").contains(search)
+							|| rs.getString("model").contains(search) || rs.getString("color").contains(search)) {
 						int idProduct = rs.getInt("idProduct");
 						String name = rs.getString("name");
 						float unitPrice = rs.getInt("unitPrice");
@@ -848,7 +850,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 			}
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 		return setProducts;
 	}
 

@@ -301,7 +301,7 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 					login.registerUserManager(new Manager(textFieldUsername.getText(), textFieldName.getText(),
 							textFieldSurname.getText(), new String(textFieldPassword.getPassword()),
 							textFieldEmail.getText(), LocalDate.now(), 0, chckbxSupervisor.isSelected(),
-							chckbxTechnician.isSelected(), false, EnumStatusManager.P));
+							chckbxTechnician.isSelected(), false, EnumStatusManager.A));
 
 				}
 				changePanel();
