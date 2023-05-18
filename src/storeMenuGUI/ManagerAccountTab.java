@@ -83,7 +83,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		textEmail = new JTextField();
 		textEmail.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textEmail.setColumns(10);
-		textEmail.setBounds(466, 235, 457, 50);
+		textEmail.setBounds(466, 245, 457, 50);
 		textEmail.setEditable(false);
 		textEmail.setEnabled(false);
 		add(textEmail);
@@ -113,7 +113,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		btnConfirm.setEnabled(false);
 		btnConfirm.setVisible(false);
 		btnConfirm.setBackground(new Color(0, 151, 178));
-		btnConfirm.setBounds(917, 565, 205, 65);
+		btnConfirm.setBounds(466, 425, 205, 65);
 		add(btnConfirm);
 
 		btnCancel = new JButton("Cancel");
@@ -123,13 +123,13 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		btnCancel.setEnabled(false);
 		btnCancel.setVisible(false);
 		btnCancel.setBackground(new Color(0, 151, 178));
-		btnCancel.setBounds(1169, 565, 205, 65);
+		btnCancel.setBounds(718, 426, 205, 65);
 		add(btnCancel);
 
 		// --- JLabel background --- //
 		lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
-		lblFondo.setBounds(10, 0, 984, 718);
+		lblFondo.setBounds(0, 0, 984, 718);
 		add(lblFondo);
 
 		// --- Method that insert the data of the manager inside the JTextFields --- //

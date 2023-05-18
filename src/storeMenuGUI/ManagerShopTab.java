@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
 
 /**
  * 
@@ -71,7 +72,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 		// --- TextField ---
 		textFieldSearchBar = new JTextField();
-		textFieldSearchBar.setBounds(381, 180, 700, 50);
+		textFieldSearchBar.setBounds(255, 125, 500, 50);
 		add(textFieldSearchBar);
 		textFieldSearchBar.setColumns(10);
 
@@ -79,21 +80,21 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 		btnSearch = new JButton("Search");
 		btnSearch.setFont(new Font("Onyx", Font.PLAIN, 45));
-		btnSearch.setBounds(1100, 166, 205, 65);
+		btnSearch.setBounds(755, 125, 195, 50);
 		add(btnSearch);
 		btnSearch.addActionListener(this);
 		btnSearch.addKeyListener(this);
 
 		btnShow = new JButton("Show");
-		btnShow.setFont(new Font("Onyx", Font.BOLD, 35));
-		btnShow.setBounds(1230, 760, 205, 65);
+		btnShow.setFont(new Font("Onyx", Font.PLAIN, 45));
+		btnShow.setBounds(755, 630, 195, 50);
 		add(btnShow);
 		btnShow.addActionListener(this);
 		btnShow.addKeyListener(this);
 
 		// --- JScrollPane ---
 		scrollPaneProductList = new JScrollPane();
-		scrollPaneProductList.setBounds(95, 280, 1340, 462);
+		scrollPaneProductList.setBounds(50, 200, 900, 400);
 		add(scrollPaneProductList);
 
 		// --- JTable ---
@@ -111,7 +112,7 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 		// --- JComboBox ---
 		comboBoxSearchBy = new JComboBox<String>();
-		comboBoxSearchBy.setBounds(95, 180, 264, 50);
+		comboBoxSearchBy.setBounds(50, 125, 205, 50);
 		add(comboBoxSearchBy);
 
 		// Add options to the class combo box
@@ -126,14 +127,15 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 
 		// --- JLabel ---
 		lblSearchBy = new JLabel("Search By");
-		lblSearchBy.setBounds(95, 109, 180, 50);
+		lblSearchBy.setBounds(50, 50, 180, 50);
 		lblSearchBy.setFont(new Font("Onyx", Font.PLAIN, 45));
 		add(lblSearchBy);
 
 		// --- JCheckBox ---
 		chckbxIsInSale = new JCheckBox("Sale");
+		chckbxIsInSale.setVerticalAlignment(SwingConstants.BOTTOM);
 		chckbxIsInSale.setFont(new Font("Constantia", Font.PLAIN, 20));
-		chckbxIsInSale.setBounds(292, 124, 93, 35);
+		chckbxIsInSale.setBounds(230, 62, 93, 35);
 		add(chckbxIsInSale);
 
 		// --- Show all Products when the Tab is Created

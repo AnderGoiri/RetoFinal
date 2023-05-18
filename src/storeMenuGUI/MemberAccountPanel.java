@@ -181,7 +181,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
-		lblFondo.setBounds(14, 0, 984, 718);
+		lblFondo.setBounds(0, 0, 984, 718);
 		add(lblFondo);
 
 		setMemberData(user);

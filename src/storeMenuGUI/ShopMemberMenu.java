@@ -37,6 +37,7 @@ import model.User;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 public class ShopMemberMenu extends JPanel implements KeyListener, ActionListener {
 	/**
@@ -155,15 +156,15 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 		productTable.setEnabled(false);
 
 		scrollPaneProducts = new JScrollPane(productTable);
-		scrollPaneProducts.setBounds(95, 372, 1340, 371);
+		scrollPaneProducts.setBounds(50, 330, 900, 300);
 		scrollPaneProducts.setViewportView(productTable);
 		add(scrollPaneProducts);
 
 		btnAdd = new JButton("Add");
 		btnAdd.setForeground(Color.WHITE);
-		btnAdd.setFont(new Font("Dialog", Font.BOLD, 35));
+		btnAdd.setFont(new Font("Dialog", Font.BOLD, 20));
 		btnAdd.setBackground(new Color(0, 151, 178));
-		btnAdd.setBounds(999, 770, 205, 65);
+		btnAdd.setBounds(870, 650, 80, 50);
 		add(btnAdd);
 		btnAdd.addActionListener(this);
 
@@ -178,7 +179,7 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 		cmbFilter.setModel(new DefaultComboBoxModel());
 		cmbFilter.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		cmbFilter.setFont(new Font("Constantia", Font.PLAIN, 25));
-		cmbFilter.setBounds(375, 206, 264, 50);
+		cmbFilter.setBounds(314, 165, 220, 50);
 		cmbFilter.setEnabled(false);
 		add(cmbFilter);
 		cmbFilter.addActionListener(this);
@@ -187,27 +188,28 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 		cmbFilter2.setFont(new Font("Constantia", Font.PLAIN, 25));
 		cmbFilter2.setEnabled(false);
 		cmbFilter2.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
-		cmbFilter2.setBounds(95, 206, 264, 50);
+		cmbFilter2.setBounds(50, 165, 220, 50);
 		cmbFilter2.setEnabled(false);
 		add(cmbFilter2);
 		cmbFilter2.addActionListener(this);
 
 		txtSearch = new JTextField();
 		txtSearch.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
-		txtSearch.setBounds(665, 207, 700, 50);
+		txtSearch.setBounds(314, 240, 570, 50);
 		txtSearch.setEditable(getFocusTraversalKeysEnabled());
 		txtSearch.setColumns(10);
 		add(txtSearch);
 
 		lblWelcome = new JLabel("Welcome to our shop");
-		lblWelcome.setFont(new Font("Elephant", Font.PLAIN, 55));
-		lblWelcome.setBounds(509, 10, 598, 154);
+		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcome.setFont(new Font("Elephant", Font.PLAIN, 40));
+		lblWelcome.setBounds(222, 10, 550, 75);
 		add(lblWelcome);
 
 		btnLupa = new JButton("");
 		btnLupa.setBackground(UIManager.getColor("ScrollPane.background"));
 		btnLupa.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/lupa_azul.png")));
-		btnLupa.setBounds(1384, 206, 50, 50);
+		btnLupa.setBounds(900, 240, 50, 50);
 		add(btnLupa);
 		btnLupa.setOpaque(false);
 		btnLupa.addActionListener(this);
@@ -222,13 +224,13 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 		btnRemove.addKeyListener(this);
 		btnCarrito = new JButton("");
 		btnCarrito.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/carrito_.png")));
-		btnCarrito.setBounds(1400, 36, 100, 100);
+		btnCarrito.setBounds(875, 10, 75, 75);
 		add(btnCarrito);
 		btnCarrito.addActionListener(this);
 		JLabel lblLookProduct = new JLabel("Look for a product");
 		lblLookProduct.setForeground(new Color(0, 0, 0));
 		lblLookProduct.setFont(new Font("Constantia", Font.PLAIN, 25));
-		lblLookProduct.setBounds(94, 176, 496, 31);
+		lblLookProduct.setBounds(50, 125, 230, 31);
 		add(lblLookProduct);
 
 		/**
@@ -237,34 +239,29 @@ public class ShopMemberMenu extends JPanel implements KeyListener, ActionListene
 
 		String categories[] = { "a", "b", "c", "d", "e", "a", "b", "c", "d", "e", "a", "b", "c", "d" };
 
-		JList listProducts = new JList(categories);
-		listProducts.setFont(new Font("Constantia", Font.PLAIN, 25));
-		scrollPaneProducts = new JScrollPane(listProducts);
-		scrollPaneProducts.setBounds(94, 372, 1340, 371);
-		add(scrollPaneProducts);
-
 		comboProductType = new JComboBox();
 		comboProductType.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
 		comboProductType.setFont(new Font("Constantia", Font.PLAIN, 25));
 		comboProductType
 				.setModel(new DefaultComboBoxModel(new String[] { "", "All", "Instrument", "Component", "Accessory" }));
-		comboProductType.setBounds(95, 289, 264, 50);
+		comboProductType.setBounds(50, 240, 220, 50);
 		add(comboProductType);
 		comboProductType.addActionListener(this);
 
 		JLabel lblPurchase = new JLabel("Shopping Cart");
-		lblPurchase.setFont(new Font("Constantia", Font.BOLD, 25));
-		lblPurchase.setBounds(1361, 134, 168, 65);
+		lblPurchase.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPurchase.setFont(new Font("Constantia", Font.BOLD, 15));
+		lblPurchase.setBounds(855, 95, 115, 25);
 		add(lblPurchase);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(436, 134, 706, 2);
+		separator.setBounds(130, 85, 706, 2);
 		add(separator);
 		model.setRowCount(0);
 
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(ShopMemberMenu.class.getResource("/media/descarga.jpg")));
-		lblFondo.setBounds(0, 0, 1540, 845);
+		lblFondo.setBounds(0, 0, 984, 718);
 		add(lblFondo);
 
 		showAllProducts();

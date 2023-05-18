@@ -89,7 +89,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		// --- JCheckBox ---
 		chckbxSale = new JCheckBox("Sale");
 		chckbxSale.setFont(new Font("Constantia", Font.BOLD, 20));
-		chckbxSale.setBounds(500, 250, 75, 50);
+		chckbxSale.setBounds(222, 574, 75, 50);
 		add(chckbxSale);
 		chckbxSale.addActionListener(this);
 		chckbxSale.addKeyListener(this);
@@ -102,7 +102,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		// --- JLabel ---
 		lblDescription = new JLabel("Description");
 		lblDescription.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblDescription.setBounds(950, 180, 137, 30);
+		lblDescription.setBounds(500, 340, 137, 30);
 		add(lblDescription);
 
 		lblBrand = new JLabel("Brand");
@@ -122,12 +122,12 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 
 		lblClass = new JLabel("Class");
 		lblClass.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblClass.setBounds(500, 340, 75, 30);
+		lblClass.setBounds(500, 180, 75, 30);
 		add(lblClass);
 
 		lblType = new JLabel("Type");
 		lblType.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblType.setBounds(500, 420, 75, 30);
+		lblType.setBounds(500, 260, 75, 30);
 		add(lblType);
 
 		lblColor = new JLabel("Color");
@@ -142,21 +142,21 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 
 		lblStock = new JLabel("Stock");
 		lblStock.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblStock.setBounds(500, 180, 75, 30);
+		lblStock.setBounds(50, 580, 75, 30);
 		add(lblStock);
 
 		lblSalePercentage = new JLabel("%");
 		lblSalePercentage.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSalePercentage.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblSalePercentage.setFont(new Font("Constantia", Font.BOLD, 35));
-		lblSalePercentage.setBounds(680, 255, 45, 50);
+		lblSalePercentage.setFont(new Font("Constantia", Font.PLAIN, 20));
+		lblSalePercentage.setBounds(380, 579, 30, 30);
 		lblSalePercentage.setVisible(false);
 		add(lblSalePercentage);
 
 		// --- TextArea ---
 		textAreaDescription = new JTextArea();
 		textAreaDescription.setEditable(true);
-		textAreaDescription.setBounds(950, 237, 504, 293);
+		textAreaDescription.setBounds(500, 370, 450, 245);
 		add(textAreaDescription);
 		textAreaDescription.setName("Description");
 		textAreaDescription.addKeyListener(this);
@@ -164,13 +164,13 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		// --- JComboBox ---
 		comboBoxType = new JComboBox<String>();
 		comboBoxType.setFont(new Font("Constantia", Font.PLAIN, 10));
-		comboBoxType.setBounds(600, 420, 250, 30);
+		comboBoxType.setBounds(600, 260, 250, 30);
 		add(comboBoxType);
 		comboBoxType.setName("Specification Type");
 
 		comboBoxClass = new JComboBox<String>();
 		comboBoxClass.setFont(new Font("Constantia", Font.PLAIN, 10));
-		comboBoxClass.setBounds(600, 340, 250, 30);
+		comboBoxClass.setBounds(600, 180, 250, 30);
 		add(comboBoxClass);
 		comboBoxClass.setName("Specification Class");
 		comboBoxClass.addKeyListener(this);
@@ -193,7 +193,7 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 		textFieldSalePercentage = new JTextField();
 		textFieldSalePercentage.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldSalePercentage.setColumns(10);
-		textFieldSalePercentage.setBounds(600, 256, 80, 40);
+		textFieldSalePercentage.setBounds(300, 574, 80, 40);
 		textFieldSalePercentage.setVisible(false);
 		textFieldSalePercentage.setEnabled(false);
 		add(textFieldSalePercentage);
@@ -222,14 +222,14 @@ public class ManagerInsertProductTab extends JPanel implements ActionListener, K
 
 		// --- JSpinner ---
 		spinnerStock = new JSpinner();
-		spinnerStock.setBounds(600, 180, 80, 30);
+		spinnerStock.setBounds(156, 580, 60, 30);
 		add(spinnerStock);
 
 		// --- JButton ---
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.setBackground(new Color(0, 151, 178));
-		btnConfirm.setFont(new Font("Onyx", Font.PLAIN, 45));
-		btnConfirm.setBounds(1250, 560, 205, 65);
+		btnConfirm.setFont(new Font("Onyx", Font.PLAIN, 25));
+		btnConfirm.setBounds(850, 630, 100, 40);
 		add(btnConfirm);
 		btnConfirm.addActionListener(this);
 	}

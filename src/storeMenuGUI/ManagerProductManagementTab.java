@@ -88,32 +88,32 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 
 		lblModel = new JLabel("Model");
 		lblModel.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblModel.setBounds(50, 480, 82, 50);
+		lblModel.setBounds(50, 410, 100, 35);
 		add(lblModel);
 
 		lblBrand = new JLabel("Brand");
 		lblBrand.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblBrand.setBounds(50, 380, 140, 50);
+		lblBrand.setBounds(50, 325, 100, 35);
 		add(lblBrand);
 
 		lblStock = new JLabel("Stock");
 		lblStock.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblStock.setBounds(50, 680, 73, 35);
+		lblStock.setBounds(50, 580, 100, 35);
 		add(lblStock);
 
 		lblPrice = new JLabel("Price");
 		lblPrice.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblPrice.setBounds(50, 580, 66, 35);
+		lblPrice.setBounds(50, 495, 100, 35);
 		add(lblPrice);
 
 		lblDescription = new JLabel("Description");
 		lblDescription.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblDescription.setBounds(900, 180, 220, 50);
+		lblDescription.setBounds(400, 325, 150, 35);
 		add(lblDescription);
 
 		lblName = new JLabel("Name");
 		lblName.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblName.setBounds(50, 180, 140, 50);
+		lblName.setBounds(50, 155, 100, 35);
 		add(lblName);
 
 		// --- CheckBox --- //
@@ -121,7 +121,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		chckbxSale.setEnabled(false);
 		chckbxSale.setSelected(false);
 		chckbxSale.setFont(new Font("Constantia", Font.BOLD, 20));
-		chckbxSale.setBounds(415, 180, 140, 50);
+		chckbxSale.setBounds(400, 580, 90, 35);
 		UIManager.put("CheckBox.disabledText", Color.BLACK);
 		chckbxSale.updateUI();
 		add(chckbxSale);
@@ -138,20 +138,20 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 
 		// --- Sale Percentage Label --- //
 
-		lblSalePercentage = new JLabel("Sale %");
+		lblSalePercentage = new JLabel("%");
+		lblSalePercentage.setVerticalAlignment(SwingConstants.BOTTOM);
 		if (!chckbxSale.isSelected()) {
 			lblSalePercentage.setVisible(false);
 		}
-		lblSalePercentage.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblSalePercentage.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblSalePercentage.setBounds(420, 275, 140, 50);
+		lblSalePercentage.setBounds(675, 587, 25, 25);
 		add(lblSalePercentage);
 
 		// --- JSpinner --- //
 
 		spinnerStock = new JSpinner();
 		spinnerStock.setFont(new Font("Constantia", Font.PLAIN, 15));
-		spinnerStock.setBounds(155, 680, 92, 35);
+		spinnerStock.setBounds(150, 580, 70, 35);
 		spinnerStock.setEnabled(false);
 		add(spinnerStock);
 		spinnerStock.addKeyListener(this);
@@ -159,7 +159,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		// --- JTextArea --- //
 		textAreaDescription = new JTextArea();
 		textAreaDescription.setEditable(false);
-		textAreaDescription.setBounds(900, 225, 572, 355);
+		textAreaDescription.setBounds(400, 370, 365, 160);
 		add(textAreaDescription);
 
 		// --- JTextField --- //
@@ -168,14 +168,14 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		textFieldModel.setEditable(false);
 		textFieldModel.setEnabled(false);
 		textFieldModel.setFont(new Font("Constantia", Font.PLAIN, 15));
-		textFieldModel.setBounds(155, 480, 170, 35);
+		textFieldModel.setBounds(150, 410, 170, 35);
 		add(textFieldModel);
 
 		textFieldPrice = new JTextField();
 		textFieldPrice.setEditable(false);
 		textFieldPrice.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldPrice.setColumns(10);
-		textFieldPrice.setBounds(155, 580, 170, 35);
+		textFieldPrice.setBounds(150, 495, 170, 35);
 		add(textFieldPrice);
 
 		textFieldSalePercentage = new JTextField();
@@ -185,7 +185,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 
 		textFieldSalePercentage.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldSalePercentage.setColumns(10);
-		textFieldSalePercentage.setBounds(520, 280, 170, 35);
+		textFieldSalePercentage.setBounds(500, 580, 170, 35);
 		add(textFieldSalePercentage);
 
 		// --- JComboBox --- //
@@ -193,13 +193,13 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		textFieldName = new JTextField();
 		textFieldName.setEnabled(false);
 		textFieldName.setFont(new Font("Constantia", Font.PLAIN, 15));
-		textFieldName.setBounds(155, 180, 170, 35);
+		textFieldName.setBounds(150, 155, 170, 35);
 		add(textFieldName);
 
 		textFieldBrand = new JTextField();
 		textFieldBrand.setEnabled(false);
 		textFieldBrand.setFont(new Font("Constantia", Font.PLAIN, 15));
-		textFieldBrand.setBounds(155, 380, 170, 35);
+		textFieldBrand.setBounds(150, 325, 170, 35);
 		add(textFieldBrand);
 
 		// --- JSeparator --- //
@@ -217,8 +217,8 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		btnDelete = new JButton("Delete");
 		btnDelete.setForeground(Color.WHITE);
 		btnDelete.setBackground(new Color(0, 151, 178));
-		btnDelete.setFont(new Font("Onyx", Font.PLAIN, 45));
-		btnDelete.setBounds(1530, 830, 205, 65);
+		btnDelete.setFont(new Font("Onyx", Font.PLAIN, 25));
+		btnDelete.setBounds(800, 400, 125, 35);
 		add(btnDelete);
 		btnDelete.addActionListener(this);
 		btnDelete.addKeyListener(this);
@@ -226,8 +226,8 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		btnModify = new JButton("Modify");
 		btnModify.setForeground(Color.WHITE);
 		btnModify.setBackground(new Color(0, 151, 178));
-		btnModify.setFont(new Font("Onyx", Font.PLAIN, 45));
-		btnModify.setBounds(1250, 830, 205, 65);
+		btnModify.setFont(new Font("Onyx", Font.PLAIN, 25));
+		btnModify.setBounds(800, 325, 125, 35);
 		add(btnModify);
 		btnModify.addActionListener(this);
 		btnModify.addKeyListener(this);
@@ -236,7 +236,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		btnConfirm.setForeground(Color.WHITE);
 		btnConfirm.setFont(new Font("Onyx", Font.PLAIN, 45));
 		btnConfirm.setBackground(new Color(0, 151, 178));
-		btnConfirm.setBounds(1250, 830, 205, 65);
+		btnConfirm.setBounds(800, 325, 125, 35);
 		btnConfirm.setEnabled(false);
 		btnConfirm.setVisible(false);
 		add(btnConfirm);
@@ -249,7 +249,7 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 		btnCancel.setForeground(Color.WHITE);
 		btnCancel.setFont(new Font("Onyx", Font.PLAIN, 45));
 		btnCancel.setBackground(new Color(0, 151, 178));
-		btnCancel.setBounds(1530, 830, 205, 65);
+		btnCancel.setBounds(800, 400, 125, 35);
 		add(btnCancel);
 		btnCancel.addActionListener(this);
 		btnCancel.addKeyListener(this);
@@ -264,38 +264,38 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 
 		lblClass = new JLabel("Class");
 		lblClass.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblClass.setBounds(420, 480, 82, 50);
+		lblClass.setBounds(400, 150, 100, 50);
 		add(lblClass);
 
 		lblType = new JLabel("Type");
 		lblType.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblType.setBounds(420, 380, 66, 35);
+		lblType.setBounds(400, 240, 100, 35);
 		add(lblType);
 
 		// --- JComboBox --- //
 
 		comboBoxClass = new JComboBox<String>();
 		comboBoxClass.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		comboBoxClass.setBounds(495, 480, 265, 35);
+		comboBoxClass.setBounds(500, 150, 265, 35);
 		comboBoxClass.setEnabled(false);
 		add(comboBoxClass);
 
 		comboBoxType = new JComboBox<String>();
 		comboBoxType.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		comboBoxType.setBounds(495, 380, 265, 35);
+		comboBoxType.setBounds(500, 240, 265, 35);
 		comboBoxType.setEnabled(false);
 		add(comboBoxType);
 
 		lblColor = new JLabel("Color");
 		lblColor.setFont(new Font("Constantia", Font.BOLD, 20));
-		lblColor.setBounds(50, 280, 140, 50);
+		lblColor.setBounds(50, 240, 100, 35);
 		add(lblColor);
 
 		textFieldColor = new JTextField();
 		textFieldColor.setText((String) null);
 		textFieldColor.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textFieldColor.setEnabled(false);
-		textFieldColor.setBounds(155, 280, 170, 35);
+		textFieldColor.setBounds(150, 240, 170, 35);
 		add(textFieldColor);
 
 		// TODO
