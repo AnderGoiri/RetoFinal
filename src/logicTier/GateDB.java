@@ -6,7 +6,10 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
- * Class with the open and close connection methods with the DB.
+ * Provides methods for opening and closing a connection with a database. This
+ * class establishes a connection to the database using the URL, username, and
+ * password provided in the {@link logicTier.config configuration file}. It also provides a method for
+ * closing the connection.
  * 
  * @author Ander Goirigolzarri Iturburu
  */
@@ -29,7 +32,6 @@ public class GateDB {
 	 * 
 	 * @return a connection object to the database
 	 * @throws SQLException if the connection could not be established
-	 * @throws SQLException
 	 */
 	public Connection openConnection() {
 		if (conn != null) {
@@ -47,10 +49,7 @@ public class GateDB {
 	 * Method used to close a connection with the database.
 	 * 
 	 * @param conn The <code>Connection</code> to close.
-	 * @throws SQLException if any error occurs while closing the connection, the
-	 *                      statement, or the result set.
-	 * 
-	 * @author Ander Goirigolzarri Iturburu
+	 * @throws SQLException if any error occurs while closing the connection.
 	 */
 	public Connection closeConnection() {
 		if (conn != null)

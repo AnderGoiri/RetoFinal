@@ -11,9 +11,9 @@ public class LoginFactory {
 	private static LoginControllable obj = new LoginControllableImplementation();
 
 	/**
-	 * Method to create a LoginControllableImplementation Object
+	 * Returns a LoginControllableImplementation object.
 	 * 
-	 * @return
+	 * @return a LoginControllableImplementation object
 	 */
 	public static LoginControllable getLoginControllable() {
 		return obj;

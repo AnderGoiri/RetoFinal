@@ -35,6 +35,12 @@ import model.Accessory;
 import model.Component;
 import model.EnumClassAccessory;
 
+
+/**
+ * A panel for inserting a product into the store.
+ * 
+ * @author Francisco Rafael de Ysasi González
+ */
 public class ManagerInsertProductTab extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;

@@ -3,7 +3,7 @@ package model;
 /**
  * Enum class for a subdivision of instruments
  * 
- * @author Ander
+ * @author Ander Goirigolzarri Iturburu
  */
 public enum EnumClassInstrument {
 	WIND("Wind"), STRING("String"), PERCUSSION("Percussion");

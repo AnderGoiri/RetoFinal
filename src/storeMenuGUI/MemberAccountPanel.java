@@ -19,6 +19,13 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
+/**
+ * This class represents the Member Account Panel in the storeMenuGUI package.
+ * It is a JPanel that displays and allows the modification of user account
+ * information.
+ * 
+ * @author Olaia Sainz Lorenzo
+ */
 public class MemberAccountPanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * 
@@ -35,13 +42,14 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 	private DefaultTableModel tableModel;
 	private User user;
 	private String userN;
+
 	/**
 	 * Create the panel.
 	 */
 	public MemberAccountPanel(User user) {
-	setLayout(null);
-	setBounds(0, 0, 1582, 845);
-	this.user = user;
+		setLayout(null);
+		setBounds(0, 0, 1582, 845);
+		this.user = user;
 		/**
 		 * Creation of a series of in which the user can see their data and can modify
 		 * it if necessary.
@@ -104,7 +112,6 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		textFieldSurname.addKeyListener(this);
 		textFieldSurname.setForeground(Color.black);
 		textFieldSurname.setDisabledTextColor(Color.black);
-	
 
 		textFieldName = new JTextField();
 		textFieldName.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -127,7 +134,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		textFieldAddress.addKeyListener(this);
 		textFieldAddress.setForeground(Color.black);
 		textFieldAddress.setDisabledTextColor(Color.black);
-		
+
 		textFieldEmail = new JTextField();
 		textFieldEmail.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textFieldEmail.setColumns(10);
@@ -140,7 +147,8 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		textFieldEmail.setDisabledTextColor(Color.black);
 
 		/**
-		 * Add a button to be able to save the changes that have been made in the JTextField.
+		 * Add a button to be able to save the changes that have been made in the
+		 * JTextField.
 		 */
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(this);
@@ -152,7 +160,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		btnConfirm.setBounds(917, 565, 205, 65);
 		add(btnConfirm);
 		btnConfirm.addKeyListener(this);
-		
+
 		/**
 		 * Add a button to cancel data that has been modified in the JTextField.
 		 */
@@ -166,11 +174,11 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		btnCancel.setBounds(1169, 565, 205, 65);
 		add(btnCancel);
 		btnCancel.addKeyListener(this);
-		
+
 		tableModel = new DefaultTableModel();
-		String[] productTableHeaders = {"Product ID","Quantity","Total Cost","Date","Status"};
+		String[] productTableHeaders = { "Product ID", "Quantity", "Total Cost", "Date", "Status" };
 		tableModel.setColumnIdentifiers(productTableHeaders);
-		tableModel=addProducts(tableModel);
+		tableModel = addProducts(tableModel);
 
 		JLabel lblNewFotoPerfil = new JLabel("");
 		lblNewFotoPerfil.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/profile2.png")));
@@ -182,68 +190,63 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
 		lblFondo.setBounds(0, 0, 1540, 870);
 		add(lblFondo);
-		
+
 		setMemberData(user);
 	}
 
 	private void setMemberData(User user) {
-			textFieldUsername.setText(user.getUserName());
-			textFieldSurname.setText(user.getSurname());
-			textFieldName.setText(user.getName());
-			textFieldAddress.setText(((model.Member) user).getAddress());
-			textFieldEmail.setText(user.getMail());
-			userN = textFieldUsername.getText();
+		textFieldUsername.setText(user.getUserName());
+		textFieldSurname.setText(user.getSurname());
+		textFieldName.setText(user.getName());
+		textFieldAddress.setText(((model.Member) user).getAddress());
+		textFieldEmail.setText(user.getMail());
+		userN = textFieldUsername.getText();
 	}
 
-	public void modifyMember(User user, String UserName, String Surname, String Name, String Address, String Mail
-			) {
+	public void modifyMember(User user, String UserName, String Surname, String Name, String Address, String Mail) {
 
-			User modifiedMember = user;
-			modifiedMember.setUserName(UserName);
-			modifiedMember.setName(Name);
-			modifiedMember.setSurname(Surname);
-			modifiedMember.setMail(Mail);
-			((model.Member) modifiedMember).setAddress(Address);
-			
-			try {
-				ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
-				pMember.modifyMember((model.Member) modifiedMember, userN);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		User modifiedMember = user;
+		modifiedMember.setUserName(UserName);
+		modifiedMember.setName(Name);
+		modifiedMember.setSurname(Surname);
+		modifiedMember.setMail(Mail);
+		((model.Member) modifiedMember).setAddress(Address);
+
+		try {
+			ProductMemberControllable pMember = ProductMemberFactory.getProductMember();
+			pMember.modifyMember((model.Member) modifiedMember, userN);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	
-
-	
+	}
 
 	private DefaultTableModel addProducts(DefaultTableModel tableModel2) {
 		// TODO Auto-generated method stub
 		/**
-		Set<Product> products = controlador.metodoListarProductos();
-		Iterator<Product> itProd = products.iterator();
-		**/
+		 * Set<Product> products = controlador.metodoListarProductos();
+		 * Iterator<Product> itProd = products.iterator();
+		 **/
 		Object[] row;
-		
-		//while(itProd.hasNext()){
-			row=new Object[5];
-			row[0]="";
-			row[1]="";
-			row[2]="";
-			row[3]="";
-			row[4]="";
-			;
-			//Product product = itProd.next();
-			//row[0]=product.get();
-			//row[1]=product.get();
-			//row[2]=product.get();
-			//row[3]=product.get();
-			//row[4]=product.get();
-			//row[5]=product.get();
-			
-			
-			tableModel.addRow(row);
-			//}
+
+		// while(itProd.hasNext()){
+		row = new Object[5];
+		row[0] = "";
+		row[1] = "";
+		row[2] = "";
+		row[3] = "";
+		row[4] = "";
+		;
+		// Product product = itProd.next();
+		// row[0]=product.get();
+		// row[1]=product.get();
+		// row[2]=product.get();
+		// row[3]=product.get();
+		// row[4]=product.get();
+		// row[5]=product.get();
+
+		tableModel.addRow(row);
+		// }
 		return tableModel;
 	}
 
@@ -265,7 +268,6 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 			btnConfirm.setVisible(true);
 			btnCancel.setEnabled(true);
 			btnCancel.setVisible(true);
-		
 
 		} else if (e.getSource().equals(btnConfirm)) {
 			textFieldUsername.setEditable(false);
@@ -282,18 +284,17 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 			btnConfirm.setVisible(false);
 			btnCancel.setEnabled(false);
 			btnCancel.setVisible(false);
-			
-			
+
 			UIManager UI = new UIManager();
 			UIManager.put("OptionPane.background", new ColorUIResource(255, 255, 255));
 			UIManager.put("Panel.background", new ColorUIResource(255, 255, 255));
 			UIManager.put("Button.background", new java.awt.Color(0, 151, 178));
-			
-			modifyMember(user, textFieldUsername.getText(), textFieldSurname.getText(), textFieldName.getText(), textFieldAddress.getText(), textFieldEmail.getText());
-			
+
+			modifyMember(user, textFieldUsername.getText(), textFieldSurname.getText(), textFieldName.getText(),
+					textFieldAddress.getText(), textFieldEmail.getText());
+
 			JOptionPane.showConfirmDialog(null, "Do you want to modify the data?", "Saved Modification",
 					JOptionPane.INFORMATION_MESSAGE);
-			
 
 		} else if (e.getSource().equals(btnCancel)) {
 			textFieldUsername.setEditable(false);
@@ -314,15 +315,12 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 			UIManager.put("OptionPane.background", new ColorUIResource(255, 255, 255));
 			UIManager.put("Panel.background", new ColorUIResource(255, 255, 255));
 			UIManager.put("Button.background", new java.awt.Color(0, 151, 178));
-			
+
 			JOptionPane.showMessageDialog(null, "Edition has been canceled", "Modification Canceled",
 					JOptionPane.ERROR_MESSAGE);
-			
-		}
-		}
-	
 
-	
+		}
+	}
 
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub

@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * 
- * 
  * The <code>Purchase</code> class represents a purchase made by a
  * <code>User</code> in the system. It contains information such as the ID of
  * the purchase, the ID of the user who made the purchase, the purchase
@@ -13,7 +11,8 @@ import java.util.Set;
  * current status of the purchase, the method of purchase, and a set of products
  * included in the purchase.
  * 
- * @author Jago Bartolomé Barroso, Ander Goirigolzarri Iturburu
+ * @author Jago Bartolomé Barroso
+ * @author Ander Goirigolzarri Iturburu
  */
 public class Purchase {
 

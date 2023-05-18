@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * 
- *
  * <p>
  * The <code>User</code> class is abstract as it is the base class for
  * <code>Manager</code> and <code>Member</code> and it is not necessary to

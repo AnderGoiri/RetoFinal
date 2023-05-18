@@ -25,6 +25,13 @@ import model.Instrument;
 import model.Manager;
 import model.Product;
 
+/**
+ * The ProductManagerControllableImplementation class implements the
+ * ProductManagerControllable interface and provides functionality for managing
+ * products in a database.
+ * 
+ * @author Jagoba Bartolomé Barroso
+ */
 public class ProductManagerControllableImplementation implements ProductManagerControllable {
 	// --- DB Connection ---
 	private Connection con;

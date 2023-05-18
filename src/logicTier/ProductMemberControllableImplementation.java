@@ -27,6 +27,13 @@ import model.Member;
 import model.Product;
 import model.Purchase;
 
+/**
+ * This class implements the ProductMemberControllable interface and provides
+ * methods for searching products that are instruments or components. It
+ * interacts with a database to retrieve the product information.
+ * 
+ * @author Jagoba Bartolomé Barroso
+ */
 public class ProductMemberControllableImplementation implements ProductMemberControllable {
 	// --- DB Connection ---
 	private Connection con;

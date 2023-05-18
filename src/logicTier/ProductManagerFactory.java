@@ -15,7 +15,7 @@ public class ProductManagerFactory {
 	/**
 	 * Method to create a LoginControllableImplementation Object
 	 * 
-	 * @return
+	 * @return a LoginControllableImplementation Object
 	 */
 	public static ProductManagerControllable getProductManagerControllable() {
 		return obj;

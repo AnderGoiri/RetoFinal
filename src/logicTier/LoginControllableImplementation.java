@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 /**
- * 
  * The LoginControllableImplementation class implements the LoginControllable
  * interface and provides methods for user registration and authentication.
  * 
@@ -76,10 +75,8 @@ public class LoginControllableImplementation implements LoginControllable {
 
 		} else {
 			throw new UserFoundException(
-					"The user already exists. Please choose a different username or try logging in."); // Throw this
-																										// exception if
-																										// a User is
-																										// found
+					"The user already exists. Please choose a different username or try logging in.");
+			// Throw this exception if a User is found
 		}
 		// Close connection with DB
 		gate.closeConnection();

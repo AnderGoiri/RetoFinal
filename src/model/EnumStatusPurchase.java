@@ -1,8 +1,6 @@
 package model;
 
 /**
- * 
- * 
  * An enumeration representing the different possible statuses for a purchase.
  * <p>
  * This enumeration defines the following possible statuses:
@@ -12,7 +10,7 @@ package model;
  * {@link #getLabel()} method.
  * </p>
  * 
- * @author Ander
+ * @author Ander Goirigolzarri Iturburu
  */
 public enum EnumStatusPurchase {
 	IN_PROGRESS("In progress"), FINISHED("Finished");

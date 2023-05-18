@@ -13,7 +13,7 @@ public class ProductMemberFactory {
 	/**
 	 * Method to create a ProductMemberControllable Object
 	 * 
-	 * @return
+	 * @return a a ProductMemberControllable Object
 	 */
 	public static ProductMemberControllable getProductMember() {
 		return obj;

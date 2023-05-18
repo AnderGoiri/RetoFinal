@@ -40,6 +40,12 @@ import model.Product;
 import java.awt.Color;
 import javax.swing.JComboBox;
 
+/**
+ * The ManagerProductManagementTab class represents a JPanel that displays and
+ * manages the details of a product in a store's menu GUI.
+ * 
+ * @author Francisco Rafael de Ysasi González
+ */
 public class ManagerProductManagementTab extends JPanel implements ActionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 
@@ -61,7 +67,6 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 	 * 
 	 * @param selectedProduct
 	 */
-
 	public ManagerProductManagementTab(Product selectedProduct) {
 		setLayout(null);
 		setBounds(0, 0, 984, 718);

@@ -1,9 +1,9 @@
 package model;
+
 /**
- * 
- * @author Ander
  * Enum class for a subdivision of components
- *
+ * 
+ * @author Ander Goirigolzarri Iturburu
  */
 public enum EnumClassComponent {
 	CHASIS("Chasis"), CIRCUIT("Circuit");
@@ -27,16 +27,16 @@ public enum EnumClassComponent {
 	public String getLabel() {
 		return label;
 	}
-	
+
 	public static EnumClassComponent getValue(String label) {
 		EnumClassComponent enumValue = null;
 
 		if (label.equalsIgnoreCase("Chasis")) {
 			enumValue = EnumClassComponent.CHASIS;
-		}else if (label.equalsIgnoreCase("Circuit")) {
+		} else if (label.equalsIgnoreCase("Circuit")) {
 			enumValue = EnumClassComponent.CIRCUIT;
 		}
-		
+
 		return enumValue;
 	}
 }

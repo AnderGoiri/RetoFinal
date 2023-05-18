@@ -11,7 +11,6 @@ import model.Member;
 import model.User;
 
 /**
- * 
  * Interface with the methods used for the <i>Log In</i> and <i>Sign Up</i>
  * cases.
  * 
