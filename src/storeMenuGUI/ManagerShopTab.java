@@ -107,7 +107,6 @@ public class ManagerShopTab extends JPanel implements ActionListener, KeyListene
 		productsTable.setModel(modelProduct);
 		productsTable.setEnabled(false);
 
-		showAllProducts();
 
 		// --- JComboBox ---
 		comboBoxSearchBy = new JComboBox<String>();

@@ -36,6 +36,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	// --- DB Connection ---
 	private Connection con;
 	private CallableStatement ctmt;
+	private ResultSet rset;
 	private GateDB connection = new GateDB();;
 
 	/**
@@ -573,7 +574,6 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	@Override
 	public Set<Product> getAllProducts() throws SQLException {
-		ResultSet rset = null;
 		con = connection.openConnection();
 		ctmt = con.prepareCall("{CALL select_all_products}");
 		rset = ctmt.executeQuery();

@@ -39,10 +39,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	@Override
 	public boolean checkUserName(String userName) throws SQLException {
 		
-		conn = gate.openConnection();
-		boolean b = conn.createStatement().executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
-		gate.closeConnection(ptmt, conn);
-		return b;
+		return conn.createStatement().executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
 	
 	}
 

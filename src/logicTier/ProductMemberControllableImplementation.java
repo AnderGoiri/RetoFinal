@@ -39,6 +39,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	private Connection con;
 	private PreparedStatement stmt;
 	private CallableStatement ctmt;
+	private ResultSet rs;
 	private GateDB connection = new GateDB();
 
 	// --- Attributes ---
@@ -56,7 +57,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	@Override
 	public Set<Product> searchInstrument(String search) throws SQLException {
-		ResultSet rs = null;
 		Set<Product> listaProductos = new HashSet<Product>();
 		con = connection.openConnection();
 
@@ -119,7 +119,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			}
 		}
-		connection.closeConnection(ctmt, con);
+		//connection.closeConnection(ctmt, con);
 		return listaProductos;
 	}
 
@@ -135,7 +135,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Set<Product> searchComponent(String search) throws SQLException {
 		Set<Product> listaProductos = new HashSet<Product>();
-		ResultSet rs = null;
 
 		con = connection.openConnection();
 
@@ -199,7 +198,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 			}
 		}
-		connection.closeConnection(ctmt, con);
+		//connection.closeConnection(ctmt, con);
 		return listaProductos;
 	}
 
@@ -216,7 +215,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Set<Product> searchAccessory(String search) throws ProductNotFoundException, SQLException {
 		Set<Product> listaProductos = new HashSet<Product>();
-		ResultSet rs = null;
 
 		con = connection.openConnection();
 		ctmt = con.prepareCall("{CALL select_accessory()}");
@@ -281,7 +279,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 
 			}
-			connection.closeConnection(ctmt, con);
+			//connection.closeConnection(ctmt, con);
 		}
 		return listaProductos;
 	}
@@ -536,7 +534,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			throw new ProductNotFoundException(
 					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
-		connection.closeConnection(ctmt, con);
+		//connection.closeConnection(ctmt, con);
 		return pTotal;
 	}
 
@@ -598,7 +596,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			ctmt.executeUpdate();
 
 		}
-		connection.closeConnection(ctmt, con);
+		//connection.closeConnection(ctmt, con);
 		return pTotal;
 
 	}
@@ -630,7 +628,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			throw new PurchaseNotFoundException(
 					"The requested purchase could not be found. Please check the purchase details and try again or contact customer support for further assistance.");
 		}
-		connection.closeConnection(ctmt, con);
+		//connection.closeConnection(ctmt, con);
 		return pTotal;
 	}
 
@@ -645,7 +643,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public void modifyMember(Member m, String username) throws SQLException {
 		con = connection.openConnection();
-		ResultSet rs = null;
 
 		stmt = con.prepareStatement("UPDATE user SET username=?, name=?, surname=?, mail=? WHERE username= ?");
 		stmt.setString(1, m.getUserName());
@@ -665,7 +662,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		stmt.setInt(3, idU);
 
 		stmt.executeUpdate();
-		connection.closeConnection(stmt, con);
+		//connection.closeConnection(stmt, con);
 	}
 
 	/**
@@ -678,7 +675,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	@Override
 	public Set<Purchase> getListPurchase(Member m) throws PurchaseNotFoundException, SQLException {
 		Set<Purchase> listaPurchase = new HashSet<Purchase>();
-		ResultSet rs = null;
 		con = connection.openConnection();
 
 		stmt = con.prepareStatement("select * from purchase where idUser=?");
@@ -704,7 +700,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			throw new PurchaseNotFoundException(
 					"The requested purchase could not be found. Please check the purchase details and try again or contact customer support for further assistance.");
 		}
-		connection.closeConnection(stmt, con);
+		//connection.closeConnection(stmt, con);
 		return listaPurchase;
 	}
 
@@ -748,9 +744,9 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		if (rsAccessory.next()) {
 			return 'A'; // 'A' represents Accessory
 		}
-		connection.closeConnection(stmtInstrument, con);
-		connection.closeConnection(stmtComponent, con);
-		connection.closeConnection(stmtAccessory, con);
+		//connection.closeConnection(stmtInstrument, con);
+		//connection.closeConnection(stmtComponent, con);
+		//connection.closeConnection(stmtAccessory, con);
 		return 'U'; // 'U' represents Unknown (product not found in any table)
 	}
 
@@ -763,7 +759,6 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 */
 	@Override
 	public Set<Product> getAllProducts(String search) throws SQLException {
-		ResultSet rs = null;
 		con = connection.openConnection();
 		ctmt = con.prepareCall("{CALL select_all_products}");
 		rs = ctmt.executeQuery();
@@ -772,7 +767,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 
 		while (rs.next()) {
 			if (rs.getBoolean("isActive") == true) {
-				if (!search.equals("")) {
+				if (!search.isBlank()) {
 					if (rs.getString("name").contains(search) || rs.getString("brand").contains(search)
 							|| rs.getString("model").contains(search) || rs.getString("color").contains(search)) {
 						int idProduct = rs.getInt("idProduct");
@@ -867,7 +862,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				}
 			}
 		}
-		connection.closeConnection(ctmt, con);
+		//connection.closeConnection();
 		return setProducts;
 	}
 
