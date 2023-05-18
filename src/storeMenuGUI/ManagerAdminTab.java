@@ -11,8 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Color;
 
-public class ManagerAdminTab extends JPanel implements ActionListener{
+public class ManagerAdminTab extends JPanel implements ActionListener {
 
 	/**
 	 * 
@@ -24,99 +25,91 @@ public class ManagerAdminTab extends JPanel implements ActionListener{
 	private JButton btnApply;
 	private JTable managerTable;
 	private DefaultTableModel managerTableModel;
-	
-	
+
 	/**
 	 * Create the panel.
 	 */
 	public ManagerAdminTab() {
 		setLayout(null);
-		setBounds(0, 0, 984, 718);
-		
-		
+		setBounds(0, 0, 1024, 768);
+
 		// --- JLabels --- //
-		
+
 		lblManagerSignUpRequests = new JLabel("Manager Sign Up Requests");
 		lblManagerSignUpRequests.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManagerSignUpRequests.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblManagerSignUpRequests.setFont(new Font("Constantia", Font.BOLD, 25));
 		lblManagerSignUpRequests.setBounds(50, 50, 322, 80);
 		add(lblManagerSignUpRequests);
-		
+
 		lblManagerStatus = new JLabel("Manager Account State:");
 		lblManagerStatus.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblManagerStatus.setBounds(50, 627, 233, 50);
 		add(lblManagerStatus);
-		
-		
+
 		// --- JScrollPane --- //
-		
+
 		scrollPaneManagerAccounts = new JScrollPane();
-		scrollPaneManagerAccounts.setBounds(50, 152, 876, 463);
+		scrollPaneManagerAccounts.setBounds(50, 152, 976, 463);
 		add(scrollPaneManagerAccounts);
-		
-		
-		// --- JTable that lists the pending managers --- // 
-		
+
+		// --- JTable that lists the pending managers --- //
+
 		managerTable = new JTable();
 		scrollPaneManagerAccounts.setViewportView(managerTable);
-		
+
 		managerTableModel = new DefaultTableModel();
-		String[] cabeceras = {"Id Manager","Username","Name","Surname"};
+		String[] cabeceras = { "Id Manager", "Username", "Name", "Surname" };
 		managerTableModel.setColumnIdentifiers(cabeceras);
-		managerTableModel=addPendingManagersInsideTable(managerTableModel);
-		
+		managerTableModel = addPendingManagersInsideTable(managerTableModel);
+
 		managerTable.setModel(managerTableModel);
-		
-		
+
 		// --- JButton --- //
-		
+
 		btnApply = new JButton("Apply");
-		btnApply.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnApply.setBounds(755, 631, 171, 43);
+		btnApply.setBackground(new Color(0, 151, 178));
+		btnApply.setFont(new Font("Onyx", Font.PLAIN, 45));
+		btnApply.setBounds(766, 631, 265, 65);
 		add(btnApply);
 		btnApply.addActionListener(this);
-		
-		comboBoxStatus = new JComboBox<String>() ;
+
+		comboBoxStatus = new JComboBox<String>();
 		comboBoxStatus.setBounds(400, 815, 500, 50);
 		add(comboBoxStatus);
-		
-		
-		// --- 
-		
-		
+
+		// ---
+
 	}
-
-
-	
-
 
 	private DefaultTableModel addPendingManagersInsideTable(DefaultTableModel managerTableModel) {
-		// TODO Add an object that has the same type as the factory that calls the controller in charge of the managers
-		
-		//Or initialize an iterator that saves inside of itself a collection(Set) of all the pending managers
-		
+		// TODO Add an object that has the same type as the factory that calls the
+		// controller in charge of the managers
+
+		// Or initialize an iterator that saves inside of itself a collection(Set) of
+		// all the pending managers
+
 		Object[] row;
-		
-		//while(itProd.hasNext()){
-			row=new Object[11];
-			
-			row[0]=""; //getName of the manager
-			row[1]="";
-			row[2]="";
-			row[3]="";
-			
-			managerTableModel.addRow(row);
-			//}
+
+		// while(itProd.hasNext()){
+		row = new Object[11];
+
+		row[0] = ""; // getName of the manager
+		row[1] = "";
+		row[2] = "";
+		row[3] = "";
+
+		managerTableModel.addRow(row);
+		// }
 		return managerTableModel;
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource().equals(btnApply)) {
-			if(comboBoxStatus.getSelectedIndex()!=-1 ) {
-				comboBoxStatus.getSelectedItem().toString(); //The string that this line returns can be used in the manager status modification method
+		if (e.getSource().equals(btnApply)) {
+			if (comboBoxStatus.getSelectedIndex() != -1) {
+				comboBoxStatus.getSelectedItem().toString(); // The string that this line returns can be used in the
+																// manager status modification method
 			}
 		}
 	}

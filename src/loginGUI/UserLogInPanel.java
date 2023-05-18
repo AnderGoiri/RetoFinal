@@ -90,16 +90,17 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 		add(lblAdvice);
 
 		lblSignUpAdvice = new JLabel("You don't have an account?");
+		lblSignUpAdvice.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblSignUpAdvice.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSignUpAdvice.setForeground(Color.DARK_GRAY);
-		lblSignUpAdvice.setBounds(313, 505, 160, 30);
+		lblSignUpAdvice.setBounds(292, 505, 196, 30);
 		add(lblSignUpAdvice);
 
 		lblSignUp = new JLabel("Sign Up");
-		lblSignUp.setFont(font1);
+		lblSignUp.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		lblSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSignUp.setForeground(new Color(0, 151, 178));
-		lblSignUp.setBounds(473, 505, 50, 30);
+		lblSignUp.setBounds(476, 505, 76, 30);
 		add(lblSignUp);
 		lblSignUp.addMouseListener(this);
 
@@ -114,7 +115,7 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 		passwordField = new JPasswordField();
 		passwordField.setEchoChar('*'); // Cambia los caracteres del texto, mostrando el texto introducido con *
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		passwordField.setBounds(168, 268, 492, 68);
+		passwordField.setBounds(168, 268, 560, 68);
 		add(passwordField);
 
 		// --- Separator ---
@@ -125,7 +126,9 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 
 		// --- JButton ---
 		btnLogIn = new JButton("Log In");
-		btnLogIn.setBounds(588, 380, 160, 65);
+		btnLogIn.setBackground(new Color(0, 151, 178));
+		btnLogIn.setFont(new Font("Onyx", Font.PLAIN, 45));
+		btnLogIn.setBounds(568, 380, 160, 65);
 		add(btnLogIn);
 		btnLogIn.addActionListener(this);
 
@@ -151,7 +154,7 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 		chckbxShowHideLogIn = new JCheckBox("");
 		chckbxShowHideLogIn.setOpaque(false);
 		chckbxShowHideLogIn.setHorizontalAlignment(SwingConstants.CENTER);
-		chckbxShowHideLogIn.setBounds(660, 268, 68, 68);
+		chckbxShowHideLogIn.setBounds(729, 268, 68, 68);
 		add(chckbxShowHideLogIn);
 		chckbxShowHideLogIn.addActionListener(this);
 
