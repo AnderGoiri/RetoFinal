@@ -55,7 +55,7 @@ create table if not exists product(
     isActive tinyint,
     saleActive tinyint,
     salePercentage integer,
-    name varchar(20),
+    name varchar(40),
     color varchar(20),
     primary key (idProduct)
 );
@@ -493,4 +493,4 @@ INSERT INTO product (brand, model, description, unitPrice, stock, isActive, sale
 VALUES ('Shure', 'SM58', 'Vocal Microphone', 99, 12, 1, 0, 0, 'Vocal Microphone', 'Black');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
-VALUES (@last_id_product, 'Non-electric', 'Audio');
+VALUES (@last_id_product, 'NonElectric', 'Audio');
