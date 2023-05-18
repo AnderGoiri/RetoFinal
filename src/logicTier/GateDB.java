@@ -17,7 +17,6 @@ public class GateDB {
 
 	private ResourceBundle configFile;
 	private String url, user, pass;
-	private Connection conn;
 
 	public GateDB() {
 		configFile = ResourceBundle.getBundle("logicTier.config");
@@ -34,9 +33,7 @@ public class GateDB {
 	 * @throws SQLException if the connection could not be established
 	 */
 	public Connection openConnection() {
-		if (conn != null) {
-			return conn;
-		}
+		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, user, pass);
 		} catch (SQLException e) {
@@ -59,5 +56,89 @@ public class GateDB {
 				e.printStackTrace();
 			}
 		return conn;
+	}
+
+	/**
+	 * 
+	 * Method used to close a connection with the database. It is important to close
+	 * the <code>Statement</code> and <code>ResultSet</code> to avoid memory leaks.
+	 * 
+	 * @param stmt The <code>PreparedStatement</code> to close
+	 * @param conn The <code>Connection</code> to close.
+	 * @param rset The <code>ResultSet</code> to close.
+	 * @throws SQLException if any error occurs while closing the connection, the
+	 *                      statement, or the result set.
+	 * 
+	 * @author Ander Goirigolzarri Iturburu
+	 */
+	public void closeConnection(PreparedStatement ptmt, Connection conn, ResultSet rset) throws SQLException {
+		if (ptmt != null)
+			ptmt.close();
+		if (rset != null)
+			rset.close();
+		if (conn != null)
+			conn.close();
+	}
+
+	public void closeConnection(Statement stmt, Connection conn, ResultSet rset) throws SQLException {
+		if (stmt != null)
+			stmt.close();
+		if (rset != null)
+			rset.close();
+		if (conn != null)
+			conn.close();
+	}
+
+	public void closeConnection(CallableStatement ctmt, Connection conn, ResultSet rset) throws SQLException {
+		if (ctmt != null)
+			ctmt.close();
+		if (rset != null)
+			rset.close();
+		if (conn != null)
+			conn.close();
+	}
+	
+	public void closeConnection(ResultSet rset, Statement stmt, Connection conn) throws SQLException {
+		if (rset != null)
+			rset.close();
+		if (stmt != null)
+			stmt.close();
+		if (conn != null)
+			conn.close();
+	}
+
+	public void closeConnection(PreparedStatement stmt, Connection conn) throws SQLException {
+		if (stmt != null)
+			stmt.close();
+		if (conn != null)
+			conn.close();
+	}
+	
+	public void closeConnection(CallableStatement ctmt, Connection conn) throws SQLException {
+		if (ctmt != null)
+			ctmt.close();
+		if (conn != null)
+			conn.close();
+	}
+
+	/**
+	 * 
+	 * Method used to close a connection with the database. It is important to close
+	 * the <code>ResultSet</code> to avoid memory leaks.
+	 * 
+	 * @param stmt The <code>PreparedStatement</code> to close.
+	 * @param conn The <code>Connection</code> to close.
+	 * @param rset The <code>ResultSet</code> to close.
+	 * @throws SQLException if any error occurs while closing the connection, the
+	 *                      statement, or the result set.
+	 * 
+	 * @author Ander Goirigolzarri Iturburu
+	 */
+	public void closeConnection(Connection conn, ResultSet rset) throws SQLException {
+		if (rset != null)
+			rset.close();
+		if (conn != null)
+			conn.close();
+
 	}
 }

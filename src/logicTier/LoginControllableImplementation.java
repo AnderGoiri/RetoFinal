@@ -26,7 +26,6 @@ public class LoginControllableImplementation implements LoginControllable {
 
 	private Connection conn; // Establish a Connection attribute
 	private PreparedStatement ptmt; // Establish a PreparedStatement attribute
-	private ResultSet rset; // Establish a ResultSet attribute
 	private GateDB gate = new GateDB(); // Establish a GateDB attribute
 
 	/**
@@ -39,8 +38,12 @@ public class LoginControllableImplementation implements LoginControllable {
 	 */
 	@Override
 	public boolean checkUserName(String userName) throws SQLException {
-		return gate.openConnection().createStatement()
-				.executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
+		
+		conn = gate.openConnection();
+		boolean b = conn.createStatement().executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
+		gate.closeConnection(ptmt, conn);
+		return b;
+	
 	}
 
 	/**
@@ -78,8 +81,7 @@ public class LoginControllableImplementation implements LoginControllable {
 					"The user already exists. Please choose a different username or try logging in.");
 			// Throw this exception if a User is found
 		}
-		// Close connection with DB
-		gate.closeConnection();
+		gate.closeConnection(ptmt, conn);
 	}
 
 	/**
@@ -122,8 +124,7 @@ public class LoginControllableImplementation implements LoginControllable {
 			throw new UserFoundException(
 					"The user already exists. Please choose a different username or try logging in.");
 		}
-		// Close Connection with the DB
-		gate.closeConnection();
+		gate.closeConnection(ptmt, conn);
 	}
 
 	/**
@@ -139,6 +140,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	@Override
 	public User userLogin(String username, String password)
 			throws WrongCredentialsException, UserNotFoundException, SQLException {
+		ResultSet rset = null;
 		// Open connection with DB
 		conn = gate.openConnection();
 
@@ -164,12 +166,12 @@ public class LoginControllableImplementation implements LoginControllable {
 		if (memberId != 0) {
 			// This is a member
 			Member auxMember = createMember(memberId); // Creates an auxiliar object Member
-			gate.closeConnection();
+			gate.closeConnection(ptmt, conn);
 			return auxMember;
 		} else if (managerId != 0) {
 			// This is a manager
 			Manager auxManager = createManager(managerId);// Creates an auxiliar object Manager
-			gate.closeConnection();
+			gate.closeConnection(ptmt, conn);
 			return auxManager;
 		} else {
 			throw new UserNotFoundException(
@@ -198,6 +200,7 @@ public class LoginControllableImplementation implements LoginControllable {
 		ptmt.setInt(2, ma.getIdUser());
 
 		ptmt.executeUpdate();
+		gate.closeConnection(ptmt, conn);
 	}
 
 	/**
@@ -210,8 +213,8 @@ public class LoginControllableImplementation implements LoginControllable {
 	 * @throws WrongCredentialsException if the member is not found in the database.
 	 */
 	@Override
-	public Member createMember(int idUser) throws SQLException, WrongCredentialsException {
-
+	public Member createMember(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
+		ResultSet rset = null;
 		ptmt = conn.prepareStatement("SELECT * FROM vw_member WHERE idUser =" + idUser + ";");
 
 		rset = ptmt.executeQuery();
@@ -228,6 +231,8 @@ public class LoginControllableImplementation implements LoginControllable {
 		LocalDate dateRegister = rset.getDate(7).toLocalDate();
 		String address = rset.getString(8);
 		String creditCard = rset.getString(9);
+    
+		gate.closeConnection(ptmt, conn);
 
 		return new Member(username, name, surname, password, mail, dateRegister, address, creditCard);
 	}
@@ -244,10 +249,10 @@ public class LoginControllableImplementation implements LoginControllable {
 	 *                                   database.
 	 */
 	@Override
-	public Manager createManager(int idUser) throws SQLException, WrongCredentialsException {
-
+	public Manager createManager(int idUser, Connection conn) throws SQLException, WrongCredentialsException {
+		ResultSet rset = null;
 		ptmt = conn.prepareStatement("SELECT * FROM vw_manager WHERE idUser =" + idUser + ";");
-
+		
 		rset = ptmt.executeQuery();
 
 		if (!rset.next()) {
@@ -265,8 +270,10 @@ public class LoginControllableImplementation implements LoginControllable {
 		boolean isTechnician = rset.getBoolean(10);
 		boolean isAdmin = rset.getBoolean(11);
 		EnumStatusManager statusManager = EnumStatusManager.getValue(rset.getString(12));
-
-		return new Manager(username, name, surname, password, mail, dateRegister, idSupervisor, isSupervisor,
+		
+		gate.closeConnection(ptmt, conn);
+		
+    return new Manager(username, name, surname, password, mail, dateRegister, idSupervisor, isSupervisor,
 				isTechnician, isAdmin, statusManager);
 	}
 

@@ -36,8 +36,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	// --- DB Connection ---
 	private Connection con;
 	private CallableStatement ctmt;
-	private GateDB connection = new GateDB();
-	private ResultSet rset;
+	private GateDB connection = new GateDB();;
 
 	/**
 	 * Method to add a product, if it doesn't exist, to the database
@@ -108,7 +107,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 			ctmt.executeUpdate();
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 	}
 
 	/**
@@ -168,7 +167,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			throw new ProductNotFoundException(
 					"The requested product could not be found. Please verify the product details and try again.");
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 	}
 
 	/**
@@ -222,7 +221,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			throw new ProductNotFoundException(
 					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 	}
 
 	/**
@@ -249,7 +248,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			throw new ProductNotFoundException(
 					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 	}
 
 	/**
@@ -272,7 +271,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			throw new ProductNotFoundException(
 					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 	}
 
 	/**
@@ -304,7 +303,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 		ctmt.executeQuery();
 
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 	}
 
 	// --- Methods to Search Products ---
@@ -515,6 +514,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 				listaManagers.add(m);
 			}
 		}
+		connection.closeConnection(ctmt, con);
 		return listaManagers;
 	}
 
@@ -558,7 +558,9 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		if (rsAccessory.next()) {
 			return 'A'; // 'A' represents Accessory
 		}
-		connection.closeConnection();
+		connection.closeConnection(stmtInstrument, con);
+		connection.closeConnection(stmtComponent, con);
+		connection.closeConnection(stmtAccessory, con);
 		return 'U'; // 'U' represents Unknown (product not found in any table)
 	}
 
@@ -571,6 +573,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	@Override
 	public Set<Product> getAllProducts() throws SQLException {
+		ResultSet rset = null;
 		con = connection.openConnection();
 		ctmt = con.prepareCall("{CALL select_all_products}");
 		rset = ctmt.executeQuery();
@@ -620,7 +623,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 				setProducts.add(accessory);
 			}
 		}
-		connection.closeConnection();
+		connection.closeConnection(ctmt, con);
 		return setProducts;
 	}
 }
