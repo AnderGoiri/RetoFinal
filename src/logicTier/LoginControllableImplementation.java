@@ -38,9 +38,7 @@ public class LoginControllableImplementation implements LoginControllable {
 	 */
 	@Override
 	public boolean checkUserName(String userName) throws SQLException {
-		
 		return conn.createStatement().executeQuery("SELECT username FROM USER WHERE username LIKE '" + userName + "';").next();
-	
 	}
 
 	/**
@@ -99,8 +97,6 @@ public class LoginControllableImplementation implements LoginControllable {
 		if (!checkUserName(ma.getUserName())) {
 
 			ptmt = conn.prepareStatement("{CALL insert_new_manager(?, ?, ?, ?, ?, ?, ?, ?,?,?,?)}");
-
-			System.out.println(ma.getStatusManager());
 
 			ptmt.setString(1, ma.getUserName());
 			ptmt.setString(2, ma.getName());
