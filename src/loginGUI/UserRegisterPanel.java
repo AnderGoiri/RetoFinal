@@ -301,11 +301,10 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 							textFieldSurname.getText(), new String(textFieldPassword.getPassword()),
 							textFieldEmail.getText(), LocalDate.now(), 0, chckbxSupervisor.isSelected(),
 							chckbxTechnician.isSelected(), false, EnumStatusManager.A));
-
 				}
 				changePanel();
 			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(this, "An error occured during the Sign Up");
+				JOptionPane.showMessageDialog(this, "An error occurred during the Sign Up");
 			}
 		} else if (e.getSource().equals(chckbxShowHideSignUp)) {
 			if (chckbxShowHideSignUp.isSelected()) {
