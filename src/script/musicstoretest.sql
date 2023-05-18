@@ -424,73 +424,73 @@ INNER JOIN accessory a ON p.idProduct = a.idProduct;
 
 /*MOCK DATA*/
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Fender', 'Stratocaster', 'Electric Guitar', 999, 5, 1, 0, 0, 'Stratocaster', 'Sunburst');
+VALUES ('Fender', 'Stratocaster', 'Electric Guitar', 999, 5, 1, 0, 0, 'Electric Guitar', 'Sunburst');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
 VALUES (@last_id_product, 'String', 'Electronic');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Gibson', 'Les Paul', 'Electric Guitar', 1999, 3, 1, 1, 10, 'Les Paul', 'Black');
+VALUES ('Gibson', 'Les Paul', 'Electric Guitar', 1999, 3, 1, 1, 10, 'Electric Guitar', 'Black');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
 VALUES (@last_id_product, 'String', 'Electronic');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Seymour Duncan', 'SH-4 JB', 'Humbucker Pickup', 89, 15, 1, 0, 0, 'SH-4 JB', 'White');
+VALUES ('Seymour Duncan', 'SH-4 JB', 'Humbucker Pickup', 89, 15, 1, 0, 0, 'Humbucker Pickup', 'White');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO component (idProduct, classComponent, typeComponent)
 VALUES (@last_id_product, 'Chasis', 'Architecture');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('EMG', '81', 'Active Pickup', 119, 10, 1, 1, 15, '81', 'Brown');
+VALUES ('EMG', '81', 'Active Pickup', 119, 10, 1, 1, 15, 'Active Pickup', 'Brown');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO component (idProduct, classComponent, typeComponent)
 VALUES (@last_id_product, 'Circuit', 'Tuning');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Vox', 'AC30', 'Guitar Amplifier', 999, 5, 1, 0, 0, 'AC30', 'Blue');
+VALUES ('Vox', 'AC30', 'Guitar Amplifier', 999, 5, 1, 0, 0, 'Guitar Amplifier', 'Blue');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
 VALUES (@last_id_product, 'Electric', 'Audio');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Boss', 'DS-1', 'Distortion Pedal', 79, 8, 1, 1, 20, 'DS-1', 'Blue');
+VALUES ('Boss', 'DS-1', 'Distortion Pedal', 79, 8, 1, 1, 20, 'Distortion Pedal', 'Blue');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
 VALUES (@last_id_product, 'Electric', 'Connection');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Yamaha', 'YAS-62', 'Alto Saxophone', 2999, 2, 1, 1, 10, 'YAS-62', 'Gold');
+VALUES ('Yamaha', 'YAS-62', 'Alto Saxophone', 2999, 2, 1, 1, 10, 'Alto Saxophone', 'Gold');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
 VALUES (@last_id_product, 'Wind', 'Acoustic');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Pearl', 'Masterworks', 'Drum Set', 4999, 1, 1, 0, 0, 'Masterworks', 'Blue');
+VALUES ('Pearl', 'Masterworks', 'Drum Set', 4999, 1, 1, 0, 0, 'Drum Set', 'Blue');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO instrument (idProduct, classInstrument, typeInstrument)
 VALUES (@last_id_product, 'Percussion', 'Acoustic');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Fender', 'Telecaster Neck', 'Guitar Neck', 199, 10, 1, 1, 15, 'Telecaster Neck', 'Red');
+VALUES ('Fender', 'Telecaster Neck', 'Guitar Neck', 199, 10, 1, 1, 15, 'Guitar Neck', 'Red');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO component (idProduct, classComponent, typeComponent)
 VALUES (@last_id_product, 'Chasis', 'Tuning');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Mojotone', 'Vintage Pots', 'Guitar Potentiometers', 29, 20, 1, 0, 0, 'Vintage Pots', 'Green');
+VALUES ('Mojotone', 'Vintage Pots', 'Guitar Potentiometers', 29, 20, 1, 0, 0, 'Guitar Potentiometers', 'Green');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO component (idProduct, classComponent, typeComponent)
 VALUES (@last_id_product, 'Circuit', 'Connection');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Dunlop', 'Cry Baby', 'Guitar Wah Pedal', 129, 5, 1, 1, 10, 'Cry Baby', 'White');
+VALUES ('Dunlop', 'Cry Baby', 'Guitar Wah Pedal', 129, 5, 1, 1, 10, 'Guitar Wah Pedal', 'White');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
 VALUES (@last_id_product, 'Electric', 'Item');
 
 INSERT INTO product (brand, model, description, unitPrice, stock, isActive, saleActive, salePercentage, name, color)
-VALUES ('Shure', 'SM58', 'Vocal Microphone', 99, 12, 1, 0, 0, 'SM58', 'Black');
+VALUES ('Shure', 'SM58', 'Vocal Microphone', 99, 12, 1, 0, 0, 'Vocal Microphone', 'Black');
 SET @last_id_product = LAST_INSERT_ID();
 INSERT INTO accessory (idProduct, classAccessory, typeAccessory)
 VALUES (@last_id_product, 'Non-electric', 'Audio');
