@@ -38,22 +38,22 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 
 		lblSurname = new JLabel("Surname:");
 		lblSurname.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblSurname.setBounds(33, 485, 148, 41);
+		lblSurname.setBounds(290, 155, 148, 41);
 		add(lblSurname);
 
 		lblName = new JLabel("Name:");
 		lblName.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblName.setBounds(748, 405, 148, 41);
+		lblName.setBounds(290, 335, 148, 41);
 		add(lblName);
 
 		lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblUsername.setBounds(33, 404, 192, 41);
+		lblUsername.setBounds(290, 65, 192, 41);
 		add(lblUsername);
 
 		lblEmail = new JLabel("Email:");
 		lblEmail.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblEmail.setBounds(748, 490, 143, 52);
+		lblEmail.setBounds(290, 245, 143, 52);
 		add(lblEmail);
 
 		lblNewFotoPerfil = new JLabel("");
@@ -66,7 +66,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 
 		textaUsername = new JTextField();
 		textaUsername.setFont(new Font("Constantia", Font.PLAIN, 15));
-		textaUsername.setBounds(207, 396, 457, 50);
+		textaUsername.setBounds(466, 65, 457, 50);
 		textaUsername.setEditable(false);
 		textaUsername.setEnabled(false);
 		add(textaUsername);
@@ -75,7 +75,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		textSurname = new JTextField();
 		textSurname.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textSurname.setColumns(10);
-		textSurname.setBounds(207, 480, 457, 50);
+		textSurname.setBounds(466, 155, 457, 50);
 		textSurname.setEditable(false);
 		textSurname.setEnabled(false);
 		add(textSurname);
@@ -83,7 +83,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		textEmail = new JTextField();
 		textEmail.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textEmail.setColumns(10);
-		textEmail.setBounds(917, 480, 457, 50);
+		textEmail.setBounds(466, 235, 457, 50);
 		textEmail.setEditable(false);
 		textEmail.setEnabled(false);
 		add(textEmail);
@@ -91,7 +91,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		textName = new JTextField();
 		textName.setFont(new Font("Constantia", Font.PLAIN, 15));
 		textName.setColumns(10);
-		textName.setBounds(917, 396, 457, 50);
+		textName.setBounds(466, 335, 457, 50);
 		textName.setEditable(false);
 		textName.setEnabled(false);
 		add(textName);
@@ -129,7 +129,7 @@ public class ManagerAccountTab extends JPanel implements ActionListener {
 		// --- JLabel background --- //
 		lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
-		lblFondo.setBounds(0, 0, 984, 718);
+		lblFondo.setBounds(10, 0, 984, 718);
 		add(lblFondo);
 
 		// --- Method that insert the data of the manager inside the JTextFields --- //

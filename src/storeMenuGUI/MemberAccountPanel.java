@@ -49,27 +49,27 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		 */
 		JLabel lblSurmane = new JLabel("Surname:");
 		lblSurmane.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblSurmane.setBounds(292, 146, 148, 41);
+		lblSurmane.setBounds(290, 155, 148, 41);
 		add(lblSurmane);
 
 		JLabel lblName = new JLabel("Name:");
 		lblName.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblName.setBounds(297, 323, 148, 41);
+		lblName.setBounds(290, 335, 148, 41);
 		add(lblName);
 
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblUsername.setBounds(292, 65, 192, 41);
+		lblUsername.setBounds(290, 65, 192, 41);
 		add(lblUsername);
 
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblEmail.setBounds(292, 226, 143, 52);
+		lblEmail.setBounds(290, 245, 143, 52);
 		add(lblEmail);
 
 		JLabel lblAddress = new JLabel("Address:");
 		lblAddress.setFont(new Font("Constantia", Font.PLAIN, 35));
-		lblAddress.setBounds(297, 408, 148, 41);
+		lblAddress.setBounds(290, 425, 148, 41);
 		add(lblAddress);
 
 		/**
@@ -98,7 +98,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		textFieldSurname = new JTextField();
 		textFieldSurname.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textFieldSurname.setColumns(10);
-		textFieldSurname.setBounds(466, 141, 457, 50);
+		textFieldSurname.setBounds(466, 155, 457, 50);
 		textFieldSurname.setEditable(false);
 		textFieldSurname.setEnabled(false);
 		add(textFieldSurname);
@@ -109,7 +109,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		textFieldName = new JTextField();
 		textFieldName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textFieldName.setColumns(10);
-		textFieldName.setBounds(466, 314, 457, 50);
+		textFieldName.setBounds(466, 335, 457, 50);
 		textFieldName.setEditable(false);
 		textFieldName.setEnabled(false);
 		add(textFieldName);
@@ -120,7 +120,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		textFieldAddress = new JTextField();
 		textFieldAddress.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textFieldAddress.setColumns(10);
-		textFieldAddress.setBounds(466, 398, 457, 50);
+		textFieldAddress.setBounds(466, 425, 457, 50);
 		textFieldAddress.setEditable(false);
 		textFieldAddress.setEnabled(false);
 		add(textFieldAddress);
@@ -131,7 +131,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		textFieldEmail = new JTextField();
 		textFieldEmail.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textFieldEmail.setColumns(10);
-		textFieldEmail.setBounds(466, 228, 457, 50);
+		textFieldEmail.setBounds(466, 245, 457, 50);
 		textFieldEmail.setEditable(false);
 		textFieldEmail.setEnabled(false);
 		add(textFieldEmail);
@@ -150,7 +150,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		btnConfirm.setEnabled(false);
 		btnConfirm.setVisible(false);
 		btnConfirm.setBackground(new Color(0, 151, 178));
-		btnConfirm.setBounds(718, 492, 205, 65);
+		btnConfirm.setBounds(716, 514, 205, 65);
 		add(btnConfirm);
 		btnConfirm.addKeyListener(this);
 
@@ -164,7 +164,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 		btnCancel.setEnabled(false);
 		btnCancel.setVisible(false);
 		btnCancel.setBackground(new Color(0, 151, 178));
-		btnCancel.setBounds(503, 565, 205, 65);
+		btnCancel.setBounds(466, 514, 205, 65);
 		add(btnCancel);
 		btnCancel.addKeyListener(this);
 
@@ -181,7 +181,7 @@ public class MemberAccountPanel extends JPanel implements ActionListener, KeyLis
 
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(MemberAccountPanel.class.getResource("/media/descarga.jpg")));
-		lblFondo.setBounds(0, 0, 984, 718);
+		lblFondo.setBounds(14, 0, 984, 718);
 		add(lblFondo);
 
 		setMemberData(user);
