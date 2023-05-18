@@ -6,7 +6,6 @@ import java.time.LocalDate;
  * Class that registers a user action on a product
  * 
  * @author Jago Bartolomé Barroso
- * 
  */
 public class Management {
 	// ---Attributes---

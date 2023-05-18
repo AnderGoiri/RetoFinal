@@ -7,10 +7,15 @@ import model.Member;
 import java.awt.Font;
 import java.awt.Color;
 
+/**
+ * The MemberMainMenu class represents a JPanel for the main menu of a member
+ * user.
+ * 
+ * @author Olaia Sainz Lorenzo
+ */
+
 public class MemberMainMenu extends JPanel {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private ShopMemberMenu panelStore;
 	private MemberAccountPanel panelAccount;
@@ -18,7 +23,7 @@ public class MemberMainMenu extends JPanel {
 	/**
 	 * Create the panel.
 	 * 
-	 * @param auxUser 
+	 * @param auxUser
 	 */
 	public MemberMainMenu(Member auxUser) {
 		setBounds(100, 100, 1860, 950);
@@ -40,10 +45,10 @@ public class MemberMainMenu extends JPanel {
 		panelStore.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Store", null, panelStore, null);
 
-		
-	/**
-	 * Add a panel called panelAccount to the JTabbedPane tab where the member can consult his account information.
-	 */
+		/**
+		 * Add a panel called panelAccount to the JTabbedPane tab where the member can
+		 * consult his account information.
+		 */
 		panelAccount = new MemberAccountPanel(auxUser);
 		panelAccount.setForeground(new Color(0, 151, 178));
 		tabbedPane.addTab("Account", null, panelAccount, null);

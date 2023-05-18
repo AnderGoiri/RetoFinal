@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * 
- * 
  * Represents a user with additional management capabilities, such as the
  * ability to validate other users' registration requests.
  * <p>
@@ -32,7 +30,6 @@ import java.util.Set;
  * </ul>
  * 
  * @author Ander Goirigolzarri Iturburu
- *
  */
 public class Manager extends User {
 

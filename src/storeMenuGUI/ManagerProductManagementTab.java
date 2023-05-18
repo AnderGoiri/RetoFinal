@@ -40,6 +40,12 @@ import model.Product;
 import java.awt.Color;
 import javax.swing.JComboBox;
 
+/**
+ * The ManagerProductManagementTab class represents a JPanel that displays and
+ * manages the details of a product in a store's menu GUI.
+ * 
+ * @author Francisco Rafael de Ysasi González
+ */
 public class ManagerProductManagementTab extends JPanel implements ActionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 
@@ -61,9 +67,6 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 	 * 
 	 * @param selectedProduct
 	 */
-
-	// TODO El constructor recogeria un objeto tipo Product
-
 	public ManagerProductManagementTab(Product selectedProduct) {
 		setLayout(null);
 		setBounds(0, 0, 984, 718);
@@ -393,10 +396,14 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 					try {
 						proManager.removeProduct(product);
 					} catch (SQLException e1) {
-						e1.printStackTrace();
+						// Show error message if there's a database error
+						JOptionPane.showMessageDialog(this,
+								"An error occurred while accessing the database. Please contact the system administrator for assistance.");
 					}
 				} catch (ProductNotFoundException e1) {
-					e1.printStackTrace();
+					// Show error message if product already exists
+					JOptionPane.showMessageDialog(this,
+							"Product not found. Please check the product details and try again.");
 				}
 				JOptionPane.showMessageDialog(this, "Product successfully taken off the market.");
 
@@ -444,11 +451,13 @@ public class ManagerProductManagementTab extends JPanel implements ActionListene
 					}
 
 				} catch (ProductNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					// Show error message if product already exists
+					JOptionPane.showMessageDialog(this,
+							"Product not found. Please check the product details and try again.");
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					// Show error message if there's a database error
+					JOptionPane.showMessageDialog(this,
+							"An error occurred while accessing the database. Please contact the system administrator for assistance.");
 				}
 				JOptionPane.showMessageDialog(this, "Product successfully modified.");
 

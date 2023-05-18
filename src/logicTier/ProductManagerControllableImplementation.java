@@ -25,6 +25,13 @@ import model.Instrument;
 import model.Manager;
 import model.Product;
 
+/**
+ * The ProductManagerControllableImplementation class implements the
+ * ProductManagerControllable interface and provides functionality for managing
+ * products in a database.
+ * 
+ * @author Jagoba Bartolomé Barroso
+ */
 public class ProductManagerControllableImplementation implements ProductManagerControllable {
 	// --- DB Connection ---
 	private Connection con;
@@ -41,7 +48,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * @author Jagoba Bartolomé Barroso
 	 */
 	@Override
-	public void addProduct(Product p) throws ProductFoundException, SQLException {
+	public void addProduct(Product p) throws SQLException {
 
 		con = connection.openConnection();
 
@@ -63,6 +70,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 			ctmt.executeUpdate();
 		}
+
 		if (p instanceof Component) {
 			ctmt = con.prepareCall("{CALL insert_new_component(?,?,?,?,?,?,?,?,?,?,?,?)}");
 
@@ -113,7 +121,9 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 */
 	@Override
 	public void modifyProduct(Product p) throws ProductNotFoundException, SQLException {
+
 		con = connection.openConnection();
+
 		if (existsProduct(p.getIdProduct())) {
 			ctmt = con.prepareCall(
 					"UPDATE product SET brand=?, model=?, description=?, unitPrice=?, stock=?, isActive=?, saleActive=?, salePercentage=?, name=?, color=? WHERE idProduct=?");
@@ -128,7 +138,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			ctmt.setString(9, p.getNameP());
 			ctmt.setString(10, p.getColor());
 			ctmt.setInt(11, p.getIdProduct());
-			
+
 			ctmt.executeUpdate();
 
 			if (p instanceof Instrument) {
@@ -154,7 +164,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			}
 
 		} else {
-			throw new ProductNotFoundException();
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please verify the product details and try again.");
 		}
 		connection.closeConnection(ctmt, con);
 	}
@@ -171,6 +182,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	@Override
 	public boolean existsProduct(int search) throws SQLException {
 		boolean existe = false;
+
 		con = connection.openConnection();
 
 		ctmt = con.prepareCall("{CALL check_product_exists(?, ?)}");
@@ -183,6 +195,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 		ctmt.executeQuery();
 		existe = ctmt.getObject(2, boolean.class);
+
+		connection.closeConnection();
 
 		return existe;
 	}
@@ -204,7 +218,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			ctmt.executeQuery();
 
 		} else {
-			throw new ProductNotFoundException();
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
 		connection.closeConnection(ctmt, con);
 	}
@@ -230,7 +245,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			ctmt.setFloat(3, p.getPrice() * (sale / 100));
 			ctmt.executeQuery();
 		} else {
-			throw new ProductNotFoundException();
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
 		connection.closeConnection(ctmt, con);
 	}
@@ -252,7 +268,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 			ctmt.setBoolean(1, false);
 			ctmt.executeQuery();
 		} else {
-			throw new ProductNotFoundException();
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
 		connection.closeConnection(ctmt, con);
 	}
@@ -276,7 +293,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		ctmt.setString(4, m.getMail());
 		ctmt.executeQuery();
 
-		ctmt = con.prepareCall("UPDATE manager SET idSupervisor=?, isSupervisor=?, isTechnician=?, isAdmin=?, statusManager=? ");
+		ctmt = con.prepareCall(
+				"UPDATE manager SET idSupervisor=?, isSupervisor=?, isTechnician=?, isAdmin=?, statusManager=? ");
 		ctmt.setInt(1, m.getIdSupervisor());
 		ctmt.setBoolean(2, m.isSupervisor());
 		ctmt.setBoolean(3, m.isTechnician());
@@ -284,7 +302,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		ctmt.setString(5, m.getStatusManager().getLabel());
 
 		ctmt.executeQuery();
-		
+
 		connection.closeConnection(ctmt, con);
 	}
 
@@ -310,7 +328,8 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		if (pAux != null) {
 			return pAux;
 		} else {
-			throw new ProductNotFoundException();
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
 	}
 
@@ -381,6 +400,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * value to an enum and if its equal type is the filter referring to the type of
 	 * product (Acoustic or Electric) listaProd is the list of products already
 	 * searched
+	 * 
 	 * @return Set<Product>
 	 * @author Jagoba Bartolomé Barroso
 	 */
@@ -415,6 +435,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 	 * class value to an enum and if its equal type is the filter referring to the
 	 * type of product (Acoustic or Electric) listaProd is the list of products
 	 * already searched
+	 * 
 	 * @return Set<Product>
 	 * @author Jagoba Bartolomé Barroso
 	 */
@@ -445,6 +466,7 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 
 	/**
 	 * This method searches in a product list for products with any sale
+	 * 
 	 * @return Set<Product>
 	 * @author Jagoba Bartolomé Barroso
 	 */
@@ -458,8 +480,10 @@ public class ProductManagerControllableImplementation implements ProductManagerC
 		}
 		return listaFiltr;
 	}
+
 	/**
 	 * Get the list of Pending managers
+	 * 
 	 * @return Set<Product>
 	 * @author Jagoba Bartolomé Barroso
 	 */

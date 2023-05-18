@@ -1,7 +1,6 @@
 package model;
 
 /**
- *
  * Defines an enumeration for the different states of a <code>Manager</code>
  * object during the registration process.
  * <p>
@@ -16,7 +15,6 @@ package model;
  * </p>
  * 
  * @author Ander Goirigolzarri Iturburu
- * 
  */
 public enum EnumStatusManager {
 	P("Pending"), A("Approved"), R("Rejected");
@@ -40,14 +38,15 @@ public enum EnumStatusManager {
 	public String getLabel() {
 		return label;
 	}
+
 	public static EnumStatusManager getValue(String label) {
 		EnumStatusManager enumValue = null;
 
 		if (label.equalsIgnoreCase("Pending")) {
 			enumValue = EnumStatusManager.P;
-		}else if (label.equalsIgnoreCase("Approved")) {
+		} else if (label.equalsIgnoreCase("Approved")) {
 			enumValue = EnumStatusManager.A;
-		}else if (label.equalsIgnoreCase("Rejected")) {
+		} else if (label.equalsIgnoreCase("Rejected")) {
 			enumValue = EnumStatusManager.R;
 		}
 		return enumValue;

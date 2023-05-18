@@ -27,6 +27,13 @@ import model.Member;
 import model.Product;
 import model.Purchase;
 
+/**
+ * This class implements the ProductMemberControllable interface and provides
+ * methods for searching products that are instruments or components. It
+ * interacts with a database to retrieve the product information.
+ * 
+ * @author Jagoba Bartolomé Barroso
+ */
 public class ProductMemberControllableImplementation implements ProductMemberControllable {
 	// --- DB Connection ---
 	private Connection con;
@@ -214,6 +221,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		con = connection.openConnection();
 		ctmt = con.prepareCall("{CALL select_accessory()}");
 		rs = ctmt.executeQuery();
+		if (!rs.next()) {
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
+		}
 		while (rs.next()) {
 			if (rs.getBoolean("isActive") == true) {
 				if (!search.equals("")) {
@@ -430,7 +441,7 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 * @author Jago TODO Exception
 	 */
 	@Override
-	public boolean checkProduct(Product p) throws Exception {
+	public boolean checkProduct(Product p) {
 		boolean stockNotFound = false;
 		if (p.getStock() <= 0) {
 			stockNotFound = true;
@@ -451,11 +462,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 	 *                 the product we want to add to the shopping cart and Member m
 	 *                 the member using the application.
 	 * @author Jago Bartolomé Barroso
-	 * @throws Exception
 	 * @throws SQLException
+	 * @throws ProductNotFoundException
+	 * @throws StockNotFoundException
 	 */
 	@Override
-	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m) throws SQLException, Exception {
+	public Purchase addProductPurchase(Purchase pTotal, Product p, Member m)
+			throws SQLException, ProductNotFoundException, StockNotFoundException {
 		String stPurch = "In progress";
 		EnumStatusPurchase statusPurch = EnumStatusPurchase.getValue(stPurch);
 		con = connection.openConnection();
@@ -515,12 +528,13 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 					pTotal.setPurchaseQuantity(pTotal.getPurchaseQuantity() + 1);
 
 				}
-
 			} else {
-				throw new StockNotFoundException();
+				throw new StockNotFoundException(
+						"The stock for the specified product could not be found. Please check the product details and try again or contact the administrator for assistance.");
 			}
 		} else {
-			throw new ProductNotFoundException();
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
 		connection.closeConnection(ctmt, con);
 		return pTotal;
@@ -566,7 +580,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 		Set<Product> pAux = new HashSet<Product>();
 		con = connection.openConnection();
 		if (pTotal == null) {
-			throw new PurchaseNotFoundException();
+			throw new PurchaseNotFoundException(
+					"The requested purchase could not be found. Please check the purchase details and try again or contact customer support for further assistance.");
 		} else {
 			for (Product prod : pTotal.getSetProduct()) {
 				if (!prod.equals(p)) {
@@ -612,7 +627,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			ctmt.setString(1, stPurch);
 
 		} else {
-			throw new PurchaseNotFoundException();
+			throw new PurchaseNotFoundException(
+					"The requested purchase could not be found. Please check the purchase details and try again or contact customer support for further assistance.");
 		}
 		connection.closeConnection(ctmt, con);
 		return pTotal;
@@ -685,7 +701,8 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 				listaPurchase.add(purch);
 			}
 		} else {
-			throw new PurchaseNotFoundException();
+			throw new PurchaseNotFoundException(
+					"The requested purchase could not be found. Please check the purchase details and try again or contact customer support for further assistance.");
 		}
 		connection.closeConnection(stmt, con);
 		return listaPurchase;
@@ -873,9 +890,10 @@ public class ProductMemberControllableImplementation implements ProductMemberCon
 			}
 		}
 		if (pAux != null) {
-		
+
 		} else {
-			throw new ProductNotFoundException();
+			throw new ProductNotFoundException(
+					"The requested product could not be found. Please check the product details and try again or contact customer support for further assistance.");
 		}
 		return pAux;
 	}
