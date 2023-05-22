@@ -1,10 +1,15 @@
 package storeMenuGUI;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import loginGUI.Win_login_register;
 import model.User;
 import model.Member;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.Color;
 
 /**
@@ -28,6 +33,7 @@ public class MemberMainMenu extends JPanel {
 	public MemberMainMenu(Member auxUser) {
 		setBounds(100, 100, 1024, 768);
 		setLayout(null);
+		
 		/**
 		 * Creating a JTabbedPane and configuring its appearance.
 		 */
@@ -43,7 +49,7 @@ public class MemberMainMenu extends JPanel {
 
 		panelStore = new ShopMemberMenu(auxUser);
 		panelStore.setForeground(new Color(0, 151, 178));
-		tabbedPane.addTab("Store", null, panelStore, null);
+		tabbedPane.addTab("Store", null , panelStore, null);
 
 		/**
 		 * Add a panel called panelAccount to the JTabbedPane tab where the member can

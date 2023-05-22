@@ -7,7 +7,7 @@ package model;
  * @author Jagoba Bartolomé Barroso
  */
 public enum EnumClassAccessory {
-	ELECTRIC("Electric"), NONELECTRIC("Non-electric");
+	ELECTRIC("Electric"), NONELECTRIC("NonElectric");
 
 	private final String label;
 

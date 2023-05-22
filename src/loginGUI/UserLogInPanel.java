@@ -1,6 +1,8 @@
 package loginGUI;
 
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +12,7 @@ import java.sql.SQLException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -47,7 +50,7 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 	private JCheckBox chckbxShowHideLogIn;
 	private final Font font1 = new Font("Tahoma", Font.ITALIC, 11);
 	private final Font font2 = new Font("Tahoma", Font.BOLD | Font.ITALIC, 11);
-
+	private Win_login_register win;
 	// --- Getters ---
 	public JTextField getTextFieldUsername() {
 		return textFieldUsername;
@@ -60,12 +63,14 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 
 	/**
 	 * Create the panel.
+	 * @param win_login_register 
 	 */
-	public UserLogInPanel() {
+	public UserLogInPanel(Win_login_register win_login_register) {
 
 		setLayout(null);
 		setBounds(0, 0, 837, 560);
-
+		win = win_login_register;
+		
 		// --- JLabels ---
 		lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Constantia", Font.PLAIN, 25));
@@ -177,15 +182,13 @@ public class UserLogInPanel extends JPanel implements ActionListener, MouseListe
 				} else {
 					// The userLogin method is executed
 					User auxUser = login.userLogin(username, password);
-
+					
 					// On successful log in, create a new StoreMenuWindow with the auxUser
-
-					StoreMenuWindow storeMenuPanel = new StoreMenuWindow(this, true, auxUser);
+					StoreMenuWindow storeMenuPanel = new StoreMenuWindow(win, true, auxUser);
 					storeMenuPanel.setVisible(true);
 					storeMenuPanel.setLocationRelativeTo(null);
-
-					// Once StoreMenuWindow is created, dispose this window
-					((Win_login_register) (this.getParent().getParent().getParent().getParent().getParent())).dispose();
+	
+					
 				}
 			} catch (SQLException e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage());

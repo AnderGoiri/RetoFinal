@@ -62,8 +62,8 @@ public class Win_login_register extends JFrame implements ActionListener, KeyLis
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		userLoginPanel = new UserLogInPanel();
-		userRegisterPanel = new UserRegisterPanel();
+		userLoginPanel = new UserLogInPanel(this);
+		userRegisterPanel = new UserRegisterPanel(this);
 
 		// Creation of the Log In and Sign Up Panels' Container
 		cardLayout = new CardLayout();

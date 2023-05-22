@@ -1,15 +1,20 @@
 package storeMenuGUI;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import logicTier.LoginControllable;
+import logicTier.LoginFactory;
+import loginGUI.Win_login_register;
 import model.Manager;
 import model.Member;
 import model.User;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.ActionListener;
 
 /**
@@ -26,16 +31,15 @@ public class StoreMenuWindow extends JDialog {
 	private MemberMainMenu memberPanel;
 	private ManagerMainMenu managerPanel;
 	private CardLayout cardLayout;
-
-	public StoreMenuWindow(ActionListener actionListener, boolean b, User auxUser) {
-
-		super();
+	
+	public StoreMenuWindow(Win_login_register login,  boolean b, User auxUser) {
+		super(login);
+		setModal(b);
+		this.setContentPane(login.getContentPane());
 		setResizable(false);
 		setTitle("THOMANN STORE MENU");
 		setBackground(new Color(255, 255, 255));
-		getContentPane().setLayout(null);
 		setBounds(100, 100, 1024, 768);
-
 		/**
 		 * A panel is created that will contain all the other components.
 		 */
@@ -58,7 +62,6 @@ public class StoreMenuWindow extends JDialog {
 		/**
 		 * A panel for the members menu is created and added to the menu panel.
 		 */
-
 		showMenu(auxUser);
 	}
 

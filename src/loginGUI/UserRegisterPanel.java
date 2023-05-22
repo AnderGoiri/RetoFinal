@@ -99,8 +99,9 @@ public class UserRegisterPanel extends JPanel implements ActionListener, KeyList
 
 	/**
 	 * Create the panel.
+	 * @param win_login_register 
 	 */
-	public UserRegisterPanel() {
+	public UserRegisterPanel(Win_login_register win_login_register) {
 		setLayout(null);
 		setBounds(0, 0, 837, 560);
 
